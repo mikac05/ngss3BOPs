@@ -163,6 +163,11 @@
       padding: 2px 6px;
       border-radius: 4px;
     }
+    .streak-status-tag.warn {
+      color: #ffd076;
+      background: rgba(255, 208, 118, 0.16);
+      border-color: rgba(255, 208, 118, 0.45);
+    }
     .streak-meta-line {
       font-size: 11px;
       color: var(--ngss-text-secondary-color);
@@ -173,6 +178,39 @@
       font-size: 10px;
       color: #8c9b9d;
       margin-top: 2px;
+      line-height: 1.35;
+    }
+
+    /* Daily Cap Reached Banner */
+    .daily-cap-banner {
+      background: linear-gradient(90deg, #3d2a10 0%, #251d14 100%);
+      border: 1px solid rgba(255, 184, 0, 0.45);
+      border-radius: 8px;
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffe0a3;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    .daily-cap-icon {
+      font-size: 18px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .daily-cap-content {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .daily-cap-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #ffb800;
+    }
+    .daily-cap-desc {
+      font-size: 10.5px;
+      color: #ffd076;
       line-height: 1.35;
     }
 
@@ -562,7 +600,7 @@
         <div class="streak-header">
           <div class="streak-title-row">
             <h1 class="streak-title">🏆 倍率巅峰挑战</h1>
-            <span class="streak-status-tag">● 进行中</span>
+            <span class="streak-status-tag" id="activityStatusTag">● 进行中</span>
           </div>
           <div class="streak-meta-line">
             <span>📅 活动时间：2026-08-20 至 2026-08-26 (UTC+8)</span>
@@ -573,6 +611,15 @@
           <!-- Subtle Delay Hint -->
           <div class="subtle-delay-hint">
             <span>* 结果可能存在数分钟延迟，确认后将自动派发。</span>
+          </div>
+        </div>
+
+        <!-- Daily Cap Reached Banner -->
+        <div class="daily-cap-banner" id="dailyCapBanner" style="display:none;">
+          <div class="daily-cap-icon">⚠️</div>
+          <div class="daily-cap-content">
+            <div class="daily-cap-title">今日活动奖励预算已达上限</div>
+            <div class="daily-cap-desc">今日派奖额度已满，新合格注单将暂缓结算派发，次日 00:00 (UTC+8) 恢复正常。</div>
           </div>
         </div>
 
@@ -675,6 +722,7 @@
       <button class="sim-btn-pill green" onclick="simulateCustomSpin()">🎲 自定义倍率...</button>
       <button class="sim-btn-pill gold" id="btnBingoToggle" onclick="toggleBingo()">🎯 Bingo: 开启</button>
       <button class="sim-btn-pill gold" id="btnHHToggle" onclick="toggleHappyHour()">🔥 Happy Hour: 开启</button>
+      <button class="sim-btn-pill" id="btnDailyCapToggle" onclick="toggleDailyCap()" style="color:#ffd076;border-color:rgba(255,208,118,0.4);background:rgba(255,208,118,0.12);font-weight:700;">⚠️ 当日上限: 正常</button>
       <button class="sim-btn-pill" onclick="resetAllData()" style="color:#ff7675;">🔄 重置进度</button>
     </div>
   </div>
@@ -705,6 +753,7 @@
     const state = {
       bingoEnabled: true,
       isHappyHour: true,
+      dailyCapReached: false,
       poolShowAll: false,
       targets: JSON.parse(JSON.stringify(INITIAL_TARGETS)),
       lines: [
@@ -723,6 +772,27 @@
     let toastTimer = null;
 
     function render() {
+      // Daily Cap Reached Banner & Status Tag
+      const dailyCapBanner = document.getElementById('dailyCapBanner');
+      const statusTag = document.getElementById('activityStatusTag');
+      const btnDailyCap = document.getElementById('btnDailyCapToggle');
+
+      if (dailyCapBanner) dailyCapBanner.style.display = state.dailyCapReached ? 'flex' : 'none';
+      if (btnDailyCap) {
+        btnDailyCap.innerText = state.dailyCapReached ? '⚠️ 当日上限: 已达上限' : '⚠️ 当日上限: 正常';
+        btnDailyCap.style.color = state.dailyCapReached ? '#ff7675' : '#ffd076';
+        btnDailyCap.style.borderColor = state.dailyCapReached ? '#ff7675' : 'rgba(255,208,118,0.4)';
+      }
+      if (statusTag) {
+        if (state.dailyCapReached) {
+          statusTag.innerText = '● 今日已达上限';
+          statusTag.className = 'streak-status-tag warn';
+        } else {
+          statusTag.innerText = '● 进行中';
+          statusTag.className = 'streak-status-tag';
+        }
+      }
+
       // Bingo Toggle UI Visibility
       const bingoWrap = document.getElementById('bingoSectionWrapper');
       const rewardColLine = document.getElementById('rewardColLine');
@@ -755,11 +825,15 @@
           if (t.unlocked) unlockedCount++;
           const tile = document.createElement('div');
           tile.className = `bingo-tile-item ${t.unlocked ? 'unlocked' : ''}`;
-          tile.onclick = () => showToast(`格子 ${t.cell}：门槛 ≥ ${t.threshold}×｜奖励 ${money(t.reward)}`);
+          
+          const currentReward = state.isHappyHour ? t.reward * 2 : t.reward;
+          const hhBadge = state.isHappyHour ? '<span style="font-size:9px;color:#ffd076;margin-left:4px;font-weight:700;">(2.0×)</span>' : '';
+
+          tile.onclick = () => showToast(`格子 ${t.cell}：门槛 ≥ ${t.threshold}×｜基础奖励 ${money(currentReward)} ${state.isHappyHour ? '（含 Happy Hour 2.0× 加成）' : ''}`);
           tile.innerHTML = `
             <span class="tile-cell-id">${t.cell}</span>
             <div class="tile-target-threshold">≥${t.threshold}×</div>
-            <div class="tile-target-reward">${money(t.reward)}</div>
+            <div class="tile-target-reward">${money(currentReward)}${hhBadge}</div>
           `;
           grid.appendChild(tile);
         });
@@ -820,13 +894,18 @@
       poolItems.forEach(t => {
         const row = document.createElement('div');
         row.className = `pool-item-row ${t.unlocked ? 'completed' : ''}`;
+        
+        const currentReward = state.isHappyHour ? t.reward * 2 : t.reward;
+        const hhTag = state.isHappyHour ? '<span style="font-size:10px;color:#ffd076;background:rgba(255,208,118,0.18);padding:1px 5px;border-radius:3px;margin-left:4px;font-weight:700;">2.0×</span>' : '';
+
         row.innerHTML = `
           <div>
             <strong style="color:#fff;">≥ ${t.threshold}× 门槛</strong>
             ${state.bingoEnabled && t.inBingo ? `<span style="font-size:10px;color:var(--ngss-text-secondary-color);margin-left:4px;">(棋盘 ${t.cell})</span>` : ''}
           </div>
           <div style="display:flex;align-items:center;gap:6px;">
-            <span style="color:var(--ngss-font-gold-color);font-weight:700;">${money(t.reward)}</span>
+            <span style="color:var(--ngss-font-gold-color);font-weight:700;">${money(currentReward)}</span>
+            ${hhTag}
             <span style="font-size:10px;color:${t.unlocked ? 'var(--ngss-theme-color)' : 'var(--ngss-text-secondary-color)'};">${t.unlocked ? '✓ 已派发' : '待挑战'}</span>
           </div>
         `;
@@ -866,6 +945,12 @@
       recList.appendChild(recEl);
     }
 
+    function toggleDailyCap() {
+      state.dailyCapReached = !state.dailyCapReached;
+      render();
+      showToast(state.dailyCapReached ? '⚠️ 已模拟开启：今日奖励预算已达上限' : '✅ 已恢复：今日奖励预算正常');
+    }
+
     function toggleBingo() {
       state.bingoEnabled = !state.bingoEnabled;
       render();
@@ -878,6 +963,11 @@
     }
 
     function simulateSpin(mult) {
+      if (state.dailyCapReached) {
+        showToast('⚠️ 今日活动奖励预算已达上限，新注单将于次日 00:00 (UTC+8) 恢复结算派发。');
+        return;
+      }
+
       const eligible = state.targets.filter(t => !t.unlocked && mult >= t.threshold);
       if (eligible.length === 0) {
         showToast(`🎲 Aviator 结算 ${mult}×：未命中更高未完成门槛。`);
@@ -902,6 +992,10 @@
     }
 
     function simulateCustomSpin() {
+      if (state.dailyCapReached) {
+        showToast('⚠️ 今日活动奖励预算已达上限，新注单将于次日 00:00 (UTC+8) 恢复结算派发。');
+        return;
+      }
       const val = prompt('请输入 Aviator 模拟结算倍率 (例如: 15, 65, 120, 500):', '65');
       if (val !== null) {
         const num = parseFloat(val.trim());
@@ -922,6 +1016,7 @@
     function resetAllData() {
       state.targets = JSON.parse(JSON.stringify(INITIAL_TARGETS));
       state.singleRecord = { time: '14:30', game: 'Aviator', mult: '22.5×', reward: '30.00 INR' };
+      state.dailyCapReached = false;
       render();
       showToast('🔄 已重置为初始示范状态');
     }
@@ -943,7 +1038,11 @@
     }
 
     function launchAviator() {
-      showToast('🚀 已启动游戏【Aviator】；结算后将自动核验派发。');
+      if (state.dailyCapReached) {
+        showToast('⚠️ 今日活动奖励预算已达上限，新任务将于次日 00:00 (UTC+8) 恢复派发。');
+      } else {
+        showToast('🚀 已启动游戏【Aviator】；结算后将自动核验派发。');
+      }
     }
 
     function showToast(msg) {
