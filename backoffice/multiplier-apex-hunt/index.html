@@ -832,7 +832,7 @@
           <div class="section-header">
             <div class="section-title">
               <span class="step">1</span>
-              <div><h2 id="eligibilityTitle">指定游戏与有效投注</h2><div class="helper">选择活动适用游戏，并设定每日预算与有效投注范围。（附注：活动币别依站点预设锁定为 INR，所有预算、有效投注及目标奖励统一适用）</div></div>
+              <div><h2 id="eligibilityTitle">指定游戏与有效投注</h2><div class="helper">选择活动适用游戏，并设定每日预算与有效投注范围。（附注：活动币种依站点预设，所有预算、有效投注及目标奖励统一适用，本页面以 INR 为示例）</div></div>
             </div>
           </div>
           <div class="section-body">
@@ -842,7 +842,7 @@
                 <select id="game"><option>Aviator</option><option disabled>其他游戏（未认证）</option></select>
               </div>
               <div class="field">
-                <label for="dailyBudget">每日新增奖励责任上限 <span class="validation-help" tabindex="0" data-tooltip="Blocking｜必須大於 0，且不可低於單个玩家最高總派獎。只停止接受新任務，不得減少已接受玩家的合法奖励。">i</span></label>
+                <label for="dailyBudget">每日奖励上限 <span class="validation-help" tabindex="0" data-tooltip="Blocking｜必须大于 0，且不可低于单个玩家最高总派奖。只停止接受新任务，不得减少已接受玩家的合法奖励。">i</span></label>
                 <div class="input-group"><input class="input" id="dailyBudget" type="number" min="0" step="100" value="100000"><span class="suffix">INR</span></div>
                 <div class="helper">只限制新任务；不截短已接受玩家的奖励。</div>
                 <div class="field-error" id="dailyBudgetError"></div>
@@ -977,13 +977,13 @@
         <section class="side-card" aria-labelledby="summaryTitle">
           <div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><h2 id="summaryTitle">设定总览</h2><span class="tag success">即時計算</span></div>
           <div class="summary-group" style="margin-top:14px">
-            <div class="summary-group-title"><span>整个活動</span><span class="tag">INR・站点设定</span></div>
+            <div class="summary-group-title"><span>整个活动</span><span class="tag">INR・站点设定</span></div>
             <div class="summary-list">
-              <div class="summary-row"><span>活動日期：</span><strong id="summaryDuration">—</strong></div>
+              <div class="summary-row"><span>活动日期：</span><strong id="summaryDuration">—</strong></div>
               <div class="summary-row"><span>活动天数：</span><strong id="summaryDays">—</strong></div>
-              <div class="summary-row"><span>活動币种：</span><strong id="summaryCurrency">INR</strong></div>
-              <div class="summary-row"><span>每日新增责任上限：</span><strong id="summaryDailyBudget">0 INR</strong></div>
-              <div class="summary-row"><span>活動最高总奖励 <span class="validation-help" tabindex="0" data-tooltip="每日新增奖励责任上限 × 活動天数（首尾日期都計入）。這是活動層級的最高新责任，不代表必然派滿。">i</span></span><strong id="summaryTotalBudget">—</strong></div>
+              <div class="summary-row"><span>活动币种：</span><strong id="summaryCurrency">INR</strong></div>
+              <div class="summary-row"><span>每日奖励上限：</span><strong id="summaryDailyBudget">0 INR</strong></div>
+              <div class="summary-row"><span>活动最高总奖励 <span class="validation-help" tabindex="0" data-tooltip="每日奖励上限 × 活动天数（首尾日期都计入）。这是活动层级的最高新责任，不代表必然派满。">i</span></span><strong id="summaryTotalBudget">—</strong></div>
             </div>
           </div>
           <div class="summary-group">
@@ -1313,11 +1313,11 @@
       if (dateMessage) error(`活動日期：${dateMessage}`);
 
       let budgetMessage = '';
-      if (!(daily > 0)) budgetMessage = '每日新增奖励责任上限必須大於 0。';
-      else if (daily < liability.total) budgetMessage = `每日上限不可低於單个玩家最高總派獎 ${money(liability.total)}。`;
+      if (!(daily > 0)) budgetMessage = '每日奖励上限必须大于 0。';
+      else if (daily < liability.total) budgetMessage = `每日奖励上限不可低于单个玩家最高总派奖 ${money(liability.total)}。`;
       markInput('dailyBudget', Boolean(budgetMessage));
       setFieldError('dailyBudgetError', budgetMessage);
-      if (budgetMessage) error(`每日预算：${budgetMessage}`);
+      if (budgetMessage) error(`每日奖励上限：${budgetMessage}`);
 
       const minStakeMessage = minStake > 0 ? '' : '每笔最低有效投注额必須大於 0。';
       markInput('minStake', Boolean(minStakeMessage));
