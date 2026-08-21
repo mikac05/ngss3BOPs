@@ -606,7 +606,7 @@
             <span>📅 活动时间：2026-08-20 至 2026-08-26 (UTC+8)</span>
           </div>
           <div class="streak-meta-line">
-            <span>⚡ 单笔合格投注：≥ 10.00 INR｜合资格游戏：<strong>Aviator</strong></span>
+            <span>⚡ 单笔合格投注：≥ 10.00 INR｜合资格游戏：<strong>Spribe Sp飞行员</strong></span>
           </div>
           <!-- Subtle Delay Hint -->
           <div class="subtle-delay-hint">
@@ -619,7 +619,7 @@
           <div class="daily-cap-icon">⚠️</div>
           <div class="daily-cap-content">
             <div class="daily-cap-title">今日活动奖励预算已达上限</div>
-            <div class="daily-cap-desc">今日派奖额度已满，新合格注单将暂缓结算派发，次日 00:00 (UTC+8) 恢复正常。</div>
+            <div class="daily-cap-desc">今日派奖额度已发完，当日后续收到的注单不再派发，明日 00:00 (UTC+8) 开启新一轮额度。</div>
           </div>
         </div>
 
@@ -678,7 +678,7 @@
 
         <!-- Single Qualifying Game Launch Button -->
         <button class="btn-ngss-primary" onclick="launchAviator()">
-          <span>启动游戏 Aviator（最低 10.00 INR）</span>
+          <span>启动游戏 Spribe Sp飞行员（最低 10.00 INR）</span>
         </button>
 
         <!-- Rules & Records Tabs -->
@@ -688,7 +688,7 @@
             <button class="tab-header-btn" id="btnTabRecords" role="tab" aria-selected="false" onclick="switchInnerTab('records')">获胜记录 (1)</button>
           </div>
           <div class="tab-body-box" id="tabBodyRules" role="tabpanel">
-            • 合资格游戏：<strong>Aviator</strong>。<br>
+            • 合资格游戏：<strong>Spribe Sp飞行员</strong>。<br>
             • 单笔合格投注额 ≥ 10.00 INR。<br>
             • 一笔合格注单仅完成目前「最高且未完成」的一个倍率目标。<br>
             • 每个倍率目标每位玩家仅派发一次基础奖励。<br>
@@ -964,13 +964,13 @@
 
     function simulateSpin(mult) {
       if (state.dailyCapReached) {
-        showToast('⚠️ 今日活动奖励预算已达上限，新注单将于次日 00:00 (UTC+8) 恢复结算派发。');
+        showToast('⚠️ 今日活动奖励预算已发完，当日后续收到的注单不再派发奖励。');
         return;
       }
 
       const eligible = state.targets.filter(t => !t.unlocked && mult >= t.threshold);
       if (eligible.length === 0) {
-        showToast(`🎲 Aviator 结算 ${mult}×：未命中更高未完成门槛。`);
+        showToast(`🎲 Spribe Sp飞行员 结算 ${mult}×：未命中更高未完成门槛。`);
         return;
       }
       eligible.sort((a, b) => b.threshold - a.threshold);
@@ -982,7 +982,7 @@
 
       state.singleRecord = {
         time: new Date().toTimeString().slice(0, 5),
-        game: 'Aviator',
+        game: 'Spribe Sp飞行员',
         mult: `${mult.toFixed(1)}×`,
         reward: money(rewardAmt)
       };
@@ -993,10 +993,10 @@
 
     function simulateCustomSpin() {
       if (state.dailyCapReached) {
-        showToast('⚠️ 今日活动奖励预算已达上限，新注单将于次日 00:00 (UTC+8) 恢复结算派发。');
+        showToast('⚠️ 今日活动奖励预算已发完，当日后续收到的注单不再派发奖励。');
         return;
       }
-      const val = prompt('请输入 Aviator 模拟结算倍率 (例如: 15, 65, 120, 500):', '65');
+      const val = prompt('请输入 Spribe Sp飞行员 模拟结算倍率 (例如: 15, 65, 120, 500):', '65');
       if (val !== null) {
         const num = parseFloat(val.trim());
         if (Number.isFinite(num) && num > 0) {
@@ -1015,7 +1015,7 @@
 
     function resetAllData() {
       state.targets = JSON.parse(JSON.stringify(INITIAL_TARGETS));
-      state.singleRecord = { time: '14:30', game: 'Aviator', mult: '22.5×', reward: '30.00 INR' };
+      state.singleRecord = { time: '14:30', game: 'Spribe Sp飞行员', mult: '22.5×', reward: '30.00 INR' };
       state.dailyCapReached = false;
       render();
       showToast('🔄 已重置为初始示范状态');
@@ -1039,9 +1039,9 @@
 
     function launchAviator() {
       if (state.dailyCapReached) {
-        showToast('⚠️ 今日活动奖励预算已达上限，新任务将于次日 00:00 (UTC+8) 恢复派发。');
+        showToast('⚠️ 今日活动奖励预算已发完，当日后续收到的注单不再派发奖励。');
       } else {
-        showToast('🚀 已启动游戏【Aviator】；结算后将自动核验派发。');
+        showToast('🚀 已启动游戏【Spribe Sp飞行员】；结算后将自动核验派发。');
       }
     }
 

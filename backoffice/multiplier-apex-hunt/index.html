@@ -641,6 +641,292 @@
     .validation-item.error::before { content: "×"; color: var(--el-color-danger); }
     .validation-item.warn { color: #f3d19e; }
     .validation-item.warn::before { content: "!"; color: var(--el-color-warning); }
+
+    /* Game Selection Trigger and Tags */
+    .game-picker-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .game-picker-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 13px;
+      transition: border-color .15s, background .15s;
+    }
+    .game-picker-trigger:hover {
+      border-color: var(--blue);
+      background: rgba(64, 158, 255, 0.06);
+    }
+    .game-tags-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      max-height: 80px;
+      overflow-y: auto;
+      padding: 4px 0;
+    }
+    .game-tag-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(64, 158, 255, 0.12);
+      border: 1px solid rgba(64, 158, 255, 0.3);
+      color: var(--text);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .game-tag-item .platform {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--blue);
+      background: rgba(64, 158, 255, 0.16);
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+    .game-tag-item .btn-remove {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0 2px;
+      font-size: 12px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+    }
+    .game-tag-item .btn-remove:hover {
+      color: var(--red);
+    }
+
+    /* Game Selector Modal (Element Plus Dialog) */
+    .game-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease;
+    }
+    .game-modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .game-modal-dialog {
+      background: var(--panel);
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 860px;
+      max-height: 88vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow);
+      transform: translateY(12px) scale(0.98);
+      transition: transform .2s ease;
+      overflow: hidden;
+    }
+    .game-modal-overlay.open .game-modal-dialog {
+      transform: translateY(0) scale(1);
+    }
+    .game-modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel-2);
+    }
+    .game-modal-head h3 {
+      font-size: 16px;
+      font-weight: 800;
+      margin: 0;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .game-modal-close {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 4px;
+      line-height: 1;
+    }
+    .game-modal-close:hover {
+      background: var(--panel-3);
+      color: var(--text);
+    }
+    .game-modal-filter-bar {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      background: var(--panel);
+    }
+    .game-cat-tabs {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .game-cat-tab {
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: var(--panel-3);
+      color: var(--muted);
+      font-size: 12px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all .15s;
+    }
+    .game-cat-tab:hover {
+      color: var(--text);
+      border-color: var(--blue);
+    }
+    .game-cat-tab.active {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+      font-weight: 700;
+    }
+    .game-search-row {
+      display: grid;
+      grid-template-columns: 200px 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+    .game-modal-body {
+      padding: 16px 20px;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 280px;
+      max-height: 48vh;
+      background: var(--bg);
+    }
+    .game-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 10px;
+    }
+    .game-select-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      background: var(--panel);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all .15s;
+      user-select: none;
+      position: relative;
+    }
+    .game-select-card:hover {
+      border-color: var(--blue);
+      transform: translateY(-1px);
+    }
+    .game-select-card.selected {
+      border-color: var(--blue);
+      background: rgba(64, 158, 255, 0.08);
+      box-shadow: 0 0 0 1px var(--blue);
+    }
+    .game-card-radio {
+      width: 18px;
+      height: 18px;
+      border: 1.5px solid var(--border-strong);
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      background: var(--panel-2);
+      transition: all .15s;
+    }
+    .game-select-card.selected .game-card-radio {
+      background: var(--blue);
+      border-color: var(--blue);
+    }
+    .game-select-card.selected .game-card-radio::after {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #ffffff;
+    }
+    .game-card-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .game-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .game-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+    .game-card-badge {
+      font-size: 10px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      background: var(--panel-3);
+      border: 1px solid var(--border);
+      font-weight: 600;
+    }
+    .game-modal-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+      background: var(--panel-2);
+    }
+    .game-modal-footer .stats {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .game-modal-footer .stats strong {
+      color: var(--blue);
+      font-size: 14px;
+    }
+    .game-modal-actions {
+      display: flex;
+      gap: 10px;
+    }
     .footer-actions {
       position: sticky;
       bottom: 0;
@@ -838,8 +1124,17 @@
           <div class="section-body">
             <div class="grid-3">
               <div class="field">
-                <label for="game">指定游戏 <span class="validation-help" tabindex="0" data-tooltip="Prototype 不執行 provider／遊戲准入控制；正式系統仍應從站点可用遊戲清單提供選項。">i</span></label>
-                <select id="game"><option>Aviator</option><option disabled>其他游戏（未认证）</option></select>
+                <label for="btnOpenGameModal">指定游戏 <span class="validation-help" tabindex="0" data-tooltip="活动限定指定单款合资格游戏参与倍率挑战（支持依分类、平台及关键字筛选更换）。">i</span></label>
+                <div class="game-picker-box">
+                  <button type="button" class="game-picker-trigger" id="btnOpenGameModal" onclick="openGameModal()">
+                    <div style="display:flex;align-items:center;gap:8px;min-width:0;">
+                      <span class="game-tag-item" style="padding:2px 6px;margin:0;"><span class="platform" id="selectedGamePlatform">SPRIBE</span> <strong id="selectedGameName" style="color:var(--text);font-size:12px;">Spribe Sp飞行员</strong></span>
+                    </div>
+                    <span style="color:var(--blue);font-weight:750;font-size:12px;white-space:nowrap;margin-left:8px;">更换游戏 ❯</span>
+                  </button>
+                </div>
+                <div class="helper">仅指定单款合资格游戏；只有在该游戏内的合格投注才会计入倍率判定。</div>
+                <div class="field-error" id="gameSelectError"></div>
               </div>
               <div class="field">
                 <label for="dailyBudget">每日奖励上限 <span class="validation-help" tabindex="0" data-tooltip="Blocking｜必须大于 0，且不可低于单个玩家最高总派奖。只停止接受新任务，不得减少已接受玩家的合法奖励。">i</span></label>
@@ -979,6 +1274,7 @@
           <div class="summary-group" style="margin-top:14px">
             <div class="summary-group-title"><span>整个活动</span><span class="tag">INR・站点设定</span></div>
             <div class="summary-list">
+              <div class="summary-row"><span>指定游戏：</span><strong id="summaryGames">1 款 (Aviator)</strong></div>
               <div class="summary-row"><span>活动日期：</span><strong id="summaryDuration">—</strong></div>
               <div class="summary-row"><span>活动天数：</span><strong id="summaryDays">—</strong></div>
               <div class="summary-row"><span>活动币种：</span><strong id="summaryCurrency">INR</strong></div>
@@ -1519,9 +1815,298 @@
       if (btn) btn.textContent = '🌙 暗黑模式';
     }
 
+    // ==========================================
+    // Crawled Game Database & Single-select Logic
+    // ==========================================
+    const CRAWLED_GAMES = [
+      // SPRIBE
+      { id: '7061', name: 'Spribe Sp飞行员', platform: 'SPRIBE', category: '电子', status: '开启', fee: '0.02' },
+      { id: '7003', name: 'Spribe SP星际线', platform: 'SPRIBE', category: '电子', status: '开启', fee: '0.02' },
+      { id: '7004', name: 'Spribe Sp扫雷', platform: 'SPRIBE', category: '电子', status: '开启', fee: '0.02' },
+      { id: '7005', name: 'Spribe Sp弹珠台', platform: 'SPRIBE', category: '电子', status: '开启', fee: '0.02' },
+      { id: '7006', name: 'Spribe Sp迷你轮盘', platform: 'SPRIBE', category: '电子', status: '开启', fee: '0.02' },
+      { id: '7007', name: 'Spribe Sp高低', platform: 'SPRIBE', category: '电子', status: '开启', fee: '0.02' },
+      { id: '7008', name: 'Spribe Sp基诺', platform: 'SPRIBE', category: '电子', status: '开启', fee: '0.02' },
+      { id: '7009', name: 'Spribe Sp骰子', platform: 'SPRIBE', category: '电子', status: '开启', fee: '0.02' },
+      { id: '7011', name: 'Spribe Sp进球', platform: 'SPRIBE', category: '电子', status: '开启', fee: '0.02' },
+      { id: '7012', name: 'Spribe Sp气球', platform: 'SPRIBE', category: '电子', status: '开启', fee: '0.02' },
+
+      // PG
+      { id: '65', name: '麻将胡了', platform: 'PG', category: '电子', status: '开启', fee: '0.03' },
+      { id: '74', name: '麻将胡了2', platform: 'PG', category: '电子', status: '开启', fee: '0.03' },
+      { id: '87', name: '寻宝黄金城', platform: 'PG', category: '电子', status: '开启', fee: '0.03' },
+      { id: '48', name: '双喜临门', platform: 'PG', category: '电子', status: '开启', fee: '0.03' },
+      { id: '89', name: '招财喵', platform: 'PG', category: '电子', status: '开启', fee: '0.03' },
+      { id: '104', name: '麒麟送宝', platform: 'PG', category: '电子', status: '开启', fee: '0.03' },
+      { id: '108', name: '赏金女王', platform: 'PG', category: '电子', status: '开启', fee: '0.03' },
+      { id: '102', name: '狂欢节派对', platform: 'PG', category: '电子', status: '开启', fee: '0.03' },
+
+      // PP
+      { id: '1001', name: '奥林匹斯之门', platform: 'PP', category: '电子', status: '开启', fee: '0.03' },
+      { id: '1002', name: '甜蜜糖果', platform: 'PP', category: '电子', status: '开启', fee: '0.03' },
+      { id: '1003', name: '星光公主', platform: 'PP', category: '电子', status: '开启', fee: '0.03' },
+      { id: '1004', name: '狂野西部金矿', platform: 'PP', category: '电子', status: '开启', fee: '0.03' },
+      { id: '1005', name: '糖果狂欢', platform: 'PP', category: '电子', status: '开启', fee: '0.03' },
+      { id: '1006', name: '大鲈鱼飞溅', platform: 'PP', category: '电子', status: '开启', fee: '0.03' },
+
+      // JILI
+      { id: '2001', name: '超级王牌', platform: 'JILI', category: '电子', status: '开启', fee: '0.03' },
+      { id: '2002', name: '拳王争霸', platform: 'JILI', category: '电子', status: '开启', fee: '0.03' },
+      { id: '2003', name: '金牛迎春', platform: 'JILI', category: '电子', status: '开启', fee: '0.03' },
+      { id: '2004', name: '招财进宝', platform: 'JILI', category: '电子', status: '开启', fee: '0.03' },
+      { id: '2005', name: '吉利炸弹', platform: 'JILI', category: '电子', status: '开启', fee: '0.03' },
+      { id: '2010', name: '吉利捕鱼', platform: 'JILI', category: '捕鱼', status: '开启', fee: '0.03' },
+
+      // FACHAI
+      { id: '3001', name: '猴子运宝', platform: 'FACHAI', category: '电子', status: '开启', fee: '0.03' },
+      { id: '3002', name: '发财神', platform: 'FACHAI', category: '电子', status: '开启', fee: '0.03' },
+      { id: '3003', name: '夜市狂欢', platform: 'FACHAI', category: '电子', status: '开启', fee: '0.03' },
+      { id: '3004', name: '发财捕鱼', platform: 'FACHAI', category: '捕鱼', status: '开启', fee: '0.03' },
+
+      // TADA
+      { id: '4001', name: '疯狂大赢家', platform: 'TADA', category: '电子', status: '开启', fee: '0.03' },
+      { id: '4002', name: '法老宝藏', platform: 'TADA', category: '电子', status: '开启', fee: '0.03' },
+      { id: '4003', name: '极速飙车', platform: 'TADA', category: '电子', status: '开启', fee: '0.03' },
+
+      // JDB
+      { id: '5001', name: '飞鸟派对', platform: 'JDB', category: '电子', status: '开启', fee: '0.03' },
+      { id: '5002', name: '财神捕鱼', platform: 'JDB', category: '捕鱼', status: '开启', fee: '0.03' },
+      { id: '5003', name: '五福临门', platform: 'JDB', category: '电子', status: '开启', fee: '0.03' },
+
+      // CQ9
+      { id: '6001', name: '跳高高', platform: 'CQ9', category: '电子', status: '开启', fee: '0.03' },
+      { id: '6002', name: '跳高高2', platform: 'CQ9', category: '电子', status: '开启', fee: '0.03' },
+      { id: '6003', name: '武圣', platform: 'CQ9', category: '电子', status: '开启', fee: '0.03' },
+
+      // HACKSAW
+      { id: '8001', name: '死者之书', platform: 'HACKSAW', category: '电子', status: '开启', fee: '0.03' },
+      { id: '8002', name: '疯狂兔子', platform: 'HACKSAW', category: '电子', status: '开启', fee: '0.03' },
+      { id: '8003', name: '希望之墓', platform: 'HACKSAW', category: '电子', status: '开启', fee: '0.03' },
+
+      // NG
+      { id: '9001', name: 'NG 极速赛车', platform: 'NG', category: '彩票', status: '开启', fee: '0.03' },
+      { id: '9002', name: 'NG 幸运飞艇', platform: 'NG', category: '彩票', status: '开启', fee: '0.03' },
+      { id: '9003', name: 'NG 连环夺宝', platform: 'NG', category: '电子', status: '开启', fee: '0.03' },
+      { id: '9004', name: 'NG 快乐彩', platform: 'NG', category: '彩票', status: '开启', fee: '0.03' },
+
+      // V8POKER
+      { id: '1101', name: '抢庄牛牛', platform: 'V8POKER', category: '棋牌', status: '开启', fee: '0.02' },
+      { id: '1102', name: '德州扑克', platform: 'V8POKER', category: '棋牌', status: '开启', fee: '0.02' },
+      { id: '1103', name: '炸金花', platform: 'V8POKER', category: '棋牌', status: '开启', fee: '0.02' },
+      { id: '1104', name: '二十一点', platform: 'V8POKER', category: '棋牌', status: '开启', fee: '0.02' },
+
+      // EVOLUTION
+      { id: '1201', name: '疯狂时光', platform: 'EVOLUTION', category: '真人', status: '开启', fee: '0.03' },
+      { id: '1202', name: '闪电轮盘', platform: 'EVOLUTION', category: '真人', status: '开启', fee: '0.03' },
+
+      // FB体育
+      { id: '1301', name: 'FB 足球早盘与滚球', platform: 'FB体育', category: '体育', status: '开启', fee: '0.03' },
+      { id: '1302', name: 'FB 篮球滚球', platform: 'FB体育', category: '体育', status: '开启', fee: '0.03' }
+    ];
+
+    state.selectedGameId = '7061';
+    let modalSelectedTempId = '7061';
+    let currentCategoryFilter = '全部';
+
+    function openGameModal() {
+      modalSelectedTempId = state.selectedGameId;
+      currentCategoryFilter = '全部';
+      const platSelect = byId('gamePlatformFilter');
+      const kwInput = byId('gameKeywordFilter');
+      if (platSelect) platSelect.value = '全部';
+      if (kwInput) kwInput.value = '';
+
+      document.querySelectorAll('.game-cat-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.cat === '全部');
+      });
+
+      renderModalGameCards();
+      const modal = byId('gameModalOverlay');
+      if (modal) modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeGameModal() {
+      const modal = byId('gameModalOverlay');
+      if (modal) modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function handleModalOverlayClick(e) {
+      if (e.target === byId('gameModalOverlay')) {
+        closeGameModal();
+      }
+    }
+
+    function selectGameCategory(cat) {
+      currentCategoryFilter = cat;
+      document.querySelectorAll('.game-cat-tab').forEach(tab => {
+        tab.classList.toggle('active', tab.dataset.cat === cat);
+      });
+      renderModalGameCards();
+    }
+
+    function filterGames() {
+      renderModalGameCards();
+    }
+
+    function getFilteredGames() {
+      const platformVal = byId('gamePlatformFilter')?.value || '全部';
+      const kw = (byId('gameKeywordFilter')?.value || '').trim().toLowerCase();
+
+      return CRAWLED_GAMES.filter(g => {
+        if (currentCategoryFilter !== '全部' && g.category !== currentCategoryFilter) return false;
+        if (platformVal !== '全部' && g.platform !== platformVal) return false;
+        if (kw) {
+          const matchName = g.name.toLowerCase().includes(kw);
+          const matchPlat = g.platform.toLowerCase().includes(kw);
+          if (!matchName && !matchPlat) return false;
+        }
+        return true;
+      });
+    }
+
+    function renderModalGameCards() {
+      const grid = byId('gameCardsGrid');
+      const empty = byId('gameEmptyState');
+      if (!grid) return;
+
+      const filtered = getFilteredGames();
+      grid.replaceChildren();
+
+      if (filtered.length === 0) {
+        if (empty) empty.style.display = 'block';
+      } else {
+        if (empty) empty.style.display = 'none';
+        filtered.forEach(g => {
+          const isSelected = modalSelectedTempId === g.id;
+          const card = document.createElement('div');
+          card.className = `game-select-card ${isSelected ? 'selected' : ''}`;
+          card.onclick = () => selectSingleGame(g.id);
+          card.ondblclick = () => {
+            selectSingleGame(g.id);
+            confirmGameSelection();
+          };
+
+          card.innerHTML = `
+            <div class="game-card-radio"></div>
+            <div class="game-card-info">
+              <div class="game-card-title" title="${g.name}">${g.name}</div>
+              <div class="game-card-meta">
+                <span class="game-card-badge" style="color:var(--blue);">${g.platform}</span>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      const filCount = byId('modalFilteredCount');
+      const selGame = CRAWLED_GAMES.find(g => g.id === modalSelectedTempId);
+      const selNameEl = byId('modalSelectedGameName');
+      const btnConfirm = byId('btnConfirmGameSelection');
+
+      if (filCount) filCount.textContent = filtered.length;
+      if (selNameEl && selGame) selNameEl.textContent = `[${selGame.platform}] ${selGame.name}`;
+      if (btnConfirm) btnConfirm.textContent = selGame ? `确认指定：${selGame.name}` : '确认选择';
+    }
+
+    function selectSingleGame(id) {
+      modalSelectedTempId = id;
+      renderModalGameCards();
+    }
+
+    function confirmGameSelection() {
+      if (!modalSelectedTempId) {
+        alert('请选择一款活动适用游戏！');
+        return;
+      }
+      state.selectedGameId = modalSelectedTempId;
+      closeGameModal();
+      renderSelectedGameDisplay();
+      renderAll(false);
+    }
+
+    function renderSelectedGameDisplay() {
+      const selectedGame = CRAWLED_GAMES.find(g => g.id === state.selectedGameId) || CRAWLED_GAMES[0];
+      const platEl = byId('selectedGamePlatform');
+      const nameEl = byId('selectedGameName');
+      const summaryGames = byId('summaryGames');
+
+      if (platEl) platEl.textContent = selectedGame.platform;
+      if (nameEl) nameEl.textContent = selectedGame.name;
+      if (summaryGames) summaryGames.textContent = `${selectedGame.name} (${selectedGame.platform})`;
+    }
+
+    // Initialize UI
     ensureLineRewards();
     balancedPlacement();
+    renderSelectedGameDisplay();
     renderAll(true);
   </script>
+
+  <!-- Element Plus Game Selector Dialog Modal -->
+  <div class="game-modal-overlay" id="gameModalOverlay" onclick="handleModalOverlayClick(event)">
+    <div class="game-modal-dialog" role="dialog" aria-labelledby="gameModalTitle" aria-modal="true">
+      <div class="game-modal-head">
+        <h3 id="gameModalTitle">🎮 选择活动适用游戏 <span class="tag" style="font-size:11px;font-weight:normal;">单款指定模式</span></h3>
+        <button type="button" class="game-modal-close" onclick="closeGameModal()" aria-label="关闭">✕</button>
+      </div>
+
+      <div class="game-modal-filter-bar">
+        <!-- Category Tabs -->
+        <div class="game-cat-tabs" id="gameCatTabs">
+          <button type="button" class="game-cat-tab active" data-cat="全部" onclick="selectGameCategory('全部')">全部分类 (46)</button>
+          <button type="button" class="game-cat-tab" data-cat="电子" onclick="selectGameCategory('电子')">电子 (30)</button>
+          <button type="button" class="game-cat-tab" data-cat="捕鱼" onclick="selectGameCategory('捕鱼')">捕鱼 (4)</button>
+          <button type="button" class="game-cat-tab" data-cat="棋牌" onclick="selectGameCategory('棋牌')">棋牌 (4)</button>
+          <button type="button" class="game-cat-tab" data-cat="真人" onclick="selectGameCategory('真人')">真人 (2)</button>
+          <button type="button" class="game-cat-tab" data-cat="彩票" onclick="selectGameCategory('彩票')">彩票 (4)</button>
+          <button type="button" class="game-cat-tab" data-cat="体育" onclick="selectGameCategory('体育')">体育 (2)</button>
+        </div>
+
+        <!-- Platform Dropdown & Keyword Input -->
+        <div class="game-search-row" style="grid-template-columns: 220px 1fr;">
+          <select class="input" id="gamePlatformFilter" onchange="filterGames()">
+            <option value="全部">全部平台 (All Platforms)</option>
+            <option value="SPRIBE">SPRIBE</option>
+            <option value="PG">PG</option>
+            <option value="PP">PP (Pragmatic Play)</option>
+            <option value="JILI">JILI</option>
+            <option value="FACHAI">FACHAI</option>
+            <option value="TADA">TADA</option>
+            <option value="JDB">JDB</option>
+            <option value="CQ9">CQ9</option>
+            <option value="HACKSAW">HACKSAW</option>
+            <option value="NG">NG (自研)</option>
+            <option value="V8POKER">V8POKER</option>
+            <option value="EVOLUTION">EVOLUTION</option>
+            <option value="FB体育">FB体育</option>
+          </select>
+
+          <div style="position:relative;">
+            <input class="input" id="gameKeywordFilter" type="text" placeholder="🔍 输入游戏名或平台名称..." oninput="filterGames()" style="width:100%;">
+          </div>
+        </div>
+      </div>
+
+      <div class="game-modal-body">
+        <div class="game-card-grid" id="gameCardsGrid"></div>
+        <div id="gameEmptyState" style="display:none;text-align:center;padding:40px 0;color:var(--muted);font-size:13px;">
+          🔍 未找到匹配的游戏，请尝试更换分类、平台或搜索关键字。
+        </div>
+      </div>
+
+      <div class="game-modal-footer">
+        <div class="stats">
+          当前选中：<strong id="modalSelectedGameName" style="color:var(--blue);">[SPRIBE] Spribe Sp飞行员</strong>（共 <span id="modalFilteredCount">0</span> 款可选）
+        </div>
+        <div class="game-modal-actions">
+          <button type="button" class="btn secondary" onclick="closeGameModal()">取消</button>
+          <button type="button" class="btn primary" id="btnConfirmGameSelection" onclick="confirmGameSelection()">确认指定该游戏</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>
