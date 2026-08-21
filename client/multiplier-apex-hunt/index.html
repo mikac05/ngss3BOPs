@@ -1,0 +1,962 @@
+<!doctype html>
+<html lang="zh-Hans" data-theme="ngDarkGreen">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1c201e">
+  <title>NGSS3 玩家端｜倍率巅峰挑战</title>
+  <link rel="icon" href="../../favicon.svg">
+  <style>
+    /* Exact NGSS3 / Vant theme tokens */
+    :root {
+      --ngss-theme-color: #75eb92;
+      --ngss-theme-secondary-color: #a9e782;
+      --ngss-page-background: #1c201e;
+      --ngss-card-bg: #252a28;
+      --ngss-card-title-bg: #2d3331;
+      --ngss-header-bg: #232826;
+      --ngss-tabbar-bg: #1c1f1e;
+      --ngss-text-primary-color: #ffffff;
+      --ngss-text-secondary-color: #9ea9a5;
+      --ngss-font-gold-color: #ffd076;
+      --van-border-color: #343d39;
+      --van-radius-lg: 0.57143rem;
+      --van-radius-md: 0.28571rem;
+      --ngss-button-primary-bg: linear-gradient(to right, #75eb92, #a9e782);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body {
+      background: #0d100f;
+      color: #ddd;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.4;
+      font-size: 13px;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Top Return to Hub Bar */
+    .hub-topbar {
+      width: 100%;
+      background: #141716;
+      border-bottom: 1px solid var(--van-border-color);
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      z-index: 100;
+    }
+    .hub-topbar a {
+      color: var(--ngss-theme-color);
+      text-decoration: none;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .hub-topbar a:hover { text-decoration: underline; }
+
+    /* Mobile Container Frame */
+    .mobile-app-wrapper {
+      width: 100%;
+      max-width: 430px;
+      min-height: calc(100dvh - 30px);
+      background: var(--ngss-page-background);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.85);
+      margin-bottom: 75px;
+    }
+
+    /* Top Activity Nav Bar */
+    .activity-nav-bar {
+      background: var(--ngss-header-bg);
+      border-bottom: 1px solid var(--van-border-color);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .nav-left-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-weight: 700;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    .btn-rules-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(117, 235, 146, 0.12);
+      border: 1px solid rgba(117, 235, 146, 0.3);
+      color: var(--ngss-theme-color);
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* Main Scrollable Area */
+    .activity-scroll-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 14px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Streak Challenge Card */
+    .streak-card-container {
+      background: var(--ngss-card-bg);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--van-border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 14px;
+      position: relative;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Card Top Header Banner */
+    .streak-header {
+      background: linear-gradient(135deg, rgba(117, 235, 146, 0.16) 0%, rgba(37, 42, 40, 0.9) 100%), #1e2221;
+      border: 1px solid rgba(117, 235, 146, 0.3);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .streak-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .streak-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .streak-status-tag {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--ngss-theme-color);
+      background: rgba(117, 235, 146, 0.15);
+      border: 1px solid rgba(117, 235, 146, 0.35);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .streak-meta-line {
+      font-size: 11px;
+      color: var(--ngss-text-secondary-color);
+    }
+    
+    /* Subtle Delay Hint */
+    .subtle-delay-hint {
+      font-size: 10px;
+      color: #8c9b9d;
+      margin-top: 2px;
+      line-height: 1.35;
+    }
+
+    /* Confirmed Rewards Summary Box */
+    .reward-summary-box {
+      background: #1c201e;
+      border: 1px solid var(--van-border-color);
+      border-radius: 8px;
+      padding: 10px 8px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto 1.2fr;
+      align-items: center;
+      gap: 4px;
+    }
+    .reward-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .reward-divider {
+      width: 1px;
+      height: 26px;
+      background: var(--van-border-color);
+    }
+    .reward-summary-label {
+      font-size: 10px;
+      color: var(--ngss-text-secondary-color);
+      margin-bottom: 2px;
+      white-space: nowrap;
+    }
+    .reward-summary-amount {
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .reward-summary-amount.base {
+      color: var(--ngss-theme-secondary-color);
+    }
+    .reward-summary-amount.line {
+      color: var(--ngss-font-gold-color);
+    }
+    .reward-summary-amount.total {
+      color: #fff;
+      font-weight: 900;
+      font-size: 13px;
+    }
+
+    /* Happy Hour Banner */
+    .happy-hour-banner {
+      background: linear-gradient(90deg, #382c16 0%, #1e2221 100%);
+      border: 1px solid rgba(255, 208, 118, 0.35);
+      border-radius: 6px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      font-size: 11px;
+      color: #ffe4a0;
+    }
+
+    /* Bingo Board with SVG Neon Connection Lines */
+    .bingo-section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .bingo-board-box {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      background: #161918;
+      border: 1px solid var(--van-border-color);
+      border-radius: 10px;
+      padding: 6px;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+    }
+    .bingo-grid-3x3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 6px;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* SVG Connecting Lines Overlay */
+    .bingo-svg-overlay {
+      position: absolute;
+      top: 6px; left: 6px; right: 6px; bottom: 6px;
+      width: calc(100% - 12px);
+      height: calc(100% - 12px);
+      pointer-events: none;
+      z-index: 10;
+    }
+    .bingo-line-svg {
+      stroke: var(--ngss-theme-color);
+      stroke-width: 4;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 6px rgba(117, 235, 146, 0.9));
+      animation: neonPulse 2s infinite alternate;
+    }
+    @keyframes neonPulse {
+      0% { opacity: 0.75; stroke-width: 3.5; }
+      100% { opacity: 1; stroke-width: 4.5; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .bingo-line-svg { animation: none; }
+    }
+
+    /* Tile Anatomy */
+    .bingo-tile-item {
+      background: #1f2422;
+      border: 1px solid var(--van-border-color);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      text-align: center;
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s, border-color 0.2s;
+      z-index: 2;
+    }
+    .tile-cell-id {
+      position: absolute;
+      top: 2px;
+      left: 4px;
+      font-size: 9px;
+      font-weight: 800;
+      color: #616c68;
+    }
+    .tile-target-threshold {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .tile-target-reward {
+      font-size: 10px;
+      color: var(--ngss-theme-secondary-color);
+      font-weight: 700;
+      margin-top: 1px;
+    }
+
+    /* Unlocked Tile */
+    .bingo-tile-item.unlocked {
+      background: linear-gradient(145deg, #2b3d30, #1d2721);
+      border-color: var(--ngss-theme-color);
+      box-shadow: 0 0 8px rgba(117, 235, 146, 0.35);
+    }
+    .bingo-tile-item.unlocked .tile-cell-id { color: #a9e782; }
+    .bingo-tile-item.unlocked .tile-target-threshold {
+      color: #eaffed;
+      text-shadow: 0 0 4px rgba(117, 235, 146, 0.5);
+    }
+    .bingo-tile-item.unlocked .tile-target-reward {
+      color: #ffd076;
+      font-weight: 800;
+    }
+    .bingo-tile-item.unlocked::after {
+      content: "✓";
+      position: absolute;
+      bottom: 2px;
+      right: 4px;
+      font-size: 10px;
+      font-weight: 900;
+      color: var(--ngss-theme-color);
+    }
+
+    /* Target Pool Section */
+    .target-pool-box {
+      background: #1c201e;
+      border: 1px solid var(--van-border-color);
+      border-radius: 8px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .target-pool-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .pool-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background: #252a28;
+      border-radius: 4px;
+      font-size: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+    .pool-item-row.completed {
+      border-color: rgba(117, 235, 146, 0.3);
+      background: rgba(117, 235, 146, 0.08);
+    }
+    .btn-pool-expand {
+      background: transparent;
+      border: none;
+      color: var(--ngss-theme-color);
+      font-size: 11px;
+      cursor: pointer;
+      font-weight: 600;
+      padding: 3px 0 0;
+      text-align: center;
+    }
+
+    /* Single Qualifying Game Launch Button */
+    .btn-ngss-primary {
+      width: 100%;
+      padding: 12px;
+      border-radius: var(--van-radius-lg);
+      border: none;
+      background: var(--ngss-button-primary-bg);
+      color: #1c201e;
+      font-size: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(117, 235, 146, 0.3);
+      transition: opacity 0.2s;
+    }
+    .btn-ngss-primary:active { opacity: 0.85; }
+
+    /* Rules & Records Tabs */
+    .rules-records-tabs {
+      background: #1c201e;
+      border: 1px solid var(--van-border-color);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .tabs-header-bar {
+      display: flex;
+      background: #252a28;
+      border-bottom: 1px solid var(--van-border-color);
+    }
+    .tab-header-btn {
+      flex: 1;
+      padding: 8px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ngss-text-secondary-color);
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+    }
+    .tab-header-btn.active {
+      color: var(--ngss-theme-color);
+      border-bottom-color: var(--ngss-theme-color);
+    }
+    .tab-body-box {
+      padding: 10px 12px;
+      font-size: 11px;
+      color: #9ea9a5;
+      line-height: 1.55;
+    }
+
+    /* Desktop Full-width Simulation Console */
+    .sim-bar-desktop {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(18, 22, 20, 0.98);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--van-border-color);
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      z-index: 100;
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.6);
+    }
+    .sim-left-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--ngss-theme-color);
+      white-space: nowrap;
+    }
+    .sim-controls-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .sim-btn-pill {
+      padding: 5px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      background: #252a28;
+      border: 1px solid var(--van-border-color);
+      color: #fff;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .sim-btn-pill:hover {
+      border-color: var(--ngss-theme-color);
+      color: var(--ngss-theme-color);
+    }
+    .sim-btn-pill.green {
+      background: rgba(117, 235, 146, 0.16);
+      border-color: var(--ngss-theme-color);
+      color: var(--ngss-theme-color);
+      font-weight: 700;
+    }
+    .sim-btn-pill.gold {
+      background: rgba(255, 208, 118, 0.16);
+      border-color: #ffd076;
+      color: #ffd076;
+      font-weight: 700;
+    }
+
+    /* Toast */
+    .app-toast {
+      position: fixed;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.9);
+      border: 1px solid var(--ngss-theme-color);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease-in-out;
+    }
+    .app-toast.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Unobtrusive Hub Return Link -->
+  <div class="hub-topbar">
+    <a href="../../index.html">← 原型导航总目录</a>
+    <span style="color:#707070;">NGSS3 玩家前端活动原型</span>
+  </div>
+
+  <!-- Mobile Viewport Wrapper -->
+  <div class="mobile-app-wrapper">
+
+    <!-- Top Activity Nav Bar -->
+    <header class="activity-nav-bar">
+      <button class="nav-left-btn" onclick="history.back()" aria-label="返回上一页">
+        <span aria-hidden="true">←</span>
+        <span>倍率巅峰挑战</span>
+      </button>
+      <button class="btn-rules-top" onclick="switchInnerTab('rules'); document.getElementById('rulesTabsEl').scrollIntoView({behavior:'smooth'});" aria-label="查看活动规则">
+        <span aria-hidden="true">❓</span>
+        <span>活动规则</span>
+      </button>
+    </header>
+
+    <!-- Main Activity Content Scroll Body -->
+    <main class="activity-scroll-body">
+
+      <!-- Streak Challenge Card -->
+      <section class="streak-card-container">
+        
+        <!-- Challenge Banner Header -->
+        <div class="streak-header">
+          <div class="streak-title-row">
+            <h1 class="streak-title">🏆 平台活动・倍率巅峰挑战</h1>
+            <span class="streak-status-tag">● 进行中</span>
+          </div>
+          <div class="streak-meta-line">
+            <span>📅 活动时间：2026-08-20 至 2026-08-26 (UTC+8)</span>
+          </div>
+          <div class="streak-meta-line">
+            <span>⚡ 单笔合格投注：≥ 10.00 INR｜合资格游戏：<strong>Aviator</strong></span>
+          </div>
+          <!-- Subtle Delay Hint -->
+          <div class="subtle-delay-hint">
+            <span>* 注单结果由供应商校验确认，可能存在数分钟延迟，确认后将自动派发。</span>
+          </div>
+        </div>
+
+        <!-- Confirmed Rewards Summary Box -->
+        <div class="reward-summary-box" id="rewardSummaryBox">
+          <div class="reward-col">
+            <div class="reward-summary-label">基础奖励</div>
+            <div class="reward-summary-amount base" id="baseRewardText">230.00 INR</div>
+          </div>
+          <div class="reward-divider" id="rewardDividerLine"></div>
+          <div class="reward-col" id="rewardColLine">
+            <div class="reward-summary-label">连线奖励</div>
+            <div class="reward-summary-amount line" id="lineRewardText">120.00 INR</div>
+          </div>
+          <div class="reward-divider"></div>
+          <div class="reward-col">
+            <div class="reward-summary-label">累计已获奖励</div>
+            <div class="reward-summary-amount total" id="sumRewardText">350.00 INR</div>
+          </div>
+        </div>
+
+        <!-- Happy Hour Banner (Updated text: 基础倍率享 2.0×) -->
+        <div class="happy-hour-banner" id="hhBanner">
+          <span>🔥 <strong>Happy Hour 加码进行中！</strong>基础倍率享 2.0×</span>
+        </div>
+
+        <!-- Bingo Section -->
+        <div id="bingoSectionWrapper" style="display:flex;flex-direction:column;gap:6px;">
+          <div class="bingo-section-header">
+            <span>🎯 Bingo</span>
+            <span style="font-size:11px;color:var(--ngss-font-gold-color);" id="gridProgressText">已连 进度：4/9 (1)</span>
+          </div>
+
+          <div class="bingo-board-box">
+            <!-- SVG Connecting Line Graphic -->
+            <svg class="bingo-svg-overlay" viewBox="0 0 300 300" id="bingoSvgOverlay"></svg>
+
+            <!-- 9 Grid Tiles -->
+            <div class="bingo-grid-3x3" id="bingoGridEl"></div>
+          </div>
+        </div>
+
+        <!-- Target Pool -->
+        <div class="target-pool-box">
+          <div class="target-pool-header">
+            <span id="targetPoolTitle">📊 倍率目标池</span>
+            <span style="font-size:10px;color:var(--ngss-text-secondary-color);" id="poolCountText">显示额外目标 (2 个)</span>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:4px;" id="poolListContainer"></div>
+
+          <button class="btn-pool-expand" id="btnExpandPool" onclick="togglePoolExpansion()">
+            展开完整目标池 (共 11 个) ▼
+          </button>
+        </div>
+
+        <!-- Single Qualifying Game Launch Button -->
+        <button class="btn-ngss-primary" onclick="launchAviator()">
+          <span>启动游戏 Aviator（最低 10.00 INR）</span>
+        </button>
+
+        <!-- Rules & Records Tabs -->
+        <div class="rules-records-tabs" id="rulesTabsEl">
+          <div class="tabs-header-bar" role="tablist">
+            <button class="tab-header-btn active" id="btnTabRules" role="tab" aria-selected="true" onclick="switchInnerTab('rules')">活动规则</button>
+            <button class="tab-header-btn" id="btnTabRecords" role="tab" aria-selected="false" onclick="switchInnerTab('records')">获胜记录 (1)</button>
+          </div>
+          <div class="tab-body-box" id="tabBodyRules" role="tabpanel">
+            • 合资格游戏：<strong>Aviator</strong>。<br>
+            • 单笔合格投注额 ≥ 10.00 INR。<br>
+            • 一笔合格注单仅完成目前「最高且未完成」的一个倍率目标。<br>
+            • 每个倍率目标每位玩家仅派发一次基础奖励。<br>
+            • 命中的目标位于 Bingo 棋盘时点亮该格，连线成功自动获得额外连线奖励。<br>
+            • 未排入棋盘之目标在命中时仍派发基础奖励，但不推进连线。<br>
+            • Happy Hour 时段仅加成基础目标奖励。
+          </div>
+          <div class="tab-body-box" id="tabBodyRecords" role="tabpanel" style="display:none;">
+            <div style="display:flex;flex-direction:column;gap:4px;" id="recordsMiniList"></div>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Full-width Simulation Console on Desktop -->
+  <div class="sim-bar-desktop" role="region" aria-label="模拟控制台">
+    <div class="sim-left-label">
+      <span>⚡ 模拟控制台</span>
+      <span style="font-size:10px;color:var(--ngss-text-secondary-color);font-weight:normal;">(出奖与规则模拟)</span>
+    </div>
+    
+    <div class="sim-controls-group">
+      <button class="sim-btn-pill green" onclick="simulateSpin(15.5)">🎲 模拟 15.5×</button>
+      <button class="sim-btn-pill green" onclick="simulateSpin(28.0)">🎲 模拟 28.0×</button>
+      <button class="sim-btn-pill green" onclick="simulateSpin(65.0)">🎲 模拟 65.0×</button>
+      <button class="sim-btn-pill green" onclick="simulateSpin(88.0)">🎲 模拟 88.0×</button>
+      <button class="sim-btn-pill green" onclick="simulateCustomSpin()">🎲 自定义倍率...</button>
+      <button class="sim-btn-pill gold" id="btnBingoToggle" onclick="toggleBingo()">🎯 Bingo: 开启</button>
+      <button class="sim-btn-pill gold" id="btnHHToggle" onclick="toggleHappyHour()">🔥 Happy Hour: 开启</button>
+      <button class="sim-btn-pill" onclick="resetAllData()" style="color:#ff7675;">🔄 重置进度</button>
+    </div>
+  </div>
+
+  <!-- Toast Box -->
+  <div class="app-toast" id="toastBox" role="status" aria-live="polite"></div>
+
+  <!-- Script Application Logic -->
+  <script>
+    const fmt = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const money = val => `${fmt.format(Number(val || 0))} INR`;
+
+    // Seed Data
+    const INITIAL_TARGETS = [
+      { id: 'T1', cell: 'B1', threshold: 80, reward: 100.0, unlocked: false, inBingo: true, r: 0, c: 0 },
+      { id: 'T2', cell: 'B2', threshold: 10, reward: 25.0, unlocked: true, inBingo: true, r: 0, c: 1 },
+      { id: 'T3', cell: 'B3', threshold: 60, reward: 75.0, unlocked: false, inBingo: true, r: 0, c: 2 },
+      { id: 'T4', cell: 'B4', threshold: 30, reward: 40.0, unlocked: false, inBingo: true, r: 1, c: 0 },
+      { id: 'T5', cell: 'B5', threshold: 50, reward: 60.0, unlocked: true, inBingo: true, r: 1, c: 1 },
+      { id: 'T6', cell: 'B6', threshold: 70, reward: 85.0, unlocked: false, inBingo: true, r: 1, c: 2 },
+      { id: 'T7', cell: 'B7', threshold: 40, reward: 50.0, unlocked: true, inBingo: true, r: 2, c: 0 },
+      { id: 'T8', cell: 'B8', threshold: 90, reward: 120.0, unlocked: false, inBingo: true, r: 2, c: 1 },
+      { id: 'T9', cell: 'B9', threshold: 20, reward: 30.0, unlocked: true, inBingo: true, r: 2, c: 2 },
+      { id: 'T10', cell: '-', threshold: 150, reward: 200.0, unlocked: false, inBingo: false },
+      { id: 'T11', cell: '-', threshold: 300, reward: 500.0, unlocked: false, inBingo: false }
+    ];
+
+    const state = {
+      bingoEnabled: true,
+      isHappyHour: true,
+      poolShowAll: false,
+      targets: JSON.parse(JSON.stringify(INITIAL_TARGETS)),
+      lines: [
+        { id: 'H1', name: '横线 1', cells: ['B1','B2','B3'], x1: 20, y1: 50, x2: 280, y2: 50, reward: 40.0 },
+        { id: 'H2', name: '横线 2', cells: ['B4','B5','B6'], x1: 20, y1: 150, x2: 280, y2: 150, reward: 40.0 },
+        { id: 'H3', name: '横线 3', cells: ['B7','B8','B9'], x1: 20, y1: 250, x2: 280, y2: 250, reward: 40.0 },
+        { id: 'V1', name: '直线 1', cells: ['B1','B4','B7'], x1: 50, y1: 20, x2: 50, y2: 280, reward: 40.0 },
+        { id: 'V2', name: '直线 2', cells: ['B2','B5','B8'], x1: 150, y1: 20, x2: 150, y2: 280, reward: 40.0 },
+        { id: 'V3', name: '直线 3', cells: ['B3','B6','B9'], x1: 250, y1: 20, x2: 250, y2: 280, reward: 40.0 },
+        { id: 'D1', name: '对角线 1', cells: ['B1','B5','B9'], x1: 25, y1: 25, x2: 275, y2: 275, reward: 60.0 },
+        { id: 'D2', name: '对角线 2', cells: ['B3','B5','B7'], x1: 275, y1: 25, x2: 25, y2: 275, reward: 60.0 }
+      ],
+      singleRecord: { time: '14:30', game: 'Aviator', mult: '22.5×', reward: '30.00 INR' }
+    };
+
+    let toastTimer = null;
+
+    function render() {
+      // Bingo Toggle UI Visibility
+      const bingoWrap = document.getElementById('bingoSectionWrapper');
+      const rewardColLine = document.getElementById('rewardColLine');
+      const rewardDivLine = document.getElementById('rewardDividerLine');
+      const targetPoolTitle = document.getElementById('targetPoolTitle');
+      const btnExpandPool = document.getElementById('btnExpandPool');
+      const btnBingoToggle = document.getElementById('btnBingoToggle');
+
+      if (btnBingoToggle) btnBingoToggle.innerText = state.bingoEnabled ? '🎯 Bingo: 开启' : '🎯 Bingo: 关闭';
+      if (bingoWrap) bingoWrap.style.display = state.bingoEnabled ? 'flex' : 'none';
+      if (rewardColLine) rewardColLine.style.display = state.bingoEnabled ? 'flex' : 'none';
+      if (rewardDivLine) rewardDivLine.style.display = state.bingoEnabled ? 'block' : 'none';
+
+      // Happy Hour Strip
+      const hhBanner = document.getElementById('hhBanner');
+      if (hhBanner) hhBanner.style.display = state.isHappyHour ? 'flex' : 'none';
+      const hhBtn = document.getElementById('btnHHToggle');
+      if (hhBtn) hhBtn.innerText = state.isHappyHour ? '🔥 Happy Hour: 开启' : '❄️ Happy Hour: 关闭';
+
+      // 3x3 Bingo Grid
+      let completedLines = 0;
+      let unlockedCount = 0;
+
+      if (state.bingoEnabled) {
+        const grid = document.getElementById('bingoGridEl');
+        grid.replaceChildren();
+        const bingoTargets = state.targets.filter(t => t.inBingo);
+
+        bingoTargets.forEach(t => {
+          if (t.unlocked) unlockedCount++;
+          const tile = document.createElement('div');
+          tile.className = `bingo-tile-item ${t.unlocked ? 'unlocked' : ''}`;
+          tile.onclick = () => showToast(`格子 ${t.cell}：门槛 ≥ ${t.threshold}×｜奖励 ${money(t.reward)}`);
+          tile.innerHTML = `
+            <span class="tile-cell-id">${t.cell}</span>
+            <div class="tile-target-threshold">≥${t.threshold}×</div>
+            <div class="tile-target-reward">${money(t.reward)}</div>
+          `;
+          grid.appendChild(tile);
+        });
+
+        // SVG Connecting Lines
+        const svg = document.getElementById('bingoSvgOverlay');
+        svg.replaceChildren();
+
+        state.lines.forEach(l => {
+          const isCompleted = l.cells.every(c => {
+            const t = state.targets.find(target => target.cell === c);
+            return t && t.unlocked;
+          });
+
+          if (isCompleted) {
+            completedLines++;
+            const lineEl = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            lineEl.setAttribute('x1', l.x1);
+            lineEl.setAttribute('y1', l.y1);
+            lineEl.setAttribute('x2', l.x2);
+            lineEl.setAttribute('y2', l.y2);
+            lineEl.setAttribute('class', 'bingo-line-svg');
+            svg.appendChild(lineEl);
+          }
+        });
+
+        if (completedLines > 0) {
+          document.getElementById('gridProgressText').innerText = `已连 进度：${unlockedCount}/9 (${completedLines})`;
+        } else {
+          document.getElementById('gridProgressText').innerText = `进度：${unlockedCount}/9 (未连线)`;
+        }
+      }
+
+      // Target Pool
+      const poolContainer = document.getElementById('poolListContainer');
+      poolContainer.replaceChildren();
+
+      let poolItems;
+      if (!state.bingoEnabled) {
+        if (targetPoolTitle) targetPoolTitle.innerText = '📊 倍率阶梯目标';
+        poolItems = state.targets.slice().sort((a,b) => a.threshold - b.threshold);
+        document.getElementById('poolCountText').innerText = `显示全部阶梯目标 (${poolItems.length} 个)`;
+        if (btnExpandPool) btnExpandPool.style.display = 'none';
+      } else {
+        if (targetPoolTitle) targetPoolTitle.innerText = '📊 倍率目标池';
+        if (btnExpandPool) btnExpandPool.style.display = 'block';
+        poolItems = state.poolShowAll ? state.targets : state.targets.filter(t => !t.inBingo);
+
+        document.getElementById('poolCountText').innerText = state.poolShowAll
+          ? `显示全部目标 (${state.targets.length} 个)`
+          : `显示额外目标 (${state.targets.filter(t => !t.inBingo).length} 个)`;
+
+        document.getElementById('btnExpandPool').innerText = state.poolShowAll
+          ? '收合为额外目标 ▲'
+          : `展开完整目标池 (共 ${state.targets.length} 个) ▼`;
+      }
+
+      poolItems.forEach(t => {
+        const row = document.createElement('div');
+        row.className = `pool-item-row ${t.unlocked ? 'completed' : ''}`;
+        row.innerHTML = `
+          <div>
+            <strong style="color:#fff;">≥ ${t.threshold}× 门槛</strong>
+            ${state.bingoEnabled && t.inBingo ? `<span style="font-size:10px;color:var(--ngss-text-secondary-color);margin-left:4px;">(棋盘 ${t.cell})</span>` : ''}
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;">
+            <span style="color:var(--ngss-font-gold-color);font-weight:700;">${money(t.reward)}</span>
+            <span style="font-size:10px;color:${t.unlocked ? 'var(--ngss-theme-color)' : 'var(--ngss-text-secondary-color)'};">${t.unlocked ? '✓ 已派发' : '待挑战'}</span>
+          </div>
+        `;
+        poolContainer.appendChild(row);
+      });
+
+      // Calculate Separated Base & Line Rewards
+      let baseEarned = 0;
+      state.targets.forEach(t => { if (t.unlocked) baseEarned += t.reward; });
+
+      let lineEarned = 0;
+      if (state.bingoEnabled) {
+        state.lines.forEach(l => {
+          const isCompleted = l.cells.every(c => {
+            const t = state.targets.find(target => target.cell === c);
+            return t && t.unlocked;
+          });
+          if (isCompleted) lineEarned += l.reward;
+        });
+      }
+
+      const totalEarned = baseEarned + lineEarned;
+
+      document.getElementById('baseRewardText').innerText = money(baseEarned);
+      document.getElementById('lineRewardText').innerText = money(lineEarned);
+      document.getElementById('sumRewardText').innerText = money(totalEarned);
+
+      // Render Single Aviator Record
+      const recList = document.getElementById('recordsMiniList');
+      recList.replaceChildren();
+      const recEl = document.createElement('div');
+      recEl.className = 'pool-item-row';
+      recEl.innerHTML = `
+        <div><span style="color:#707070;">${state.singleRecord.time}</span> <strong>${state.singleRecord.game}</strong> (${state.singleRecord.mult})</div>
+        <div style="color:var(--ngss-theme-color);font-weight:700;">+${state.singleRecord.reward}</div>
+      `;
+      recList.appendChild(recEl);
+    }
+
+    function toggleBingo() {
+      state.bingoEnabled = !state.bingoEnabled;
+      render();
+      showToast(state.bingoEnabled ? '🎯 Bingo 加码已开启' : '🎯 Bingo 加码已关闭（切换为倍率阶梯）');
+    }
+
+    function togglePoolExpansion() {
+      state.poolShowAll = !state.poolShowAll;
+      render();
+    }
+
+    function simulateSpin(mult) {
+      const eligible = state.targets.filter(t => !t.unlocked && mult >= t.threshold);
+      if (eligible.length === 0) {
+        showToast(`🎲 Aviator 结算 ${mult}×：未命中更高未完成门槛。`);
+        return;
+      }
+      eligible.sort((a, b) => b.threshold - a.threshold);
+      const hit = eligible[0];
+      hit.unlocked = true;
+
+      let rewardAmt = hit.reward;
+      if (state.isHappyHour) rewardAmt *= 2;
+
+      state.singleRecord = {
+        time: new Date().toTimeString().slice(0, 5),
+        game: 'Aviator',
+        mult: `${mult.toFixed(1)}×`,
+        reward: money(rewardAmt)
+      };
+
+      render();
+      showToast(`🎉 达成 ≥${hit.threshold}× 目标！已自动派发 ${money(rewardAmt)}`);
+    }
+
+    function simulateCustomSpin() {
+      const val = prompt('请输入 Aviator 模拟结算倍率 (例如: 15, 65, 120, 500):', '65');
+      if (val !== null) {
+        const num = parseFloat(val.trim());
+        if (Number.isFinite(num) && num > 0) {
+          simulateSpin(num);
+        } else {
+          showToast('⚠️ 请输入有效的正数倍率');
+        }
+      }
+    }
+
+    function toggleHappyHour() {
+      state.isHappyHour = !state.isHappyHour;
+      render();
+      showToast(state.isHappyHour ? '🔥 Happy Hour 加码已开启' : '❄️ Happy Hour 已关闭');
+    }
+
+    function resetAllData() {
+      state.targets = JSON.parse(JSON.stringify(INITIAL_TARGETS));
+      state.singleRecord = { time: '14:30', game: 'Aviator', mult: '22.5×', reward: '30.00 INR' };
+      render();
+      showToast('🔄 已重置为初始示范状态');
+    }
+
+    function switchInnerTab(tab) {
+      const bRules = document.getElementById('btnTabRules');
+      const bRecs = document.getElementById('btnTabRecords');
+      const cRules = document.getElementById('tabBodyRules');
+      const cRecs = document.getElementById('tabBodyRecords');
+      const isRules = tab === 'rules';
+
+      bRules.classList.toggle('active', isRules);
+      bRules.setAttribute('aria-selected', isRules);
+      bRecs.classList.toggle('active', !isRules);
+      bRecs.setAttribute('aria-selected', !isRules);
+
+      cRules.style.display = isRules ? 'block' : 'none';
+      cRecs.style.display = isRules ? 'none' : 'block';
+    }
+
+    function launchAviator() {
+      showToast('🚀 已启动游戏【Aviator】；结算后将自动核验派发。');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toastBox');
+      t.innerText = msg;
+      t.classList.add('visible');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        t.classList.remove('visible');
+      }, 2200);
+    }
+
+    render();
+  </script>
+</body>
+</html>

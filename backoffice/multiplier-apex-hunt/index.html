@@ -1,0 +1,1527 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>倍率巅峰挑战｜后台设定 Prototype</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0d10;
+      --panel: #14171c;
+      --panel-2: #1a1e25;
+      --panel-3: #202630;
+      --border: #303845;
+      --border-strong: #475366;
+      --text: #f4f7fb;
+      --muted: #9da8b8;
+      --blue: #4a9cff;
+      --blue-soft: rgba(74, 156, 255, .14);
+      --green: #37d39a;
+      --amber: #ffbd4a;
+      --red: #ff6f7d;
+      --radius: 12px;
+      --shadow: 0 16px 40px rgba(0, 0, 0, .26);
+      --el-color-primary: #409eff;
+      --el-color-success: #67c23a;
+      --el-color-warning: #e6a23c;
+      --el-color-danger: #f56c6c;
+      --el-bg-color: #141414;
+      --el-bg-color-overlay: #1d1e1f;
+      --el-border-color: #414243;
+      --el-border-color-light: #363637;
+      --el-text-color-primary: #e5eaf3;
+      --el-text-color-regular: #cfd3dc;
+      --el-text-color-secondary: #a3a6ad;
+    }
+
+    /* Element Plus Standard High-Contrast Light Mode Theme */
+    html.light {
+      color-scheme: light;
+      --bg: #f5f7fa;
+      --panel: #ffffff;
+      --panel-2: #fafbfc;
+      --panel-3: #f0f2f5;
+      --border: #dcdfe6;
+      --border-strong: #c0c4cc;
+      --text: #1f2329;
+      --muted: #606266;
+      --blue: #409eff;
+      --blue-soft: rgba(64, 158, 255, 0.14);
+      --green: #67c23a;
+      --amber: #e6a23c;
+      --red: #f56c6c;
+      --shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
+      --el-color-primary: #409eff;
+      --el-color-success: #67c23a;
+      --el-color-warning: #e6a23c;
+      --el-color-danger: #f56c6c;
+      --el-bg-color: #ffffff;
+      --el-bg-color-overlay: #ffffff;
+      --el-border-color: #dcdfe6;
+      --el-border-color-light: #e4e7ed;
+      --el-text-color-primary: #1f2329;
+      --el-text-color-regular: #303133;
+      --el-text-color-secondary: #606266;
+    }
+
+    html.light body {
+      background: #f5f7fa;
+      color: #1f2329;
+    }
+    html.light .topbar, html.light .footer-actions {
+      background: #ffffff;
+      border-color: #dcdfe6;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    }
+    html.light .topbar h1 {
+      color: #1f2329;
+    }
+    html.light .topbar a {
+      background: #f5f7fa !important;
+      color: #409eff !important;
+      border-color: #dcdfe6 !important;
+    }
+    html.light .section, html.light .side-card, html.light .standard-shell, html.light .content-editor-head {
+      background: #ffffff;
+      border-color: #dcdfe6;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+    html.light .section-header {
+      border-color: #ebeef5;
+      background: #fafbfc;
+    }
+    html.light .section-header h2 {
+      color: #1f2329;
+    }
+    html.light .input, html.light select {
+      background: #ffffff;
+      color: #1f2329;
+      border-color: #dcdfe6;
+    }
+    html.light .input:focus, html.light select:focus {
+      border-color: #409eff;
+      box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.2);
+    }
+    html.light .field > label {
+      color: #1f2329;
+      font-weight: 700;
+    }
+    html.light .helper {
+      color: #606266;
+    }
+    html.light .btn {
+      background: #ffffff;
+      color: #303133;
+      border-color: #dcdfe6;
+      font-weight: 500;
+    }
+    html.light .btn:hover {
+      background: #ecf5ff;
+      color: #409eff;
+      border-color: #c6e2ff;
+    }
+    html.light .btn.primary {
+      background: #409eff;
+      color: #ffffff;
+      border-color: #409eff;
+    }
+    html.light .btn.ghost {
+      background: transparent;
+      color: #606266;
+      border-color: #dcdfe6;
+    }
+    html.light .btn.danger {
+      background: #fef0f0;
+      border-color: #fde2e2;
+      color: #f56c6c;
+    }
+    html.light .btn.danger:hover {
+      background: #f56c6c;
+      color: #ffffff;
+      border-color: #f56c6c;
+    }
+    html.light .number-step {
+      background: #f5f7fa;
+      border-color: #dcdfe6;
+      color: #303133;
+    }
+    html.light .number-step:hover {
+      background: #ecf5ff;
+      border-color: #c6e2ff;
+      color: #409eff;
+    }
+    html.light .number-control .input {
+      background: #ffffff;
+      border-color: #dcdfe6;
+      color: #1f2329;
+    }
+    html.light .number-control .suffix {
+      background: #f5f7fa;
+      border-color: #dcdfe6;
+      color: #606266;
+    }
+    html.light .mock-assets i {
+      background: #f5f7fa;
+      border-color: #dcdfe6;
+    }
+    html.light .mock-banner {
+      background: linear-gradient(135deg, #e0f2fe, #dcfce7);
+      color: #0369a1;
+      border-color: #bae6fd;
+    }
+    html.light .board {
+      background: #f0f2f5;
+      border-color: #dcdfe6;
+    }
+    html.light .cell {
+      background: #ffffff;
+      border-color: #dcdfe6;
+      color: #1f2329;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    html.light .cell .rank {
+      color: #86909c;
+      font-weight: 600;
+    }
+    html.light .cell .threshold {
+      color: #409eff;
+      font-weight: 800;
+    }
+    html.light .cell .reward {
+      color: #1f2329;
+      font-weight: 700;
+    }
+    html.light .cell-target-select {
+      background: #ffffff;
+      color: #1f2329;
+      border-color: #dcdfe6;
+    }
+    html.light .line-row {
+      background: #fafbfc;
+      border-color: #ebeef5;
+    }
+    html.light .line-row:hover {
+      border-color: #e6a23c;
+      background: #fdf6ec;
+    }
+    html.light .line-name {
+      color: #1f2329;
+      font-weight: 750;
+    }
+    html.light .line-cells {
+      color: #606266;
+    }
+    html.light .target-table th {
+      color: #303133;
+      background: #f2f3f5;
+      border-color: #ebeef5;
+      font-weight: 700;
+    }
+    html.light .target-table td {
+      border-color: #ebeef5;
+      color: #1f2329;
+    }
+    html.light .target-table tbody tr:hover {
+      background: #f5f7fa;
+    }
+    html.light .target-id {
+      color: #409eff;
+      font-weight: 800;
+    }
+    html.light .once {
+      color: #67c23a;
+      font-weight: 600;
+    }
+    html.light .segmented {
+      background: #e5e8ed;
+      border-color: #dcdfe6;
+    }
+    html.light .segmented button {
+      color: #4e5969;
+      font-weight: 500;
+    }
+    html.light .segmented button.active {
+      background: #ffffff;
+      color: #409eff;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      font-weight: 700;
+    }
+    html.light .mock-control {
+      background: #f2f3f5;
+      color: #606266;
+      border-color: #dcdfe6;
+    }
+    html.light .mock-form-row > span {
+      color: #606266;
+    }
+    html.light .summary-row {
+      color: #606266;
+    }
+    html.light .summary-row strong {
+      color: #1f2329;
+      font-weight: 700;
+    }
+    html.light .summary-group-title {
+      color: #409eff;
+      font-weight: 750;
+    }
+    html.light .standard-title {
+      color: #1f2329;
+      border-color: #ebeef5;
+    }
+    html.light .standard-shell::after {
+      background: #f2f3f5;
+      border-color: #dcdfe6;
+      color: #606266;
+    }
+    html.light .tag {
+      background: #f2f3f5;
+      border-color: #dcdfe6;
+      color: #303133;
+    }
+    html.light .tag.success {
+      color: #529b2e;
+      background: #f0f9eb;
+      border-color: #c2e7b0;
+    }
+    html.light .tag.warn {
+      color: #b88230;
+      background: #fdf6ec;
+      border-color: #f5dab1;
+    }
+    html.light .tag.error {
+      color: #c45656;
+      background: #fef0f0;
+      border-color: #fde2e2;
+    }
+    html.light .suffix {
+      background: #f2f3f5;
+      border-color: #dcdfe6;
+      color: #4e5969;
+    }
+    html.light .notice {
+      background: #ecf5ff;
+      border-color: #d9ecff;
+      color: #2376b7;
+    }
+    html.light .scope-note {
+      background: #f0f9eb;
+      border-color: #c2e7b0;
+      color: #387023;
+    }
+    html.light .scope-note strong {
+      color: #1f2329;
+    }
+    html.light .setup-steps button {
+      color: #606266;
+    }
+    html.light .setup-steps button.active {
+      color: #409eff;
+      border-bottom-color: #409eff;
+      font-weight: 700;
+    }
+    html.light .step {
+      background: rgba(64, 158, 255, 0.14);
+      color: #409eff;
+      font-weight: 800;
+    }
+    html.light .switch {
+      background: #dcdfe6;
+    }
+    html.light .switch.on {
+      background: #409eff;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 80% 0%, rgba(74, 156, 255, .08), transparent 34%), var(--bg);
+      color: var(--text);
+      font: 14px/1.5 Inter, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+
+    .app { min-height: 100vh; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 28px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(11, 13, 16, .94);
+      backdrop-filter: blur(14px);
+    }
+    .title-row { display: flex; align-items: center; gap: 12px; }
+    h1 { margin: 0; font-size: 18px; font-weight: 700; }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 26px;
+      padding: 3px 9px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      background: var(--panel);
+      font-size: 12px;
+    }
+    .tag.success { color: #baf4df; border-color: rgba(55, 211, 154, .4); background: rgba(55, 211, 154, .1); }
+    .tag.warn { color: #ffe0a3; border-color: rgba(255, 189, 74, .4); background: rgba(255, 189, 74, .1); }
+    .tag.error { color: #fab6b6; border-color: rgba(245, 108, 108, .4); background: rgba(245, 108, 108, .1); }
+    .actions { display: flex; gap: 8px; }
+    .btn {
+      min-height: 38px;
+      padding: 8px 14px;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--text);
+    }
+    .btn:hover { border-color: var(--blue); }
+    .btn.primary { border-color: var(--blue); background: var(--blue); color: white; font-weight: 700; }
+    .btn.ghost { background: transparent; }
+    .btn.danger { color: #ffc6cc; border-color: rgba(255,111,125,.45); background: rgba(255,111,125,.08); }
+    .btn.compact { min-height: 32px; padding: 5px 9px; font-size: 12px; }
+    .btn:disabled { cursor: not-allowed; opacity: .45; }
+
+    .scope-note {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 20px auto 0;
+      max-width: 1440px;
+      padding: 12px 16px;
+      border: 1px solid rgba(55, 211, 154, .24);
+      border-radius: var(--radius);
+      background: rgba(55, 211, 154, .07);
+      color: #c8f6e6;
+    }
+    .scope-note strong { color: white; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 380px;
+      gap: 20px;
+      max-width: 1440px;
+      margin: 18px auto 60px;
+      padding: 0 20px;
+      align-items: start;
+    }
+    .main { display: grid; gap: 14px; min-width: 0; }
+    .side { position: sticky; top: 86px; display: grid; gap: 14px; min-width: 0; }
+    .section, .side-card {
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.015), transparent), var(--panel);
+      box-shadow: var(--shadow);
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-title { display: flex; gap: 12px; align-items: center; }
+    .step {
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--blue-soft);
+      color: #9ecbff;
+      font-weight: 800;
+    }
+    h2, h3, p { margin-top: 0; }
+    h2 { margin-bottom: 2px; font-size: 16px; }
+    h3 { margin-bottom: 8px; font-size: 14px; }
+    .helper { color: var(--muted); font-size: 12px; }
+    .section-body { padding: 18px; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .field { display: grid; gap: 7px; align-content: start; }
+    .field > label { display: flex; align-items: center; gap: 6px; color: #dce4ef; font-weight: 650; }
+    .field.hidden { display: none; }
+    .input, select {
+      width: 100%;
+      min-height: 40px;
+      padding: 8px 11px;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      outline: none;
+      background: #101318;
+      color: var(--text);
+    }
+    .input:focus, select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-soft); }
+    .input.invalid, select.invalid, .number-control.invalid .input, .number-control.invalid .number-step { border-color: var(--el-color-danger); }
+    .field-error { min-height: 18px; color: #fab6b6; font-size: 12px; }
+    .field-error:empty { display: none; }
+    .validation-help {
+      position: relative;
+      display: inline-grid;
+      place-items: center;
+      width: 16px;
+      height: 16px;
+      border: 1px solid #606266;
+      border-radius: 50%;
+      color: #a3a6ad;
+      font: 700 11px/1 sans-serif;
+      cursor: help;
+      outline: none;
+    }
+    .validation-help::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      z-index: 60;
+      left: 50%;
+      bottom: calc(100% + 8px);
+      width: max-content;
+      max-width: min(360px, 80vw);
+      padding: 8px 10px;
+      border: 1px solid #4c4d4f;
+      border-radius: 4px;
+      background: #262727;
+      color: #e5eaf3;
+      font: 12px/1.45 Inter, "Noto Sans TC", sans-serif;
+      box-shadow: 0 8px 22px rgba(0,0,0,.35);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 4px);
+      transition: opacity .15s, transform .15s;
+      white-space: normal;
+    }
+    .validation-help:hover::after, .validation-help:focus::after { opacity: 1; transform: translate(-50%, 0); }
+    .input-group { display: grid; grid-template-columns: 1fr auto; }
+    .input-group .input { border-radius: 8px 0 0 8px; }
+    .suffix {
+      display: grid;
+      place-items: center;
+      min-width: 56px;
+      padding: 0 10px;
+      border: 1px solid var(--border-strong);
+      border-left: 0;
+      border-radius: 0 8px 8px 0;
+      color: var(--muted);
+      background: var(--panel-3);
+    }
+    .segmented { display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 3px; padding: 3px; border-radius: 9px; background: #0c0f13; border: 1px solid var(--border); }
+    .segmented button {
+      min-height: 34px;
+      border: 0;
+      border-radius: 6px;
+      padding: 6px 12px;
+      background: transparent;
+      color: var(--muted);
+    }
+    .segmented button.active { background: var(--blue); color: white; }
+
+    .switch-wrap { display: flex; align-items: center; gap: 10px; }
+    .switch {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      padding: 0;
+      border: 0;
+      border-radius: 999px;
+      background: #3b4350;
+    }
+    .switch::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: white;
+      transition: transform .18s ease;
+    }
+    .switch.on { background: var(--blue); }
+    .switch.on::after { transform: translateX(20px); }
+    .optional-body[hidden] { display: none; }
+
+    .target-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+    .target-table th, .target-table td { padding: 10px 8px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: middle; }
+    .target-table th { color: var(--muted); font-size: 12px; font-weight: 600; }
+    .target-table tbody tr:hover { background: rgba(74, 156, 255, .04); }
+    .target-table .input { min-height: 34px; padding: 5px 8px; }
+    .target-id { color: #9ecbff; font-weight: 800; }
+    .once { color: #baf4df; font-size: 12px; }
+    .cap-cell.hidden, .cap-head.hidden { display: none; }
+    .target-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+
+    .bingo-layout { display: grid; grid-template-columns: minmax(320px, .9fr) minmax(420px, 1.1fr); gap: 18px; align-items: start; min-width: 0; }
+    .bingo-layout > * { min-width: 0; }
+    .board-wrap { display: grid; gap: 10px; }
+    .board-toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .board {
+      display: grid;
+      gap: 8px;
+      aspect-ratio: 1;
+      max-width: 480px;
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border-strong);
+      border-radius: 12px;
+      background: #0d1014;
+    }
+    .cell {
+      position: relative;
+      display: grid;
+      place-content: center;
+      gap: 4px;
+      min-width: 0;
+      padding: 8px;
+      border: 1px solid var(--border-strong);
+      border-radius: 9px;
+      color: var(--text);
+      background: linear-gradient(145deg, rgba(74,156,255,.13), rgba(255,255,255,.02));
+      text-align: center;
+      transition: border-color .15s, transform .15s, background .15s;
+    }
+    .cell[draggable="true"] { cursor: grab; }
+    .cell.dragging { opacity: .45; }
+    .cell.drop { border-color: var(--green); transform: scale(1.02); }
+    .cell.highlight { border-color: var(--amber); background: rgba(255,189,74,.13); }
+    .cell .rank { position: absolute; top: 5px; left: 7px; color: var(--muted); font-size: 10px; }
+    .cell .threshold { font-size: 20px; color: #9ecbff; font-weight: 800; }
+    .cell .reward { color: #d9e6f8; font-size: 12px; }
+    .cell-target-select { width: 100%; min-height: 30px; padding: 4px 6px; font-size: 11px; }
+
+    .line-panel { display: grid; gap: 10px; }
+    .line-row {
+      display: grid;
+      grid-template-columns: auto 98px minmax(120px, 1fr) 120px;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--panel-2);
+    }
+    .line-row:hover { border-color: var(--amber); }
+    .line-name { font-weight: 750; }
+    .line-cells { color: var(--muted); font-size: 12px; }
+    .check { width: 17px; height: 17px; accent-color: var(--blue); }
+    .line-row .input { min-height: 34px; }
+    .line-summary { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 12px; }
+
+    .notice {
+      padding: 11px 12px;
+      border: 1px solid rgba(74, 156, 255, .28);
+      border-radius: 9px;
+      background: rgba(74, 156, 255, .07);
+      color: #cfe5ff;
+    }
+    .notice.warn { border-color: rgba(255,189,74,.28); background: rgba(255,189,74,.08); color: #ffe0a3; }
+    .notice.error { border-color: rgba(255,111,125,.35); background: rgba(255,111,125,.08); color: #ffc6cc; }
+
+    .side-card { padding: 16px; }
+    .summary-list { display: grid; gap: 10px; margin: 14px 0; }
+    .summary-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; color: var(--muted); }
+    .summary-row strong { color: var(--text); font-variant-numeric: tabular-nums; }
+    .summary-group + .summary-group { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--el-border-color-light); }
+    .summary-group-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #79bbff; font-size: 12px; font-weight: 750; }
+    .validation-panel { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--el-border-color-light); }
+    .validation-panel h3 { margin-bottom: 8px; }
+    .validation-list { display: grid; gap: 6px; }
+    .validation-item { display: flex; gap: 7px; align-items: flex-start; color: var(--el-text-color-secondary); font-size: 12px; }
+    .validation-item::before { content: "✓"; flex: 0 0 auto; color: var(--el-color-success); }
+    .validation-item.error { color: #fab6b6; }
+    .validation-item.error::before { content: "×"; color: var(--el-color-danger); }
+    .validation-item.warn { color: #f3d19e; }
+    .validation-item.warn::before { content: "!"; color: var(--el-color-warning); }
+    .footer-actions {
+      position: sticky;
+      bottom: 0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+      background: rgba(11,13,16,.94);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Element Plus dark-theme visual language, kept self-contained for the prototype. */
+    body { background: #0a0a0a; color: var(--el-text-color-primary); font-size: 13px; }
+    .topbar { padding: 12px 24px; background: rgba(20,20,20,.96); }
+    .btn { min-height: 32px; padding: 5px 12px; border-color: var(--el-border-color); border-radius: 4px; background: #1d1e1f; color: var(--el-text-color-regular); }
+    .btn:hover { color: var(--el-color-primary); border-color: #337ecc; background: #18222c; }
+    .btn.primary { border-color: var(--el-color-primary); background: var(--el-color-primary); }
+    .input, select { min-height: 32px; padding: 5px 10px; border-color: var(--el-border-color); border-radius: 4px; background: #141414; color: var(--el-text-color-regular); }
+    .input:focus, select:focus { border-color: var(--el-color-primary); box-shadow: none; }
+    .input-group .input { border-radius: 4px 0 0 4px; }
+    .suffix { min-width: 50px; border-color: var(--el-border-color); border-radius: 0 4px 4px 0; background: #1d1e1f; }
+    .number-control {
+      display: grid;
+      grid-template-columns: 30px minmax(72px, 1fr) 30px auto;
+      min-width: 170px;
+    }
+    .number-control .input {
+      min-width: 0;
+      border-radius: 0;
+      border-left: 0;
+      border-right: 0;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      appearance: textfield;
+    }
+    .number-control .input::-webkit-inner-spin-button,
+    .number-control .input::-webkit-outer-spin-button { margin: 0; appearance: none; }
+    .number-step {
+      min-width: 30px;
+      min-height: 32px;
+      padding: 0;
+      border: 1px solid var(--el-border-color);
+      background: #1d1e1f;
+      color: var(--el-text-color-regular);
+      font-size: 15px;
+      line-height: 1;
+    }
+    .number-step:first-child { border-radius: 4px 0 0 4px; }
+    .number-step:hover { color: var(--el-color-primary); border-color: #337ecc; background: #18222c; }
+    .number-control .suffix { min-width: 44px; }
+    .section, .side-card { border-color: var(--el-border-color-light); border-radius: 4px; background: var(--el-bg-color); box-shadow: none; }
+    .section-header { padding: 14px 16px; border-color: var(--el-border-color-light); }
+    .section-body { padding: 16px; }
+    .tag { min-height: 24px; border-radius: 4px; background: #1d1e1f; }
+    .step { width: 24px; height: 24px; border-radius: 4px; background: rgba(64,158,255,.14); color: #79bbff; }
+    .segmented { border-color: var(--el-border-color); border-radius: 4px; background: #0f0f0f; }
+    .segmented button { min-height: 30px; border-radius: 3px; }
+    .segmented button.active { background: var(--el-color-primary); }
+    .switch.on { background: var(--el-color-primary); }
+    .notice { border-color: rgba(64,158,255,.34); border-radius: 4px; background: rgba(64,158,255,.08); color: #a0cfff; }
+    .target-table th, .target-table td { border-color: var(--el-border-color-light); }
+    .line-row { border-color: var(--el-border-color-light); border-radius: 4px; background: #191919; }
+    .board { border-color: var(--el-border-color); border-radius: 4px; background: #0f0f0f; }
+    .cell { border-color: var(--el-border-color); border-radius: 4px; background: #181d24; }
+    .footer-actions { background: rgba(20,20,20,.96); }
+
+    .standard-shell, .content-editor-head {
+      width: min(1600px, calc(100% - 32px));
+      margin: 16px auto 0;
+      border: 1px solid var(--el-border-color-light);
+      border-radius: 4px;
+      background: var(--el-bg-color);
+    }
+    .standard-shell { position: relative; padding: 16px; overflow: hidden; user-select: none; }
+    .standard-shell::after { content: "标准设定・仅活动日期可编辑"; position: absolute; top: 12px; right: 16px; padding: 3px 8px; border: 1px solid var(--el-border-color); border-radius: 4px; background: #242424; color: var(--el-text-color-secondary); font-size: 12px; }
+    .standard-shell * { pointer-events: none; }
+    .standard-title { margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--el-border-color-light); font-size: 15px; font-weight: 700; }
+    .standard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .mock-column { display: grid; gap: 10px; align-content: start; }
+    .mock-form-row { display: grid; grid-template-columns: 118px minmax(0,1fr); gap: 10px; align-items: center; opacity: .62; filter: saturate(.65); }
+    .mock-form-row > span { color: var(--el-text-color-secondary); text-align: right; }
+    .mock-control { min-height: 30px; padding: 5px 9px; border: 1px solid var(--el-border-color); border-radius: 4px; background: #111; color: #7c7f84; }
+    .mock-inline { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .mock-palette { display: flex; gap: 6px; }
+    .mock-palette i { width: 42px; height: 26px; border: 1px solid var(--el-border-color); border-radius: 3px; background: #264663; }
+    .mock-palette i:nth-child(2) { background:#63303a; } .mock-palette i:nth-child(3) { background:#5d5630; } .mock-palette i:nth-child(4) { background:#4c3763; }
+    .mock-assets { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+    .mock-assets i { height: 44px; border: 1px solid var(--el-border-color); border-radius: 3px; background: linear-gradient(145deg,#252525,#171717); }
+    .mock-banner { min-height: 86px; display: grid; place-items: center; border: 1px solid var(--el-border-color); border-radius: 4px; background: linear-gradient(135deg,#12394a,#275d52); color:#8baaa7; }
+    .standard-date-active { opacity: 1; filter: none; }
+    .standard-date-active, .standard-date-active * { pointer-events: auto; }
+    .standard-date-controls { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: 8px; align-items: center; }
+    .standard-date-controls .input { min-width: 0; }
+    .standard-date-error { grid-column: 2; color: #fab6b6; font-size: 12px; }
+
+    .content-editor-head { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 14px 16px; }
+    .content-editor-head h2 { margin: 0; font-size: 16px; }
+    .setup-steps { display: flex; gap: 4px; flex-wrap: wrap; }
+    .setup-steps button { min-height: 30px; padding: 5px 10px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--el-text-color-secondary); }
+    .setup-steps button:hover, .setup-steps button.active { color: var(--el-color-primary); border-bottom-color: var(--el-color-primary); }
+    .scope-note { max-width: 1600px; border-radius: 4px; }
+    .layout { max-width: 1600px; grid-template-columns: minmax(0,1fr) 360px; gap: 16px; }
+    .main { gap: 12px; }
+    .section { scroll-margin-top: 72px; }
+
+    @media (max-width: 1120px) {
+      .layout { grid-template-columns: 1fr; }
+      .side { position: static; grid-template-columns: 1fr 1fr; }
+      .bingo-layout { grid-template-columns: 1fr; }
+      .standard-grid { grid-template-columns: 1fr; }
+      .content-editor-head { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 760px) {
+      .topbar { padding: 12px 14px; align-items: flex-start; }
+      .title-row { align-items: flex-start; flex-direction: column; gap: 5px; }
+      .scope-note { margin: 12px 12px 0; }
+      .layout { padding: 0 12px; }
+      .grid-2, .grid-3, .side { grid-template-columns: 1fr; }
+      .line-row { grid-template-columns: auto 1fr; }
+      .line-cells { grid-column: 2; }
+      .line-row .input { grid-column: 2; }
+      .line-summary { flex-direction: column; }
+      .target-table { min-width: 700px; }
+      .table-scroll { overflow-x: auto; }
+      .actions .ghost { display: none; }
+      .section-header { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="title-row">
+        <a href="../../index.html" style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border);border-radius:6px;background:var(--panel-2);color:var(--blue);text-decoration:none;font-size:12px;font-weight:600;transition:all 0.2s;">
+          ← 原型首页
+        </a>
+        <h1>新增活动・倍率奖励与 Bingo</h1>
+        <span class="tag">Interactive Prototype</span>
+      </div>
+      <div class="actions">
+        <button class="btn" type="button" id="themeToggleBtn" onclick="toggleTheme()">☀️ 白天模式</button>
+        <button class="btn ghost" id="resetBtn">还原示例</button>
+        <button class="btn primary" id="saveBtn">保存设定</button>
+      </div>
+    </header>
+
+    <section class="standard-shell" aria-label="上方标准活动设定；仅活动日期可编辑">
+      <div class="standard-title">活动基本设定</div>
+      <div class="standard-grid">
+        <div class="mock-column">
+          <div class="mock-form-row"><span>活动类型</span><div class="mock-control">倍率巅峰挑战</div></div>
+          <div class="mock-form-row"><span>活动名称</span><div class="mock-control">系统自带・倍率巅峰挑战</div></div>
+          <div class="mock-form-row standard-date-active"><span>活动时间 <span class="validation-help" tabindex="0" data-tooltip="Blocking｜开始与结束日期必填；结束日期不得早于开始日期。活动天数采首尾都包含，最高总奖励＝每日预算上限 × 活动天数。">i</span></span><div><div class="standard-date-controls"><input class="input" id="activityStart" type="date" value="2026-08-20" aria-label="活动开始日期"><span>至</span><input class="input" id="activityEnd" type="date" value="2026-08-26" aria-label="活动结束日期"></div><div class="field-error" id="activityDateError"></div></div></div>
+          <div class="mock-form-row"><span>参与会员层级</span><div class="mock-control">全部层级</div></div>
+          <div class="mock-form-row"><span>派奖钱包</span><div class="mock-inline"><div class="mock-control">彩金钱包</div><div class="mock-control">现金钱包</div></div></div>
+          <div class="mock-form-row"><span>参加条件</span><div class="mock-control">满足任一条件</div></div>
+          <div class="mock-form-row"><span>规则说明</span><div class="mock-control" style="min-height:86px">系统预设多语言规则内容（只读假数据）</div></div>
+        </div>
+        <div class="mock-column">
+          <div class="mock-form-row"><span>营销活动</span><div class="mock-control">已关闭</div></div>
+          <div class="mock-form-row"><span>选择排版</span><div class="mock-inline"><div class="mock-control">版型 A</div><div class="mock-control">版型 B</div></div></div>
+          <div class="mock-form-row"><span>选择背景</span><div class="mock-palette"><i></i><i></i><i></i><i></i></div></div>
+          <div class="mock-form-row"><span>选择图标</span><div class="mock-assets"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+          <div class="mock-form-row"><span>宣传图预览</span><div class="mock-banner">宣传素材假图・不参与本次调整</div></div>
+          <div class="mock-form-row"><span>活动简介</span><div class="mock-control" style="min-height:66px">系统预设简介（只读假数据）</div></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="scope-note">
+      <span aria-hidden="true">✓</span>
+      <div><strong>上方标准设定维持原版位，仅活动日期开放选择。</strong> 以下设定指定游戏、倍率目标、optional Bingo、optional Happy Hour 与设定总览。</div>
+    </div>
+
+    <section class="content-editor-head" aria-label="活动内容设定导航">
+      <div><h2>活动内容设定</h2><div class="helper">依序完成游戏、目标、Bingo 与加成；右侧同步显示设定总览。</div></div>
+      <nav class="setup-steps" aria-label="设定步骤">
+        <button type="button" class="active" data-scroll-target="eligibilitySection">1 游戏与投注</button>
+        <button type="button" data-scroll-target="targetSection">2 倍率目标</button>
+        <button type="button" data-scroll-target="bingoSection">3 Bingo</button>
+        <button type="button" data-scroll-target="happySection">4 Happy Hour</button>
+      </nav>
+    </section>
+
+    <div class="layout">
+      <main class="main">
+        <section class="section" id="eligibilitySection" aria-labelledby="eligibilityTitle">
+          <div class="section-header">
+            <div class="section-title">
+              <span class="step">1</span>
+              <div><h2 id="eligibilityTitle">指定游戏与有效投注</h2><div class="helper">选择活动适用游戏，并设定每日预算与有效投注范围。（附注：活动币别依站点预设锁定为 INR，所有预算、有效投注及目标奖励统一适用）</div></div>
+            </div>
+          </div>
+          <div class="section-body">
+            <div class="grid-3">
+              <div class="field">
+                <label for="game">指定游戏 <span class="validation-help" tabindex="0" data-tooltip="Prototype 不執行 provider／遊戲准入控制；正式系統仍應從站点可用遊戲清單提供選項。">i</span></label>
+                <select id="game"><option>Aviator</option><option disabled>其他游戏（未认证）</option></select>
+              </div>
+              <div class="field">
+                <label for="dailyBudget">每日新增奖励责任上限 <span class="validation-help" tabindex="0" data-tooltip="Blocking｜必須大於 0，且不可低於單个玩家最高總派獎。只停止接受新任務，不得減少已接受玩家的合法奖励。">i</span></label>
+                <div class="input-group"><input class="input" id="dailyBudget" type="number" min="0" step="100" value="100000"><span class="suffix">INR</span></div>
+                <div class="helper">只限制新任务；不截短已接受玩家的奖励。</div>
+                <div class="field-error" id="dailyBudgetError"></div>
+              </div>
+              <div class="field">
+                <label>奖励方式 <span class="validation-help" tabindex="0" data-tooltip="固定金额：每个目标直接设定 INR。下注倍数：奖励＝有效投注額 × 奖励倍數，但不超過該目标最高奖励。">i</span></label>
+                <div class="segmented" id="rewardMode">
+                  <button type="button" data-mode="fixed" class="active">固定金额</button>
+                  <button type="button" data-mode="multiple">下注倍数</button>
+                </div>
+              </div>
+            </div>
+            <div class="grid-2" style="margin-top:14px">
+              <div class="field">
+                <label for="minStake">每笔最低有效投注额 <span class="validation-help" tabindex="0" data-tooltip="Blocking｜必須大於 0。注单投注額低於此值時，不參与倍率目标判定。">i</span></label>
+                <div class="input-group"><input class="input" id="minStake" type="number" min="0" step="0.01" value="5"><span class="suffix">INR</span></div>
+                <div class="helper">含邊界：投注額 ≥ 5.00 INR。</div>
+                <div class="field-error" id="minStakeError"></div>
+              </div>
+              <div class="field hidden" id="maxStakeField">
+                <label for="maxStake">每笔最高计奖投注额 <span class="validation-help" tabindex="0" data-tooltip="只在『下注倍数』模式出現且為必填。計算使用 min(實際投注額, 最高計獎投注額)，避免大額投注使奖励与预算责任無上限。固定金额模式不使用此欄位。">i</span></label>
+                <div class="input-group"><input class="input" id="maxStake" type="number" min="0" step="0.01" value="200"><span class="suffix">INR</span></div>
+                <div class="helper">超出部分不計入奖励公式；原注单仍保留。</div>
+                <div class="field-error" id="maxStakeError"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="targetSection" aria-labelledby="targetTitle">
+          <div class="section-header">
+            <div class="section-title">
+              <span class="step">2</span>
+              <div><h2 id="targetTitle">倍率目标与基础奖励</h2><div class="helper">目标数量可自由配置；每个目标每位玩家只派一次，一笔合资格注单只完成一个目标。</div></div>
+            </div>
+            <div class="target-actions"><span class="tag success" id="targetCountBadge">9 个目标</span><button class="btn compact" type="button" id="addTargetBtn">＋ 新增目标</button></div>
+          </div>
+          <div class="section-body">
+            <div class="notice">分配规则：以完整目标池中“最高且尚未完成”的符合门槛派发一次；只有该目标已排入 Bingo 棋盘时才推进 Bingo。相同门槛依固定目标 ID；重播不增加进度。</div>
+            <div class="table-scroll" style="margin-top:12px">
+              <table class="target-table">
+                <thead>
+                  <tr><th>目标</th><th>达标条件 <span class="validation-help" tabindex="0" data-tooltip="必須大於 0。重複门槛允許保存但會警告；符合相同门槛時依固定目标 ID 決定。">i</span></th><th id="rewardHead">固定奖励 <span class="validation-help" tabindex="0" data-tooltip="Blocking｜固定金额必須大於 0；下注倍数也必須大於 0。">i</span></th><th class="cap-head hidden" id="capHead">單目标最高奖励 <span class="validation-help" tabindex="0" data-tooltip="Blocking｜只在下注倍数模式显示且必須大於 0，用於封閉單个目标最大派獎。">i</span></th><th>派发</th><th>操作</th></tr>
+                </thead>
+                <tbody id="targetRows"></tbody>
+              </table>
+            </div>
+            <div class="field-error" id="targetError"></div>
+          </div>
+        </section>
+
+        <section class="section" id="bingoSection" aria-labelledby="bingoTitle">
+          <div class="section-header">
+            <div class="section-title">
+              <span class="step">3</span>
+              <div><h2 id="bingoTitle">Bingo 加码（可选）</h2><div class="helper">关闭時玩家看倍率阶梯；开启時引用同一目标池，只有被派发的目标在棋盘內才推進 Bingo。</div></div>
+            </div>
+            <div class="switch-wrap"><span id="bingoSwitchText">已关闭</span><button class="switch" id="bingoSwitch" role="switch" aria-checked="false" aria-label="Bingo 加碼"></button></div>
+          </div>
+          <div class="section-body optional-body" id="bingoBody" hidden>
+            <div class="grid-2">
+              <div class="field">
+                <label>盘型 <span class="validation-help" tabindex="0" data-tooltip="Blocking｜2×2 至少需要 4 个目标；3×3 至少需要 9 个目标。棋盘格不可重複引用同一目标。">i</span></label>
+                <div class="segmented" id="boardSize"><button type="button" data-size="2">2×2</button><button type="button" data-size="3" class="active">3×3</button></div>
+              </div>
+              <div class="field">
+                <label>倍率目标排列 <span class="validation-help" tabindex="0" data-tooltip="自动排列從完整门槛範圍等距取樣；手動選到已使用目标時自動交換，維持唯一性。排列不改變目标 ID 或派獎金額。">i</span></label>
+                <div class="segmented" id="placementMode" role="radiogroup" aria-label="倍率目标排列">
+                  <button type="button" class="active" data-placement="balanced" role="radio" aria-checked="true">自动排列</button>
+                  <button type="button" data-placement="manual" role="radio" aria-checked="false">手动选择</button>
+                </div>
+                <div class="helper" id="placementHelp">目标多於格數時，先從全部门槛等距取樣，再平衡各条線；3×3 使用 rank-balanced magic-square placement。</div>
+              </div>
+            </div>
+
+            <div class="bingo-layout" style="margin-top:16px">
+              <div class="board-wrap">
+                <div class="board-toolbar">
+                  <span class="tag" id="boardModeTag">自动排列</span>
+                  <span class="tag success" id="balanceTag">8 条线 rank sum = 15</span>
+                  <span class="tag" id="boardPoolTag">使用 9 / 9 个目标</span>
+                  <button class="btn" type="button" id="rebalanceBtn">重新自动排列</button>
+                </div>
+                <div class="board" id="board" aria-label="Bingo 目标排列"></div>
+                <div class="helper" id="boardPoolNote">手動模式可直接替換任一格的倍率目标。未放入棋盘的目标仍會派发基礎奖励。</div>
+              </div>
+              <div class="line-panel">
+                <div>
+                  <h3>每条 Bingo 独立设定 <span class="validation-help" tabindex="0" data-tooltip="每条唯一横线、直线与对角线只派一次；同一目标完成時若同時形成多条新線，各条線分別派獎。Happy Hour 不加成這些奖励。">i</span></h3>
+                  <div class="helper">線型固定，避免自由畫線造成規則漂移；每条線可獨立啟用，固定奖励只派一次。</div>
+                </div>
+                <div id="lineRows"></div>
+                <div class="field">
+                  <label for="fullBoardReward">全盘完成额外奖励</label>
+                  <div class="input-group"><input class="input" id="fullBoardReward" type="number" min="0" step="0.01" value="125"><span class="suffix">INR</span></div>
+                </div>
+                <div class="line-summary"><span>启用的 Bingo 线：<strong id="enabledLines">8</strong></span><span>线奖励合计：<strong id="lineRewardTotal">80 INR</strong></span></div>
+              </div>
+            </div>
+            <div class="field-error" id="bingoError"></div>
+          </div>
+          <div class="section-body optional-body" id="bingoOffNote"><div class="notice">Bingo 已关闭：玩家端改用由低至高的倍率阶梯；棋盘、连线与全盤奖励完全隱藏。</div></div>
+        </section>
+
+        <section class="section" id="happySection" aria-labelledby="happyTitle">
+          <div class="section-header">
+            <div class="section-title">
+              <span class="step">4</span>
+              <div><h2 id="happyTitle">Happy Hour 加碼（可選）</h2><div class="helper">与 Bingo 獨立；第一版固定只加成基礎倍率目标奖励，不重複加成 Bingo bonus。</div></div>
+            </div>
+            <div class="switch-wrap"><span id="happySwitchText">已关闭</span><button class="switch" id="happySwitch" role="switch" aria-checked="false" aria-label="Happy Hour 加碼"></button></div>
+          </div>
+          <div class="section-body optional-body" id="happyBody" hidden>
+            <div class="grid-3">
+              <div class="field"><label for="scheduleType">排程方式</label><select id="scheduleType"><option>每週重複</option></select></div>
+              <div class="field"><label for="timezone">時區 <span class="validation-help" tabindex="0" data-tooltip="依站点／活動時區判定每週時段。依本次需求不做遊戲准入控制；Prototype 只校验欄位是否完整。">i</span></label><select id="timezone"><option>Asia/Taipei (UTC+8)</option><option>Europe/London</option><option>America/Sao_Paulo</option></select></div>
+              <div class="field"><label for="happyMultiplier">基礎奖励加成 <span class="validation-help" tabindex="0" data-tooltip="Blocking｜啟用時必須大於 1 且不超過 5。只乘上基礎倍率目标奖励；Bingo 線与全盤奖励永遠不加成。">i</span></label><div class="input-group"><input class="input" id="happyMultiplier" type="number" min="1" max="5" step="0.1" value="1.5"><span class="suffix">×</span></div><div class="field-error" id="happyMultiplierError"></div></div>
+            </div>
+            <div class="grid-3" style="margin-top:14px">
+              <div class="field"><label for="happyDays">星期</label><select id="happyDays"><option>一、三、五</option><option>每日</option><option>六、日</option></select></div>
+              <div class="field"><label for="happyStart">开始</label><input class="input" id="happyStart" type="time" value="18:00"></div>
+              <div class="field"><label for="happyEnd">结束</label><input class="input" id="happyEnd" type="time" value="20:00"></div>
+            </div>
+            <div class="field-error" id="happyTimeError"></div>
+          </div>
+          <div class="section-body optional-body" id="happyOffNote"><div class="notice">Happy Hour 已关闭：基礎倍率目标不加成；Bingo 規則不受影響。</div></div>
+        </section>
+
+      </main>
+
+      <aside class="side">
+        <section class="side-card" aria-labelledby="summaryTitle">
+          <div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><h2 id="summaryTitle">设定总览</h2><span class="tag success">即時計算</span></div>
+          <div class="summary-group" style="margin-top:14px">
+            <div class="summary-group-title"><span>整个活動</span><span class="tag">INR・站点设定</span></div>
+            <div class="summary-list">
+              <div class="summary-row"><span>活動日期：</span><strong id="summaryDuration">—</strong></div>
+              <div class="summary-row"><span>活动天数：</span><strong id="summaryDays">—</strong></div>
+              <div class="summary-row"><span>活動币种：</span><strong id="summaryCurrency">INR</strong></div>
+              <div class="summary-row"><span>每日新增责任上限：</span><strong id="summaryDailyBudget">0 INR</strong></div>
+              <div class="summary-row"><span>活動最高总奖励 <span class="validation-help" tabindex="0" data-tooltip="每日新增奖励责任上限 × 活動天数（首尾日期都計入）。這是活動層級的最高新责任，不代表必然派滿。">i</span></span><strong id="summaryTotalBudget">—</strong></div>
+            </div>
+          </div>
+          <div class="summary-group">
+            <div class="summary-group-title"><span>單个玩家</span><span class="tag">最高理論值</span></div>
+            <div class="summary-list">
+              <div class="summary-row"><span>倍率目标數：</span><strong id="summaryTargets">0</strong></div>
+              <div class="summary-row"><span>Bingo：</span><strong id="summaryBingo">未啟用</strong></div>
+              <div class="summary-row"><span>基礎目标最高派獎：</span><strong id="summaryBase">0 INR</strong></div>
+              <div class="summary-row"><span>Happy Hour 後基礎：</span><strong id="summaryBoosted">未啟用</strong></div>
+              <div class="summary-row"><span>Bingo 最高派獎：</span><strong id="summaryBingoReward">未啟用</strong></div>
+              <div class="summary-row"><span>單人最高總派獎：</span><strong id="summaryPlayerTotal">0 INR</strong></div>
+            </div>
+          </div>
+          <div class="validation-panel">
+            <div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><h3>輸入校验</h3><span class="tag" id="validationStatus">檢查中</span></div>
+            <div class="validation-list" id="validationList"></div>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <div class="footer-actions"><button class="btn">取消</button><button class="btn" id="draftBtn">保存草稿</button><button class="btn primary" id="submitBtn">确认</button></div>
+  </div>
+
+  <script>
+    const initialTargets = [
+      { id: 'T1', threshold: 2, reward: 5, cap: 5 },
+      { id: 'T2', threshold: 5, reward: 8, cap: 8 },
+      { id: 'T3', threshold: 10, reward: 12, cap: 12 },
+      { id: 'T4', threshold: 15, reward: 18, cap: 18 },
+      { id: 'T5', threshold: 20, reward: 25, cap: 25 },
+      { id: 'T6', threshold: 25, reward: 35, cap: 35 },
+      { id: 'T7', threshold: 30, reward: 50, cap: 50 },
+      { id: 'T8', threshold: 50, reward: 80, cap: 80 },
+      { id: 'T9', threshold: 100, reward: 120, cap: 120 }
+    ];
+
+    const lineDefaults = {
+      R1: 8, R2: 10, R3: 12,
+      C1: 8, C2: 10, C3: 12,
+      D1: 15, D2: 15
+    };
+
+    const SITE_CURRENCY = 'INR';
+
+    const state = {
+      rewardMode: 'fixed',
+      bingoEnabled: false,
+      happyEnabled: false,
+      boardSize: 3,
+      placementMode: 'balanced',
+      targets: structuredClone(initialTargets),
+      nextTargetNumber: 10,
+      placement: [],
+      lineRewards: {}
+    };
+
+    const money = value => `${new Intl.NumberFormat('en-US', { useGrouping: false, maximumFractionDigits: 2 }).format(Number(value || 0))} ${SITE_CURRENCY}`;
+    const byId = id => document.getElementById(id);
+    const numberValue = id => Number(byId(id).value || 0);
+
+    function boardCellCount() { return state.boardSize ** 2; }
+    function allTargets() { return state.targets; }
+
+    function automaticBoardTargets() {
+      const sorted = allTargets().slice().sort((a,b) => a.threshold - b.threshold || a.id.localeCompare(b.id));
+      const count = boardCellCount();
+      if (sorted.length <= count) return sorted;
+      return Array.from({ length: count }, (_, index) => sorted[Math.round(index * (sorted.length - 1) / (count - 1))]);
+    }
+
+    function lineDefinitions() {
+      return state.boardSize === 3 ? [
+        ['R1', '横线 1', [0,1,2]], ['R2', '横线 2', [3,4,5]], ['R3', '横线 3', [6,7,8]],
+        ['C1', '直线 1', [0,3,6]], ['C2', '直线 2', [1,4,7]], ['C3', '直线 3', [2,5,8]],
+        ['D1', '对角线 ↘', [0,4,8]], ['D2', '对角线 ↙', [2,4,6]]
+      ] : [
+        ['R1', '横线 1', [0,1]], ['R2', '横线 2', [2,3]],
+        ['C1', '直线 1', [0,2]], ['C2', '直线 2', [1,3]],
+        ['D1', '对角线 ↘', [0,3]], ['D2', '对角线 ↙', [1,2]]
+      ];
+    }
+
+    function ensureLineRewards() {
+      lineDefinitions().forEach(([id]) => {
+        if (!state.lineRewards[id]) state.lineRewards[id] = { enabled: true, reward: lineDefaults[id] ?? 10 };
+      });
+    }
+
+    function balancedPlacement() {
+      const sorted = automaticBoardTargets();
+      const ranks = state.boardSize === 3 ? [8,1,6,3,5,7,4,9,2] : [1,4,3,2];
+      state.placement = ranks.map(rank => sorted[rank - 1]?.id).filter(Boolean);
+    }
+
+    function reconcilePlacement() {
+      const sorted = allTargets().slice().sort((a,b) => a.threshold - b.threshold || a.id.localeCompare(b.id));
+      const validIds = new Set(sorted.map(t => t.id));
+      const kept = state.placement.filter((id, index, list) => validIds.has(id) && list.indexOf(id) === index);
+      const missing = sorted.map(t => t.id).filter(id => !kept.includes(id));
+      state.placement = kept.concat(missing).slice(0, boardCellCount());
+    }
+
+    function applyPlacementMode() {
+      if (state.placementMode === 'balanced') balancedPlacement();
+      else reconcilePlacement();
+    }
+
+    function renderTargets() {
+      const body = byId('targetRows');
+      byId('targetCountBadge').textContent = `${state.targets.length} 个目标・無 9 階限制`;
+      body.innerHTML = state.targets.map(target => `
+        <tr>
+          <td><span class="target-id">${target.id}</span></td>
+          <td><div class="number-control"><button class="number-step" type="button" data-direction="-1" aria-label="減少 ${target.id} 達標倍率">−</button><input class="input target-threshold" data-id="${target.id}" type="number" min="0.01" step="0.01" value="${target.threshold}"><button class="number-step" type="button" data-direction="1" aria-label="增加 ${target.id} 達標倍率">＋</button><span class="suffix">×</span></div></td>
+          <td><div class="number-control"><button class="number-step" type="button" data-direction="-1" aria-label="減少 ${target.id} 奖励">−</button><input class="input target-reward" data-id="${target.id}" type="number" min="0" step="0.01" value="${target.reward}"><button class="number-step" type="button" data-direction="1" aria-label="增加 ${target.id} 奖励">＋</button><span class="suffix">${state.rewardMode === 'fixed' ? 'INR' : '×'}</span></div></td>
+          <td class="cap-cell ${state.rewardMode === 'fixed' ? 'hidden' : ''}"><div class="number-control"><button class="number-step" type="button" data-direction="-1" aria-label="減少 ${target.id} 最高奖励">−</button><input class="input target-cap" data-id="${target.id}" type="number" min="0" step="0.01" value="${target.cap}"><button class="number-step" type="button" data-direction="1" aria-label="增加 ${target.id} 最高奖励">＋</button><span class="suffix">INR</span></div></td>
+          <td><span class="once">每人一次</span></td>
+          <td><button class="btn compact danger delete-target" type="button" data-id="${target.id}" ${state.targets.length === 1 ? 'disabled' : ''}>删除</button></td>
+        </tr>`).join('');
+
+      document.querySelectorAll('.target-threshold').forEach(input => input.addEventListener('input', e => {
+        targetById(e.target.dataset.id).threshold = Number(e.target.value || 0);
+        if (state.placementMode !== 'manual') applyPlacementMode();
+        renderAll(false);
+      }));
+      document.querySelectorAll('.target-reward').forEach(input => input.addEventListener('input', e => {
+        targetById(e.target.dataset.id).reward = Number(e.target.value || 0);
+        renderAll(false);
+      }));
+      document.querySelectorAll('.target-cap').forEach(input => input.addEventListener('input', e => {
+        targetById(e.target.dataset.id).cap = Number(e.target.value || 0);
+        renderAll(false);
+      }));
+      document.querySelectorAll('.number-step').forEach(button => button.addEventListener('click', () => {
+        const input = button.closest('.number-control')?.querySelector('input[type="number"]');
+        if (!input) return;
+        const step = Number(input.step || 1);
+        const minimum = input.min === '' ? -Infinity : Number(input.min);
+        const maximum = input.max === '' ? Infinity : Number(input.max);
+        const precision = String(step).includes('.') ? String(step).split('.')[1].length : 0;
+        const next = Math.min(maximum, Math.max(minimum, Number(input.value || 0) + Number(button.dataset.direction) * step));
+        input.value = precision ? next.toFixed(precision) : String(next);
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+      }));
+      document.querySelectorAll('.delete-target').forEach(button => button.addEventListener('click', () => {
+        if (state.targets.length === 1) return;
+        state.targets = state.targets.filter(target => target.id !== button.dataset.id);
+        if (state.placementMode !== 'manual') applyPlacementMode(); else reconcilePlacement();
+        renderAll(true);
+      }));
+    }
+
+    function targetById(id) { return state.targets.find(t => t.id === id); }
+
+    function renderBoard() {
+      if (!state.bingoEnabled) return;
+      reconcilePlacement();
+      const board = byId('board');
+      board.style.gridTemplateColumns = `repeat(${state.boardSize}, 1fr)`;
+      const sortedPool = allTargets().slice().sort((a,b) => a.threshold-b.threshold || a.id.localeCompare(b.id));
+      const displayIds = Array.from({ length: boardCellCount() }, (_, index) => state.placement[index] || null);
+      board.innerHTML = displayIds.map((id, index) => {
+        const target = id ? targetById(id) : null;
+        if (!target) return `<div class="cell" data-index="${index}"><span class="threshold">尚缺目标</span><span class="reward">請先新增倍率目标</span></div>`;
+        const rank = sortedPool.findIndex(t => t.id === id) + 1;
+        const rewardText = state.rewardMode === 'fixed' ? money(target.reward) : `${target.reward}×・cap ${money(target.cap)}`;
+        const selector = state.placementMode === 'manual' ? `<select class="cell-target-select" data-index="${index}" aria-label="Bingo 格 ${index + 1} 目标">${sortedPool.map(option => `<option value="${option.id}" ${option.id === id ? 'selected' : ''}>${option.id}・≥${option.threshold}×</option>`).join('')}</select>` : '';
+        return `<div class="cell" data-index="${index}" tabindex="0"><span class="rank">全池 Rank ${rank}</span><span class="threshold">≥ ${target.threshold}×</span><span class="reward">${rewardText}</span>${selector}</div>`;
+      }).join('');
+
+      board.querySelectorAll('.cell-target-select').forEach(select => select.addEventListener('change', e => {
+        const index = Number(e.target.dataset.index);
+        const newId = e.target.value;
+        const oldId = state.placement[index];
+        const existingIndex = state.placement.indexOf(newId);
+        if (existingIndex >= 0 && existingIndex !== index) state.placement[existingIndex] = oldId;
+        state.placement[index] = newId;
+        renderAll(false);
+      }));
+
+      const modeText = state.placementMode === 'balanced' ? '自动排列' : '手动选择';
+      byId('boardModeTag').textContent = modeText;
+      byId('balanceTag').textContent = state.placementMode === 'balanced' && state.boardSize === 3 && state.placement.length === 9 ? '棋盘相對 rank sum = 15' : state.placementMode === 'balanced' ? '相對平衡排列' : '請檢查各線差異';
+      byId('boardPoolTag').textContent = `使用 ${state.placement.length} / ${state.targets.length} 个目标`;
+      const extraCount = Math.max(0, state.targets.length - state.placement.length);
+      byId('boardPoolNote').textContent = extraCount > 0 ? `另有 ${extraCount} 个目标不在棋盘中，仍會各自派发一次基礎奖励。手動模式可逐格選擇替換。` : state.targets.length < boardCellCount() ? `尚缺 ${boardCellCount() - state.targets.length} 个目标；補足前不能发布 Bingo。` : '全部目标均已放入棋盘；手動模式可逐格選擇替換。';
+    }
+
+    function renderLines() {
+      if (!state.bingoEnabled) return;
+      ensureLineRewards();
+      const rows = byId('lineRows');
+      rows.innerHTML = lineDefinitions().map(([id, label, indexes]) => {
+        const line = state.lineRewards[id];
+        const cellText = indexes.map(i => targetById(state.placement[i]) ? `${targetById(state.placement[i]).threshold}x` : '未指定').join('・');
+        return `<div class="line-row" data-line="${id}">
+          <input class="check line-enabled" data-line="${id}" type="checkbox" ${line.enabled ? 'checked' : ''} aria-label="啟用 ${label}">
+          <span class="line-name">${label}</span>
+          <span class="line-cells">${cellText}</span>
+          <div class="input-group"><input class="input line-reward" data-line="${id}" type="number" min="0" step="0.01" value="${line.reward}" ${line.enabled ? '' : 'disabled'}><span class="suffix">INR</span></div>
+        </div>`;
+      }).join('');
+
+      rows.querySelectorAll('.line-row').forEach(row => {
+        row.addEventListener('mouseenter', () => highlightLine(row.dataset.line, true));
+        row.addEventListener('mouseleave', () => highlightLine(row.dataset.line, false));
+      });
+      rows.querySelectorAll('.line-enabled').forEach(input => input.addEventListener('change', e => {
+        state.lineRewards[e.target.dataset.line].enabled = e.target.checked;
+        renderAll(false);
+      }));
+      rows.querySelectorAll('.line-reward').forEach(input => input.addEventListener('input', e => {
+        state.lineRewards[e.target.dataset.line].reward = Number(e.target.value || 0);
+        renderSummary();
+        validateAll();
+      }));
+
+      const enabled = lineDefinitions().filter(([id]) => state.lineRewards[id].enabled);
+      const total = enabled.reduce((sum, [id]) => sum + state.lineRewards[id].reward, 0);
+      byId('enabledLines').textContent = enabled.length;
+      byId('lineRewardTotal').textContent = money(total);
+    }
+
+    function highlightLine(id, on) {
+      const def = lineDefinitions().find(([lineId]) => lineId === id);
+      if (!def) return;
+      def[2].forEach(index => byId('board').querySelector(`[data-index="${index}"]`)?.classList.toggle('highlight', on));
+    }
+
+    function baseNormalLiability() {
+      const maxStake = Math.max(0, numberValue('maxStake'));
+      return allTargets().reduce((sum, target) => {
+        const reward = Math.max(0, Number(target.reward || 0));
+        const cap = Math.max(0, Number(target.cap || 0));
+        return sum + (state.rewardMode === 'fixed' ? reward : Math.min(maxStake * reward, cap));
+      }, 0);
+    }
+
+    function bingoLiability() {
+      if (!state.bingoEnabled) return 0;
+      ensureLineRewards();
+      const lines = lineDefinitions().reduce((sum, [id]) => sum + (state.lineRewards[id].enabled ? state.lineRewards[id].reward : 0), 0);
+      return lines + Math.max(0, numberValue('fullBoardReward'));
+    }
+
+    function parseDateValue(value) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(value || '')) return null;
+      const [year, month, day] = value.split('-').map(Number);
+      const stamp = Date.UTC(year, month - 1, day);
+      const date = new Date(stamp);
+      return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day ? stamp : null;
+    }
+
+    function activityDateInfo() {
+      const startValue = byId('activityStart').value;
+      const endValue = byId('activityEnd').value;
+      const start = parseDateValue(startValue);
+      const end = parseDateValue(endValue);
+      const valid = start !== null && end !== null && end >= start;
+      return {
+        startValue,
+        endValue,
+        start,
+        end,
+        valid,
+        days: valid ? Math.floor((end - start) / 86400000) + 1 : 0
+      };
+    }
+
+    function playerLiability() {
+      const base = baseNormalLiability();
+      const multiplier = state.happyEnabled ? Math.max(1, numberValue('happyMultiplier')) : 1;
+      const boostedBase = base * multiplier;
+      const bingo = bingoLiability();
+      return { base, multiplier, boostedBase, bingo, total: boostedBase + bingo };
+    }
+
+    function renderSummary() {
+      const dates = activityDateInfo();
+      const liability = playerLiability();
+      const daily = numberValue('dailyBudget');
+
+      byId('summaryDuration').textContent = dates.valid ? `${dates.startValue} 至 ${dates.endValue}` : '日期未完成';
+      byId('summaryDays').textContent = dates.valid ? `${dates.days} 日（首尾計入）` : '—';
+      byId('summaryCurrency').textContent = SITE_CURRENCY;
+      byId('summaryDailyBudget').textContent = money(daily);
+      byId('summaryTotalBudget').textContent = dates.valid ? money(Math.max(0, daily) * dates.days) : '—';
+      byId('summaryTargets').textContent = `${state.targets.length} 个`;
+      byId('summaryBingo').textContent = state.bingoEnabled ? `${state.boardSize}×${state.boardSize}・${lineDefinitions().filter(([id]) => state.lineRewards[id]?.enabled).length} 条線` : '未啟用';
+      byId('summaryBase').textContent = money(liability.base);
+      byId('summaryBoosted').textContent = state.happyEnabled ? money(liability.boostedBase) : '未啟用';
+      byId('summaryBingoReward').textContent = state.bingoEnabled ? money(liability.bingo) : '未啟用';
+      byId('summaryPlayerTotal').textContent = money(liability.total);
+    }
+
+    function markInput(id, invalid) {
+      const input = byId(id);
+      if (!input) return;
+      input.classList.toggle('invalid', invalid);
+      input.setAttribute('aria-invalid', String(invalid));
+      input.closest('.number-control')?.classList.toggle('invalid', invalid);
+    }
+
+    function setFieldError(id, message) {
+      const element = byId(id);
+      if (element) element.textContent = message || '';
+    }
+
+    function validateAll() {
+      const issues = [];
+      const error = message => issues.push({ type: 'error', message });
+      const warn = message => issues.push({ type: 'warn', message });
+      const dates = activityDateInfo();
+      const liability = playerLiability();
+      const daily = numberValue('dailyBudget');
+      const minStake = numberValue('minStake');
+      const maxStake = numberValue('maxStake');
+
+      let dateMessage = '';
+      if (!byId('activityStart').value || !byId('activityEnd').value) dateMessage = '开始与结束日期皆為必填。';
+      else if (dates.start === null || dates.end === null) dateMessage = '日期格式必須有效。';
+      else if (dates.end < dates.start) dateMessage = '结束日期不得早於开始日期。';
+      markInput('activityStart', Boolean(dateMessage));
+      markInput('activityEnd', Boolean(dateMessage));
+      setFieldError('activityDateError', dateMessage);
+      if (dateMessage) error(`活動日期：${dateMessage}`);
+
+      let budgetMessage = '';
+      if (!(daily > 0)) budgetMessage = '每日新增奖励责任上限必須大於 0。';
+      else if (daily < liability.total) budgetMessage = `每日上限不可低於單个玩家最高總派獎 ${money(liability.total)}。`;
+      markInput('dailyBudget', Boolean(budgetMessage));
+      setFieldError('dailyBudgetError', budgetMessage);
+      if (budgetMessage) error(`每日预算：${budgetMessage}`);
+
+      const minStakeMessage = minStake > 0 ? '' : '每笔最低有效投注额必須大於 0。';
+      markInput('minStake', Boolean(minStakeMessage));
+      setFieldError('minStakeError', minStakeMessage);
+      if (minStakeMessage) error(`投注額：${minStakeMessage}`);
+
+      let maxStakeMessage = '';
+      if (state.rewardMode === 'multiple') {
+        if (!(maxStake > 0)) maxStakeMessage = '下注倍数模式必須设定大於 0 的最高計獎投注額。';
+        else if (maxStake < minStake) maxStakeMessage = '最高計獎投注額不得低於最低有效投注額。';
+      }
+      markInput('maxStake', Boolean(maxStakeMessage));
+      setFieldError('maxStakeError', maxStakeMessage);
+      if (maxStakeMessage) error(`最高計獎投注額：${maxStakeMessage}`);
+
+      const targetMessages = [];
+      document.querySelectorAll('.target-threshold').forEach(input => {
+        const invalid = !(Number(input.value) > 0);
+        input.classList.toggle('invalid', invalid);
+        input.closest('.number-control')?.classList.toggle('invalid', invalid);
+        if (invalid) targetMessages.push(`${input.dataset.id} 门槛必須大於 0`);
+      });
+      document.querySelectorAll('.target-reward').forEach(input => {
+        const invalid = !(Number(input.value) > 0);
+        input.classList.toggle('invalid', invalid);
+        input.closest('.number-control')?.classList.toggle('invalid', invalid);
+        if (invalid) targetMessages.push(`${input.dataset.id} ${state.rewardMode === 'fixed' ? '固定奖励' : '奖励倍數'}必須大於 0`);
+      });
+      document.querySelectorAll('.target-cap').forEach(input => {
+        const invalid = state.rewardMode === 'multiple' && !(Number(input.value) > 0);
+        input.classList.toggle('invalid', invalid);
+        input.closest('.number-control')?.classList.toggle('invalid', invalid);
+        if (invalid) targetMessages.push(`${input.dataset.id} 單目标最高奖励必須大於 0`);
+      });
+      const targetMessage = targetMessages.length ? `${targetMessages.slice(0, 3).join('；')}${targetMessages.length > 3 ? `；另有 ${targetMessages.length - 3} 項` : ''}。` : '';
+      setFieldError('targetError', targetMessage);
+      if (targetMessage) error(`倍率目标：${targetMessage}`);
+
+      const thresholds = state.targets.filter(target => target.threshold > 0).map(target => String(target.threshold));
+      const duplicateThresholds = [...new Set(thresholds.filter((value, index) => thresholds.indexOf(value) !== index))];
+      if (duplicateThresholds.length) warn(`倍率目标：${duplicateThresholds.join('×、')}× 门槛重複；允許保存，相同门槛依固定目标 ID 判定。`);
+
+      let bingoMessage = '';
+      if (state.bingoEnabled) {
+        if (state.targets.length < boardCellCount()) bingoMessage = `${state.boardSize}×${state.boardSize} Bingo 至少需要 ${boardCellCount()} 个目标。`;
+        else if (state.placement.length < boardCellCount() || new Set(state.placement).size !== boardCellCount()) bingoMessage = '棋盘每格必須引用不同且有效的倍率目标。';
+        const negativeLines = [...document.querySelectorAll('.line-reward')].filter(input => state.lineRewards[input.dataset.line]?.enabled && Number(input.value) < 0);
+        const fullBoardInvalid = numberValue('fullBoardReward') < 0;
+        document.querySelectorAll('.line-reward').forEach(input => input.classList.toggle('invalid', Number(input.value) < 0));
+        markInput('fullBoardReward', fullBoardInvalid);
+        if (!bingoMessage && (negativeLines.length || fullBoardInvalid)) bingoMessage = 'Bingo 線与全盤奖励不得小於 0。';
+        const enabledLineValue = lineDefinitions().reduce((sum, [id]) => sum + (state.lineRewards[id]?.enabled ? Math.max(0, state.lineRewards[id].reward) : 0), 0);
+        if (!bingoMessage && enabledLineValue + Math.max(0, numberValue('fullBoardReward')) === 0) warn('Bingo 已开启，但所有線奖励与全盤奖励皆為 0。');
+      } else {
+        document.querySelectorAll('.line-reward').forEach(input => input.classList.remove('invalid'));
+        markInput('fullBoardReward', false);
+      }
+      setFieldError('bingoError', bingoMessage);
+      if (bingoMessage) error(`Bingo：${bingoMessage}`);
+
+      let happyMultiplierMessage = '';
+      let happyTimeMessage = '';
+      if (state.happyEnabled) {
+        const multiplier = numberValue('happyMultiplier');
+        if (!(multiplier > 1 && multiplier <= 5)) happyMultiplierMessage = '啟用時加成必須大於 1 且不超過 5。';
+        if (!byId('happyStart').value || !byId('happyEnd').value) happyTimeMessage = '开始与结束時間皆為必填。';
+        else if (byId('happyEnd').value <= byId('happyStart').value) happyTimeMessage = '结束時間必須晚於开始時間；跨午夜請拆成兩个每週時段。';
+      }
+      markInput('happyMultiplier', Boolean(happyMultiplierMessage));
+      markInput('happyStart', Boolean(happyTimeMessage));
+      markInput('happyEnd', Boolean(happyTimeMessage));
+      setFieldError('happyMultiplierError', happyMultiplierMessage);
+      setFieldError('happyTimeError', happyTimeMessage);
+      if (happyMultiplierMessage) error(`Happy Hour：${happyMultiplierMessage}`);
+      if (happyTimeMessage) error(`Happy Hour：${happyTimeMessage}`);
+
+      const validationList = byId('validationList');
+      const errors = issues.filter(issue => issue.type === 'error');
+      const warnings = issues.filter(issue => issue.type === 'warn');
+      validationList.innerHTML = issues.length
+        ? issues.map(issue => `<div class="validation-item ${issue.type}">${issue.message}</div>`).join('')
+        : '<div class="validation-item">所有 Blocking 校验已通過，可保存或确认。</div>';
+      const status = byId('validationStatus');
+      status.className = `tag ${errors.length ? 'error' : warnings.length ? 'warn' : 'success'}`;
+      status.textContent = errors.length ? `${errors.length} 个錯誤` : warnings.length ? `${warnings.length} 个提醒` : '可发布';
+      ['saveBtn', 'draftBtn', 'submitBtn'].forEach(id => { byId(id).disabled = errors.length > 0; });
+      return errors.length === 0;
+    }
+
+    function renderOptionalSections() {
+      byId('bingoBody').hidden = !state.bingoEnabled;
+      byId('bingoOffNote').hidden = state.bingoEnabled;
+      byId('bingoSwitch').classList.toggle('on', state.bingoEnabled);
+      byId('bingoSwitch').setAttribute('aria-checked', state.bingoEnabled);
+      byId('bingoSwitchText').textContent = state.bingoEnabled ? '已开启' : '已关闭';
+      byId('happyBody').hidden = !state.happyEnabled;
+      byId('happyOffNote').hidden = state.happyEnabled;
+      byId('happySwitch').classList.toggle('on', state.happyEnabled);
+      byId('happySwitch').setAttribute('aria-checked', state.happyEnabled);
+      byId('happySwitchText').textContent = state.happyEnabled ? '已开启' : '已关闭';
+    }
+
+    function renderAll(rebuildTargets = true) {
+      renderOptionalSections();
+      if (rebuildTargets) renderTargets();
+      renderBoard();
+      renderLines();
+      renderSummary();
+      validateAll();
+    }
+
+    function setMode(mode) {
+      state.rewardMode = mode;
+      document.querySelectorAll('#rewardMode button').forEach(btn => btn.classList.toggle('active', btn.dataset.mode === mode));
+      byId('rewardHead').textContent = mode === 'fixed' ? '固定奖励' : '奖励倍數';
+      byId('capHead').classList.toggle('hidden', mode === 'fixed');
+      byId('maxStakeField').classList.toggle('hidden', mode === 'fixed');
+      byId('maxStake').disabled = mode === 'fixed';
+      renderAll(true);
+    }
+
+    function addTarget() {
+      const sorted = state.targets.slice().sort((a,b) => a.threshold - b.threshold);
+      const last = sorted.at(-1) || { threshold: 0, reward: 0, cap: 0 };
+      const id = `T${state.nextTargetNumber++}`;
+      const thresholdStep = last.threshold < 10 ? 5 : last.threshold < 50 ? 10 : 50;
+      const rewardStep = last.reward < 50 ? 10 : 25;
+      const reward = Number(last.reward) + rewardStep;
+      state.targets.push({ id, threshold: Number(last.threshold) + thresholdStep, reward, cap: Math.max(reward, Number(last.cap) + rewardStep) });
+      if (state.placementMode !== 'manual') applyPlacementMode(); else reconcilePlacement();
+      renderAll(true);
+    }
+
+    function reset() {
+      state.rewardMode = 'fixed'; state.bingoEnabled = false; state.happyEnabled = false; state.boardSize = 3; state.placementMode = 'balanced';
+      state.targets = structuredClone(initialTargets); state.nextTargetNumber = 10; state.placement = []; state.lineRewards = {};
+      byId('dailyBudget').value = 100000; byId('minStake').value = 5; byId('maxStake').value = 200;
+      byId('activityStart').value = '2026-08-20'; byId('activityEnd').value = '2026-08-26';
+      byId('happyMultiplier').value = 1.5; byId('happyStart').value = '18:00'; byId('happyEnd').value = '20:00'; byId('fullBoardReward').value = 125;
+      document.querySelectorAll('#boardSize button').forEach(btn => btn.classList.toggle('active', btn.dataset.size === '3'));
+      document.querySelectorAll('#placementMode button').forEach(button => {
+        const active = button.dataset.placement === 'balanced';
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-checked', active);
+      });
+      setMode('fixed'); applyPlacementMode(); renderAll(true);
+    }
+
+    document.querySelectorAll('#rewardMode button').forEach(btn => btn.addEventListener('click', () => setMode(btn.dataset.mode)));
+    byId('addTargetBtn').addEventListener('click', addTarget);
+    document.querySelectorAll('#boardSize button').forEach(btn => btn.addEventListener('click', () => {
+      state.boardSize = Number(btn.dataset.size);
+      document.querySelectorAll('#boardSize button').forEach(b => b.classList.toggle('active', b === btn));
+      ensureLineRewards(); applyPlacementMode(); renderAll(true);
+    }));
+    byId('bingoSwitch').addEventListener('click', () => { state.bingoEnabled = !state.bingoEnabled; applyPlacementMode(); renderAll(true); });
+    byId('happySwitch').addEventListener('click', () => { state.happyEnabled = !state.happyEnabled; renderAll(false); });
+    document.querySelectorAll('#placementMode button').forEach(button => button.addEventListener('click', () => {
+      state.placementMode = button.dataset.placement;
+      document.querySelectorAll('#placementMode button').forEach(item => {
+        const active = item === button;
+        item.classList.toggle('active', active);
+        item.setAttribute('aria-checked', active);
+      });
+      byId('placementHelp').textContent = state.placementMode === 'balanced' ? '目标多於格數時，先從全部门槛等距取樣，再平衡各条線；3×3 使用 rank-balanced magic-square placement。' : '每格可從完整目标池指定倍率；選到已使用目标時會自動交換，避免重複。';
+      applyPlacementMode(); renderAll(false);
+    }));
+    byId('rebalanceBtn').addEventListener('click', () => {
+      state.placementMode = 'balanced';
+      document.querySelectorAll('#placementMode button').forEach(button => {
+        const active = button.dataset.placement === 'balanced';
+        button.classList.toggle('active', active);
+        button.setAttribute('aria-checked', active);
+      });
+      byId('placementHelp').textContent = '目标多於格數時，先從全部门槛等距取樣，再平衡各条線；3×3 使用 rank-balanced magic-square placement。';
+      applyPlacementMode(); renderAll(false);
+    });
+    ['activityStart','activityEnd','dailyBudget','minStake','maxStake','happyMultiplier','happyStart','happyEnd','fullBoardReward'].forEach(id => byId(id).addEventListener('input', () => renderAll(false)));
+    byId('resetBtn').addEventListener('click', reset);
+    byId('saveBtn').addEventListener('click', () => alert('Prototype：活动内容设定已保存。'));
+    byId('draftBtn').addEventListener('click', () => alert('Prototype：活動草稿已保存。'));
+    byId('submitBtn').addEventListener('click', () => alert('Prototype：活动内容设定已确认。'));
+    document.querySelectorAll('.setup-steps button').forEach(button => button.addEventListener('click', () => {
+      document.querySelectorAll('.setup-steps button').forEach(item => item.classList.toggle('active', item === button));
+      byId(button.dataset.scrollTarget)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }));
+
+    // Theme toggle functionality (Element Plus Light / Dark)
+    function toggleTheme() {
+      const isLight = document.documentElement.classList.toggle('light');
+      const btn = byId('themeToggleBtn');
+      if (btn) btn.textContent = isLight ? '🌙 暗黑模式' : '☀️ 白天模式';
+      try { localStorage.setItem('ngss_bo_theme', isLight ? 'light' : 'dark'); } catch (e) {}
+    }
+
+    if (localStorage.getItem('ngss_bo_theme') === 'light') {
+      document.documentElement.classList.add('light');
+      const btn = byId('themeToggleBtn');
+      if (btn) btn.textContent = '🌙 暗黑模式';
+    }
+
+    ensureLineRewards();
+    balancedPlacement();
+    renderAll(true);
+  </script>
+</body>
+</html>
