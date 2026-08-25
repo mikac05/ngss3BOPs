@@ -998,32 +998,275 @@
       width: min(1600px, calc(100% - 32px));
       margin: 16px auto 0;
       border: 1px solid var(--el-border-color-light);
-      border-radius: 4px;
+      border-radius: 6px;
       background: var(--el-bg-color);
     }
-    .standard-shell { position: relative; padding: 16px; overflow: hidden; user-select: none; }
-    .standard-shell::after { content: "标准设定・仅活动日期可编辑"; position: absolute; top: 12px; right: 16px; padding: 3px 8px; border: 1px solid var(--el-border-color); border-radius: 4px; background: #242424; color: var(--el-text-color-secondary); font-size: 12px; }
-    .standard-shell * { pointer-events: none; }
-    .standard-title { margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--el-border-color-light); font-size: 15px; font-weight: 700; }
-    .standard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
-    .mock-column { display: grid; gap: 10px; align-content: start; }
-    .mock-form-row { display: grid; grid-template-columns: 118px minmax(0,1fr); gap: 10px; align-items: center; opacity: .62; filter: saturate(.65); }
-    .mock-form-row > span { color: var(--el-text-color-secondary); text-align: right; }
-    .mock-control { min-height: 30px; padding: 5px 9px; border: 1px solid var(--el-border-color); border-radius: 4px; background: #111; color: #7c7f84; }
-    .mock-inline { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .mock-palette { display: flex; gap: 6px; }
-    .mock-palette i { width: 42px; height: 26px; border: 1px solid var(--el-border-color); border-radius: 3px; background: #264663; }
-    .mock-palette i:nth-child(2) { background:#63303a; } .mock-palette i:nth-child(3) { background:#5d5630; } .mock-palette i:nth-child(4) { background:#4c3763; }
-    .mock-assets { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
-    .mock-assets i { height: 44px; border: 1px solid var(--el-border-color); border-radius: 3px; background: linear-gradient(145deg,#252525,#171717); }
-    .mock-banner { min-height: 86px; display: grid; place-items: center; border: 1px solid var(--el-border-color); border-radius: 4px; background: linear-gradient(135deg,#12394a,#275d52); color:#8baaa7; }
-    .standard-date-active { opacity: 1; filter: none; }
-    .standard-date-active, .standard-date-active * { pointer-events: auto; }
-    .standard-date-controls { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); gap: 8px; align-items: center; }
-    .standard-date-controls .input { min-width: 0; }
-    .standard-date-error { grid-column: 2; color: #fab6b6; font-size: 12px; }
-
-    .content-editor-head { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 14px 16px; }
+    .standard-shell {
+      position: relative;
+      padding: 20px 24px;
+      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.08);
+      user-select: auto;
+    }
+    .standard-header-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--el-border-color-light);
+    }
+    .standard-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--el-text-color-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .standard-title .badge-live {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(64, 158, 255, 0.12);
+      color: var(--el-color-primary);
+      border: 1px solid rgba(64, 158, 255, 0.3);
+    }
+    .standard-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+    .form-column {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 120px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+    }
+    .form-row.align-start {
+      align-items: flex-start;
+    }
+    .form-label {
+      color: var(--el-text-color-regular);
+      font-size: 13px;
+      font-weight: 600;
+      text-align: right;
+      line-height: 32px;
+    }
+    .form-label.required::before {
+      content: "* ";
+      color: #f56c6c;
+      font-weight: bold;
+    }
+    .form-control-wrap {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .radio-group, .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+      min-height: 32px;
+    }
+    .el-radio-item, .el-checkbox-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--el-text-color-regular);
+      user-select: none;
+      transition: color 0.18s;
+    }
+    .el-radio-item input, .el-checkbox-item input {
+      accent-color: var(--el-color-primary);
+      cursor: pointer;
+      width: 15px;
+      height: 15px;
+      margin: 0;
+    }
+    .el-radio-item:hover, .el-checkbox-item:hover {
+      color: var(--el-color-primary);
+    }
+    .highlight-row {
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid rgba(230, 162, 60, 0.45);
+      background: rgba(230, 162, 60, 0.08);
+      margin: -2px 0;
+      animation: fadeInRow 0.25s ease;
+    }
+    @keyframes fadeInRow {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .palette-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .palette-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      border: 1px solid var(--el-border-color);
+      background: var(--el-fill-color-blank);
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.18s;
+    }
+    .palette-item .swatch-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+      display: inline-block;
+    }
+    .palette-item.active {
+      border-color: var(--el-color-primary);
+      background: rgba(64, 158, 255, 0.1);
+      color: var(--el-color-primary);
+      font-weight: 600;
+    }
+    .icon-category-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .icon-tag {
+      padding: 3px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--el-border-color);
+      background: var(--el-fill-color-blank);
+      font-size: 12px;
+      color: var(--el-text-color-regular);
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .icon-tag:hover {
+      border-color: var(--el-color-primary-light-5);
+      color: var(--el-color-primary);
+    }
+    .icon-tag.active {
+      border-color: var(--el-color-primary);
+      background: var(--el-color-primary);
+      color: #fff;
+      font-weight: 600;
+    }
+    .banner-preview-box {
+      border: 1px solid var(--el-border-color);
+      border-radius: 6px;
+      padding: 12px;
+      background: var(--el-fill-color-light);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .banner-visual {
+      height: 80px;
+      border-radius: 4px;
+      background: linear-gradient(135deg, #1d3349 0%, #0d1e2e 50%, #1a423b 100%);
+      border: 1px dashed rgba(255, 255, 255, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      color: #fff;
+    }
+    .banner-visual .banner-text {
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .banner-visual .banner-text strong {
+      color: #ffd04b;
+      font-size: 14px;
+    }
+    .banner-visual .banner-tag {
+      font-size: 11px;
+      padding: 2px 6px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+    }
+    .criteria-matrix {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 4px;
+      background: var(--el-fill-color-light);
+      border: 1px solid var(--el-border-color-lighter);
+    }
+    .criteria-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+    .criteria-item span {
+      white-space: nowrap;
+      color: var(--el-text-color-secondary);
+    }
+    .member-level-panel {
+      padding: 8px 12px;
+      border-radius: 4px;
+      background: var(--el-fill-color-light);
+      border: 1px solid var(--el-border-color-lighter);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+      animation: fadeInRow 0.2s ease;
+    }
+    .switch-control {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      gap: 8px;
+      user-select: none;
+    }
+    .switch-track {
+      width: 40px;
+      height: 20px;
+      background: var(--el-fill-color-darker, #4c4d4f);
+      border-radius: 10px;
+      position: relative;
+      transition: background 0.2s;
+    }
+    .switch-control.is-checked .switch-track {
+      background: var(--el-color-primary);
+    }
+    .switch-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      transition: transform 0.2s;
+    }
+    .switch-control.is-checked .switch-thumb {
+      transform: translateX(20px);
+    }
+    .standard-date-controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+    }
+    .standard-date-controls .input {
+      min-width: 0;
+    }
     .content-editor-head h2 { margin: 0; font-size: 16px; }
     .setup-steps { display: flex; gap: 4px; flex-wrap: wrap; }
     .setup-steps button { min-height: 30px; padding: 5px 10px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--el-text-color-secondary); }
@@ -1074,33 +1317,330 @@
       </div>
     </header>
 
-    <section class="standard-shell" aria-label="上方标准活动设定；仅活动日期可编辑">
-      <div class="standard-title">活动基本设定</div>
-      <div class="standard-grid">
-        <div class="mock-column">
-          <div class="mock-form-row"><span>活动类型</span><div class="mock-control">倍率巅峰挑战</div></div>
-          <div class="mock-form-row"><span>活动名称</span><div class="mock-control">系统自带・倍率巅峰挑战</div></div>
-          <div class="mock-form-row standard-date-active"><span>活动时间 <span class="validation-help" tabindex="0" data-tooltip="Blocking｜开始与结束日期必填；结束日期不得早于开始日期。活动天数采首尾都包含，最高总奖励＝每日预算上限 × 活动天数。">i</span></span><div><div class="standard-date-controls"><input class="input" id="activityStart" type="date" value="2026-08-20" aria-label="活动开始日期"><span>至</span><input class="input" id="activityEnd" type="date" value="2026-08-26" aria-label="活动结束日期"></div><div class="field-error" id="activityDateError"></div></div></div>
-          <div class="mock-form-row"><span>参与会员层级</span><div class="mock-control">全部层级</div></div>
-          <div class="mock-form-row"><span>派奖钱包</span><div class="mock-inline"><div class="mock-control">彩金钱包</div><div class="mock-control">现金钱包</div></div></div>
-          <div class="mock-form-row"><span>参加条件</span><div class="mock-control">满足任一条件</div></div>
-          <div class="mock-form-row"><span>规则说明</span><div class="mock-control" style="min-height:86px">系统预设多语言规则内容（只读假数据）</div></div>
+    <!-- 上半部：完全遵照 live NGSS 天降夺宝与活动中心配置规范制作（支持现金钱包动态打码倍率与加减控件） -->
+    <section class="standard-shell" aria-label="活动基本设定（标准后台配置）">
+      <div class="standard-header-bar">
+        <div class="standard-title">
+          <span>活动基本设定</span>
+          <span class="badge-live">NGSS 活动中心标准配置规范</span>
         </div>
-        <div class="mock-column">
-          <div class="mock-form-row"><span>营销活动</span><div class="mock-control">已关闭</div></div>
-          <div class="mock-form-row"><span>选择排版</span><div class="mock-inline"><div class="mock-control">版型 A</div><div class="mock-control">版型 B</div></div></div>
-          <div class="mock-form-row"><span>选择背景</span><div class="mock-palette"><i></i><i></i><i></i><i></i></div></div>
-          <div class="mock-form-row"><span>选择图标</span><div class="mock-assets"><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-          <div class="mock-form-row"><span>宣传图预览</span><div class="mock-banner">宣传素材假图・不参与本次调整</div></div>
-          <div class="mock-form-row"><span>活动简介</span><div class="mock-control" style="min-height:66px">系统预设简介（只读假数据）</div></div>
+        <div style="font-size:12px;color:var(--el-text-color-secondary);">
+          遵照 live 天降夺宝与促销核心架构制作・所有设定即时联动
+        </div>
+      </div>
+
+      <div class="standard-grid">
+        <!-- 左栏：核心配置与条件 -->
+        <div class="form-column">
+          <!-- 活动类型 -->
+          <div class="form-row">
+            <span class="form-label required">活动类型</span>
+            <div class="form-control-wrap">
+              <select class="input" id="baseActivityType" onchange="handleActivityTypeChange(this.value)">
+                <option value="multiplier" selected>倍率巅峰挑战 (Multiplier Apex Hunt)</option>
+                <option value="treasure_drop">天降夺宝 (Treasure Drop / rain)</option>
+                <option value="invite">推广 (Invite Rewards)</option>
+                <option value="wagering">打码 (Wagering)</option>
+                <option value="wheel">幸运转盘 (Lucky Wheel)</option>
+                <option value="rescue">救援金 (Rescue Bonus)</option>
+                <option value="register">注册赠送 (Registration Bonus)</option>
+                <option value="custom">自定义活动 (Custom Activity)</option>
+                <option value="member_day">会员日 (Member Day)</option>
+                <option value="mystery_mine">神秘矿场 (Mystery Mine)</option>
+                <option value="streak">连续中奖 (Winning Streak)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- 活动名称 -->
+          <div class="form-row">
+            <span class="form-label required">活动名称</span>
+            <div class="form-control-wrap">
+              <div class="radio-group">
+                <label class="el-radio-item">
+                  <input type="radio" name="nameMode" value="system" checked onchange="handleNameModeChange('system')">
+                  <span>系统自带</span>
+                </label>
+                <label class="el-radio-item">
+                  <input type="radio" name="nameMode" value="custom" onchange="handleNameModeChange('custom')">
+                  <span>自定义</span>
+                </label>
+              </div>
+              <input class="input" id="activityNameInput" type="text" value="系统自带・倍率巅峰挑战" placeholder="请输入活动名称" disabled>
+            </div>
+          </div>
+
+          <!-- 活动时间 -->
+          <div class="form-row">
+            <span class="form-label required">活动时间 <span class="validation-help" tabindex="0" data-tooltip="Blocking｜开始与结束日期必填；结束日期不得早于开始日期。活动天数采首尾都包含，最高总奖励＝每日预算上限 × 活动天数。">i</span></span>
+            <div class="form-control-wrap">
+              <div class="standard-date-controls">
+                <input class="input" id="activityStart" type="date" value="2026-08-20" aria-label="活动开始日期">
+                <span style="color:var(--el-text-color-secondary);font-size:13px;">至</span>
+                <input class="input" id="activityEnd" type="date" value="2026-08-26" aria-label="活动结束日期">
+              </div>
+              <div class="field-error" id="activityDateError"></div>
+            </div>
+          </div>
+
+          <!-- 同注册IP上限 -->
+          <div class="form-row">
+            <span class="form-label">同注册IP上限</span>
+            <div class="form-control-wrap">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div class="number-control" style="width:140px;">
+                  <button type="button" class="number-step" onclick="stepNumber('sameIpLimit', -1)">-</button>
+                  <input type="number" class="input" id="sameIpLimit" min="0" value="0" placeholder="0">
+                  <button type="button" class="number-step" onclick="stepNumber('sameIpLimit', 1)">+</button>
+                  <span class="suffix">个</span>
+                </div>
+                <span class="helper" style="margin:0;">0 代表不限制</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 同注册设备上限 -->
+          <div class="form-row">
+            <span class="form-label">同注册设备上限</span>
+            <div class="form-control-wrap">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div class="number-control" style="width:140px;">
+                  <button type="button" class="number-step" onclick="stepNumber('sameDeviceLimit', -1)">-</button>
+                  <input type="number" class="input" id="sameDeviceLimit" min="0" value="0" placeholder="0">
+                  <button type="button" class="number-step" onclick="stepNumber('sameDeviceLimit', 1)">+</button>
+                  <span class="suffix">个</span>
+                </div>
+                <span class="helper" style="margin:0;">0 代表不限制</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 参与会员层级 -->
+          <div class="form-row align-start">
+            <span class="form-label required">参与会员层级</span>
+            <div class="form-control-wrap">
+              <div class="radio-group">
+                <label class="el-radio-item">
+                  <input type="radio" name="memberLevelMode" value="all" checked onchange="toggleMemberLevels('all')">
+                  <span>全部层级</span>
+                </label>
+                <label class="el-radio-item">
+                  <input type="radio" name="memberLevelMode" value="custom" onchange="toggleMemberLevels('custom')">
+                  <span>指定层级</span>
+                </label>
+              </div>
+              <div class="member-level-panel" id="customMemberLevelsPanel" style="display:none;">
+                <label class="el-checkbox-item"><input type="checkbox" checked> 默认层级</label>
+                <label class="el-checkbox-item"><input type="checkbox" checked> VIP1-3</label>
+                <label class="el-checkbox-item"><input type="checkbox" checked> VIP4-6</label>
+                <label class="el-checkbox-item"><input type="checkbox" checked> VIP7-9</label>
+                <label class="el-checkbox-item"><input type="checkbox" checked> VIP10 至尊</label>
+                <label class="el-checkbox-item"><input type="checkbox"> 新注册体验层</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 派奖钱包（彩金钱包 / 现金钱包） -->
+          <div class="form-row">
+            <span class="form-label required">派奖钱包 <span class="validation-help" tabindex="0" data-tooltip="彩金钱包：奖励进入红利彩金账本；现金钱包：直接进入玩家主现金账户，并依打码倍率产生稽核要求。">i</span></span>
+            <div class="form-control-wrap">
+              <div class="radio-group">
+                <label class="el-radio-item">
+                  <input type="radio" name="walletType" value="bonus" checked onchange="handleWalletChange('bonus')">
+                  <span>彩金钱包</span>
+                </label>
+                <label class="el-radio-item">
+                  <input type="radio" name="walletType" value="cash" onchange="handleWalletChange('cash')">
+                  <span style="font-weight:700;color:var(--el-color-primary);">现金钱包</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 🔥 核心需求：选择现金钱包时出现打码倍率输入（带加减数字输入控件） -->
+          <div class="form-row highlight-row" id="cashWageringMultiplierRow" style="display:none;">
+            <span class="form-label required">打码倍率 <span class="validation-help" tabindex="0" data-tooltip="现金钱包出款流水稽核要求：提款有效投注流水 ＝ 派发奖励金额 × 打码倍数。设为 0 代表无打码流水限制即可直接提现。">i</span></span>
+            <div class="form-control-wrap">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <div class="number-control" style="width:160px;">
+                  <button type="button" class="number-step" onclick="stepNumber('cashWageringMultiplier', -1)">-</button>
+                  <input type="number" class="input" id="cashWageringMultiplier" min="0" max="100" step="1" value="1" oninput="updateWageringDisplay()">
+                  <button type="button" class="number-step" onclick="stepNumber('cashWageringMultiplier', 1)">+</button>
+                  <span class="suffix">倍</span>
+                </div>
+              </div>
+              <div class="helper" style="color:var(--amber);margin-top:4px;">
+                现金钱包出款要求
+              </div>
+            </div>
+          </div>
+
+          <!-- 有效会员标准 / 参加条件 -->
+          <div class="form-row align-start">
+            <span class="form-label">有效会员标准</span>
+            <div class="form-control-wrap">
+              <div class="radio-group" style="margin-bottom:6px;">
+                <label class="el-radio-item"><input type="radio" name="eligibilityCondMode" value="any" checked> 满足任一条件</label>
+                <label class="el-radio-item"><input type="radio" name="eligibilityCondMode" value="all"> 同时满足以下条件</label>
+              </div>
+              <div class="criteria-matrix">
+                <div class="criteria-item">
+                  <span>账号首充 ≥</span>
+                  <input class="input" type="number" min="0" value="0" style="padding:2px 6px;height:26px;width:70px;">
+                  <span>₹</span>
+                </div>
+                <div class="criteria-item">
+                  <span>累计充值 ≥</span>
+                  <input class="input" type="number" min="0" value="0" style="padding:2px 6px;height:26px;width:70px;">
+                  <span>₹</span>
+                </div>
+                <div class="criteria-item">
+                  <span>有效打码 ≥</span>
+                  <input class="input" type="number" min="0" value="0" style="padding:2px 6px;height:26px;width:70px;">
+                  <span>₹</span>
+                </div>
+                <div class="criteria-item">
+                  <span>充值次数 ≥</span>
+                  <input class="input" type="number" min="0" value="0" style="padding:2px 6px;height:26px;width:70px;">
+                  <span>次</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 活动申领终端 -->
+          <div class="form-row">
+            <span class="form-label required">活动申领终端</span>
+            <div class="form-control-wrap">
+              <div class="checkbox-group">
+                <label class="el-checkbox-item"><input type="checkbox" checked> H5领取</label>
+                <label class="el-checkbox-item"><input type="checkbox" checked> Android APP领取</label>
+                <label class="el-checkbox-item"><input type="checkbox" checked> IOS APP领取</label>
+                <label class="el-checkbox-item"><input type="checkbox" checked> PWA</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右栏：排版、背景、图标、素材与文案 -->
+        <div class="form-column">
+          <!-- 营销活动开关 -->
+          <div class="form-row">
+            <span class="form-label">营销活动</span>
+            <div class="form-control-wrap">
+              <div class="switch-control is-checked" id="marketingSwitch" onclick="toggleMarketingSwitch(this)">
+                <div class="switch-track"><div class="switch-thumb"></div></div>
+                <span id="marketingSwitchText" style="font-size:13px;color:var(--el-text-color-regular);">已开启</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 选择排版 -->
+          <div class="form-row">
+            <span class="form-label">选择排版</span>
+            <div class="form-control-wrap">
+              <div class="radio-group">
+                <label class="el-radio-item"><input type="radio" name="layoutStyle" value="custom" checked> 自定义</label>
+                <label class="el-radio-item"><input type="radio" name="layoutStyle" value="layoutA"> 版型 A</label>
+                <label class="el-radio-item"><input type="radio" name="layoutStyle" value="layoutB"> 版型 B</label>
+              </div>
+            </div>
+          </div>
+
+          <!-- 选择背景 -->
+          <div class="form-row align-start">
+            <span class="form-label">选择背景</span>
+            <div class="form-control-wrap">
+              <div class="palette-swatches" id="paletteSwatches">
+                <div class="palette-item active" onclick="selectPaletteColor(this, '绿色', '#1d5a49')"><span class="swatch-dot" style="background:#1d5a49;"></span><span>绿色</span></div>
+                <div class="palette-item" onclick="selectPaletteColor(this, '红色', '#7a202c')"><span class="swatch-dot" style="background:#7a202c;"></span><span>红色</span></div>
+                <div class="palette-item" onclick="selectPaletteColor(this, '黄色', '#7c6922')"><span class="swatch-dot" style="background:#7c6922;"></span><span>黄色</span></div>
+                <div class="palette-item" onclick="selectPaletteColor(this, '紫色', '#4d2a6d')"><span class="swatch-dot" style="background:#4d2a6d;"></span><span>紫色</span></div>
+                <div class="palette-item" onclick="selectPaletteColor(this, '暗银', '#38424b')"><span class="swatch-dot" style="background:#38424b;"></span><span>暗银</span></div>
+                <div class="palette-item" onclick="selectPaletteColor(this, '橘色', '#7d451b')"><span class="swatch-dot" style="background:#7d451b;"></span><span>橘色</span></div>
+                <div class="palette-item" onclick="selectPaletteColor(this, '蓝色', '#1e3f66')"><span class="swatch-dot" style="background:#1e3f66;"></span><span>蓝色</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 选择图标 -->
+          <div class="form-row align-start">
+            <span class="form-label">选择图标</span>
+            <div class="form-control-wrap">
+              <div class="icon-category-tags" id="iconCategoryTags">
+                <span class="icon-tag active" onclick="selectIconTag(this, '奖品')">🎁 奖品</span>
+                <span class="icon-tag" onclick="selectIconTag(this, '赌场')">🎰 赌场</span>
+                <span class="icon-tag" onclick="selectIconTag(this, '节日')">🎉 节日</span>
+                <span class="icon-tag" onclick="selectIconTag(this, '游戏')">🎮 游戏</span>
+                <span class="icon-tag" onclick="selectIconTag(this, '活动')">🔥 活动</span>
+                <span class="icon-tag" onclick="selectIconTag(this, '美女')">💃 美女</span>
+                <span class="icon-tag" onclick="selectIconTag(this, '体育')">⚽ 体育</span>
+                <span class="icon-tag" onclick="selectIconTag(this, '游戏图标')">🕹️ 游戏图标</span>
+                <span class="icon-tag" onclick="selectIconTag(this, '浮窗图标')">✨ 浮窗图标</span>
+                <span class="icon-tag" onclick="selectIconTag(this, 'PBOX宣传')">📦 PBOX宣传</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 宣传图预览 & 上传 -->
+          <div class="form-row align-start">
+            <span class="form-label">宣传图预览</span>
+            <div class="form-control-wrap">
+              <div class="banner-preview-box">
+                <div class="banner-visual" id="bannerVisualEl">
+                  <div class="banner-text">
+                    <strong>最高奖励 ₹ 100,000</strong><br>
+                    <span style="font-size:11px;opacity:0.85;">倍率巅峰挑战・每日赢取丰厚彩金</span>
+                  </div>
+                  <span class="banner-tag">710 × 320</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;">
+                  <div class="radio-group" style="font-size:12px;gap:8px;">
+                    <span style="color:var(--el-text-color-secondary);">文字:</span>
+                    <label class="el-radio-item" style="font-size:12px;"><input type="radio" name="bannerTextDisplay" value="show" checked> 显示</label>
+                    <label class="el-radio-item" style="font-size:12px;"><input type="radio" name="bannerTextDisplay" value="hide"> 隐藏</label>
+                  </div>
+                  <div class="radio-group" style="font-size:12px;gap:8px;">
+                    <span style="color:var(--el-text-color-secondary);">位置:</span>
+                    <label class="el-radio-item" style="font-size:12px;"><input type="radio" name="bannerTextPos" value="left" checked> 左边</label>
+                    <label class="el-radio-item" style="font-size:12px;"><input type="radio" name="bannerTextPos" value="right"> 右边</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 宣传简介 -->
+          <div class="form-row align-start">
+            <span class="form-label">宣传简介</span>
+            <div class="form-control-wrap">
+              <div class="radio-group" style="margin-bottom:4px;">
+                <label class="el-radio-item"><input type="radio" name="summaryRadio" value="system" checked> 系统自带</label>
+                <label class="el-radio-item"><input type="radio" name="summaryRadio" value="custom"> 自定义</label>
+              </div>
+              <textarea class="input" rows="2" style="min-height:54px;font-size:12px;" placeholder="请输入宣传简介">最高奖励 ₹ 100,000，挑战超高倍率，达标即派奖，过期自动失效。</textarea>
+            </div>
+          </div>
+
+          <!-- 规则说明 -->
+          <div class="form-row align-start">
+            <span class="form-label">规则说明</span>
+            <div class="form-control-wrap">
+              <div class="radio-group" style="margin-bottom:4px;">
+                <label class="el-radio-item"><input type="radio" name="ruleRadio" value="system" checked> 系统自带</label>
+                <label class="el-radio-item"><input type="radio" name="ruleRadio" value="custom"> 自定义</label>
+              </div>
+              <div style="border:1px solid var(--el-border-color);border-radius:4px;padding:8px 10px;background:var(--el-fill-color-light);font-size:11.5px;line-height:1.6;color:var(--el-text-color-regular);max-height:92px;overflow-y:auto;">
+                1. 活动期间在指定合资格游戏内下注，达成指定倍率即可获得对应阶梯奖励；<br>
+                2. 奖励派发至对应账户（现金钱包需完成对应打码流水要求后方可出款）；<br>
+                3. 本活动仅限账号本人正常游戏，严禁使用外挂、脚本等作弊行为；<br>
+                4. 为避免理解差异，平台保留最终解释权。
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
-
-    <div class="scope-note">
-      <span aria-hidden="true">✓</span>
-      <div><strong>上方标准设定维持原版位，仅活动日期开放选择。</strong> 以下设定指定游戏、倍率目标、optional Bingo、optional Happy Hour 与设定总览。</div>
-    </div>
 
     <section class="content-editor-head" aria-label="活动内容设定导航">
       <div><h2>活动内容设定</h2><div class="helper">依序完成游戏、目标、Bingo 与加成；右侧同步显示设定总览。</div></div>
@@ -1118,7 +1658,7 @@
           <div class="section-header">
             <div class="section-title">
               <span class="step">1</span>
-              <div><h2 id="eligibilityTitle">指定游戏与有效投注</h2><div class="helper">选择活动适用游戏，并设定每日预算与有效投注范围。（附注：活动币种依站点预设，所有预算、有效投注及目标奖励统一适用，本页面以 INR 为示例）</div></div>
+              <div><h2 id="eligibilityTitle">指定游戏与有效投注</h2><div class="helper">选择活动适用游戏，并设定每日预算与有效投注范围。（附注：活动币种依站点预设，所有预算、有效投注及目标奖励统一适用，本页面以 ₹ 货币为示例）</div></div>
             </div>
           </div>
           <div class="section-body">
@@ -1138,12 +1678,12 @@
               </div>
               <div class="field">
                 <label for="dailyBudget">每日奖励上限 <span class="validation-help" tabindex="0" data-tooltip="Blocking｜必须大于 0，且不可低于单个玩家最高总派奖。只停止接受新任务，不得减少已接受玩家的合法奖励。">i</span></label>
-                <div class="input-group"><input class="input" id="dailyBudget" type="number" min="0" step="100" value="100000"><span class="suffix">INR</span></div>
+                <div class="input-group"><input class="input" id="dailyBudget" type="number" min="0" step="100" value="100000"><span class="suffix">₹</span></div>
                 <div class="helper">只限制新任务；不截短已接受玩家的奖励。</div>
                 <div class="field-error" id="dailyBudgetError"></div>
               </div>
               <div class="field">
-                <label>奖励方式 <span class="validation-help" tabindex="0" data-tooltip="固定金额：每个目标直接设定 INR。下注倍数：奖励＝有效投注額 × 奖励倍數，但不超過該目标最高奖励。">i</span></label>
+                <label>奖励方式 <span class="validation-help" tabindex="0" data-tooltip="固定金额：每个目标直接设定 ₹。下注倍数：奖励＝有效投注額 × 奖励倍數，但不超過該目标最高奖励。">i</span></label>
                 <div class="segmented" id="rewardMode">
                   <button type="button" data-mode="fixed" class="active">固定金额</button>
                   <button type="button" data-mode="multiple">下注倍数</button>
@@ -1153,13 +1693,13 @@
             <div class="grid-2" style="margin-top:14px">
               <div class="field">
                 <label for="minStake">每笔最低有效投注额 <span class="validation-help" tabindex="0" data-tooltip="Blocking｜必須大於 0。注单投注額低於此值時，不參与倍率目标判定。">i</span></label>
-                <div class="input-group"><input class="input" id="minStake" type="number" min="0" step="0.01" value="5"><span class="suffix">INR</span></div>
-                <div class="helper">含邊界：投注額 ≥ 5.00 INR。</div>
+                <div class="input-group"><input class="input" id="minStake" type="number" min="0" step="0.01" value="5"><span class="suffix">₹</span></div>
+                <div class="helper">含邊界：投注額 ≥ ₹ 5.00。</div>
                 <div class="field-error" id="minStakeError"></div>
               </div>
               <div class="field hidden" id="maxStakeField">
                 <label for="maxStake">每笔最高计奖投注额 <span class="validation-help" tabindex="0" data-tooltip="只在『下注倍数』模式出現且為必填。計算使用 min(實際投注額, 最高計獎投注額)，避免大額投注使奖励与预算责任無上限。固定金额模式不使用此欄位。">i</span></label>
-                <div class="input-group"><input class="input" id="maxStake" type="number" min="0" step="0.01" value="200"><span class="suffix">INR</span></div>
+                <div class="input-group"><input class="input" id="maxStake" type="number" min="0" step="0.01" value="200"><span class="suffix">₹</span></div>
                 <div class="helper">超出部分不計入奖励公式；原注单仍保留。</div>
                 <div class="field-error" id="maxStakeError"></div>
               </div>
@@ -1232,9 +1772,9 @@
                 <div id="lineRows"></div>
                 <div class="field">
                   <label for="fullBoardReward">全盘完成额外奖励</label>
-                  <div class="input-group"><input class="input" id="fullBoardReward" type="number" min="0" step="0.01" value="125"><span class="suffix">INR</span></div>
+                  <div class="input-group"><input class="input" id="fullBoardReward" type="number" min="0" step="0.01" value="125"><span class="suffix">₹</span></div>
                 </div>
-                <div class="line-summary"><span>启用的 Bingo 线：<strong id="enabledLines">8</strong></span><span>线奖励合计：<strong id="lineRewardTotal">80 INR</strong></span></div>
+                <div class="line-summary"><span>启用的 Bingo 线：<strong id="enabledLines">8</strong></span><span>线奖励合计：<strong id="lineRewardTotal">₹ 80</strong></span></div>
               </div>
             </div>
             <div class="field-error" id="bingoError"></div>
@@ -1272,13 +1812,15 @@
         <section class="side-card" aria-labelledby="summaryTitle">
           <div style="display:flex;justify-content:space-between;gap:10px;align-items:center"><h2 id="summaryTitle">设定总览</h2><span class="tag success">即時計算</span></div>
           <div class="summary-group" style="margin-top:14px">
-            <div class="summary-group-title"><span>整个活动</span><span class="tag">INR・站点设定</span></div>
+            <div class="summary-group-title"><span>整个活动</span><span class="tag">₹・站点设定</span></div>
             <div class="summary-list">
               <div class="summary-row"><span>指定游戏：</span><strong id="summaryGames">1 款 (Aviator)</strong></div>
               <div class="summary-row"><span>活动日期：</span><strong id="summaryDuration">—</strong></div>
               <div class="summary-row"><span>活动天数：</span><strong id="summaryDays">—</strong></div>
-              <div class="summary-row"><span>活动币种：</span><strong id="summaryCurrency">INR</strong></div>
-              <div class="summary-row"><span>每日奖励上限：</span><strong id="summaryDailyBudget">0 INR</strong></div>
+              <div class="summary-row"><span>活动币种：</span><strong id="summaryCurrency">₹</strong></div>
+              <div class="summary-row"><span>派发钱包：</span><strong id="summaryWallet">彩金钱包</strong></div>
+              <div class="summary-row" id="summaryWageringRow" style="display:none;"><span>出款打码：</span><strong id="summaryWagering" style="color:var(--amber);">1 倍流水</strong></div>
+              <div class="summary-row"><span>每日奖励上限：</span><strong id="summaryDailyBudget">₹ 0</strong></div>
               <div class="summary-row"><span>活动最高总奖励 <span class="validation-help" tabindex="0" data-tooltip="每日奖励上限 × 活动天数（首尾日期都计入）。这是活动层级的最高新责任，不代表必然派满。">i</span></span><strong id="summaryTotalBudget">—</strong></div>
             </div>
           </div>
@@ -1287,10 +1829,10 @@
             <div class="summary-list">
               <div class="summary-row"><span>倍率目标數：</span><strong id="summaryTargets">0</strong></div>
               <div class="summary-row"><span>Bingo：</span><strong id="summaryBingo">未啟用</strong></div>
-              <div class="summary-row"><span>基礎目标最高派獎：</span><strong id="summaryBase">0 INR</strong></div>
+              <div class="summary-row"><span>基礎目标最高派獎：</span><strong id="summaryBase">₹ 0</strong></div>
               <div class="summary-row"><span>Happy Hour 後基礎：</span><strong id="summaryBoosted">未啟用</strong></div>
               <div class="summary-row"><span>Bingo 最高派獎：</span><strong id="summaryBingoReward">未啟用</strong></div>
-              <div class="summary-row"><span>單人最高總派獎：</span><strong id="summaryPlayerTotal">0 INR</strong></div>
+              <div class="summary-row"><span>單人最高總派獎：</span><strong id="summaryPlayerTotal">₹ 0</strong></div>
             </div>
           </div>
           <div class="validation-panel">
@@ -1323,7 +1865,7 @@
       D1: 15, D2: 15
     };
 
-    const SITE_CURRENCY = 'INR';
+    const SITE_CURRENCY = '₹';
 
     const state = {
       rewardMode: 'fixed',
@@ -1337,7 +1879,103 @@
       lineRewards: {}
     };
 
-    const money = value => `${new Intl.NumberFormat('en-US', { useGrouping: false, maximumFractionDigits: 2 }).format(Number(value || 0))} ${SITE_CURRENCY}`;
+    // --- 上半部：标准后台设定交互逻辑 (对齐 live 天降夺宝与后台通用规范) ---
+    function handleActivityTypeChange(val) {
+      const titles = {
+        multiplier: '系统自带・倍率巅峰挑战',
+        treasure_drop: '系统自带・天降夺宝',
+        invite: '系统自带・推荐好友开宝箱',
+        wagering: '系统自带・天天打码领现金',
+        wheel: '系统自带・幸运大转盘',
+        rescue: '系统自带・周周救援金',
+        register: '系统自带・新手注册礼包',
+        custom: '系统自带・VIP专属定制活动',
+        member_day: '系统自带・超级会员日',
+        mystery_mine: '系统自带・神秘矿场探宝',
+        streak: '系统自带・连胜大挑战'
+      };
+      const nameInput = byId('activityNameInput');
+      if (nameInput && document.querySelector('input[name="nameMode"]:checked')?.value === 'system') {
+        nameInput.value = titles[val] || `系统自带・${val}`;
+      }
+    }
+
+    function handleNameModeChange(mode) {
+      const nameInput = byId('activityNameInput');
+      if (!nameInput) return;
+      if (mode === 'custom') {
+        nameInput.disabled = false;
+        nameInput.focus();
+      } else {
+        nameInput.disabled = true;
+        handleActivityTypeChange(byId('baseActivityType')?.value || 'multiplier');
+      }
+    }
+
+    function toggleMemberLevels(mode) {
+      const panel = byId('customMemberLevelsPanel');
+      if (panel) {
+        panel.style.display = mode === 'custom' ? 'flex' : 'none';
+      }
+    }
+
+    // 核心逻辑：切换派奖钱包（彩金钱包 / 现金钱包）时，动态显示/隐藏打码倍率输入项
+    function handleWalletChange(type) {
+      const cashRow = byId('cashWageringMultiplierRow');
+      if (cashRow) {
+        cashRow.style.display = type === 'cash' ? 'grid' : 'none';
+      }
+      updateWageringDisplay();
+      renderSummary();
+    }
+
+    // 通用数字步进加减逻辑（支持同注册IP上限、同注册设备上限、打码倍率等）
+    function stepNumber(id, delta) {
+      const input = byId(id);
+      if (!input) return;
+      const step = Number(input.step || 1);
+      const min = input.min === '' ? 0 : Number(input.min);
+      const max = input.max === '' ? Infinity : Number(input.max);
+      const cur = Number(input.value || 0);
+      const next = Math.max(min, Math.min(max, cur + delta * step));
+      input.value = String(next);
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      if (id === 'cashWageringMultiplier') {
+        updateWageringDisplay();
+      }
+    }
+
+    function updateWageringDisplay() {
+      const val = Number(byId('cashWageringMultiplier')?.value || 1);
+      const d1 = byId('wageringDisplay');
+      const d2 = byId('wageringDisplay2');
+      if (d1) d1.textContent = String(val);
+      if (d2) d2.textContent = String(val);
+      renderSummary();
+    }
+
+    function toggleMarketingSwitch(el) {
+      el.classList.toggle('is-checked');
+      const isChecked = el.classList.contains('is-checked');
+      const textEl = byId('marketingSwitchText');
+      if (textEl) textEl.textContent = isChecked ? '已开启' : '已关闭';
+    }
+
+    function selectPaletteColor(el, colorName, hex) {
+      document.querySelectorAll('#paletteSwatches .palette-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+      const banner = byId('bannerVisualEl');
+      if (banner) {
+        banner.style.background = `linear-gradient(135deg, ${hex} 0%, #0d1e2e 50%, #1a423b 100%)`;
+      }
+    }
+
+    function selectIconTag(el, iconName) {
+      document.querySelectorAll('#iconCategoryTags .icon-tag').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    const money = value => `₹ ${new Intl.NumberFormat('en-US', { useGrouping: false, maximumFractionDigits: 2 }).format(Number(value || 0))}`;
     const byId = id => document.getElementById(id);
     const numberValue = id => Number(byId(id).value || 0);
 
@@ -1395,8 +2033,8 @@
         <tr>
           <td><span class="target-id">${target.id}</span></td>
           <td><div class="number-control"><button class="number-step" type="button" data-direction="-1" aria-label="減少 ${target.id} 達標倍率">−</button><input class="input target-threshold" data-id="${target.id}" type="number" min="0.01" step="0.01" value="${target.threshold}"><button class="number-step" type="button" data-direction="1" aria-label="增加 ${target.id} 達標倍率">＋</button><span class="suffix">×</span></div></td>
-          <td><div class="number-control"><button class="number-step" type="button" data-direction="-1" aria-label="減少 ${target.id} 奖励">−</button><input class="input target-reward" data-id="${target.id}" type="number" min="0" step="0.01" value="${target.reward}"><button class="number-step" type="button" data-direction="1" aria-label="增加 ${target.id} 奖励">＋</button><span class="suffix">${state.rewardMode === 'fixed' ? 'INR' : '×'}</span></div></td>
-          <td class="cap-cell ${state.rewardMode === 'fixed' ? 'hidden' : ''}"><div class="number-control"><button class="number-step" type="button" data-direction="-1" aria-label="減少 ${target.id} 最高奖励">−</button><input class="input target-cap" data-id="${target.id}" type="number" min="0" step="0.01" value="${target.cap}"><button class="number-step" type="button" data-direction="1" aria-label="增加 ${target.id} 最高奖励">＋</button><span class="suffix">INR</span></div></td>
+          <td><div class="number-control"><button class="number-step" type="button" data-direction="-1" aria-label="減少 ${target.id} 奖励">−</button><input class="input target-reward" data-id="${target.id}" type="number" min="0" step="0.01" value="${target.reward}"><button class="number-step" type="button" data-direction="1" aria-label="增加 ${target.id} 奖励">＋</button><span class="suffix">${state.rewardMode === 'fixed' ? '₹' : '×'}</span></div></td>
+          <td class="cap-cell ${state.rewardMode === 'fixed' ? 'hidden' : ''}"><div class="number-control"><button class="number-step" type="button" data-direction="-1" aria-label="減少 ${target.id} 最高奖励">−</button><input class="input target-cap" data-id="${target.id}" type="number" min="0" step="0.01" value="${target.cap}"><button class="number-step" type="button" data-direction="1" aria-label="增加 ${target.id} 最高奖励">＋</button><span class="suffix">₹</span></div></td>
           <td><span class="once">每人一次</span></td>
           <td><button class="btn compact danger delete-target" type="button" data-id="${target.id}" ${state.targets.length === 1 ? 'disabled' : ''}>删除</button></td>
         </tr>`).join('');
@@ -1480,7 +2118,7 @@
           <input class="check line-enabled" data-line="${id}" type="checkbox" ${line.enabled ? 'checked' : ''} aria-label="啟用 ${label}">
           <span class="line-name">${label}</span>
           <span class="line-cells">${cellText}</span>
-          <div class="input-group"><input class="input line-reward" data-line="${id}" type="number" min="0" step="0.01" value="${line.reward}" ${line.enabled ? '' : 'disabled'}><span class="suffix">INR</span></div>
+          <div class="input-group"><input class="input line-reward" data-line="${id}" type="number" min="0" step="0.01" value="${line.reward}" ${line.enabled ? '' : 'disabled'}><span class="suffix">₹</span></div>
         </div>`;
       }).join('');
 
@@ -1566,6 +2204,22 @@
       byId('summaryDuration').textContent = dates.valid ? `${dates.startValue} 至 ${dates.endValue}` : '日期未完成';
       byId('summaryDays').textContent = dates.valid ? `${dates.days} 日（首尾計入）` : '—';
       byId('summaryCurrency').textContent = SITE_CURRENCY;
+
+      const isCash = document.querySelector('input[name="walletType"]:checked')?.value === 'cash';
+      const wageringMult = Number(byId('cashWageringMultiplier')?.value || 1);
+      const summaryWalletEl = byId('summaryWallet');
+      const summaryWageringRow = byId('summaryWageringRow');
+      const summaryWageringEl = byId('summaryWagering');
+      if (summaryWalletEl) {
+        summaryWalletEl.textContent = isCash ? '现金钱包' : '彩金钱包';
+      }
+      if (summaryWageringRow) {
+        summaryWageringRow.style.display = isCash ? 'flex' : 'none';
+      }
+      if (summaryWageringEl) {
+        summaryWageringEl.textContent = `${wageringMult} 倍流水 (${money(liability.total * wageringMult)})`;
+      }
+
       byId('summaryDailyBudget').textContent = money(daily);
       byId('summaryTotalBudget').textContent = dates.valid ? money(Math.max(0, daily) * dates.days) : '—';
       byId('summaryTargets').textContent = `${state.targets.length} 个`;

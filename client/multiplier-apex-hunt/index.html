@@ -259,6 +259,22 @@
       font-size: 13px;
     }
 
+    /* Sub-reward Section Container & Daily Cap Inactive Dimming */
+    .sub-reward-section-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      position: relative;
+      transition: filter 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .sub-reward-section-container.daily-cap-dimmed {
+      filter: grayscale(100%) brightness(0.7);
+      opacity: 0.38;
+      pointer-events: none;
+      user-select: none;
+      cursor: not-allowed;
+    }
+
     /* Happy Hour Banner */
     .happy-hour-banner {
       background: linear-gradient(90deg, #382c16 0%, #1e2221 100%);
@@ -606,7 +622,7 @@
             <span>📅 活动时间：2026-08-20 至 2026-08-26 (UTC+8)</span>
           </div>
           <div class="streak-meta-line">
-            <span>⚡ 单笔合格投注：≥ 10.00 INR｜合资格游戏：<strong>Spribe Sp飞行员</strong></span>
+            <span>⚡ 单笔合格投注：≥ ₹ 10.00｜合资格游戏：<strong>Spribe Sp飞行员</strong></span>
           </div>
           <!-- Subtle Delay Hint -->
           <div class="subtle-delay-hint">
@@ -619,86 +635,91 @@
           <div class="daily-cap-icon">⚠️</div>
           <div class="daily-cap-content">
             <div class="daily-cap-title">今日活动奖励预算已达上限</div>
-            <div class="daily-cap-desc">今日派奖额度已发完，当日后续收到的注单不再派发，明日 00:00 (UTC+8) 开启新一轮额度。</div>
+            <div class="daily-cap-desc">今日派奖额度已发完，当日后续收到的注单不再派发，明日 00:00 (UTC+8) 开启新一轮额度。下方挑战已暂停生效。</div>
           </div>
         </div>
 
-        <!-- Confirmed Rewards Summary Box -->
+        <!-- Confirmed Rewards Summary Box (Always highlighted / not dimmed) -->
         <div class="reward-summary-box" id="rewardSummaryBox">
           <div class="reward-col">
             <div class="reward-summary-label">基础奖励</div>
-            <div class="reward-summary-amount base" id="baseRewardText">230.00 INR</div>
+            <div class="reward-summary-amount base" id="baseRewardText">₹ 230.00</div>
           </div>
           <div class="reward-divider" id="rewardDividerLine"></div>
           <div class="reward-col" id="rewardColLine">
             <div class="reward-summary-label">连线奖励</div>
-            <div class="reward-summary-amount line" id="lineRewardText">120.00 INR</div>
+            <div class="reward-summary-amount line" id="lineRewardText">₹ 120.00</div>
           </div>
           <div class="reward-divider"></div>
           <div class="reward-col">
             <div class="reward-summary-label">累计已获奖励</div>
-            <div class="reward-summary-amount total" id="sumRewardText">350.00 INR</div>
+            <div class="reward-summary-amount total" id="sumRewardText">₹ 350.00</div>
           </div>
         </div>
 
-        <!-- Happy Hour Banner (Updated text: 基础倍率享 2.0×) -->
-        <div class="happy-hour-banner" id="hhBanner">
-          <span>🔥 <strong>Happy Hour 加码进行中！</strong>基础倍率享 2.0×</span>
-        </div>
+        <!-- Sub-reward Information & Interactive Section (Grayed out / Disabled when daily cap is reached) -->
+        <div class="sub-reward-section-container" id="subRewardSectionContainer">
 
-        <!-- Bingo Section -->
-        <div id="bingoSectionWrapper" style="display:flex;flex-direction:column;gap:6px;">
-          <div class="bingo-section-header">
-            <span>🎯 Bingo</span>
-            <span style="font-size:11px;color:var(--ngss-font-gold-color);" id="gridProgressText">已连 进度：4/9 (1)</span>
+          <!-- Happy Hour Banner (Updated text: 基础倍率享 2.0×) -->
+          <div class="happy-hour-banner" id="hhBanner">
+            <span>🔥 <strong>Happy Hour 加码进行中！</strong>基础倍率享 2.0×</span>
           </div>
 
-          <div class="bingo-board-box">
-            <!-- SVG Connecting Line Graphic -->
-            <svg class="bingo-svg-overlay" viewBox="0 0 300 300" id="bingoSvgOverlay"></svg>
+          <!-- Bingo Section -->
+          <div id="bingoSectionWrapper" style="display:flex;flex-direction:column;gap:6px;">
+            <div class="bingo-section-header">
+              <span>🎯 Bingo</span>
+              <span style="font-size:11px;color:var(--ngss-font-gold-color);" id="gridProgressText">已连 进度：4/9 (1)</span>
+            </div>
 
-            <!-- 9 Grid Tiles -->
-            <div class="bingo-grid-3x3" id="bingoGridEl"></div>
+            <div class="bingo-board-box">
+              <!-- SVG Connecting Line Graphic -->
+              <svg class="bingo-svg-overlay" viewBox="0 0 300 300" id="bingoSvgOverlay"></svg>
+
+              <!-- 9 Grid Tiles -->
+              <div class="bingo-grid-3x3" id="bingoGridEl"></div>
+            </div>
           </div>
-        </div>
 
-        <!-- Target Pool -->
-        <div class="target-pool-box">
-          <div class="target-pool-header">
-            <span id="targetPoolTitle">📊 倍率目标池</span>
-            <span style="font-size:10px;color:var(--ngss-text-secondary-color);" id="poolCountText">显示额外目标 (2 个)</span>
+          <!-- Target Pool -->
+          <div class="target-pool-box">
+            <div class="target-pool-header">
+              <span id="targetPoolTitle">📊 倍率目标池</span>
+              <span style="font-size:10px;color:var(--ngss-text-secondary-color);" id="poolCountText">显示额外目标 (2 个)</span>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:4px;" id="poolListContainer"></div>
+
+            <button class="btn-pool-expand" id="btnExpandPool" onclick="togglePoolExpansion()">
+              展开完整目标池 (共 11 个) ▼
+            </button>
           </div>
 
-          <div style="display:flex;flex-direction:column;gap:4px;" id="poolListContainer"></div>
-
-          <button class="btn-pool-expand" id="btnExpandPool" onclick="togglePoolExpansion()">
-            展开完整目标池 (共 11 个) ▼
+          <!-- Single Qualifying Game Launch Button -->
+          <button class="btn-ngss-primary" onclick="launchAviator()">
+            <span>启动游戏 Spribe Sp飞行员（最低 ₹ 10.00）</span>
           </button>
-        </div>
 
-        <!-- Single Qualifying Game Launch Button -->
-        <button class="btn-ngss-primary" onclick="launchAviator()">
-          <span>启动游戏 Spribe Sp飞行员（最低 10.00 INR）</span>
-        </button>
+          <!-- Rules & Records Tabs -->
+          <div class="rules-records-tabs" id="rulesTabsEl">
+            <div class="tabs-header-bar" role="tablist">
+              <button class="tab-header-btn active" id="btnTabRules" role="tab" aria-selected="true" onclick="switchInnerTab('rules')">活动规则</button>
+              <button class="tab-header-btn" id="btnTabRecords" role="tab" aria-selected="false" onclick="switchInnerTab('records')">获胜记录 (1)</button>
+            </div>
+            <div class="tab-body-box" id="tabBodyRules" role="tabpanel">
+              • 合资格游戏：<strong>Spribe Sp飞行员</strong>。<br>
+              • 单笔合格投注额 ≥ ₹ 10.00。<br>
+              • 一笔合格注单仅完成目前「最高且未完成」的一个倍率目标。<br>
+              • 每个倍率目标每位玩家仅派发一次基础奖励。<br>
+              • 命中的目标位于 Bingo 棋盘时点亮该格，连线成功自动获得额外连线奖励。<br>
+              • 未排入棋盘之目标在命中时仍派发基础奖励，但不推进连线。<br>
+              • Happy Hour 时段仅加成基础目标奖励。
+            </div>
+            <div class="tab-body-box" id="tabBodyRecords" role="tabpanel" style="display:none;">
+              <div style="display:flex;flex-direction:column;gap:4px;" id="recordsMiniList"></div>
+            </div>
+          </div>
 
-        <!-- Rules & Records Tabs -->
-        <div class="rules-records-tabs" id="rulesTabsEl">
-          <div class="tabs-header-bar" role="tablist">
-            <button class="tab-header-btn active" id="btnTabRules" role="tab" aria-selected="true" onclick="switchInnerTab('rules')">活动规则</button>
-            <button class="tab-header-btn" id="btnTabRecords" role="tab" aria-selected="false" onclick="switchInnerTab('records')">获胜记录 (1)</button>
-          </div>
-          <div class="tab-body-box" id="tabBodyRules" role="tabpanel">
-            • 合资格游戏：<strong>Spribe Sp飞行员</strong>。<br>
-            • 单笔合格投注额 ≥ 10.00 INR。<br>
-            • 一笔合格注单仅完成目前「最高且未完成」的一个倍率目标。<br>
-            • 每个倍率目标每位玩家仅派发一次基础奖励。<br>
-            • 命中的目标位于 Bingo 棋盘时点亮该格，连线成功自动获得额外连线奖励。<br>
-            • 未排入棋盘之目标在命中时仍派发基础奖励，但不推进连线。<br>
-            • Happy Hour 时段仅加成基础目标奖励。
-          </div>
-          <div class="tab-body-box" id="tabBodyRecords" role="tabpanel" style="display:none;">
-            <div style="display:flex;flex-direction:column;gap:4px;" id="recordsMiniList"></div>
-          </div>
         </div>
 
       </section>
@@ -733,7 +754,7 @@
   <!-- Script Application Logic -->
   <script>
     const fmt = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const money = val => `${fmt.format(Number(val || 0))} INR`;
+    const money = val => `₹ ${fmt.format(Number(val || 0))}`;
 
     // Seed Data
     const INITIAL_TARGETS = [
@@ -766,7 +787,7 @@
         { id: 'D1', name: '对角线 1', cells: ['B1','B5','B9'], x1: 25, y1: 25, x2: 275, y2: 275, reward: 60.0 },
         { id: 'D2', name: '对角线 2', cells: ['B3','B5','B7'], x1: 275, y1: 25, x2: 25, y2: 275, reward: 60.0 }
       ],
-      singleRecord: { time: '14:30', game: 'Aviator', mult: '22.5×', reward: '30.00 INR' }
+      singleRecord: { time: '14:30', game: 'Aviator', mult: '22.5×', reward: '₹ 30.00' }
     };
 
     let toastTimer = null;
@@ -791,6 +812,12 @@
           statusTag.innerText = '● 进行中';
           statusTag.className = 'streak-status-tag';
         }
+      }
+
+      // Grayscale & invalidate all content below confirmed rewards summary when daily cap is reached
+      const subRewardContainer = document.getElementById('subRewardSectionContainer');
+      if (subRewardContainer) {
+        subRewardContainer.classList.toggle('daily-cap-dimmed', state.dailyCapReached);
       }
 
       // Bingo Toggle UI Visibility
@@ -1015,7 +1042,7 @@
 
     function resetAllData() {
       state.targets = JSON.parse(JSON.stringify(INITIAL_TARGETS));
-      state.singleRecord = { time: '14:30', game: 'Spribe Sp飞行员', mult: '22.5×', reward: '30.00 INR' };
+      state.singleRecord = { time: '14:30', game: 'Spribe Sp飞行员', mult: '22.5×', reward: '₹ 30.00' };
       state.dailyCapReached = false;
       render();
       showToast('🔄 已重置为初始示范状态');
