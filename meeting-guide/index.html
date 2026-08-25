@@ -1,0 +1,869 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>倍率巅峰挑战｜需求评审与业务交底投影片</title>
+  <link rel="icon" href="../favicon.svg">
+  <style>
+    :root {
+      --bg: #090d16;
+      --panel: #131a29;
+      --panel-hover: #1a2438;
+      --border: #26354f;
+      --border-bright: #3d547d;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --blue: #38bdf8;
+      --blue-soft: rgba(56, 189, 248, 0.12);
+      --gold: #fbbf24;
+      --gold-soft: rgba(251, 191, 36, 0.12);
+      --green: #34d399;
+      --green-soft: rgba(52, 211, 153, 0.12);
+      --purple: #c084fc;
+      --purple-soft: rgba(192, 132, 252, 0.12);
+      --red: #f87171;
+      --red-soft: rgba(248, 113, 113, 0.12);
+      --radius: 16px;
+      --radius-sm: 10px;
+    }
+
+    html.light {
+      --bg: #f1f5f9;
+      --panel: #ffffff;
+      --panel-hover: #f8fafc;
+      --border: #cbd5e1;
+      --border-bright: #94a3b8;
+      --text: #0f172a;
+      --text-muted: #475569;
+      --blue: #0284c7;
+      --blue-soft: rgba(2, 132, 199, 0.1);
+      --gold: #d97706;
+      --gold-soft: rgba(217, 119, 6, 0.1);
+      --green: #059669;
+      --green-soft: rgba(5, 150, 105, 0.1);
+      --purple: #7c3aed;
+      --purple-soft: rgba(124, 58, 237, 0.1);
+      --red: #dc2626;
+      --red-soft: rgba(220, 38, 38, 0.1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      line-height: 1.6;
+      font-size: 18px; /* 大号投影片字级 */
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Sticky Bar */
+    .top-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(9, 13, 22, 0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    html.light .top-header {
+      background: rgba(241, 245, 249, 0.95);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-badge {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #fff;
+      font-weight: 900;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+    .brand-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .header-links {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-btn {
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      background: var(--panel);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all .15s;
+    }
+    .header-btn:hover {
+      color: var(--blue);
+      border-color: var(--blue);
+      background: var(--blue-soft);
+    }
+
+    /* Navigation Pills / Tabs */
+    .tab-bar-wrap {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 32px;
+    }
+    .tab-bar-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .tab-group {
+      display: flex;
+      gap: 12px;
+    }
+    .tab-btn {
+      padding: 12px 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text-muted);
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all .2s;
+    }
+    .tab-btn:hover {
+      color: var(--text);
+      border-color: var(--border-bright);
+    }
+    .tab-btn.active {
+      background: var(--blue);
+      color: #000;
+      border-color: var(--blue);
+      box-shadow: 0 4px 16px rgba(56, 189, 248, 0.35);
+    }
+
+    /* Main Slide Stage */
+    .slide-stage {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 36px 32px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+    }
+
+    .slide-section {
+      display: none;
+      flex-direction: column;
+      gap: 24px;
+      animation: slideIn .2s ease-out;
+    }
+    .slide-section.active {
+      display: flex;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Slide Header Banner */
+    .slide-header {
+      background: linear-gradient(135deg, var(--panel) 0%, rgba(19, 26, 41, 0.5) 100%);
+      border: 1px solid var(--border-bright);
+      border-radius: var(--radius);
+      padding: 22px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .slide-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .slide-num-badge {
+      font-size: 20px;
+      font-weight: 900;
+      padding: 8px 18px;
+      border-radius: 10px;
+      color: #fff;
+    }
+    .badge-blue { background: linear-gradient(135deg, #0284c7, #38bdf8); }
+    .badge-purple { background: linear-gradient(135deg, #7c3aed, #c084fc); }
+    .badge-green { background: linear-gradient(135deg, #059669, #34d399); }
+
+    .slide-main-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    /* Cards Grid */
+    .slide-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .slide-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    @media (max-width: 900px) {
+      .slide-grid-2, .slide-grid-3 { grid-template-columns: 1fr; }
+    }
+
+    .slide-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 26px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+    .slide-card:hover {
+      border-color: var(--border-bright);
+    }
+    .card-headline {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+    }
+
+    /* Presentation Bullet Points */
+    .slide-bullets {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .slide-bullets li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+    .slide-bullets li .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--blue);
+      margin-top: 10px;
+      flex-shrink: 0;
+    }
+    .slide-bullets li strong {
+      color: #fff;
+      font-weight: 800;
+    }
+    html.light .slide-bullets li strong {
+      color: #0f172a;
+    }
+    .slide-bullets li .desc {
+      color: var(--text-muted);
+      font-size: 15px;
+      margin-top: 4px;
+    }
+
+    /* Highlight Badges / Pill */
+    .pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 800;
+      font-family: ui-monospace, monospace;
+    }
+    .pill-blue { background: var(--blue-soft); color: var(--blue); border: 1px solid rgba(56,189,248,0.3); }
+    .pill-gold { background: var(--gold-soft); color: var(--gold); border: 1px solid rgba(251,191,36,0.3); }
+    .pill-green { background: var(--green-soft); color: var(--green); border: 1px solid rgba(52,211,153,0.3); }
+    .pill-red { background: var(--red-soft); color: var(--red); border: 1px solid rgba(248,113,113,0.3); }
+
+    /* Compact Interactive Calculator */
+    .calc-box {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(19, 26, 41, 0.6) 100%);
+      border: 1px dashed var(--blue);
+      border-radius: var(--radius-sm);
+      padding: 18px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .calc-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .calc-input {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border-bright);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 17px;
+      font-weight: 800;
+      width: 120px;
+    }
+    .calc-btn {
+      padding: 8px 20px;
+      border-radius: 8px;
+      background: var(--blue);
+      color: #000;
+      font-size: 15px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: all .15s;
+    }
+    .calc-btn:hover {
+      filter: brightness(1.15);
+    }
+    .calc-res {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Checklist Grid */
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    @media (max-width: 900px) {
+      .check-grid { grid-template-columns: 1fr; }
+    }
+    .check-col {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .check-col-title {
+      font-size: 16px;
+      font-weight: 800;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .check-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+    .check-item span {
+      color: var(--green);
+      font-weight: 900;
+    }
+
+    /* Footer */
+    .slide-footer {
+      border-top: 1px solid var(--border);
+      padding: 20px 32px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="top-header">
+    <div class="brand">
+      <span class="brand-badge">NGSS3 PRD</span>
+      <h1 class="brand-title">倍率巅峰挑战｜需求评审与业务交底</h1>
+    </div>
+    <div class="header-links">
+      <a href="../client/multiplier-apex-hunt/index.html" target="_blank" class="header-btn" title="查看玩家端 H5 原型">📱 玩家端原型</a>
+      <a href="../backoffice/multiplier-apex-hunt/index.html" target="_blank" class="header-btn" title="查看后台配置原型">⚙️ 后台配置原型</a>
+      <a href="../index.html" class="header-btn">🏠 原型中心</a>
+      <button type="button" class="header-btn" onclick="toggleTheme()">🌓 明暗</button>
+    </div>
+  </header>
+
+  <!-- Tab Switcher -->
+  <div class="tab-bar-wrap">
+    <div class="tab-bar-container">
+      <div class="tab-group" role="tablist">
+        <button type="button" class="tab-btn active" data-target="p1" onclick="showTab('p1')">
+          🎯 阶段一：业务价值与玩法
+        </button>
+        <button type="button" class="tab-btn" data-target="p4" onclick="showTab('p4')">
+          ⚡ 阶段四：核心业务逻辑
+        </button>
+        <button type="button" class="tab-btn" data-target="p6" onclick="showTab('p6')">
+          🛡️ 阶段六：边界防御与验收
+        </button>
+        <button type="button" class="tab-btn" data-target="all" onclick="showTab('all')">
+          📑 完整全览
+        </button>
+      </div>
+      <div style="font-size:14px;color:var(--text-muted);font-weight:700;">
+        💡 投影片展示模式
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Slide Stage -->
+  <main class="slide-stage">
+
+    <!-- ========================================== -->
+    <!-- SLIDE 1: 业务价值与核心玩法 -->
+    <!-- ========================================== -->
+    <section class="slide-section active" id="sec-p1">
+      <div class="slide-header">
+        <div class="slide-title-wrap">
+          <span class="slide-num-badge badge-blue">01</span>
+          <h2 class="slide-main-title">阶段一：业务价值与玩法</h2>
+        </div>
+      </div>
+
+      <!-- Core Baseline Card (活动基本) -->
+      <div class="slide-card" style="border-left: 5px solid var(--blue);">
+        <div class="card-headline">💡 活动基本</div>
+        <ul class="slide-bullets">
+          <li>
+            <span class="dot"></span>
+            <div>
+              <strong>单款指定游戏 ＋ 倍率门槛闯关 ＋ 3×3 Bingo 连线</strong> 的<strong>非同步派奖活动</strong>。
+              <div class="desc">玩家下注达标后挑战倍率，命中点亮棋盘并派彩，连线成功再领加码大奖。</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- 3 Pillars Grid -->
+      <div class="slide-grid-3">
+        <!-- Pillar 1 -->
+        <div class="slide-card">
+          <div class="card-headline">👤 1. 面向对象</div>
+          <ul class="slide-bullets">
+            <li>
+              <span class="dot"></span>
+              <div>
+                <strong>全平台玩家参与</strong>
+                <div class="desc">支持后台依「会员分层」开启准入。</div>
+              </div>
+            </li>
+            <li>
+              <span class="dot"></span>
+              <div>
+                <strong>无需手动报名</strong>
+                <div class="desc">符合投注条件自动计入挑战。</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="slide-card">
+          <div class="card-headline">🎮 2. 怎么玩</div>
+          <ul class="slide-bullets">
+            <li>
+              <span class="dot"></span>
+              <div>
+                <strong>限定单款指定游戏</strong>
+                <div class="desc">例如：<span class="pill pill-blue">Spribe Sp飞行员</span></div>
+              </div>
+            </li>
+            <li>
+              <span class="dot"></span>
+              <div>
+                <strong>单笔下注达最低门槛</strong>
+                <div class="desc">例如：单笔有效投注 <span class="pill pill-blue">≥ 10.00 INR</span></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="slide-card">
+          <div class="card-headline">💰 3. 怎么领</div>
+          <ul class="slide-bullets">
+            <li>
+              <span class="dot"></span>
+              <div>
+                <strong>基础目标奖</strong>：单笔命中倍率门槛即发。
+              </div>
+            </li>
+            <li>
+              <span class="dot"></span>
+              <div>
+                <strong>Bingo 连线奖</strong>：任 3 格成线额外领大奖。
+              </div>
+            </li>
+            <li>
+              <span class="dot"></span>
+              <div>
+                <strong>Happy Hour</strong>：指定时段基础奖享 <span class="pill pill-gold">2.0×</span> 翻倍。
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Architecture Principle (架构原则：非同步显示) -->
+      <div class="slide-card" style="border-color: var(--gold);">
+        <div class="card-headline" style="color:var(--gold);">⚠️ 架构原则：非同步显示</div>
+        <div class="slide-grid-2">
+          <ul class="slide-bullets">
+            <li>
+              <span class="dot" style="background:var(--gold);"></span>
+              <div>
+                <strong>注单有延迟</strong>
+                <div class="desc">游戏商结算与回调需时，收到注单后才有办法计算结果。</div>
+              </div>
+            </li>
+          </ul>
+          <ul class="slide-bullets">
+            <li>
+              <span class="dot" style="background:var(--gold);"></span>
+              <div>
+                <strong>活动页</strong>
+                <div class="desc">不做游戏内假弹窗与推测进度；玩家回访活动页时同步已确认成果。</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- SLIDE 4: 核心业务逻辑 -->
+    <!-- ========================================== -->
+    <section class="slide-section" id="sec-p4">
+      <div class="slide-header">
+        <div class="slide-title-wrap">
+          <span class="slide-num-badge badge-purple">04</span>
+          <h2 class="slide-main-title">阶段四：核心业务逻辑</h2>
+        </div>
+      </div>
+
+      <!-- Rule 1: Single Bet Algorithm -->
+      <div class="slide-card">
+        <div class="card-headline">🎯 规则 1：单笔注单命中（一注一目标、不回补）</div>
+        <div class="slide-grid-2">
+          <ul class="slide-bullets">
+            <li>
+              <span class="dot" style="background:var(--purple);"></span>
+              <div>
+                <strong>最高未完成单一命中</strong>
+                <div class="desc">单笔注单仅匹配「门槛 ≤ 实际倍率」中<strong>最高且未完成</strong>的单一目标。</div>
+              </div>
+            </li>
+            <li>
+              <span class="dot" style="background:var(--purple);"></span>
+              <div>
+                <strong>不向下回补低阶目标</strong>
+                <div class="desc">例如命中 65× ➜ 仅完成 50× 目标，10× 与 30× 仍保持未完成。</div>
+              </div>
+            </li>
+            <li>
+              <span class="dot" style="background:var(--purple);"></span>
+              <div>
+                <strong>每人每目标限领一次</strong>
+                <div class="desc">活动周期内每个目标仅派发一次基础奖励。</div>
+              </div>
+            </li>
+          </ul>
+
+          <!-- Live Interactive Calculator -->
+          <div class="calc-box">
+            <div style="font-weight:800;font-size:15px;color:var(--blue);">🧮 算法现场试算器（未解锁：10×, 30×, 50×, 80×, 150×）</div>
+            <div class="calc-row">
+              <label style="font-size:15px;font-weight:800;">结算倍率：</label>
+              <input type="number" id="calcInput" class="calc-input" value="65.5" step="0.1">
+              <button type="button" class="calc-btn" onclick="calcHit()">计算</button>
+            </div>
+            <div class="calc-res" id="calcRes">
+              👉 命中：<span class="pill pill-green">50× 门槛</span>（10×、30× 保留未解锁）
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rule 2, 3, 4 Grid -->
+      <div class="slide-grid-3">
+        <div class="slide-card">
+          <div class="card-headline">🎲 规则 2：Bingo 3×3 棋盘</div>
+          <ul class="slide-bullets">
+            <li>
+              <span class="dot"></span>
+              <div>
+                <strong>池盘分离</strong>：目标池可有 N 个（如 11 个），棋盘固定取 9 个。
+              </div>
+            </li>
+            <li>
+              <span class="dot"></span>
+              <div>
+                <strong>点亮条件</strong>：命中目标位于 9 宫格内才点亮。
+              </div>
+            </li>
+            <li>
+              <span class="dot"></span>
+              <div>
+                <strong>8 条独立线</strong>：3 横 + 3 直 + 2 斜，成线即刻发奖。
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="slide-card">
+          <div class="card-headline">🔥 规则 3：Happy Hour 加码</div>
+          <ul class="slide-bullets">
+            <li>
+              <span class="dot" style="background:var(--gold);"></span>
+              <div>
+                <strong>时段限定</strong>：在设定时段内命中基础目标。
+              </div>
+            </li>
+            <li>
+              <span class="dot" style="background:var(--gold);"></span>
+              <div>
+                <strong>仅基础奖加成</strong>：享受 <span class="pill pill-gold">2.0×</span> 翻倍。
+              </div>
+            </li>
+            <li>
+              <span class="dot" style="background:var(--gold);"></span>
+              <div>
+                <strong>Bingo 连线奖不加倍</strong>。
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="slide-card">
+          <div class="card-headline">🚫 规则 4：每日预算上限</div>
+          <ul class="slide-bullets">
+            <li>
+              <span class="dot" style="background:var(--red);"></span>
+              <div>
+                <strong>额度发完即止</strong>：达到每日预算上限后停止派彩。
+              </div>
+            </li>
+            <li>
+              <span class="dot" style="background:var(--red);"></span>
+              <div>
+                <strong>后续注单直接不发</strong>：不排队、不延期。
+              </div>
+            </li>
+            <li>
+              <span class="dot" style="background:var(--red);"></span>
+              <div>
+                <strong>每日 00:00 (UTC+8) 重置</strong>。
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- SLIDE 6: 边界防御与验收清单 -->
+    <!-- ========================================== -->
+    <section class="slide-section" id="sec-p6">
+      <div class="slide-header">
+        <div class="slide-title-wrap">
+          <span class="slide-num-badge badge-green">06</span>
+          <h2 class="slide-main-title">阶段六：边界异常防御与工程验收清单</h2>
+        </div>
+      </div>
+
+      <!-- 4 Defense Pillars -->
+      <div class="slide-grid-2">
+        <div class="slide-card" style="border-top: 4px solid var(--blue);">
+          <div class="card-headline">🛡️ 1. 幂等去重保证</div>
+          <ul class="slide-bullets">
+            <li>
+              <span class="dot"></span>
+              <div>
+                <strong>全局唯一识别</strong>
+                <div class="desc">同一注单重复推送不重复发奖，保证系统资金安全。</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="slide-card" style="border-top: 4px solid var(--purple);">
+          <div class="card-headline">🛡️ 2. 高频并发防护</div>
+          <ul class="slide-bullets">
+            <li>
+              <span class="dot" style="background:var(--purple);"></span>
+              <div>
+                <strong>玩家级串行化结算</strong>
+                <div class="desc">确保同一玩家多笔并行结算注单依序点亮棋盘，防止状态覆盖。</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="slide-card" style="border-top: 4px solid var(--gold);">
+          <div class="card-headline">🛡️ 3. 延迟与 VOID 撤销</div>
+          <ul class="slide-bullets">
+            <li>
+              <span class="dot" style="background:var(--gold);"></span>
+              <div>
+                <strong>超长延迟注单</strong>：活动期内产生之注单延迟回调仍合法派彩。
+              </div>
+            </li>
+            <li>
+              <span class="dot" style="background:var(--gold);"></span>
+              <div>
+                <strong>VOID 撤销注单</strong>：不自动追扣负余额，记录差异流水转人工日对账。
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="slide-card" style="border-top: 4px solid var(--green);">
+          <div class="card-headline">🛡️ 4. 跨日水位重置（00:00 UTC+8）</div>
+          <ul class="slide-bullets">
+            <li>
+              <span class="dot" style="background:var(--green);"></span>
+              <div>
+                <strong>预算水位重置</strong>：每日预算额度换日自动归零重启。
+              </div>
+            </li>
+            <li>
+              <span class="dot" style="background:var(--green);"></span>
+              <div>
+                <strong>前端静默刷新</strong>：换日时玩家端自动拉取最新上限状态。
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- DoD Checklist -->
+      <div class="slide-card">
+        <div class="card-headline">📋 前后端与 QA 交付验收清单（DoD）</div>
+        <div class="check-grid">
+          <!-- Frontend -->
+          <div class="check-col">
+            <div class="check-col-title" style="color:var(--blue);">💻 前端交付物</div>
+            <div class="check-item"><span>✓</span> 3×3 Bingo 棋盘与 SVG 连线动效</div>
+            <div class="check-item"><span>✓</span> 额外目标池折叠与置灰状态</div>
+            <div class="check-item"><span>✓</span> Happy Hour 2.0× 标签动态加乘</div>
+            <div class="check-item"><span>✓</span> 后台单选游戏弹窗（分类/平台/搜索）</div>
+            <div class="check-item"><span>✓</span> 每日上限达到警告横幅与拦截</div>
+          </div>
+
+          <!-- Backend -->
+          <div class="check-col">
+            <div class="check-col-title" style="color:var(--purple);">⚙️ 后端交付物</div>
+            <div class="check-item"><span>✓</span> 注单防重与唯一校验机制</div>
+            <div class="check-item"><span>✓</span> 最高未完成目标命中算法</div>
+            <div class="check-item"><span>✓</span> Bingo 8 线连线检测判定</div>
+            <div class="check-item"><span>✓</span> 钱包服务自动入账与账变流水</div>
+            <div class="check-item"><span>✓</span> 每日预算计数器与超限拦截</div>
+          </div>
+
+          <!-- QA -->
+          <div class="check-col">
+            <div class="check-col-title" style="color:var(--green);">🧪 QA 验证重点</div>
+            <div class="check-item"><span>✓</span> 倍率边界测试（100× 仅解锁 90×）</div>
+            <div class="check-item"><span>✓</span> 2 笔高频注单并发不重复点亮</div>
+            <div class="check-item"><span>✓</span> Happy Hour 时段只加成基础奖</div>
+            <div class="check-item"><span>✓</span> 每日预算用尽后续注单不派发</div>
+            <div class="check-item"><span>✓</span> 跨日 00:00 上限重置与状态恢复</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="slide-footer">
+    <div>倍率巅峰挑战（Multiplier Apex Hunt）需求评审与业务交底指南 ｜ NGSS3 Product Team 2026</div>
+  </footer>
+
+  <script>
+    function showTab(tabId) {
+      // Buttons
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.target === tabId);
+      });
+
+      // Sections
+      if (tabId === 'all') {
+        document.querySelectorAll('.slide-section').forEach(sec => sec.classList.add('active'));
+      } else {
+        document.querySelectorAll('.slide-section').forEach(sec => {
+          sec.classList.toggle('active', sec.id === `sec-${tabId}`);
+        });
+      }
+    }
+
+    function toggleTheme() {
+      const isLight = document.documentElement.classList.toggle('light');
+      try { localStorage.setItem('ngss_slide_theme', isLight ? 'light' : 'dark'); } catch (e) {}
+    }
+
+    if (localStorage.getItem('ngss_slide_theme') === 'light') {
+      document.documentElement.classList.add('light');
+    }
+
+    // Mini Live Calculator
+    function calcHit() {
+      const mult = parseFloat(document.getElementById('calcInput')?.value || 0);
+      const resEl = document.getElementById('calcRes');
+      const targets = [10, 30, 50, 80, 150];
+
+      const hits = targets.filter(t => mult >= t);
+      if (hits.length === 0) {
+        resEl.innerHTML = `👉 结算 <span style="color:var(--red);font-weight:800;">${mult.toFixed(1)}×</span> ➔ 未达最低门槛 (10×)，不触发`;
+        return;
+      }
+      const maxHit = hits[hits.length - 1];
+      const lefts = targets.filter(t => t < maxHit).map(t => t + '×').join('、');
+      resEl.innerHTML = `👉 结算 <span style="color:var(--blue);font-weight:800;">${mult.toFixed(1)}×</span> ➔ 命中：<span class="pill pill-green">${maxHit}× 门槛</span> ${lefts ? `(${lefts} 保留未解锁)` : ''}`;
+    }
+  </script>
+</body>
+</html>
