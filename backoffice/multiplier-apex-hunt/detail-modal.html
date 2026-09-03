@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NGSS 3.0 管理后台 - 倍率巅峰挑战活动详情 (Figma Auto-Layout 优化版)</title>
+  <link rel="icon" href="../../favicon.svg">
+  <style>
+    /* ============================================================
+       NGSS 3.0 / Element Plus 核心变量 (100% 对应 Figma 颜色与间距 Tokens)
+       ============================================================ */
+    :root {
+      /* Primary Brand Tokens */
+      --el-color-primary: #337ab7;
+      --el-color-primary-light-3: #5b95c5;
+      --el-color-primary-light-7: #99bddb;
+      --el-color-primary-light-9: #ebf2f8;
+      --el-color-primary-dark-2: #296292;
+      
+      /* Semantic Status Tokens */
+      --el-color-success: #67c23a;
+      --el-color-warning: #e6a23c;
+      --el-color-danger: #f56c6c;
+      --el-color-info: #909399;
+      
+      /* Dark Theme Surface Tokens */
+      --el-bg-color: #141414;
+      --el-bg-color-overlay: #1d1e1f;
+      --el-bg-color-page: #0a0a0a;
+      --el-text-color-primary: #e5eaf3;
+      --el-text-color-regular: #cfd3dc;
+      --el-text-color-secondary: #a3a6ad;
+      --el-text-color-placeholder: #8d9095;
+      --el-border-color: #4c4d4f;
+      --el-border-color-light: #414243;
+      --el-border-color-lighter: #363637;
+      --el-border-color-dark: #58585b;
+      --el-fill-color: #262727;
+      --el-fill-color-light: #1f2020;
+      --el-fill-color-blank: #141414;
+      
+      /* Radius & Shadows */
+      --el-border-radius-base: 4px;
+      --el-border-radius-small: 2px;
+      --el-box-shadow: 0 12px 32px 4px rgba(0, 0, 0, 0.5), 0 8px 20px rgba(0, 0, 0, 0.4);
+      --el-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
+    html.light {
+      --el-bg-color: #ffffff;
+      --el-bg-color-overlay: #ffffff;
+      --el-bg-color-page: #f2f3f5;
+      --el-text-color-primary: #303133;
+      --el-text-color-regular: #606266;
+      --el-text-color-secondary: #909399;
+      --el-text-color-placeholder: #a8abb2;
+      --el-border-color: #dcdfe6;
+      --el-border-color-light: #e4e7ed;
+      --el-border-color-lighter: #ebeef5;
+      --el-border-color-dark: #d4d7de;
+      --el-fill-color: #f0f2f5;
+      --el-fill-color-light: #f5f7fa;
+      --el-fill-color-blank: #ffffff;
+      --el-box-shadow: 0 12px 32px 4px rgba(0, 0, 0, 0.08), 0 8px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--el-font-family);
+      font-size: 14px;
+      color: var(--el-text-color-primary);
+      background-color: var(--el-bg-color-page);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 0 60px 0;
+    }
+
+    /* ============================================================
+       顶部工具条 (提供 Figma 转换模式与暗黑/明亮一键切换)
+       ============================================================ */
+    .demo-topbar {
+      width: 100%;
+      height: 48px;
+      background: var(--el-bg-color-overlay);
+      border-bottom: 1px solid var(--el-border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .demo-topbar-title {
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .figma-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(103, 194, 58, 0.15);
+      color: var(--el-color-success);
+      border: 1px solid var(--el-color-success);
+      font-weight: 500;
+    }
+    .demo-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .demo-btn {
+      padding: 6px 14px;
+      font-size: 12px;
+      border-radius: var(--el-border-radius-base);
+      border: 1px solid var(--el-border-color);
+      background: var(--el-fill-color);
+      color: var(--el-text-color-primary);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .demo-btn:hover {
+      background: var(--el-color-primary);
+      color: #fff;
+      border-color: var(--el-color-primary);
+    }
+    .demo-btn.primary {
+      background: var(--el-color-primary);
+      color: #fff;
+      border-color: var(--el-color-primary);
+    }
+
+    /* ============================================================
+       Figma Auto-Layout 核心结构：
+       1. 移除 position:fixed 遮罩层，直接以标准桌面 Frame (1200px) 呈现
+       2. 移除 max-height 截断与 overflow-y: scroll，完整展示全高内容
+       3. 将所有 HTML <table> 重构成 Flexbox Auto-Layout 容器与行
+       ============================================================ */
+    .figma-canvas-container {
+      width: 100%;
+      max-width: 1360px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 20px;
+    }
+
+    /* 弹窗主 Frame (在 Figma 中直接转换为 1200px 独立组件) */
+    .figma-dialog-frame {
+      width: 1200px;
+      background: var(--el-bg-color);
+      border: 1px solid var(--el-border-color);
+      border-radius: var(--el-border-radius-base);
+      box-shadow: var(--el-box-shadow);
+      display: flex;
+      flex-direction: column;
+      overflow: visible; /* Figma 友好：绝不截断 */
+    }
+
+    /* 弹窗 Header：Auto Layout 水平排列 */
+    .figma-dialog-header {
+      height: 54px;
+      min-height: 54px;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--el-border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--el-bg-color);
+    }
+    .header-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .header-title-text {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--el-text-color-primary);
+    }
+    .header-close-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: transparent;
+      color: var(--el-text-color-secondary);
+      border-radius: var(--el-border-radius-base);
+      cursor: pointer;
+    }
+
+    /* 弹窗 Body：Auto Layout 垂直堆叠 (Vertical Stack) */
+    .figma-dialog-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 0; /* 由行边框统一分割 */
+    }
+
+    /* ============================================================
+       纯 Flexbox 描述表格 (100% 映射 Figma Auto Layout)
+       完全抛弃老旧的 <table> 标签，解决 Figma 导入时绝对定位混乱问题
+       ============================================================ */
+    .desc-table-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--el-border-color-dark);
+      border-bottom: none; /* 由最后一行补全 */
+      background: var(--el-bg-color);
+    }
+
+    /* 标准 4 列行 (2 个键值对：Label 140px + Content 1fr + Label 140px + Content 1fr) */
+    .desc-row {
+      display: flex;
+      width: 100%;
+      min-height: 42px;
+      border-bottom: 1px solid var(--el-border-color-dark);
+      align-items: stretch;
+    }
+
+    .desc-label {
+      width: 140px;
+      min-width: 140px;
+      max-width: 140px;
+      background: var(--el-fill-color);
+      color: var(--el-text-color-regular);
+      font-size: 13px;
+      font-weight: 500;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      text-align: right;
+      border-right: 1px solid var(--el-border-color-dark);
+      box-sizing: border-box;
+    }
+    .desc-label.top-align {
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 4px;
+    }
+
+    .desc-content {
+      flex: 1;
+      background: var(--el-fill-color-blank);
+      color: var(--el-text-color-primary);
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      border-right: 1px solid var(--el-border-color-dark);
+    }
+    .desc-content:last-child {
+      border-right: none;
+    }
+    .desc-content.full-col {
+      flex: 1;
+      width: calc(100% - 140px);
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      padding: 14px;
+    }
+
+    /* 标签 Token (Tag Component) */
+    .tag-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      font-size: 11.5px;
+      border-radius: 3px;
+      border: 1px solid var(--el-border-color);
+      background: var(--el-fill-color);
+      color: var(--el-text-color-regular);
+      white-space: nowrap;
+    }
+    .tag-badge.primary {
+      border-color: rgba(51, 122, 183, 0.4);
+      background: rgba(51, 122, 183, 0.12);
+      color: var(--el-color-primary);
+    }
+    .tag-badge.success {
+      border-color: rgba(103, 194, 58, 0.4);
+      background: rgba(103, 194, 58, 0.12);
+      color: var(--el-color-success);
+    }
+    .tag-badge.warning {
+      border-color: rgba(230, 162, 60, 0.4);
+      background: rgba(230, 162, 60, 0.12);
+      color: var(--el-color-warning);
+    }
+
+    /* ============================================================
+       模块 1：基础参数概览条 (Horizontal Auto Layout)
+       ============================================================ */
+    .apex-summary-bar {
+      display: flex;
+      width: 100%;
+      background: var(--el-fill-color-light);
+      border: 1px solid var(--el-border-color);
+      border-radius: var(--el-border-radius-base);
+      padding: 10px 16px;
+      gap: 16px;
+      box-sizing: border-box;
+    }
+    .summary-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .summary-label {
+      font-size: 11px;
+      color: var(--el-text-color-secondary);
+    }
+    .summary-val {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--el-text-color-primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ============================================================
+       模块 2：9 阶目标阶梯池 (Flexbox Auto-Layout Table Component)
+       ============================================================ */
+    .section-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .section-title-text {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--el-text-color-regular);
+    }
+
+    .matrix-flex-table {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--el-border-color-dark);
+      border-bottom: none;
+      background: var(--el-bg-color);
+    }
+    .matrix-row {
+      display: flex;
+      width: 100%;
+      height: 32px;
+      min-height: 32px;
+      border-bottom: 1px solid var(--el-border-color-dark);
+      align-items: center;
+      font-size: 12px;
+      box-sizing: border-box;
+    }
+    .matrix-row.header {
+      background: var(--el-fill-color);
+      font-weight: 600;
+      color: var(--el-text-color-regular);
+      height: 34px;
+    }
+    .matrix-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      border-right: 1px solid var(--el-border-color-dark);
+      padding: 0 8px;
+      box-sizing: border-box;
+      white-space: nowrap;
+    }
+    .matrix-col:last-child {
+      border-right: none;
+    }
+    .col-id { width: 85px; min-width: 85px; }
+    .col-th { flex: 1; font-weight: 700; color: var(--el-color-primary); font-size: 13px; }
+    .col-rw { flex: 1; font-weight: 600; color: var(--el-color-warning); }
+    .col-hh { flex: 1; font-weight: 600; color: var(--el-color-success); }
+    .col-bg { width: 120px; min-width: 120px; }
+
+    /* ============================================================
+       模块 3：Bingo & Happy Hour (左右双栏 Auto Layout)
+       ============================================================ */
+    .apex-split-container {
+      display: flex;
+      width: 100%;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    /* 左栏：Bingo 面板 (Auto Layout) */
+    .bingo-panel-card {
+      flex: 1;
+      background: var(--el-fill-color-light);
+      border: 1px solid var(--el-border-color);
+      border-radius: var(--el-border-radius-base);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bingo-body-layout {
+      display: flex;
+      gap: 14px;
+      align-items: stretch;
+      width: 100%;
+    }
+
+    /* 3x3 Bingo 棋盘 (Auto Layout / Grid 240px x 294px) */
+    .bingo-board-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 240px;
+      min-width: 240px;
+    }
+    .sub-title-badge {
+      font-size: 11px;
+      color: var(--el-text-color-secondary);
+      margin-bottom: 5px;
+      text-align: center;
+      height: 18px;
+      line-height: 18px;
+    }
+
+    .bingo-board-frame {
+      width: 240px;
+      height: 294px;
+      background: var(--el-fill-color);
+      border: 1.5px solid var(--el-border-color);
+      border-radius: 6px;
+      padding: 6px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 6px;
+      box-sizing: border-box;
+    }
+    .board-cell-item {
+      background: var(--el-bg-color);
+      border: 1px solid var(--el-border-color);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 4px;
+      box-sizing: border-box;
+    }
+    .board-cell-tag {
+      font-size: 10px;
+      color: var(--el-text-color-secondary);
+      font-weight: 500;
+    }
+    .board-cell-th {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--el-color-primary);
+      line-height: 1.2;
+    }
+    .board-cell-rw {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--el-color-warning);
+    }
+
+    /* 连线奖励 Flexbox 表格 (100% 对齐 294px) */
+    .bingo-table-wrapper {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .bingo-lines-flex-table {
+      width: 100%;
+      height: 294px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--el-border-color-dark);
+      border-bottom: none;
+      background: var(--el-bg-color);
+      box-sizing: border-box;
+    }
+    .line-row {
+      display: flex;
+      width: 100%;
+      height: 29px;
+      min-height: 29px;
+      border-bottom: 1px solid var(--el-border-color-dark);
+      align-items: center;
+      font-size: 11.5px;
+      box-sizing: border-box;
+    }
+    .line-row.header {
+      background: var(--el-fill-color);
+      font-weight: 600;
+      color: var(--el-text-color-regular);
+    }
+    .line-row.grand {
+      background: rgba(245, 108, 108, 0.08);
+    }
+    .line-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      border-right: 1px solid var(--el-border-color-dark);
+      padding: 0 8px;
+      box-sizing: border-box;
+      white-space: nowrap;
+    }
+    .line-col:last-child {
+      border-right: none;
+    }
+    .col-line-no { width: 85px; min-width: 85px; font-weight: 600; }
+    .col-line-th { flex: 1; font-family: monospace; }
+    .col-line-rw { width: 95px; min-width: 95px; font-weight: 600; color: var(--el-color-warning); }
+
+    /* 右栏：Happy Hour 面板 */
+    .happy-hour-card {
+      width: 310px;
+      min-width: 310px;
+      background: var(--el-fill-color-light);
+      border: 1px solid var(--el-border-color);
+      border-radius: var(--el-border-radius-base);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-sizing: border-box;
+    }
+    .hh-item-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .hh-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--el-border-color-lighter);
+      font-size: 12px;
+    }
+    .hh-row:last-child {
+      border-bottom: none;
+    }
+
+    /* ============================================================
+       模块 4：宣传图与规则
+       ============================================================ */
+    .poster-preview-box {
+      width: 380px;
+      height: 160px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--el-border-color);
+      position: relative;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .poster-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .poster-caption-overlay {
+      position: absolute;
+      left: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 500;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      max-width: 330px;
+      line-height: 1.5;
+    }
+
+    .promo-text-box {
+      background: var(--el-fill-color-light);
+      padding: 10px 14px;
+      border-radius: 4px;
+      border: 1px solid var(--el-border-color-lighter);
+      line-height: 1.6;
+      font-size: 13px;
+      color: var(--el-text-color-primary);
+    }
+
+    .rules-scroll-container {
+      background: var(--el-fill-color-light);
+      padding: 12px 14px;
+      border-radius: 4px;
+      border: 1px solid var(--el-border-color-lighter);
+      line-height: 1.6;
+      font-size: 12.5px;
+      color: var(--el-text-color-regular);
+    }
+
+    /* 弹窗 Footer：Auto Layout 水平排列 */
+    .figma-dialog-footer {
+      height: 52px;
+      padding: 0 16px;
+      border-top: 1px solid var(--el-border-color);
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      background: var(--el-bg-color);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部控制条 (仅保留标题与明暗开关) -->
+  <header class="demo-topbar" data-name="Topbar / Control">
+    <div class="demo-topbar-title">
+      <span>NGSS 3.0・倍率巅峰挑战详情弹窗</span>
+    </div>
+    <div class="demo-actions">
+      <button class="demo-btn" onclick="toggleTheme()" title="切换明暗模式" aria-label="切换明暗模式" style="padding:6px 12px;font-size:15px;line-height:1;">🌓</button>
+    </div>
+  </header>
+
+  <!-- Figma 画布居中容器 -->
+  <main class="figma-canvas-container" data-name="Canvas / Artboard 1440">
+    
+    <!-- 弹窗主 Frame (Figma Component: Dialog / Multiplier Apex Detail) -->
+    <div class="figma-dialog-frame" data-name="Dialog / Window" id="mainModal">
+      
+      <!-- 弹窗 Header (Auto Layout Horizontal) -->
+      <header class="figma-dialog-header" data-name="Header">
+        <div class="header-title-group" data-name="Title Group">
+          <span class="header-title-text">活动详情</span>
+          <span class="tag-badge primary">倍率巅峰挑战</span>
+          <span class="tag-badge success">ID: 71</span>
+        </div>
+        <button type="button" class="header-close-btn" data-name="Close Button" aria-label="关闭">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 1024 1024">
+            <path fill="currentColor" d="M764.288 214.592L512 466.88L259.712 214.592a31.936 31.936 0 0 0-45.12 45.12L466.752 512L214.528 764.224a31.936 31.936 0 1 0 45.12 45.184L512 557.184l252.288 252.288a31.936 31.936 0 0 0 45.12-45.12L557.12 512.064l252.288-252.352a31.936 31.936 0 1 0-45.12-45.184z"/>
+          </svg>
+        </button>
+      </header>
+
+      <!-- 弹窗 Body (Auto Layout Vertical Stack) -->
+      <div class="figma-dialog-body" data-name="Body Content">
+        
+        <!-- 基础描述表格容器 (纯 Flexbox 构建) -->
+        <div class="desc-table-container" data-name="Descriptions / Table">
+          
+          <!-- 基础信息行 1 -->
+          <div class="desc-row" data-name="Row 1 / Basic">
+            <div class="desc-label">活动类型</div>
+            <div class="desc-content">
+              <strong style="color:var(--el-color-primary);">倍率巅峰挑战</strong>
+            </div>
+            <div class="desc-label">活动名称</div>
+            <div class="desc-content">
+              <strong>系统自带・倍率巅峰挑战</strong>
+            </div>
+          </div>
+
+          <!-- 基础信息行 2 -->
+          <div class="desc-row" data-name="Row 2 / Schedule">
+            <div class="desc-label">活动时间</div>
+            <div class="desc-content" style="flex-direction:column;align-items:flex-start;justify-content:center;">
+              <span>2026-09-03 00:00:00 至 2026-10-31 23:59:59</span>
+              <span style="font-size:11px;color:var(--el-text-color-secondary);margin-top:2px;">共 59 天・活动期间内每日重置上限</span>
+            </div>
+            <div class="desc-label">参与会员分层</div>
+            <div class="desc-content">
+              <span class="tag-badge">全部层级</span>
+            </div>
+          </div>
+
+          <!-- 基础信息行 3 -->
+          <div class="desc-row" data-name="Row 3 / Eligibility">
+            <div class="desc-label">有效会员标准</div>
+            <div class="desc-content" style="flex-direction:column;align-items:flex-start;justify-content:center;line-height:1.4;">
+              <span style="font-weight:600;margin-bottom:2px;">满足任一条件：</span>
+              <span style="color:var(--el-text-color-secondary);font-size:12px;">• 账号首充 ≥ 1 &nbsp;|&nbsp; • 活动时间充值 ≥ 2</span>
+              <span style="color:var(--el-text-color-secondary);font-size:12px;">• 活动时间打码 ≥ 3 &nbsp;|&nbsp; • 活动时间充值次数 ≥ 4 次</span>
+            </div>
+            <div class="desc-label">打码倍数</div>
+            <div class="desc-content">
+              <strong style="color:var(--el-color-primary);font-size:14px;">1</strong>&nbsp;倍流水
+            </div>
+          </div>
+
+          <!-- 基础信息行 4 -->
+          <div class="desc-row" data-name="Row 4 / Limits">
+            <div class="desc-label">同注册IP上限</div>
+            <div class="desc-content">0&nbsp;<span style="color:var(--el-text-color-secondary);font-size:12px;">(不限制)</span></div>
+            <div class="desc-label">同注册设备上限</div>
+            <div class="desc-content">0&nbsp;<span style="color:var(--el-text-color-secondary);font-size:12px;">(不限制)</span></div>
+          </div>
+
+          <!-- 基础信息行 5 -->
+          <div class="desc-row" data-name="Row 5 / Wallet">
+            <div class="desc-label">派奖钱包</div>
+            <div class="desc-content">
+              <span class="tag-badge primary">现金钱包</span>
+            </div>
+            <div class="desc-label">营销活动</div>
+            <div class="desc-content">
+              <span class="tag-badge">关闭</span>
+              <span style="font-size:11px;color:var(--el-text-color-secondary);margin-left:6px;">(仅展示，无单独领取入口)</span>
+            </div>
+          </div>
+
+          <!-- ====================================================
+               核心专区 1：倍率核心设置 (全宽 Auto Layout Card)
+               ==================================================== -->
+          <div class="desc-row" data-name="Row 6 / Multiplier Core Settings">
+            <div class="desc-label top-align">
+              <span style="font-weight:bold;color:var(--el-color-primary);">倍率核心设置</span>
+              <span style="font-size:11px;color:var(--el-text-color-secondary);">游戏・门槛・目标池</span>
+            </div>
+            <div class="desc-content full-col">
+              
+              <!-- 基础规则参数条 (Horizontal Auto Layout) -->
+              <div class="apex-summary-bar" data-name="Card / Summary Bar">
+                <div class="summary-item" data-name="Item / Game">
+                  <span class="summary-label">指定游戏</span>
+                  <div class="summary-val">
+                    <span>Spribe SP星际线</span>
+                  </div>
+                </div>
+                <div class="summary-item" data-name="Item / Budget">
+                  <span class="summary-label">每日派奖预算责任上限</span>
+                  <div class="summary-val" style="color:var(--el-color-warning);">
+                    <span>₹ 100,000</span>
+                  </div>
+                </div>
+                <div class="summary-item" data-name="Item / Reward Mode">
+                  <span class="summary-label">奖励计奖模式</span>
+                  <div class="summary-val">
+                    <span>固定金额派奖</span>
+                  </div>
+                </div>
+                <div class="summary-item" data-name="Item / Min Bet">
+                  <span class="summary-label">每笔最低有效投注额</span>
+                  <div class="summary-val">
+                    <span>₹ 3.00</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 9 阶目标阶梯池 (Flexbox Auto Layout Table) -->
+              <div data-name="Component / Target Matrix Table" style="display:flex;flex-direction:column;gap:6px;">
+                <div class="section-title-row" data-name="Table Header Title">
+                  <span class="section-title-text">🎯 阶梯目标池配置</span>
+                </div>
+                
+                <div class="matrix-flex-table" data-name="Table Container">
+                  <!-- 表头 -->
+                  <div class="matrix-row header" data-name="Row / Header">
+                    <div class="matrix-col col-id">目标ID</div>
+                    <div class="matrix-col col-th">达标门槛</div>
+                    <div class="matrix-col col-rw">基础固定奖励</div>
+                    <div class="matrix-col col-hh">Happy Hour 加码 (1.5×)</div>
+                    <div class="matrix-col col-bg">Bingo 棋盘</div>
+                  </div>
+                  <!-- T1 -->
+                  <div class="matrix-row" data-name="Row / T1">
+                    <div class="matrix-col col-id"><strong>T1</strong></div>
+                    <div class="matrix-col col-th">≥ 1.00×</div>
+                    <div class="matrix-col col-rw">₹ 5.00</div>
+                    <div class="matrix-col col-hh">₹ 7.50</div>
+                    <div class="matrix-col col-bg"><span class="tag-badge primary">已入盘</span></div>
+                  </div>
+                  <!-- T2 -->
+                  <div class="matrix-row" data-name="Row / T2">
+                    <div class="matrix-col col-id"><strong>T2</strong></div>
+                    <div class="matrix-col col-th">≥ 2.00×</div>
+                    <div class="matrix-col col-rw">₹ 8.00</div>
+                    <div class="matrix-col col-hh">₹ 12.00</div>
+                    <div class="matrix-col col-bg"><span class="tag-badge primary">已入盘</span></div>
+                  </div>
+                  <!-- T3 -->
+                  <div class="matrix-row" data-name="Row / T3">
+                    <div class="matrix-col col-id"><strong>T3</strong></div>
+                    <div class="matrix-col col-th">≥ 3.00×</div>
+                    <div class="matrix-col col-rw">₹ 12.00</div>
+                    <div class="matrix-col col-hh">₹ 18.00</div>
+                    <div class="matrix-col col-bg"><span class="tag-badge primary">已入盘</span></div>
+                  </div>
+                  <!-- T4 -->
+                  <div class="matrix-row" data-name="Row / T4">
+                    <div class="matrix-col col-id"><strong>T4</strong></div>
+                    <div class="matrix-col col-th">≥ 4.00×</div>
+                    <div class="matrix-col col-rw">₹ 18.00</div>
+                    <div class="matrix-col col-hh">₹ 27.00</div>
+                    <div class="matrix-col col-bg"><span class="tag-badge primary">已入盘</span></div>
+                  </div>
+                  <!-- T5 -->
+                  <div class="matrix-row" data-name="Row / T5">
+                    <div class="matrix-col col-id"><strong>T5</strong></div>
+                    <div class="matrix-col col-th">≥ 5.00×</div>
+                    <div class="matrix-col col-rw">₹ 25.00</div>
+                    <div class="matrix-col col-hh">₹ 37.50</div>
+                    <div class="matrix-col col-bg"><span class="tag-badge primary">已入盘</span></div>
+                  </div>
+                  <!-- T6 -->
+                  <div class="matrix-row" data-name="Row / T6">
+                    <div class="matrix-col col-id"><strong>T6</strong></div>
+                    <div class="matrix-col col-th">≥ 7.00×</div>
+                    <div class="matrix-col col-rw">₹ 35.00</div>
+                    <div class="matrix-col col-hh">₹ 52.50</div>
+                    <div class="matrix-col col-bg"><span class="tag-badge primary">已入盘</span></div>
+                  </div>
+                  <!-- T7 -->
+                  <div class="matrix-row" data-name="Row / T7">
+                    <div class="matrix-col col-id"><strong>T7</strong></div>
+                    <div class="matrix-col col-th">≥ 9.00×</div>
+                    <div class="matrix-col col-rw">₹ 50.00</div>
+                    <div class="matrix-col col-hh">₹ 75.00</div>
+                    <div class="matrix-col col-bg"><span class="tag-badge primary">已入盘</span></div>
+                  </div>
+                  <!-- T8 -->
+                  <div class="matrix-row" data-name="Row / T8">
+                    <div class="matrix-col col-id"><strong>T8</strong></div>
+                    <div class="matrix-col col-th">≥ 10.00×</div>
+                    <div class="matrix-col col-rw">₹ 80.00</div>
+                    <div class="matrix-col col-hh">₹ 120.00</div>
+                    <div class="matrix-col col-bg"><span class="tag-badge primary">已入盘</span></div>
+                  </div>
+                  <!-- T9 -->
+                  <div class="matrix-row" data-name="Row / T9">
+                    <div class="matrix-col col-id"><strong>T9</strong></div>
+                    <div class="matrix-col col-th">≥ 11.00×</div>
+                    <div class="matrix-col col-rw">₹ 120.00</div>
+                    <div class="matrix-col col-hh">₹ 180.00</div>
+                    <div class="matrix-col col-bg"><span class="tag-badge primary">已入盘</span></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- ====================================================
+               核心专区 2：Bingo 3×3 棋盘与快乐时光 (左右双栏 Auto Layout)
+               ==================================================== -->
+          <div class="desc-row" data-name="Row 7 / Bingo & Happy Hour">
+            <div class="desc-label top-align">
+              <span style="font-weight:bold;color:var(--el-color-primary);">Bingo & 加码</span>
+              <span style="font-size:11px;color:var(--el-text-color-secondary);">连线与时段</span>
+            </div>
+            <div class="desc-content full-col">
+              
+              <div class="apex-split-container" data-name="Container / Split Columns">
+                
+                <!-- 左栏：Bingo 3x3 棋盘与连线奖励设置 -->
+                <div class="bingo-panel-card" data-name="Card / Bingo Module">
+                  <div class="section-title-row" data-name="Bingo Title Row">
+                    <span class="section-title-text">🎲 Bingo 3×3 棋盘与连线奖励设置</span>
+                    <span class="tag-badge primary">已开启</span>
+                  </div>
+
+                  <div class="bingo-body-layout" data-name="Bingo Body Layout">
+                    
+                    <!-- 3x3 棋盘 Frame -->
+                    <div class="bingo-board-wrapper" data-name="Frame / 3x3 Board">
+                      <div class="sub-title-badge">3×3 棋盘布局</div>
+                      <div class="bingo-board-frame" data-name="Grid / 3x3 Cells">
+                        <div class="board-cell-item" data-name="Cell / T8">
+                          <span class="board-cell-tag">T8</span>
+                          <span class="board-cell-th">≥ 10×</span>
+                          <span class="board-cell-rw">₹ 80</span>
+                        </div>
+                        <div class="board-cell-item" data-name="Cell / T1">
+                          <span class="board-cell-tag">T1</span>
+                          <span class="board-cell-th">≥ 1×</span>
+                          <span class="board-cell-rw">₹ 5</span>
+                        </div>
+                        <div class="board-cell-item" data-name="Cell / T6">
+                          <span class="board-cell-tag">T6</span>
+                          <span class="board-cell-th">≥ 7×</span>
+                          <span class="board-cell-rw">₹ 35</span>
+                        </div>
+                        <div class="board-cell-item" data-name="Cell / T3">
+                          <span class="board-cell-tag">T3</span>
+                          <span class="board-cell-th">≥ 3×</span>
+                          <span class="board-cell-rw">₹ 12</span>
+                        </div>
+                        <div class="board-cell-item" data-name="Cell / T5">
+                          <span class="board-cell-tag">T5</span>
+                          <span class="board-cell-th">≥ 5×</span>
+                          <span class="board-cell-rw">₹ 25</span>
+                        </div>
+                        <div class="board-cell-item" data-name="Cell / T7">
+                          <span class="board-cell-tag">T7</span>
+                          <span class="board-cell-th">≥ 9×</span>
+                          <span class="board-cell-rw">₹ 50</span>
+                        </div>
+                        <div class="board-cell-item" data-name="Cell / T4">
+                          <span class="board-cell-tag">T4</span>
+                          <span class="board-cell-th">≥ 4×</span>
+                          <span class="board-cell-rw">₹ 18</span>
+                        </div>
+                        <div class="board-cell-item" data-name="Cell / T9">
+                          <span class="board-cell-tag">T9</span>
+                          <span class="board-cell-th">≥ 11×</span>
+                          <span class="board-cell-rw">₹ 120</span>
+                        </div>
+                        <div class="board-cell-item" data-name="Cell / T2">
+                          <span class="board-cell-tag">T2</span>
+                          <span class="board-cell-th">≥ 2×</span>
+                          <span class="board-cell-rw">₹ 8</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- 连线奖励表 Frame (Auto Layout 垂直) -->
+                    <div class="bingo-table-wrapper" data-name="Frame / Lines Reward Table">
+                      <div class="sub-title-badge" style="text-align:left;">连线奖励设置</div>
+                      <div class="bingo-lines-flex-table" data-name="Table / Lines Stack">
+                        <!-- 表头 -->
+                        <div class="line-row header" data-name="Row / Header">
+                          <div class="line-col col-line-no">连线编号</div>
+                          <div class="line-col col-line-th">包含目标门槛</div>
+                          <div class="line-col col-line-rw">连线奖励</div>
+                        </div>
+                        <!-- 横 1 -->
+                        <div class="line-row" data-name="Row / Line H1">
+                          <div class="line-col col-line-no">横线 1</div>
+                          <div class="line-col col-line-th">10× · 1× · 7×</div>
+                          <div class="line-col col-line-rw">₹ 10.00</div>
+                        </div>
+                        <!-- 横 2 -->
+                        <div class="line-row" data-name="Row / Line H2">
+                          <div class="line-col col-line-no">横线 2</div>
+                          <div class="line-col col-line-th">3× · 5× · 9×</div>
+                          <div class="line-col col-line-rw">₹ 10.00</div>
+                        </div>
+                        <!-- 横 3 -->
+                        <div class="line-row" data-name="Row / Line H3">
+                          <div class="line-col col-line-no">横线 3</div>
+                          <div class="line-col col-line-th">4× · 11× · 2×</div>
+                          <div class="line-col col-line-rw">₹ 10.00</div>
+                        </div>
+                        <!-- 竖 1 -->
+                        <div class="line-row" data-name="Row / Line V1">
+                          <div class="line-col col-line-no">直线 1</div>
+                          <div class="line-col col-line-th">10× · 3× · 4×</div>
+                          <div class="line-col col-line-rw">₹ 10.00</div>
+                        </div>
+                        <!-- 竖 2 -->
+                        <div class="line-row" data-name="Row / Line V2">
+                          <div class="line-col col-line-no">直线 2</div>
+                          <div class="line-col col-line-th">1× · 5× · 11×</div>
+                          <div class="line-col col-line-rw">₹ 10.00</div>
+                        </div>
+                        <!-- 竖 3 -->
+                        <div class="line-row" data-name="Row / Line V3">
+                          <div class="line-col col-line-no">直线 3</div>
+                          <div class="line-col col-line-th">7× · 9× · 2×</div>
+                          <div class="line-col col-line-rw">₹ 10.00</div>
+                        </div>
+                        <!-- 斜 1 -->
+                        <div class="line-row" data-name="Row / Line D1">
+                          <div class="line-col col-line-no">对角线 ↘</div>
+                          <div class="line-col col-line-th">10× · 5× · 2×</div>
+                          <div class="line-col col-line-rw">₹ 10.00</div>
+                        </div>
+                        <!-- 斜 2 -->
+                        <div class="line-row" data-name="Row / Line D2">
+                          <div class="line-col col-line-no">对角线 ↙</div>
+                          <div class="line-col col-line-th">7× · 5× · 4×</div>
+                          <div class="line-col col-line-rw">₹ 10.00</div>
+                        </div>
+                        <!-- 全盘 -->
+                        <div class="line-row grand" data-name="Row / Full Board">
+                          <div class="line-col col-line-no" style="color:var(--el-color-danger);">全盘完成</div>
+                          <div class="line-col col-line-th" style="color:var(--el-color-danger);font-weight:600;">全盘点亮 (共 9 阶)</div>
+                          <div class="line-col col-line-rw" style="color:var(--el-color-danger);font-size:12px;">₹ 125.00</div>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <!-- 右栏：Happy Hour 面板 Frame -->
+                <div class="happy-hour-card" data-name="Card / Happy Hour Module">
+                  <div class="section-title-row" data-name="Happy Hour Title Row">
+                    <span class="section-title-text">⚡ 快乐时光 (Happy Hour)</span>
+                    <span class="tag-badge warning">已开启</span>
+                  </div>
+
+                  <div class="hh-item-stack" data-name="Stack / Details">
+                    <div class="hh-row" data-name="Row / Multiplier Boost">
+                      <span style="color:var(--el-text-color-secondary);">基础加成倍率</span>
+                      <strong style="color:var(--el-color-success);font-size:14px;">1.50 ×</strong>
+                    </div>
+                    <div class="hh-row" data-name="Row / Schedule Cycle">
+                      <span style="color:var(--el-text-color-secondary);">周期</span>
+                      <span style="font-weight:500;">每周 一、三、四、五、六</span>
+                    </div>
+                    <div class="hh-row" data-name="Row / Active Hours">
+                      <span style="color:var(--el-text-color-secondary);">每日生效时段</span>
+                      <strong style="color:var(--el-color-primary);">15:35:00 ~ 20:00:00</strong>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <!-- 基础信息行 8：终端与文字展示 -->
+          <div class="desc-row" data-name="Row 8 / Terminals">
+            <div class="desc-label">活动申领终端</div>
+            <div class="desc-content" style="gap:6px;">
+              <span class="tag-badge">H5领取</span>
+              <span class="tag-badge">Android APP</span>
+              <span class="tag-badge">iOS APP</span>
+              <span class="tag-badge">PWA</span>
+            </div>
+            <div class="desc-label">是否展示文字</div>
+            <div class="desc-content">
+              <span class="tag-badge success">显示</span>
+            </div>
+          </div>
+
+          <!-- 基础信息行 9：宣传素材与文案 -->
+          <div class="desc-row" data-name="Row 9 / Marketing">
+            <div class="desc-label top-align">宣传图预览</div>
+            <div class="desc-content">
+              <div class="poster-preview-box" data-name="Box / Poster Banner">
+                <img src="https://ngss3test16.ngss.bet/images/ngss/2057071321712054274/38e9797f2583957de4a5a14536b12ffd09c9473231a97cde3ab7f49d08e370ed.png" alt="宣传图" class="poster-image">
+                <div class="poster-caption-overlay">
+                  最高奖励 100,000，挑战超高倍率，<br>
+                  达标即派奖，过期自动失效。
+                </div>
+              </div>
+            </div>
+            <div class="desc-label top-align">宣传简介文案</div>
+            <div class="desc-content" style="flex-direction:column;align-items:stretch;justify-content:center;gap:8px;">
+              <div class="promo-text-box" data-name="Text Box / Intro">
+                最高奖励 100,000，挑战超高倍率，<br>
+                <strong>达标即派奖，过期自动失效。</strong>
+              </div>
+              <div style="font-size:12px;color:var(--el-text-color-secondary);">
+                活动简介：<span style="color:var(--el-text-color-placeholder);">- 无附加简介 -</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 基础信息行 10：规则说明 -->
+          <div class="desc-row" data-name="Row 10 / Rules">
+            <div class="desc-label top-align">规则说明</div>
+            <div class="desc-content full-col">
+              <div class="rules-scroll-container" data-name="Container / Rules Paragraph">
+                1. 活动期间在指定合资格游戏（Spribe SP星际线）内下注，单笔有效投注 ≥ ₹3.00，达成指定倍率即可获得对应阶梯奖励；<br>
+                2. 奖励以固定金额即时派发至现金钱包，需完成 1 倍打码流水要求后方可出款；<br>
+                3. 每笔注单仅匹配一个最高未完成目标，同一目标每位玩家每日仅限派奖一次；<br>
+                4. 达成 Bingo 连线时将自动派发额外连线奖 ₹10/条，点亮全部 9 格可领全盘大奖 ₹125；<br>
+                5. 快乐时光（周一、三、四、五、六 15:35-20:00）期间基础奖励享 1.5× 加码；<br>
+                6. 本活动仅限账号本人正常游戏，严禁使用外挂、脚本等作弊行为；为避免理解差异，平台保留最终解释权。
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- 弹窗 Footer (Auto Layout Horizontal) -->
+      <footer class="figma-dialog-footer" data-name="Footer / Actions">
+        <button type="button" class="demo-btn" data-name="Button / Cancel">关 闭</button>
+        <button type="button" class="demo-btn primary" data-name="Button / Submit">复制配置</button>
+      </footer>
+
+    </div>
+
+  </main>
+
+  <script>
+    // 明暗主题切换 (支持导入 Figma 两种模式)
+    function toggleTheme() {
+      const html = document.documentElement;
+      if (html.classList.contains('dark')) {
+        html.classList.remove('dark');
+        html.classList.add('light');
+      } else {
+        html.classList.remove('light');
+        html.classList.add('dark');
+      }
+    }
+  </script>
+</body>
+</html>
