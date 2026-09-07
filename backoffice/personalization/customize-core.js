@@ -4795,6 +4795,7 @@
     clone,
     themeDefaultFor,
     effectiveNav,
+    localizedText,
     snapshotState,
     restoreState,
     applyDraft,

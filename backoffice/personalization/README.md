@@ -1,8 +1,8 @@
 # 个性化改版 · 演示
 
 - [打开个性化配置页](index.html)
-- [PM / UI 演示指南](presentation.html)
-- [五分钟演示提词](PRESENTATION.md)
+- [PM / UI 概念與操作指南](presentation.html)
+- [會議提詞與操作清單](PRESENTATION.md)
 - [首页样式对照](design-source-map.json) / [页面样式对照](page-design-source-map.json)
 
 PC 管理页面，建议窗口宽度至少 1366 px。右侧预览为 H5 玩家网站。
@@ -16,4 +16,4 @@ NG 主题包含 58 款样式及绿黑、橙白、藍白配色；可配置默认�
 
 共享玩家组件位于 player-components.js / player-pages.js；组件目录位于 ng-design-catalog.js /
 ng-page-designs.js；管理流程位于 customize-studio.js。配色使用共享 CSS 变量，组件按区域更新。
-本地浏览器版本 pages-20260907-5 的 61 项回归检查通过。
+本地浏览器版本 pages-20260907-6 的 61 项回归检查通过。

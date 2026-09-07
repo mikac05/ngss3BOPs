@@ -1,5 +1,5 @@
 {
-  "build": "pages-20260907-5",
+  "build": "pages-20260907-6",
   "files": {
     ".gitattributes": "705fd4d6451a31d36b3df7de96f83f30ac976c9b4a6d1e51671d8e2f33e2d0da",
     ".nojekyll": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -74,23 +74,24 @@
     "assets/ng-design/logo-letters.svg": "97d9cd5f13f4eb1276f41bdeb5eb16a649196e69d2eec43242c683ef9c19c7da",
     "customize-base.css": "071a471660f475141c2180d291d9a8cd41287615b6593afeeab22210a0895772",
     "customize-checks.js": "03b7721d3580e780b6f768450157fb20f508678bd516eeb12f7bc97fd1357e26",
-    "customize-core.js": "07c92acafac80bcf8becff6c186ec2d6b2c7aeeb00e2b01d4997a374d207efda",
+    "customize-core.js": "04c187e31d768efdea0fce6d43620af9c346afc464b2667beee32c6f8280a0e4",
     "customize-studio.css": "07dfbe9bd6ac5c31f23eb6a7bcb4bdfe286a8b9aed9011753c80f4b14aeab933",
-    "customize-studio.js": "9d0f5f1c8d028f8bdc5e6fe78c7f0ec302bdbb622f17f89793d97c5750d53ef4",
+    "customize-studio.js": "0a689ab94333cb1aa9c5027af9d15ad5ba26d74958f8e3db60d665919071e2ae",
     "design-source-map.json": "695a2dff9c1fa0515bcc753ecbc8da7621f5221ed41b6f1fe823332a23ee4eaa",
-    "index.html": "cc7ce2980763efd1238a9ee2636f7b50ba0f59517fc57c10db580de66fd4420e",
+    "index.html": "58dab8c328ba14f2255959bc6983f9830a241a8b687bd0b83a46e61a8fdc8e66",
     "ng-assets.js": "4d7e2ddb2574e1e1a3b0457d433d0f790b54f8a505e554285a40301a7128e1f9",
     "ng-design-catalog.js": "c79e86e97ae97f989758dc88bb88cc5cf298ece4da57a16259cbeb9ae57e9eb2",
     "ng-page-designs.js": "0aa80b1636037c9c59c10ecb062a24a7c2d45ba11e29361d9afd1a9570bc3863",
     "page-design-source-map.json": "a9b906f09e2a95f82f694e894c2e766df7d0eed1ac0975bb72e42ea404fb50ee",
     "player-components.css": "b4e0c4dc55f3c897f9ce647eb61768fa2f4eb8a8f8f8925d20f9d901f2061f9e",
     "player-components.js": "afc750fc8ca4aaa439a0420c198696f220bbfc31bc7cfcdb4b41850dc4cafe4f",
-    "player-home-preview.html": "63332cd02e3882034ef835a95ba3d21efa429162f72aea34e1b9b676bd3df0e3",
+    "player-home-preview.html": "04c1e572c7aee65af20c9f507f530193fc38415f59d30418fa5e00315eb35de2",
     "player-pages.css": "979fcf4c5ab99c0c759d4fd7bcc6e658f12fbf57ac35e802a31c54f57e579b56",
     "player-pages.js": "7da9708c0e99d995d008e481af7772de3484a25860af036c5cb4a85853edb195",
     "player-preview.js": "ec56a10d4b27dd154caf51c5a370e486abb8cfec9954972f5aa8e69a0e97ff88",
-    "presentation.html": "0feab06795f69463748e947cc75162e060d2387392c1c5442b6b5040909318f7",
-    "PRESENTATION.md": "ea7979d5b0daf7528014a0a34fc13cd46d795e39afff2f85ac4324fce144e347",
-    "README.md": "027c961af5703336f4f20b9a5bfc166c8054b24c5430bfdd4c4dddb45458c1e3"
-  }
+    "presentation.html": "687b9e2e18515549659ee8a3334fe67d83cc1f7837482c5cb3294ceecd72f145",
+    "PRESENTATION.md": "af4f667801f57a8d49a8f6e7ea324e29b70af97cbd4f9c5663ff31dc3a83d271",
+    "README.md": "bae3427aaf992a077d3588e0b52ee9cc2b11b5092e779525ee541b0ca84a6223"
+  },
+  "guideRevision": "guide-20260907-1"
 }

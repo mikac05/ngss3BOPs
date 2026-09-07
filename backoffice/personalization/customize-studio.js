@@ -551,7 +551,7 @@
     pane.setAttribute("data-studio-localized", "");
     if (!frame || !pane.contains(frame)) {
       pane.innerHTML =
-        '<div id="studio-preview-tools"></div><div class="studio-preview-stage"><div class="studio-device"><iframe src="player-home-preview.html?v=pages-20260907-5" title="交互式玩家预览" class="home-preview-frame"></iframe></div></div><div id="studio-preview-note"></div>';
+        '<div id="studio-preview-tools"></div><div class="studio-preview-stage"><div class="studio-device"><iframe src="player-home-preview.html?v=pages-20260907-6" title="交互式玩家预览" class="home-preview-frame"></iframe></div></div><div id="studio-preview-note"></div>';
       frame = pane.querySelector("iframe");
       frameReady = false;
       frame.addEventListener("load", () => {
@@ -751,7 +751,7 @@
       "</details>" +
       (s().ui.fallbackMessage
         ? '<p class="studio-save-message" role="status">' +
-          E(s().ui.fallbackMessage) +
+          E(api.localizedText(s().ui.fallbackMessage)) +
           "</p>"
         : "");
     if (lastPanel !== s().selectedId) {

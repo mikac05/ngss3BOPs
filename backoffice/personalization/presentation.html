@@ -1,219 +1,1604 @@
 <!doctype html>
-<html lang="zh-Hans">
+<html lang="zh-Hant">
   <head>
     <meta charset="utf-8" />
-    <title>个性化改版 · 演示指南</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="給 PM 與 UI 的個性化系統概念指南：理解站點預設、玩家選擇範圍、元件樣式與即時預覽，透過五個情境實際驗證。"
+    />
+    <title>個性化改版｜概念與操作指南</title>
     <style>
       :root {
         color-scheme: dark;
+        --bg: #121517;
+        --panel: #1b2024;
+        --panel2: #22292e;
+        --line: #344047;
+        --text: #ecf1f4;
+        --muted: #a7b4bc;
+        --blue: #8ec5f5;
+        --green: #a1d8bd;
+        --orange: #edbc8e;
+        --primary: #337ab7;
       }
       * {
         box-sizing: border-box;
       }
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 96px;
+      }
       body {
         margin: 0;
-        background: #141414;
-        color: #e5eaf3;
+        min-width: 1280px;
+        background: var(--bg);
+        color: var(--text);
         font:
-          14px/1.6 "Microsoft YaHei",
-          Arial,
+          16px/1.75 "Noto Sans TC",
+          "Microsoft JhengHei",
           sans-serif;
       }
-      main {
-        width: 1120px;
-        margin: 50px auto;
-      }
-      header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #414243;
-        padding-bottom: 25px;
-        margin-bottom: 25px;
-      }
-      h1 {
-        font-size: 28px;
-        margin: 6px 0;
-      }
-      h2 {
-        font-size: 17px;
-        margin: 0 0 10px;
-      }
-      p {
-        color: #a3a6ad;
-        margin: 8px 0;
-      }
       a {
-        color: #79bbff;
+        color: inherit;
         text-decoration: none;
       }
+      button,
+      input {
+        font: inherit;
+      }
+      button,
+      a,
+      input {
+        -webkit-tap-highlight-color: transparent;
+      }
+      button {
+        cursor: pointer;
+      }
+      a:focus-visible,
+      button:focus-visible,
+      input:focus-visible,
+      summary:focus-visible {
+        outline: 3px solid var(--blue);
+        outline-offset: 5px;
+      }
       a:hover {
-        text-decoration: underline;
+        color: var(--blue);
       }
-      .start {
-        background: #337ab7;
-        color: white;
-        padding: 12px 22px;
+      p {
+        margin: 0;
+        color: var(--muted);
+      }
+      h1,
+      h2,
+      h3 {
+        line-height: 1.35;
+        margin: 0;
+        font-weight: 650;
+        letter-spacing: 0.01em;
+      }
+      h2 {
+        font-size: 30px;
+      }
+      h3 {
+        font-size: 19px;
+      }
+      strong {
+        font-weight: 650;
+      }
+      svg {
+        display: block;
+      }
+      .skip {
+        position: fixed;
+        left: 20px;
+        top: -80px;
+        padding: 12px;
+        background: var(--primary);
+        z-index: 99;
+      }
+      .skip:focus {
+        top: 10px;
+      }
+      .topbar {
+        height: 72px;
+        border-bottom: 1px solid var(--line);
+        background: #121517f5;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 36px;
+      }
+      .brand {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        font-size: 15px;
+      }
+      .brand-mark {
+        font-size: 13px;
+        font-weight: 800;
+        border: 1px solid #639ac3;
+        border-radius: 6px;
+        color: var(--blue);
+        padding: 2px 8px;
+      }
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        font-size: 14px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        padding: 10px 19px;
+        border: 1px solid #527fa0;
+        border-radius: 6px;
+        background: var(--primary);
+        color: #fff;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .btn:hover {
+        background: #438bc5;
+        color: #fff;
+      }
+      .btn.secondary {
+        background: transparent;
+        border-color: var(--line);
+        color: var(--text);
+      }
+      .btn.secondary:hover {
+        border-color: var(--blue);
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: 164px minmax(0, 1fr);
+        gap: 44px;
+        width: calc(100% - 72px);
+        max-width: 1416px;
+        margin: auto;
+      }
+      .rail {
+        position: sticky;
+        top: 108px;
+        align-self: start;
+        padding-top: 4px;
+        font-size: 13px;
+      }
+      .rail small {
+        display: block;
+        color: #748792;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        margin-bottom: 19px;
+      }
+      .rail a {
+        display: flex;
+        gap: 13px;
+        padding: 10px 0;
+        color: var(--muted);
+        border-left: 2px solid transparent;
+        padding-left: 13px;
+      }
+      .rail a[aria-current="location"] {
+        color: var(--blue);
+        border-color: var(--blue);
+        background: #8ec5f50a;
+      }
+      .rail span {
+        color: #73848f;
+        font-variant-numeric: tabular-nums;
+      }
+      .rail-note {
+        border-top: 1px solid var(--line);
+        margin-top: 25px;
+        padding: 18px 0 0 15px;
+        font-size: 12px;
+        line-height: 1.8;
+        color: #81949f;
+      }
+      .content {
+        min-width: 0;
+      }
+      .section {
+        padding: 64px 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .eyebrow {
+        font-size: 12px;
+        letter-spacing: 0.15em;
+        color: var(--green);
+        font-weight: 600;
+        margin-bottom: 18px;
+      }
+      .section-heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 26px;
+        margin-bottom: 30px;
+      }
+      .section-heading p {
+        max-width: 470px;
+        margin-top: 13px;
+      }
+      .index {
+        font-size: 12px;
+        color: #7f949f;
+        letter-spacing: 0.15em;
+        margin-bottom: 10px;
+      }
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--line);
         border-radius: 4px;
+        padding: 3px 9px;
+        color: var(--muted);
+        font-size: 12px;
+        white-space: nowrap;
       }
-      small {
-        color: #79bbff;
+      .hero {
+        padding-top: 64px;
       }
-      .principles {
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.12fr 1fr;
+        gap: 40px;
+        align-items: center;
+      }
+      .hero h1 {
+        font-size: 44px;
+        letter-spacing: -0.025em;
+        line-height: 1.28;
+        margin-bottom: 24px;
+      }
+      .hero h1 em {
+        font-style: normal;
+        color: var(--green);
+      }
+      .hero .lead {
+        max-width: 540px;
+        font-size: 17px;
+        line-height: 1.95;
+      }
+      .hero-actions {
+        display: flex;
+        gap: 12px;
+        margin: 29px 0 15px;
+      }
+      .hint {
+        font-size: 12px;
+        color: #8da0ab;
+      }
+      .hero-foot {
+        display: flex;
+        gap: 25px;
+        margin-top: 36px;
+        padding-top: 21px;
+        border-top: 1px solid var(--line);
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .hero-foot strong {
+        color: var(--text);
+        margin-right: 8px;
+      }
+      .concept-board {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        padding: 24px;
+        background: linear-gradient(135deg, #222e34, #1b2024 80%);
+        box-shadow: 0 20px 60px #0002;
+      }
+      .board-label {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        color: #9eafb8;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 22px;
+      }
+      .rule-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 13px 0;
+        border-bottom: 1px solid #ffffff10;
+        font-size: 13px;
+      }
+      .rule-row strong {
+        font-size: 14px;
+      }
+      .palette {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .dot {
+        width: 13px;
+        height: 13px;
+        background: var(--orange);
+        border-radius: 50%;
+        display: inline-block;
+        flex: none;
+      }
+      .dot.blue {
+        background: #89b9ef;
+      }
+      .flow-connector {
+        text-align: center;
+        color: #8da6b2;
+        font-size: 12px;
+        padding: 18px 0;
+      }
+      .player-pair {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .mini-site {
+        background: #f3f5f8;
+        color: #333;
+        border-radius: 8px;
+        padding: 12px;
+        --accent: #ecaa6e;
+      }
+      .mini-site.blue {
+        --accent: #80abe6;
+      }
+      .mini-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 10px;
+        font-weight: 800;
+        margin-bottom: 12px;
+      }
+      .mini-bar i {
+        height: 8px;
+        width: 26px;
+        border-radius: 8px;
+        background: var(--accent);
+      }
+      .mini-banner {
+        background: color-mix(in srgb, var(--accent) 22%, white);
+        border-radius: 4px;
+        padding: 12px 9px;
+        font-size: 11px;
+        font-weight: 600;
+        border-left: 3px solid var(--accent);
+      }
+      .mini-blocks {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+        margin: 9px 0;
+      }
+      .mini-blocks i {
+        height: 31px;
+        border-radius: 4px;
+        background: #dde2e8;
+      }
+      .mini-nav {
+        height: 7px;
+        border-radius: 4px;
+        background: var(--accent);
+        width: 65%;
+        margin: 13px auto 2px;
+      }
+      .mini-caption {
+        font-size: 11px;
+        color: #8295a0;
+        text-align: center;
+        margin-top: 10px;
+      }
+      .concept-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 16px;
+      }
+      .concept-card {
+        padding: 26px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+      }
+      .concept-card .kicker {
+        color: var(--blue);
+        font-size: 12px;
+        margin-bottom: 17px;
+      }
+      .concept-card h3 {
+        margin-bottom: 13px;
+      }
+      .concept-card p {
+        font-size: 14px;
+      }
+      .example {
+        border-top: 1px solid var(--line);
+        padding-top: 15px;
+        margin-top: 21px;
+        font-size: 13px;
+        color: var(--green);
+      }
+      .takeaway {
+        display: flex;
+        gap: 15px;
+        align-items: flex-start;
+        background: #a1d8bd0a;
+        border-left: 3px solid var(--green);
+        padding: 17px 22px;
+        margin-top: 22px;
+        font-size: 14px;
+      }
+      .takeaway strong {
+        color: var(--green);
+        white-space: nowrap;
+      }
+      .workspace {
+        display: grid;
+        grid-template-columns: 120px 1fr 1.22fr;
+        gap: 10px;
+        background: #111416;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 14px;
         margin-bottom: 24px;
       }
-      .card,
-      .step {
-        border: 1px solid #414243;
-        background: #1d1e1f;
-        border-radius: 5px;
+      .zone {
         padding: 22px;
+        background: var(--panel);
+        border: 1px solid #303a40;
+        border-radius: 6px;
+        min-height: 210px;
       }
-      .steps {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
-      }
-      .step {
-        display: flex;
-        gap: 17px;
-      }
-      .number {
-        color: #79bbff;
-        font-size: 23px;
-      }
-      .step p {
-        margin: 0 0 12px;
-      }
-      .links {
-        display: flex;
-        gap: 18px;
-        flex-wrap: wrap;
-      }
-      .foot {
-        display: flex;
-        justify-content: space-between;
-        gap: 25px;
-        padding-top: 25px;
+      .zone.nav {
+        padding: 19px 13px;
         font-size: 12px;
       }
-      .foot p {
-        max-width: 770px;
+      .zone.nav div {
+        padding: 8px;
+        margin-top: 7px;
+        background: #ffffff06;
+        border-radius: 4px;
       }
-      .review {
-        margin-top: 24px;
-        border-left: 3px solid #337ab7;
-        padding: 6px 20px;
+      .zone.nav div:first-of-type {
+        background: #337ab733;
+        color: var(--blue);
       }
-      .review p {
-        color: #e5eaf3;
+      .zone .zone-label {
+        font-size: 12px;
+        color: var(--blue);
+        display: block;
+        margin-bottom: 18px;
+      }
+      .zone h3 {
+        font-size: 17px;
+        margin-bottom: 12px;
+      }
+      .zone p {
+        font-size: 13px;
+      }
+      .sample-options {
+        display: flex;
+        gap: 8px;
+        margin-top: 23px;
+      }
+      .sample-options span {
+        flex: 1;
+        height: 47px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        display: grid;
+        place-items: center;
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .sample-options span:first-child {
+        color: var(--blue);
+        border-color: #6397c1;
+        background: #337ab722;
+      }
+      .zone.preview {
+        background:
+          radial-gradient(ellipse at top, #29423850, transparent 80%),
+          var(--panel);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .preview-tags {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+      }
+      .preview-tags span {
+        font-size: 11px;
+        border: 1px solid var(--line);
+        padding: 3px 8px;
+        border-radius: 4px;
+        color: #b6c6ce;
+      }
+      .flowline {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .flowline li {
+        position: relative;
+        padding-top: 20px;
+        border-top: 2px solid #43545e;
+      }
+      .flowline li:before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        background: var(--blue);
+        border-radius: 50%;
+        position: absolute;
+        top: -5px;
+      }
+      .flowline strong {
+        font-size: 14px;
+      }
+      .flowline p {
+        font-size: 13px;
+        margin-top: 6px;
+      }
+      .flowline b {
+        color: var(--blue);
+        font-size: 12px;
+        display: block;
+        margin-bottom: 8px;
+      }
+      .features {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 34px;
+      }
+      .feature {
+        padding: 25px 0;
+        display: grid;
+        grid-template-columns: 36px 1fr;
+        gap: 14px;
+        border-top: 1px solid var(--line);
+      }
+      .feature .symbol {
+        font-size: 19px;
+        color: var(--green);
+        height: 34px;
+        width: 34px;
+        display: grid;
+        place-items: center;
+        border: 1px solid #a1d8bd33;
+        border-radius: 7px;
+      }
+      .feature h3 {
+        font-size: 17px;
+        margin: 3px 0 9px;
+      }
+      .feature p {
+        font-size: 14px;
+      }
+      .state-strip {
+        margin-top: 20px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        background: var(--panel);
+      }
+      .state-strip > div {
+        padding: 20px;
+        border-right: 1px solid var(--line);
+      }
+      .state-strip > div:last-child {
+        border: 0;
+      }
+      .state-strip strong {
+        font-size: 14px;
+        display: block;
+        margin-bottom: 6px;
+      }
+      .state-strip p {
+        font-size: 13px;
+      }
+      .state-strip small {
+        font-size: 11px;
+        color: var(--blue);
+        margin-left: 7px;
+      }
+      .practice-head {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 24px;
+      }
+      .progress-track {
+        width: 110px;
+        height: 5px;
+        border-radius: 5px;
+        background: #33424a;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        background: var(--green);
+        width: 0;
+        transition: width 0.2s;
+      }
+      .text-btn {
+        border: 0;
+        background: none;
+        color: var(--blue);
+        font-size: 12px;
+        padding: 6px;
+        margin-left: auto;
+      }
+      .practice {
+        display: grid;
+        grid-template-columns: 224px minmax(0, 1fr);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+        overflow: hidden;
+      }
+      .step-tabs {
+        background: #171c20;
+        padding: 12px;
+        border-right: 1px solid var(--line);
+      }
+      .step-tabs button {
+        display: flex;
+        text-align: left;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+        border: 1px solid transparent;
+        border-radius: 5px;
+        padding: 16px 12px;
+        background: none;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 4px 0;
+      }
+      .step-tabs button[aria-selected="true"] {
+        background: #337ab725;
+        border-color: #456477;
+        color: #d5eaff;
+      }
+      .step-tabs .num {
+        font-size: 12px;
+        color: var(--blue);
+      }
+      .step-panel {
+        padding: 30px 34px;
+        min-height: 365px;
+      }
+      .step-panel[hidden] {
+        display: none;
+      }
+      .step-panel .goal {
+        font-size: 12px;
+        color: var(--green);
+        margin-bottom: 9px;
+      }
+      .step-panel h3 {
+        font-size: 22px;
+        margin-bottom: 17px;
+      }
+      .step-panel ol {
+        padding-left: 22px;
+        color: #c8d3d9;
+        font-size: 14px;
+        margin: 0 0 21px;
+      }
+      .step-panel li {
+        margin: 9px 0;
+        padding-left: 4px;
+      }
+      .expected {
+        padding: 14px 17px;
+        border: 1px solid #a1d8bd33;
+        background: #a1d8bd08;
+        border-radius: 6px;
+        font-size: 13px;
+        margin-top: 18px;
+      }
+      .expected strong {
+        color: var(--green);
+        display: block;
+        margin-bottom: 5px;
+      }
+      .confirm {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin-top: 22px;
+        font-size: 13px;
+        color: var(--muted);
+        cursor: pointer;
+      }
+      .confirm input {
+        accent-color: #80caa7;
+        width: 16px;
+        height: 16px;
+        margin-top: 3px;
+        flex: none;
+      }
+      .practice-note {
+        font-size: 12px;
+        color: #92a3ad;
+        margin-top: 15px;
+      }
+      .review-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .review-card {
+        padding: 28px;
+        background: var(--panel);
+        border-radius: 10px;
+        border: 1px solid var(--line);
+      }
+      .review-card .role {
+        font-size: 12px;
+        color: var(--orange);
+        margin-bottom: 12px;
+      }
+      .review-card h3 {
+        margin-bottom: 16px;
+      }
+      .review-card ul {
+        padding-left: 20px;
+        font-size: 14px;
+        color: var(--muted);
+        margin: 0;
+      }
+      .review-card li {
+        margin: 9px 0;
+      }
+      .review-outcome {
+        padding-top: 23px;
+        font-size: 14px;
+        color: var(--text);
+      }
+      .scope {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+      .scope h3 {
+        font-size: 17px;
+        margin-bottom: 12px;
+      }
+      .scope p {
+        font-size: 14px;
+      }
+      .scope .ready {
+        color: var(--green);
+      }
+      .scope .pending {
+        color: var(--orange);
+      }
+      details {
+        margin-top: 25px;
+        border-top: 1px solid var(--line);
+        padding-top: 20px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      summary {
+        cursor: pointer;
+        color: var(--text);
+        font-size: 14px;
+      }
+      details p {
+        margin-top: 12px;
+      }
+      details a {
+        color: var(--blue);
+      }
+      footer {
+        padding: 28px 0 45px;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        color: #8da0ab;
+        font-size: 12px;
+      }
+      footer a {
+        color: var(--blue);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        * {
+          transition: none !important;
+        }
+      }
+      @media print {
+        body {
+          min-width: 0;
+          background: #fff;
+          color: #111;
+          font-size: 12px;
+        }
+        .topbar,
+        .rail,
+        .hero-actions,
+        .step-tabs,
+        .practice-head,
+        .confirm,
+        .top-actions {
+          display: none;
+        }
+        .layout {
+          display: block;
+          width: 100%;
+          max-width: none;
+        }
+        .section {
+          padding: 25px 0;
+          break-inside: avoid;
+        }
+        .step-panel[hidden] {
+          display: block;
+        }
+        .practice {
+          display: block;
+        }
+        .step-panel {
+          min-height: 0;
+          border-bottom: 1px solid #bbb;
+        }
+        .hero h1 {
+          font-size: 30px;
+        }
+        p,
+        .feature p,
+        .step-panel ol,
+        .review-card ul {
+          color: #444;
+        }
+        .panel,
+        .concept-card,
+        .review-card,
+        .zone,
+        .practice,
+        .state-strip {
+          background: #fff;
+        }
+        .mini-site {
+          print-color-adjust: exact;
+        }
+        .content {
+          width: 100%;
+        }
+        a {
+          color: #235478;
+        }
       }
     </style>
   </head>
   <body>
-    <main>
-      <header>
-        <div>
-          <small>NGSS · 产品概念演示 / 5 MIN</small>
-          <h1>个性化改版</h1>
-          <p>设定本站外观，让玩家在允许的范围内选择。</p>
-        </div>
-        <a
-          class="start"
-          href="index.html?section=themeColor"
-          target="customize-demo"
-          >开始演示 ↗</a
+    <a class="skip" href="#concept">跳至系統概念</a>
+    <header class="topbar">
+      <a class="brand" href="../../"
+        ><span class="brand-mark">NGSS</span
+        ><span
+          >個性化改版
+          <span style="color: #8497a2">／ 概念與操作指南</span></span
+        ></a
+      >
+      <div class="top-actions">
+        <a href="#practice">操作驗證</a><a href="#review">評審重點</a
+        ><a
+          class="btn"
+          data-open-demo
+          href="index.html"
+          target="personalization-review"
+          >開啟個性化頁面 <span aria-hidden="true">↗</span></a
         >
-      </header>
-      <div class="principles">
-        <section class="card">
-          <h2>默认外观</h2>
-          <p>管理员选择主题与颜色<br />建立本站统一起点</p>
-        </section>
-        <section class="card">
-          <h2>玩家可选范围</h2>
-          <p>开放部分选项或完全固定<br />默认值始终保留</p>
-        </section>
-        <section class="card">
-          <h2>组件样式</h2>
-          <p>58 款布局 · 即时网页预览<br />复用数据、入口与共享组件</p>
-        </section>
       </div>
-      <div class="steps">
-        <section class="step">
-          <span class="number">01</span>
-          <div>
-            <h2>默认值与玩家范围</h2>
-            <p>切换三种颜色，再只保留 NG 和两种玩家颜色。</p>
-            <a href="index.html?section=themeColor" target="customize-demo"
-              >主题与颜色 ↗</a
+    </header>
+    <div class="layout">
+      <nav class="rail" aria-label="指南章節">
+        <small>PM × UI REVIEW</small
+        ><a href="#intro" aria-current="location"><span>00</span>先看全貌</a
+        ><a href="#concept"><span>01</span>系統概念</a
+        ><a href="#workflow"><span>02</span>管理流程</a
+        ><a href="#features"><span>03</span>設計特色</a
+        ><a href="#practice"><span>04</span>操作驗證</a
+        ><a href="#review"><span>05</span>評審重點</a
+        ><a href="#scope"><span>06</span>目前範圍</a>
+        <div class="rail-note">
+          先理解，再操作。<br />約 3 分鐘閱讀<br />約 5 分鐘驗證
+        </div>
+      </nav>
+      <main class="content">
+        <section id="intro" class="section hero">
+          <div class="hero-grid">
+            <div>
+              <div class="eyebrow">個性化改版 · 系統概念</div>
+              <h1>每個站點的樣子，<br />都有<em>清楚的管理方式。</em></h1>
+              <p class="lead">
+                由管理員建立站點外觀，決定玩家能選什麼，再用可操作的預覽調整細節。把品牌一致性與玩家選擇，放進同一套設定流程。
+              </p>
+              <div class="hero-actions">
+                <a class="btn" href="#concept"
+                  >理解系統概念 <span aria-hidden="true">↓</span></a
+                ><a
+                  class="btn secondary"
+                  data-open-demo
+                  href="index.html"
+                  target="personalization-review"
+                  >邊看邊操作 ↗</a
+                >
+              </div>
+              <p class="hint">
+                PC 管理介面 · H5 玩家預覽 · 延續 Element Plus 後台風格
+              </p>
+            </div>
+            <div
+              class="concept-board"
+              role="img"
+              aria-label="概念示意：管理員預設 NG 橙白，開放 NG 的橙白與藍白，玩家可使用其中一種配色。"
+            >
+              <div class="board-label">
+                <span>一個設定，兩個視角</span><span>概念示意</span>
+              </div>
+              <div class="rule-row">
+                <span>管理員設定預設</span
+                ><strong class="palette"><i class="dot"></i>NG · 橙白</strong>
+              </div>
+              <div class="rule-row">
+                <span>管理員開放範圍</span
+                ><strong class="palette"
+                  ><i class="dot"></i>橙白 <i class="dot blue"></i>藍白</strong
+                >
+              </div>
+              <div class="flow-connector">↓ 玩家在允許的範圍內選擇 ↓</div>
+              <div class="player-pair">
+                <div>
+                  <div class="mini-site">
+                    <div class="mini-bar">NG <i></i></div>
+                    <div class="mini-banner">本站歡迎你</div>
+                    <div class="mini-blocks"><i></i><i></i><i></i></div>
+                    <div class="mini-nav"></div>
+                  </div>
+                  <div class="mini-caption">預設外觀 · 橙白</div>
+                </div>
+                <div>
+                  <div class="mini-site blue">
+                    <div class="mini-bar">NG <i></i></div>
+                    <div class="mini-banner">本站歡迎你</div>
+                    <div class="mini-blocks"><i></i><i></i><i></i></div>
+                    <div class="mini-nav"></div>
+                  </div>
+                  <div class="mini-caption">玩家選擇 · 藍白</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-foot">
+            <span><strong>PM</strong>看管理權與設定規則</span
+            ><span><strong>UI</strong>看視覺系統與狀態一致性</span
+            ><span><strong>共同</strong>以實際操作驗證概念</span>
+          </div>
+        </section>
+        <section id="concept" class="section">
+          <div class="section-heading">
+            <div>
+              <div class="index">01 / 系統概念</div>
+              <h2>先分清楚三件事。</h2>
+              <p>
+                主題提供整體基礎，站點設定決定預設，玩家只在管理員開放的範圍內選擇。
+              </p>
+            </div>
+            <span class="tag">由整體到局部</span>
+          </div>
+          <div class="concept-grid">
+            <article class="concept-card">
+              <div class="kicker">第一層 · 主題系統</div>
+              <h3>一套可組合的設計基礎</h3>
+              <p>
+                主題包含可用配色、元件樣式與預設搭配。換主題是選擇整套設計系統；換顏色是在同一主題中更換配色。
+              </p>
+              <div class="example">例：NG 主題中的橙白與藍白。</div>
+            </article>
+            <article class="concept-card">
+              <div class="kicker">第二層 · 站點設定</div>
+              <h3>管理員決定本站的起點</h3>
+              <p>
+                選擇預設主題、顏色與元件樣式。大部分設定可沿用主題預設，需要差異的部分再個別指定。
+              </p>
+              <div class="example">例：預設橙白，錢包採用另一款布局。</div>
+            </article>
+            <article class="concept-card">
+              <div class="kicker">第三層 · 玩家選擇</div>
+              <h3>自由度由站點明確授權</h3>
+              <p>
+                可完全固定外觀，也可開放部分主題與顏色。玩家選色只改變自己的預覽外觀，不會改寫管理員設定的站點預設。
+              </p>
+              <div class="example">例：固定 NG，只允許橙白、藍白。</div>
+            </article>
+          </div>
+          <div class="takeaway">
+            <strong>核心規則</strong>
+            <p>
+              「本站預設」與「玩家可選」分開管理。預設值必須保留在可用範圍內；只留一個選項就能鎖定。元件樣式由管理員設定，玩家選擇介面聚焦主題與顏色。
+            </p>
+          </div>
+        </section>
+        <section id="workflow" class="section">
+          <div class="section-heading">
+            <div>
+              <div class="index">02 / 管理流程</div>
+              <h2>設定與結果，在同一個工作區。</h2>
+              <p>
+                左側找設定，中間做調整，右側直接操作玩家網站。管理員不必在設定表與靜態設計圖之間來回猜測。
+              </p>
+            </div>
+            <span class="tag">工作區結構示意</span>
+          </div>
+          <div class="workspace">
+            <div class="zone nav">
+              <span class="zone-label">找設定</span>
+              <div>主題與顏色</div>
+              <div>首頁元件</div>
+              <div>頁面元件</div>
+              <div>更多功能</div>
+            </div>
+            <div class="zone">
+              <span class="zone-label">做調整</span>
+              <h3>先選外觀，再調功能</h3>
+              <p>以樣式卡片比較差異，必要時展開顯示與功能設定。</p>
+              <div class="sample-options">
+                <span>樣式一 ✓</span><span>樣式二</span><span>樣式三</span>
+              </div>
+            </div>
+            <div class="zone preview">
+              <div>
+                <span class="zone-label">驗證結果</span>
+                <h3>獨立、可操作的 H5 預覽</h3>
+                <p>即時查看局部變化，也能切換頁面、玩家狀態與預覽寬度。</p>
+              </div>
+              <div class="preview-tags">
+                <span>畫面可點擊</span><span>區域個別更新</span
+                ><span>保留操作脈絡</span>
+              </div>
+            </div>
+          </div>
+          <ol class="flowline">
+            <li>
+              <b>01</b><strong>建立預設</strong>
+              <p>決定本站主題與顏色。</p>
+            </li>
+            <li>
+              <b>02</b><strong>界定玩家範圍</strong>
+              <p>選擇開放、限制或鎖定。</p>
+            </li>
+            <li>
+              <b>03</b><strong>調整並預覽</strong>
+              <p>選元件樣式，確認實際使用。</p>
+            </li>
+            <li>
+              <b>04</b><strong>檢查並保存</strong>
+              <p>查看修改與提示，保存或撤銷。</p>
+            </li>
+          </ol>
+        </section>
+        <section id="features" class="section">
+          <div class="section-heading">
+            <div>
+              <div class="index">03 / 設計特色</div>
+              <h2>外觀可變，管理邏輯保持清楚。</h2>
+              <p>設計重點是讓設定容易理解、變化容易預測，後續也能持續擴充。</p>
+            </div>
+          </div>
+          <div class="features">
+            <article class="feature">
+              <span class="symbol" aria-hidden="true">◈</span>
+              <div>
+                <h3>共用主題色，維持整體一致</h3>
+                <p>
+                  同一套配色連動按鈕、選取狀態、導航與頁面。UI
+                  可集中檢查主題語言，不必逐個畫面重做配色。
+                </p>
+              </div>
+            </article>
+            <article class="feature">
+              <span class="symbol" aria-hidden="true">▦</span>
+              <div>
+                <h3>可替換的元件，穩定的共用區域</h3>
+                <p>
+                  選擇某個元件的樣式，只更新對應區域。共用結構與資料持續沿用，降低跨頁不一致，也讓日後調整更集中。
+                </p>
+              </div>
+            </article>
+            <article class="feature">
+              <span class="symbol" aria-hidden="true">↗</span>
+              <div>
+                <h3>真實網頁預覽，直接驗證互動</h3>
+                <p>
+                  預覽可點擊、輸入與切換狀態。除了比較長相，也能觀察選項是否好找、操作是否連貫，以及文字與布局是否合適。
+                </p>
+              </div>
+            </article>
+            <article class="feature">
+              <span class="symbol" aria-hidden="true">≋</span>
+              <div>
+                <h3>樣式、顯示與功能各有責任</h3>
+                <p>
+                  樣式決定呈現方式；可隱藏元件另有顯示控制；功能設定管理內容或入口。換外觀不等於改變餘額、VIP
+                  權益或交易規則。
+                </p>
+              </div>
+            </article>
+            <article class="feature">
+              <span class="symbol" aria-hidden="true">✓</span>
+              <div>
+                <h3>變更可檢查，也能撤銷</h3>
+                <p>
+                  集中查看修改，區分警告與阻擋。原型會檢查功能可用性、入口可達性與設定衝突，協助辨識不能只靠視覺判斷的問題。
+                </p>
+              </div>
+            </article>
+            <article class="feature">
+              <span class="symbol" aria-hidden="true">＋</span>
+              <div>
+                <h3>主流程簡潔，進階工具按需展開</h3>
+                <p>
+                  樣式卡片呈現主要選擇，素材替換與功能設定視元件提供。開發工具箱另收納租戶、語言、內容狀態、能力模擬與配置匯出。
+                </p>
+              </div>
+            </article>
+          </div>
+          <div class="state-strip">
+            <div>
+              <strong>跟隨預設 <small>沿用</small></strong>
+              <p>使用主題提供的選擇，減少逐項維護。</p>
+            </div>
+            <div>
+              <strong>指定樣式 <small>覆寫</small></strong>
+              <p>直接選擇即建立本站設定，不需先切換模式。</p>
+            </div>
+            <div>
+              <strong>恢復或隱藏 <small>有明確差別</small></strong>
+              <p>恢復預設會清除指定；隱藏僅供支援的元件，並須通過入口檢查。</p>
+            </div>
+          </div>
+        </section>
+        <section id="practice" class="section">
+          <div class="section-heading">
+            <div>
+              <div class="index">04 / 操作驗證</div>
+              <h2>用五個情境，確認你理解了。</h2>
+              <p>
+                開啟操作頁後，依序完成以下情境。每一項都列出動作與預期結果，請實際確認後再勾選。
+              </p>
+            </div>
+            <a
+              class="btn"
+              data-open-demo
+              href="index.html"
+              target="personalization-review"
+              >開啟／返回操作頁 ↗</a
             >
           </div>
-        </section>
-        <section class="step">
-          <span class="number">02</span>
-          <div>
-            <h2>比较实际页面布局</h2>
-            <p>切换样式，点击充值金额与渠道，展示即时变化。</p>
-            <div class="links">
-              <a href="index.html?section=depositPage" target="customize-demo"
-                >钱包充值 ↗</a
-              ><a
-                href="index.html?section=profileLayout"
-                target="customize-demo"
-                >个人中心 ↗</a
+          <div class="practice-head">
+            <span id="progress-text" role="status" aria-live="polite"
+              >已自行確認 0 / 5</span
+            >
+            <div class="progress-track" aria-hidden="true">
+              <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <button class="text-btn" id="reset-progress" type="button">
+              清除勾選
+            </button>
+          </div>
+          <div class="practice">
+            <div
+              class="step-tabs"
+              role="tablist"
+              aria-label="操作驗證情境"
+              aria-orientation="vertical"
+            >
+              <button
+                type="button"
+                role="tab"
+                id="tab-1"
+                aria-controls="step-1"
+                aria-selected="true"
+                tabindex="0"
+              >
+                <span class="num">01</span>固定主題，開放兩色</button
+              ><button
+                type="button"
+                role="tab"
+                id="tab-2"
+                aria-controls="step-2"
+                aria-selected="false"
+                tabindex="-1"
+              >
+                <span class="num">02</span>改用玩家視角</button
+              ><button
+                type="button"
+                role="tab"
+                id="tab-3"
+                aria-controls="step-3"
+                aria-selected="false"
+                tabindex="-1"
+              >
+                <span class="num">03</span>局部換樣式與恢復</button
+              ><button
+                type="button"
+                role="tab"
+                id="tab-4"
+                aria-controls="step-4"
+                aria-selected="false"
+                tabindex="-1"
+              >
+                <span class="num">04</span>檢查不同使用條件</button
+              ><button
+                type="button"
+                role="tab"
+                id="tab-5"
+                aria-controls="step-5"
+                aria-selected="false"
+                tabindex="-1"
+              >
+                <span class="num">05</span>核對修改並保存
+              </button>
+            </div>
+            <div
+              class="step-panel"
+              id="step-1"
+              role="tabpanel"
+              aria-labelledby="tab-1"
+              tabindex="0"
+            >
+              <div class="goal">驗證概念 · 預設與開放範圍是兩個決定</div>
+              <h3>讓站點預設橙白，只開放兩種顏色。</h3>
+              <ol>
+                <li>在「主題與顏色」保留 NG，將本站預設顏色選為橙白。</li>
+                <li>在「玩家可選範圍」只保留 NG；取消綠黑，保留橙白與藍白。</li>
+                <li>觀察預設顏色在可選範圍中的狀態。</li>
+              </ol>
+              <div class="expected">
+                <strong>應看到</strong>本站預設為橙白，主題固定為
+                NG，玩家開放兩色；作為預設的橙白不能被取消。
+              </div>
+              <label class="confirm"
+                ><input
+                  type="checkbox"
+                  data-check="1"
+                />我已確認：預設外觀與玩家可選範圍分開管理。</label
+              >
+            </div>
+            <div
+              class="step-panel"
+              id="step-2"
+              role="tabpanel"
+              aria-labelledby="tab-2"
+              tabindex="0"
+              hidden
+            >
+              <div class="goal">驗證概念 · 玩家選擇不改寫站點預設</div>
+              <h3>玩家選藍白，本站預設仍是橙白。</h3>
+              <ol>
+                <li>點右側預覽上方的「玩家外觀」。</li>
+                <li>在預覽內查看可用選項，選擇藍白。</li>
+                <li>
+                  對照左側的本站預設顏色，再把預覽切回橙白，方便繼續比較。
+                </li>
+              </ol>
+              <div class="expected">
+                <strong>應看到</strong
+                >玩家只能選橙白或藍白。預覽會隨玩家選擇變色，左側本站預設仍維持橙白。
+              </div>
+              <label class="confirm"
+                ><input
+                  type="checkbox"
+                  data-check="2"
+                />我已確認：玩家選擇受站點限制，且不改寫站點預設。</label
+              >
+            </div>
+            <div
+              class="step-panel"
+              id="step-3"
+              role="tabpanel"
+              aria-labelledby="tab-3"
+              tabindex="0"
+              hidden
+            >
+              <div class="goal">驗證概念 · 樣式可替換，資料與功能持續沿用</div>
+              <h3>改變錢包布局，保留當下的操作。</h3>
+              <ol>
+                <li>在設定目錄開啟「錢包儲值」，比較樣式二與樣式三。</li>
+                <li>在預覽選一個快捷金額，再切換另一款錢包樣式。</li>
+                <li>
+                  確認金額仍保留，其他元件的設定未改變；最後點「恢復預設」。
+                </li>
+              </ol>
+              <div class="expected">
+                <strong>應看到</strong
+                >錢包區域換了布局，已選金額仍在。指定樣式時顯示已自訂；恢復後回到跟隨
+                NG 預設。
+              </div>
+              <label class="confirm"
+                ><input
+                  type="checkbox"
+                  data-check="3"
+                />我已確認：局部樣式、當下資料與預設來源各自清楚。</label
+              >
+            </div>
+            <div
+              class="step-panel"
+              id="step-4"
+              role="tabpanel"
+              aria-labelledby="tab-4"
+              tabindex="0"
+              hidden
+            >
+              <div class="goal">驗證概念 · 評審也要涵蓋非正常狀態</div>
+              <h3>除了正常畫面，也看訪客與失敗狀態。</h3>
+              <ol>
+                <li>
+                  切到 VIP 頁面，使用預覽的「玩家狀態」切換未登入與已登入。
+                </li>
+                <li>
+                  回到已登入，展開開發工具箱，將「內容狀態」切換為空內容、載入失敗。
+                </li>
+                <li>檢查狀態提示與可用操作，完成後將內容狀態恢復正常。</li>
+              </ol>
+              <div class="expected">
+                <strong>應看到</strong
+                >訪客不顯示會員專屬資料；空內容與失敗有對應畫面。模擬條件用於檢查，不會成為本站外觀設定。
+              </div>
+              <label class="confirm"
+                ><input
+                  type="checkbox"
+                  data-check="4"
+                />我已確認：登入、內容與錯誤狀態需要一併設計。</label
+              >
+            </div>
+            <div
+              class="step-panel"
+              id="step-5"
+              role="tabpanel"
+              aria-labelledby="tab-5"
+              tabindex="0"
+              hidden
+            >
+              <div class="goal">驗證概念 · 確認變更後，才完成設定</div>
+              <h3>核對這次究竟改了什麼。</h3>
+              <ol>
+                <li>
+                  點「查看修改」，核對主題顏色、玩家範圍及元件修改；有阻擋時先處理提示。
+                </li>
+                <li>
+                  點「保存」並確認；再改一個顏色，點「撤銷修改」並確認，檢查是否回到剛才保存的版本。
+                </li>
+                <li>
+                  需要保留評審方案時，在開發工具箱匯出配置
+                  JSON；也可執行「運行檢查」查看原型回歸結果。
+                </li>
+              </ol>
+              <div class="expected">
+                <strong>應看到</strong
+                >修改有集中摘要，保存後清除待保存狀態；撤銷回到本次會話最後保存的設定。重新整理仍會重設演示資料。
+              </div>
+              <label class="confirm"
+                ><input
+                  type="checkbox"
+                  data-check="5"
+                />我已確認：修改、保存與撤銷的結果可預測。</label
               >
             </div>
           </div>
+          <p class="practice-note">
+            請在同一個操作分頁依序完成。指南使用正體中文，操作頁保留既有介面語系；「錢包儲值」對應其中的錢包充值設定。勾選僅記錄你在本指南的確認進度，不代表自動測試或正式驗收。
+          </p>
         </section>
-        <section class="step">
-          <span class="number">03</span>
-          <div>
-            <h2>组件内的交互</h2>
-            <p>查看不同等级权益、打开消息，再检查访客状态。</p>
-            <div class="links">
-              <a href="index.html?section=vipPage" target="customize-demo"
-                >VIP 页面 ↗</a
-              ><a href="index.html?section=inbox" target="customize-demo"
-                >站内信 ↗</a
-              >
+        <section id="review" class="section">
+          <div class="section-heading">
+            <div>
+              <div class="index">05 / 評審重點</div>
+              <h2>看完後，讓討論收斂到決定。</h2>
+              <p>
+                先確認管理模型與使用體驗，再收斂需要進入正式版本的視覺方案。
+              </p>
             </div>
           </div>
+          <div class="review-grid">
+            <article class="review-card">
+              <div class="role">給 PM · 規則與流程</div>
+              <h3>管理員能否清楚掌握選擇權？</h3>
+              <ul>
+                <li>本站預設與玩家範圍是否容易區分？</li>
+                <li>固定外觀、有限開放的情境是否足夠？</li>
+                <li>修改、警告、阻擋與保存的流程是否清楚？</li>
+                <li>哪些能力列入首版，哪些留待後續？</li>
+              </ul>
+            </article>
+            <article class="review-card">
+              <div class="role">給 UI · 系統與互動</div>
+              <h3>不同組合能否維持一致的使用體驗？</h3>
+              <ul>
+                <li>配色、文字層級與狀態提示是否一致？</li>
+                <li>每款樣式是否提供有意義的使用差異？</li>
+                <li>窄幅 H5、長文案、訪客與空內容是否可用？</li>
+                <li>素材、圖示、預設搭配與互動細節如何定稿？</li>
+              </ul>
+            </article>
+          </div>
+          <p class="review-outcome">
+            建議留下三個評審結果：<strong
+              >確認管理規則、圈定首版範圍、列出待修的體驗與視覺問題。</strong
+            >
+          </p>
         </section>
-        <section class="step">
-          <span class="number">04</span>
-          <div>
-            <h2>完成外观配置</h2>
-            <p>切换登录样式与底部导航，查看修改并保存或撤销。</p>
-            <div class="links">
-              <a href="index.html?section=authVisual" target="customize-demo"
-                >登录注册 ↗</a
-              ><a href="index.html?section=bottomNav" target="customize-demo"
-                >底部导航 ↗</a
-              >
+        <section id="scope" class="section">
+          <div class="section-heading">
+            <div>
+              <div class="index">06 / 目前範圍</div>
+              <h2>用原型驗證概念，再安排正式導入。</h2>
+            </div>
+            <span class="tag">可操作概念原型</span>
+          </div>
+          <div class="scope">
+            <div>
+              <h3 class="ready">現在可以驗證</h3>
+              <p>
+                NG 三種配色、跨首頁與主要頁面的 58
+                款元件樣式、玩家選擇範圍、局部互動預覽、恢復預設、保存／撤銷與配置匯出。管理頁供
+                PC 使用，玩家預覽為 H5。
+              </p>
+            </div>
+            <div>
+              <h3 class="pending">正式導入仍須確認</h3>
+              <p>
+                WG／GAME
+                的完整設計、最終素材與逐色細節、服務端權限與規則檢查、配置與玩家偏好持久化、真實資料及資產管理流程。
+              </p>
             </div>
           </div>
+          <details>
+            <summary>補充資料與使用邊界</summary>
+            <p>
+              目前資料均為合成示例。保存只在當前頁面會話生效，重新整理會重設；JSON
+              匯出可留存方案。預覽不執行真實登入、交易或會員資料修改。部分裝飾素材沿用共用資源，最終視覺仍需
+              UI 對照確認。
+            </p>
+            <p>
+              <a href="PRESENTATION.md">會議提詞與操作清單 ↗</a>　·　<a
+                href="design-source-map.json"
+                >首頁設計對照 ↗</a
+              >　·　<a href="page-design-source-map.json">頁面設計對照 ↗</a>
+            </p>
+          </details>
         </section>
-      </div>
-      <section class="review">
-        <h2>这次评审要决定</h2>
-        <p>管理顺序是否清楚？哪些样式进入正式范围？各组件默认选择哪一款？</p>
-      </section>
-      <footer class="foot">
-        <p>
-          建议全程使用同一演示页的左侧导航；以上链接会重新打开对应页面。合成数据，保存仅在当前页面会话生效。布局已映射为网页组件，装饰素材与最终视觉待
-          UI 确认；真实权限、持久化与业务接口另行接入。
-        </p>
-        <div>
-          <a href="PRESENTATION.md">演示提词 ↗</a><br /><a
-            href="page-design-source-map.json"
-            >页面组件来源 ↗</a
-          >
-        </div>
-      </footer>
-    </main>
+        <footer>
+          <span>NGSS · 個性化概念與操作指南 · 2026.09</span
+          ><a href="#practice">回到操作驗證 ↑</a>
+        </footer>
+      </main>
+    </div>
+    <script>
+      (function () {
+        "use strict";
+        const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+        function selectTab(tab, focus) {
+          tabs.forEach((item) => {
+            const active = item === tab;
+            item.setAttribute("aria-selected", String(active));
+            item.tabIndex = active ? 0 : -1;
+            document.getElementById(item.getAttribute("aria-controls")).hidden =
+              !active;
+          });
+          if (focus) tab.focus();
+        }
+        tabs.forEach((tab, index) => {
+          tab.addEventListener("click", () => selectTab(tab, false));
+          tab.addEventListener("keydown", (event) => {
+            let next = index;
+            if (event.key === "ArrowDown") next = (index + 1) % tabs.length;
+            else if (event.key === "ArrowUp")
+              next = (index + tabs.length - 1) % tabs.length;
+            else if (event.key === "Home") next = 0;
+            else if (event.key === "End") next = tabs.length - 1;
+            else return;
+            event.preventDefault();
+            selectTab(tabs[next], true);
+          });
+        });
+        const checks = Array.from(document.querySelectorAll("[data-check]"));
+        function updateProgress() {
+          const count = checks.filter((input) => input.checked).length;
+          document.getElementById("progress-text").textContent =
+            "已自行確認 " + count + " / " + checks.length;
+          document.getElementById("progress-fill").style.width =
+            (count / checks.length) * 100 + "%";
+        }
+        checks.forEach((input) =>
+          input.addEventListener("change", updateProgress),
+        );
+        document
+          .getElementById("reset-progress")
+          .addEventListener("click", () => {
+            checks.forEach((input) => (input.checked = false));
+            updateProgress();
+          });
+        let demoWindow = null;
+        document.querySelectorAll("[data-open-demo]").forEach((link) =>
+          link.addEventListener("click", (event) => {
+            if (
+              event.ctrlKey ||
+              event.metaKey ||
+              event.shiftKey ||
+              event.altKey ||
+              event.button !== 0
+            )
+              return;
+            if (demoWindow && !demoWindow.closed) {
+              event.preventDefault();
+              demoWindow.focus();
+              return;
+            }
+            demoWindow = window.open(link.href, "personalization-review");
+            if (demoWindow) event.preventDefault();
+          }),
+        );
+        const navLinks = Array.from(document.querySelectorAll(".rail a"));
+        const sections = navLinks.map((link) =>
+          document.querySelector(link.getAttribute("href")),
+        );
+        let pending = false;
+        function updateSection() {
+          let active = sections[0];
+          for (const section of sections)
+            if (section.getBoundingClientRect().top <= 150) active = section;
+          navLinks.forEach((link) => {
+            if (link.hash === "#" + active.id)
+              link.setAttribute("aria-current", "location");
+            else link.removeAttribute("aria-current");
+          });
+          pending = false;
+        }
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (!pending) {
+              pending = true;
+              requestAnimationFrame(updateSection);
+            }
+          },
+          { passive: true },
+        );
+        updateSection();
+        updateProgress();
+      })();
+    </script>
   </body>
 </html>
