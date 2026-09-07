@@ -1,0 +1,331 @@
+{
+  "sourceFile": "15tSa9kHMmOouSzZ4mb8oE",
+  "sourcePage": "147:1112",
+  "files": [
+    {
+      "file": "assets/ng-design/3e666920cff670a21456.webp",
+      "sourceSha256": "0cf89493a24cfcbc7b8d81b395daa39ee3d669f50091c18b9e42081cf31d3aea",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/109c167662709226f07d.svg",
+      "sourceSha256": "109c167662709226f07d74645eca5ad1434d9994f5d04bdd9b449cf3cd20b268",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/14c580bad52362c5f4b2.svg",
+      "sourceSha256": "14c580bad52362c5f4b2ecba34c0914792e4983eb9e887efe0a2840cb633fa6e",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/18da1f2e006d5e425dd3.svg",
+      "sourceSha256": "18da1f2e006d5e425dd39b577f25fc1d32efd90145f9dea672653bd13e31937b",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/0ed6634cb5b5fdfeb33d.webp",
+      "sourceSha256": "19cd7c93e79e538563c986a7fed52d14cd130d128f7be22ce429a2bd60576902",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/8220ce05dd58b8ae78cc.webp",
+      "sourceSha256": "1b3c138c6284730dac458ea9a9bcf26cd343ae510f3c715e0bfe081e06cc3ab3",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/1c08e51495fe02ab48df.webp",
+      "sourceSha256": "1c0ef974f928f73e85977d833240905c77b6d2fde0ace1c5255768d34fca0884",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/83f1139f9ee86907f0eb.webp",
+      "sourceSha256": "206b15ab20ba3dd352e529f78a375532fa992e207a0a2b19f885cd19c9b3778d",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/7b337a3dfb50108c0871.webp",
+      "sourceSha256": "20aee758e706a49d74a8b4bfdfb7dcddad8d17fc40b00f39800920fe19bfed18",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/22f5050c2a600283f407.svg",
+      "sourceSha256": "22f5050c2a600283f407262402a0753485f64ac9f23f797eb522a284c1f64c97",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/28a67d99dc5d05e2c028.webp",
+      "sourceSha256": "289cb72d559178096e7984ebd7c219a606f1bca2621b99ee5ec04758d110829c",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/29f75c15e641a1de0b8e.webp",
+      "sourceSha256": "2c8f19f6c65f06bf02c951a43dbb399dc8a229b48888008dbd1e47ab99339eea",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/20637281616e4c15ae4f.webp",
+      "sourceSha256": "35f8c7e32f3498af161dd9fce459972dfc443bad641b06598d1bc56a4a147a1c",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/afe80250abdd629a1b6e.webp",
+      "sourceSha256": "367d47375f7a0aac4f8143431e03bc1a1bdde01da68ff2f2700bfa56992ac6fb",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/1beb95363e651bdb7ed2.webp",
+      "sourceSha256": "36901bf2d625940eba33ce5ad2e574901d0b6596fb7fdd541a0751eee38bd83d",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/3a9efbfe052dd2ca0555.svg",
+      "sourceSha256": "3a9efbfe052dd2ca0555cb229df45fd1c76595218e1762dc7221b77959f27942",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/a178fa3f3cb926256d2d.webp",
+      "sourceSha256": "404298dd4b720240e59cccfebfb30b1133bf7364bcc488c56222c12d429990ff",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/40dc3095c5344d4f0f23.svg",
+      "sourceSha256": "40dc3095c5344d4f0f23bf2a66265d5bb00258ce5af96cbc1f6c649b4cca9bec",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/f4af092dec711d941609.webp",
+      "sourceSha256": "435f7e916e5eb8cdf3f0888b9ac79faca37046544f5a4e2e48c4bb800309ecb0",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/45eec559301749e940b1.svg",
+      "sourceSha256": "45eec559301749e940b19191fbd990ebff8592da1429aef77955e9c733825d83",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/83a884beb6c12f041045.webp",
+      "sourceSha256": "494aa645ec7bde06fedc86a52cbd2f6a2c6c1fb45cfaa4cd68bb667497907758",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/4aebb07229ff390bd981.svg",
+      "sourceSha256": "4aebb07229ff390bd9819cc3a969f52245998264ff084177bf45072b20c696ef",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/56f54bdbb7c8e978ae54.svg",
+      "sourceSha256": "56f54bdbb7c8e978ae54037ebf1b260b9f60fb11147b0a5db96f21d8ff246ba5",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/587cccf35dbe766d1444.svg",
+      "sourceSha256": "587cccf35dbe766d1444fc6761f99b85db1ba93db26e7c6be57546b55eb4396e",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/5d67bfed911d462f5664.svg",
+      "sourceSha256": "5d67bfed911d462f566484f3751cc577fa3fa4539ce50636573e78ba26198362",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/539d7aa8725d88909898.webp",
+      "sourceSha256": "6310fd6e9bd86eb376a7899a5e174bcc7e83d048ca5a115afc32501768cb4b6a",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/6fe80f123d2f9b182eb5.svg",
+      "sourceSha256": "6fe80f123d2f9b182eb5c76f60f10a4a9b98c27b671338e0f12bfeb5e944a743",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/53e6ddf13c2e3fff27f4.webp",
+      "sourceSha256": "710b7eea1cc91e8d73f891f0b4dad4422238501b2f6080819dc2a7125714dc06",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/71743a26c6b1cc233ac4.svg",
+      "sourceSha256": "71743a26c6b1cc233ac4ce45f7d649ebfe384e16848ee16f8cb13d4c53291ef8",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/745c53eca0b4176415f7.svg",
+      "sourceSha256": "745c53eca0b4176415f7480a754a5cf26ca3ae993f13ef0ff2de081e4386e8b6",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/fe15b96e1c932ae58778.webp",
+      "sourceSha256": "7df0d3b00a4f9a0ff3c54aec72265340d6bd94886a43d4ac0bcaf8bdfcd688ed",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/51d732646c89423d6a81.webp",
+      "sourceSha256": "7e3271eb82f465cc2d4f3f57e3e024066467534f347fc54c71e7b8e482637482",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/ec78717a45049e63dfe1.webp",
+      "sourceSha256": "7e7324861a6111bbe3647d913ece31aeb9d552791b9d73359b8e1b0a01a07063",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/8914f5b296dc503629b9.svg",
+      "sourceSha256": "8914f5b296dc503629b90e81082b606854d85f0a0fd2077411646b4f02cd7e02",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/8999571ab4aa6d3e2213.svg",
+      "sourceSha256": "8999571ab4aa6d3e2213ee82e030655d5458502ffc8c3ff1d4364fbb676c293b",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/8e727abc1ab4c06c35c2.svg",
+      "sourceSha256": "8e727abc1ab4c06c35c20eb50d97e59190ab4a85af376ef894aaed592e6d352b",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/94166d753aec6df3f111.svg",
+      "sourceSha256": "94166d753aec6df3f111ef106191f05d5e201456be2887ace4a3062a97bddd0e",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/c2944b9c29a0c9c81479.webp",
+      "sourceSha256": "96edeb6ec276e2d7fff30b4b52d79dff8280037e7899b488044cb158d281a32b",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/96f7dfafb9941c5b78c3.svg",
+      "sourceSha256": "96f7dfafb9941c5b78c3835928b485963b8cca9eea64e8b98850400890015333",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/970daf397be1227c7ca5.svg",
+      "sourceSha256": "970daf397be1227c7ca5f1dcc8360b0356dd1527e0448ca6ddb29fe6a3ff3e94",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/97ed005aeab0cf5b4eea.svg",
+      "sourceSha256": "97ed005aeab0cf5b4eeabde22be432beda81d9a5a3da6533b620473747d19c01",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/abee48271d14bc4f7704.svg",
+      "sourceSha256": "abee48271d14bc4f77044210e672af537c9868b756cfffdcbb55644a51f3ed40",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/7eedef9bdf80e08781ed.webp",
+      "sourceSha256": "b281dc74ea1fbb83983bea9add76a9de9147c01d62e7369b2aaebe88ef1ddbcc",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/b4cde16de93c5aea336d.svg",
+      "sourceSha256": "b4cde16de93c5aea336d23bba18a4a9eb79d41a5bc21dd2e592aefcc3018ead7",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/bba11ab9302568d26fe0.svg",
+      "sourceSha256": "bba11ab9302568d26fe0d976d45317df3dd81fdf0fdb8917482142734d255171",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/31a3e752431d865ef50f.webp",
+      "sourceSha256": "bf7400895628c609820200a69d4bfc54e129b193c178be2f7bbfd434b17e4658",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/bfa3773aa6f889fe9cbf.svg",
+      "sourceSha256": "bfa3773aa6f889fe9cbf68e41c253e61c5250e6c54c6483db06ac8edaaea6618",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/0e376c5b88d81a779d7e.webp",
+      "sourceSha256": "c925104dfb9df50e668a6e84dbe57fbf42ed97deffd4fd66281b9b6b16e86b23",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/ca36bbe72ffbca1af66a.svg",
+      "sourceSha256": "ca36bbe72ffbca1af66a1de222429fdcd09bd4622049bb674671a95f7002021c",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/fea93f9fd01e2cb74522.webp",
+      "sourceSha256": "d73fb18a6ef9f3d7209de4640d5370a1808fe050eaddf83fd16ae564c666adae",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/e43dd7c6a4377a1f5c21.svg",
+      "sourceSha256": "e43dd7c6a4377a1f5c216cca13924703c4b675b8f12c01d7e511bfa6bb8d130b",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/26bc4fda394bd5258aae.webp",
+      "sourceSha256": "f09e1ea1407861601722f672e2aaf538f92b1f92f44a435b9b6123dd803139e7",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    },
+    {
+      "file": "assets/ng-design/f88fbfab733febd94458.svg",
+      "sourceSha256": "f88fbfab733febd9445855df204b0e8695e9b088ab326053ee5250127818fe2c",
+      "sourceFormat": ".svg",
+      "optimization": "unchanged Figma export"
+    },
+    {
+      "file": "assets/ng-design/bb397ab76158ca3dc821.webp",
+      "sourceSha256": "ff438b3b1d44d8d59b38c67445d6a3b9fc490536c49a6c39cca561c0140f856d",
+      "sourceFormat": ".png",
+      "optimization": "lossless WebP, original dimensions"
+    }
+  ],
+  "logoMasks": "Two fill-based masks separated from the original Figma NG LOGO paths; geometry unchanged."
+}

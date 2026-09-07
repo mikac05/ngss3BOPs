@@ -1,0 +1,1171 @@
+/* All page variants share the same NG tokens and exported icon library. */
+.ng-player .pp-page {
+  padding: 16px;
+  min-height: 540px;
+  color: var(--p-text);
+  font-size: 13px;
+}
+.pp-page * {
+  box-sizing: border-box;
+}
+.pp-page h2,
+.pp-page h3,
+.pp-page p {
+  margin: 0;
+}
+.pp-page h2 {
+  font-size: 22px;
+  line-height: 1.3;
+}
+.pp-page h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.pp-page small {
+  font-size: 11px;
+  color: var(--p-muted);
+  font-weight: 400;
+}
+.pp-page button {
+  transition:
+    background 0.15s,
+    color 0.15s;
+  cursor: pointer;
+}
+.pp-page button:hover {
+  background: color-mix(in srgb, var(--p-accent) 12%, transparent);
+}
+.pp-page button:focus-visible,
+.pp-page input:focus-visible,
+.pp-page select:focus-visible {
+  outline: 2px solid var(--p-accent);
+  outline-offset: 2px;
+}
+.pp-page .p-glyph {
+  width: 22px;
+  height: 22px;
+  flex-basis: 22px;
+}
+.pp-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 0 20px;
+  gap: 10px;
+}
+.pp-title h2 {
+  font-size: 17px;
+}
+.pp-title button {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  font-size: 11px;
+  color: var(--p-muted);
+}
+.pp-title button span:not(.p-glyph) {
+  display: none;
+}
+.pp-card {
+  padding: 16px;
+  background: var(--p-panel);
+  border: 1px solid color-mix(in srgb, var(--p-text) 8%, transparent);
+  border-radius: 10px;
+  margin: 12px 0;
+}
+.pp-tabs {
+  display: flex;
+  gap: 4px;
+  margin: 14px 0;
+  padding: 4px;
+  border-radius: 8px;
+  background: var(--p-panel);
+}
+.pp-tabs button {
+  flex: 1;
+  min-height: 36px;
+  border-radius: 6px;
+  color: var(--p-muted);
+  font-size: 12px;
+}
+.pp-tabs button[aria-pressed="true"] {
+  background: linear-gradient(115deg, var(--p-accent), var(--p-accent2));
+  color: var(--p-onAccent);
+  font-weight: 600;
+}
+.pp-field {
+  display: block;
+  margin: 12px 0;
+}
+.pp-field > span {
+  display: block;
+  font-size: 12px;
+  color: var(--p-muted);
+  margin-bottom: 6px;
+}
+.pp-field input,
+.pp-field select {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  border-radius: 6px;
+  border: 1px solid color-mix(in srgb, var(--p-text) 16%, transparent);
+  background: transparent;
+  color: var(--p-text);
+  padding: 0 12px;
+  font: inherit;
+  box-shadow: none;
+}
+.pp-field select {
+  background: var(--p-panel);
+}
+.pp-field input::placeholder {
+  color: var(--p-muted);
+  opacity: 0.7;
+}
+.pp-field > div {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid color-mix(in srgb, var(--p-text) 16%, transparent);
+  border-radius: 6px;
+  padding: 0 10px;
+  gap: 8px;
+}
+.pp-field > div input {
+  border: 0;
+  padding: 0;
+}
+.pp-field > div > .p-glyph {
+  color: var(--p-accent);
+  width: 17px;
+  height: 17px;
+  flex-basis: 17px;
+  flex-shrink: 0;
+}
+.pp-field > div button {
+  white-space: nowrap;
+  font-size: 11px;
+  color: var(--p-accent);
+}
+.ng-player .pp-submit {
+  width: 100%;
+  min-height: 42px;
+  border-radius: 7px;
+  margin: 10px 0;
+  font-weight: 600;
+  background: linear-gradient(105deg, var(--p-accent), var(--p-accent2));
+  color: var(--p-onAccent);
+}
+.pp-balance {
+  padding: 20px;
+  border-radius: 12px;
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--p-accent) 18%, var(--p-panel)),
+    var(--p-panel)
+  );
+  border: 1px solid color-mix(in srgb, var(--p-accent) 18%, transparent);
+}
+.pp-balance > span {
+  color: var(--p-muted);
+  font-size: 12px;
+}
+.pp-money {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  margin-top: 5px;
+}
+.pp-money strong {
+  font-size: 27px;
+  letter-spacing: 0.2px;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+.pp-money button {
+  flex: none;
+  font-size: 18px;
+  color: var(--p-accent);
+}
+.pp-wallet-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  border-top: 1px solid color-mix(in srgb, var(--p-accent) 14%, transparent);
+  padding-top: 12px;
+}
+.pp-wallet-actions button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--p-accent);
+  min-height: 32px;
+}
+.pp-wallet-actions .p-glyph {
+  height: 18px;
+  width: 18px;
+  flex-basis: 18px;
+}
+.pp-methods {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.pp-methods button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 43px;
+  padding: 7px 4px;
+  border: 1px solid var(--p-raised);
+  border-radius: 6px;
+  font-size: 11px;
+}
+.pp-methods button .p-glyph {
+  display: none;
+}
+.pp-methods button[aria-pressed="true"],
+.pp-amounts button[aria-pressed="true"] {
+  border-color: var(--p-accent);
+  color: var(--p-accent);
+  background: color-mix(in srgb, var(--p-accent) 10%, transparent);
+}
+.pp-amounts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0;
+}
+.pp-amounts button {
+  border: 1px solid var(--p-raised);
+  border-radius: 6px;
+  min-height: 38px;
+  font-variant-numeric: tabular-nums;
+}
+.pp-receipt {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px dashed var(--p-raised);
+  padding-top: 12px;
+  font-size: 12px;
+  color: var(--p-muted);
+}
+.pp-receipt b {
+  color: var(--p-accent);
+}
+.pp-deposit-form {
+  display: flex;
+  flex-direction: column;
+}
+.pp-deposit-form .pp-card {
+  margin: 0 0 12px;
+}
+.pp-deposit-form.amount-first .p-payment-amount {
+  order: -1;
+}
+.pp-help summary {
+  font-weight: 600;
+  cursor: pointer;
+}
+.pp-help p {
+  font-size: 12px;
+  color: var(--p-muted);
+  margin-top: 10px;
+  line-height: 1.7;
+}
+.pp-deposit-1 .pp-balance {
+  text-align: center;
+  border-radius: 6px;
+  padding: 25px 12px;
+}
+.pp-deposit-1 .pp-money {
+  justify-content: center;
+}
+.pp-deposit-2 .pp-methods button {
+  flex-direction: column;
+  min-height: 67px;
+}
+.pp-deposit-2 .pp-methods button .p-glyph {
+  display: block;
+  width: 26px;
+  height: 26px;
+  flex-basis: 26px;
+}
+.pp-deposit-2 .pp-amounts {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.pp-deposit-3 .pp-balance {
+  position: relative;
+  padding: 15px;
+}
+.pp-deposit-3 .pp-money strong {
+  font-size: 24px;
+}
+.pp-deposit-3 .pp-wallet-actions {
+  border: 0;
+  margin: 8px -5px -4px;
+  padding: 0;
+}
+.pp-deposit-3 .pp-methods {
+  grid-template-columns: 1fr;
+}
+.pp-deposit-3 .pp-methods button {
+  justify-content: flex-start;
+  padding: 8px 10px;
+}
+.pp-deposit-3 .pp-methods .p-glyph {
+  display: block;
+}
+.pp-deposit-3 .pp-deposit-form {
+  display: grid;
+  grid-template-columns: minmax(105px, 0.8fr) minmax(0, 1.2fr);
+  gap: 10px;
+}
+.pp-deposit-3 .pp-deposit-form .pp-card {
+  padding: 11px;
+}
+.pp-deposit-3 .pp-amounts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.pp-deposit-3 .pp-receipt {
+  display: block;
+}
+.pp-deposit-3 .pp-receipt b {
+  display: block;
+  margin-top: 4px;
+}
+.pp-record {
+  border-top: 1px solid var(--p-raised);
+  padding: 12px 0;
+}
+.pp-record summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  cursor: pointer;
+}
+.pp-record small {
+  display: block;
+}
+.pp-record b {
+  color: var(--p-accent);
+}
+.pp-record p {
+  color: var(--p-muted);
+  font-size: 11px;
+  margin-top: 10px;
+}
+.pp-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 5px 0 18px;
+}
+.pp-identity > div {
+  display: grid;
+  gap: 3px;
+  flex: 1;
+}
+.pp-identity > button {
+  color: var(--p-muted);
+  font-size: 11px;
+}
+.pp-avatar {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(140deg, var(--p-accent2), var(--p-accent));
+  color: var(--p-onAccent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--p-accent) 9%, transparent);
+}
+.pp-member-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(
+    105deg,
+    color-mix(in srgb, var(--p-accent) 18%, var(--p-panel)),
+    var(--p-panel)
+  );
+  border-radius: 9px;
+  margin: 12px 0;
+  padding: 14px;
+  color: var(--p-accent);
+}
+.pp-member-card > div {
+  flex: 1;
+  min-width: 0;
+}
+.pp-member-card > .p-glyph {
+  width: 36px;
+  height: 36px;
+  flex-basis: 36px;
+}
+.pp-member-card > button {
+  font-size: 11px;
+  white-space: nowrap;
+}
+.pp-progress progress {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 5px;
+  border: 0;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 9px 0 3px;
+  background: var(--p-raised);
+}
+.pp-progress progress::-webkit-progress-bar {
+  background: var(--p-raised);
+}
+.pp-progress progress::-webkit-progress-value {
+  background: linear-gradient(90deg, var(--p-accent), var(--p-accent2));
+  border-radius: 5px;
+}
+.pp-progress small {
+  font-size: 10px;
+}
+.pp-account-menu {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 12px 0;
+}
+.pp-account-menu > button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  min-height: 47px;
+  border-radius: 7px;
+  padding: 10px;
+  background: var(--p-panel);
+  border: 1px solid color-mix(in srgb, var(--p-text) 6%, transparent);
+  font-size: 12px;
+}
+.pp-account-menu .p-glyph {
+  color: var(--p-accent);
+}
+.pp-account-bottom {
+  display: flex;
+  flex-direction: column;
+  margin-top: 18px;
+  border-top: 1px solid var(--p-raised);
+}
+.pp-account-bottom button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 8px;
+  color: var(--p-muted);
+  font-size: 12px;
+}
+.pp-profile-1 .pp-identity {
+  flex-direction: column;
+  text-align: center;
+  gap: 8px;
+}
+.pp-profile-1 .pp-identity > button {
+  display: none;
+}
+.pp-profile-1 .pp-balance {
+  text-align: center;
+  padding: 16px;
+}
+.pp-profile-1 .pp-money {
+  justify-content: center;
+}
+.pp-profile-1 .pp-account-menu > button:nth-child(n + 5) {
+  grid-column: 1/-1;
+}
+.pp-profile-2 .pp-balance {
+  padding: 14px;
+}
+.pp-profile-2 .pp-money strong {
+  font-size: 24px;
+}
+.pp-profile-2 .pp-account-menu {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  padding: 10px 2px;
+  border-radius: 10px;
+  background: var(--p-panel);
+  gap: 4px;
+}
+.pp-profile-2 .pp-account-menu > button {
+  flex-direction: column;
+  text-align: center;
+  gap: 9px;
+  padding: 12px 3px;
+  border: 0;
+  font-size: 11px;
+  min-width: 0;
+}
+.pp-profile-3 .pp-account-menu {
+  grid-template-columns: 1fr;
+  gap: 1px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.pp-profile-3 .pp-account-menu > button {
+  border: 0;
+  border-radius: 0;
+  min-height: 46px;
+}
+.pp-profile-3 .pp-account-menu > button:after {
+  content: "›";
+  margin-left: auto;
+  color: var(--p-muted);
+}
+.pp-profile-3 .pp-wallet-actions button {
+  flex-direction: column;
+  font-size: 11px;
+}
+.pp-profile-3 .pp-wallet-actions .p-glyph {
+  width: 29px;
+  height: 29px;
+  flex-basis: 29px;
+  padding: 4px;
+}
+.pp-vip-hero {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 12px;
+  background: linear-gradient(
+    130deg,
+    color-mix(in srgb, var(--p-accent) 25%, var(--p-panel)),
+    var(--p-panel)
+  );
+  flex-wrap: wrap;
+}
+.pp-vip-hero > .p-glyph {
+  height: 56px;
+  width: 56px;
+  flex-basis: 56px;
+  color: var(--p-accent);
+}
+.pp-vip-hero > .pp-progress {
+  width: 100%;
+}
+.pp-level-selector {
+  display: flex;
+  gap: 8px;
+  overflow: auto;
+  scrollbar-width: thin;
+  margin: 16px 0;
+  padding: 3px 1px 9px;
+}
+.pp-level-selector button {
+  flex: 0 0 65px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 5px;
+  background: var(--p-panel);
+  border: 1px solid var(--p-raised);
+  border-radius: 9px;
+  color: var(--p-muted);
+}
+.pp-level-selector button[aria-pressed="true"] {
+  color: var(--p-accent);
+  border-color: var(--p-accent);
+  background: color-mix(in srgb, var(--p-accent) 10%, var(--p-panel));
+}
+.pp-section-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+}
+.pp-section-title small {
+  font-size: 10px;
+  white-space: nowrap;
+}
+.pp-benefits {
+  display: grid;
+  gap: 0;
+}
+.pp-benefit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 0;
+  border-top: 1px solid var(--p-raised);
+  font-size: 12px;
+}
+.pp-benefit > .p-glyph {
+  color: var(--p-accent);
+  width: 26px;
+  height: 26px;
+  flex-basis: 26px;
+}
+.pp-benefit > div {
+  display: grid;
+  gap: 4px;
+  flex: 1;
+}
+.pp-benefit small {
+  font-size: 9px;
+}
+.pp-benefit strong {
+  color: var(--p-accent);
+  font-size: 13px;
+}
+.pp-vip-1 .pp-vip-hero {
+  justify-content: center;
+  text-align: center;
+  background: radial-gradient(
+    ellipse at top,
+    color-mix(in srgb, var(--p-accent) 30%, var(--p-panel)),
+    var(--p-bg)
+  );
+  flex-direction: column;
+}
+.pp-vip-1 .pp-vip-hero > .p-glyph {
+  height: 70px;
+  width: 70px;
+  flex-basis: 70px;
+}
+.pp-vip-1 .pp-benefits {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.pp-vip-1 .pp-benefit {
+  flex-direction: column;
+  text-align: center;
+  padding: 13px 4px;
+  border: 1px solid var(--p-raised);
+  border-radius: 8px;
+}
+.pp-vip-1 .pp-benefit small {
+  display: none;
+}
+.pp-vip-3 .pp-benefits {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.pp-vip-3 .pp-benefit {
+  flex-direction: column;
+  text-align: center;
+  gap: 12px;
+  padding: 18px 8px;
+  background: var(--p-bg);
+  border: 0;
+  border-radius: 9px;
+}
+.pp-vip-3 .pp-benefit > .p-glyph {
+  width: 33px;
+  height: 33px;
+  flex-basis: 33px;
+}
+.pp-vip-3 .pp-level-selector button {
+  flex-basis: 48px;
+  padding: 8px 4px;
+  font-size: 10px;
+}
+.pp-vip-3 .pp-level-selector button > .p-glyph {
+  display: none;
+}
+.pp-inbox-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--p-muted);
+  font-size: 11px;
+  margin: 15px 1px;
+}
+.pp-inbox-toolbar button {
+  color: var(--p-accent);
+  font-size: 11px;
+}
+.pp-message {
+  border-radius: 9px;
+  background: var(--p-panel);
+  margin: 8px 0;
+  border: 1px solid color-mix(in srgb, var(--p-text) 7%, transparent);
+  overflow: hidden;
+}
+.pp-message > button {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  width: 100%;
+  padding: 14px 12px;
+  gap: 11px;
+}
+.pp-message > button > span:nth-child(2) {
+  display: grid;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+.pp-message b {
+  font-size: 12px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+.pp-message small {
+  font-size: 10px;
+}
+.pp-message i {
+  font-size: 9px;
+  font-style: normal;
+  color: var(--p-muted);
+}
+.pp-message.unread i {
+  color: var(--p-accent);
+}
+.pp-message.unread b {
+  font-weight: 700;
+}
+.pp-message-icon {
+  width: 33px;
+  height: 33px;
+  display: grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--p-accent) 12%, transparent);
+  border-radius: 8px;
+  color: var(--p-accent);
+  flex-shrink: 0;
+}
+.pp-message p {
+  padding: 0 14px 15px 56px;
+  color: var(--p-muted);
+  line-height: 1.7;
+  font-size: 12px;
+}
+.pp-inbox-1 .pp-tabs {
+  padding: 10px 4px;
+}
+.pp-inbox-1 .pp-tabs button {
+  min-height: 48px;
+  border-radius: 7px;
+}
+.pp-inbox-2 .pp-tabs,
+.pp-inbox-3 .pp-tabs {
+  background: none;
+  border-bottom: 1px solid var(--p-raised);
+  border-radius: 0;
+  padding: 0;
+  gap: 12px;
+}
+.pp-inbox-2 .pp-tabs button[aria-pressed="true"],
+.pp-inbox-3 .pp-tabs button[aria-pressed="true"] {
+  background: none;
+  border-radius: 0;
+  color: var(--p-accent);
+  border-bottom: 2px solid var(--p-accent);
+}
+.pp-inbox-2 .pp-message {
+  border: 0;
+  border-bottom: 1px solid var(--p-raised);
+  border-radius: 0;
+  background: transparent;
+  margin: 0;
+}
+.pp-inbox-2 .pp-message-icon {
+  display: none;
+}
+.pp-inbox-2 .pp-message p {
+  padding-left: 12px;
+}
+.pp-inbox-3 .pp-message {
+  margin: 12px 0;
+}
+.pp-inbox-3 .pp-message-icon {
+  background: none;
+  width: 25px;
+}
+.pp-inbox-3 .pp-message p {
+  padding-left: 14px;
+}
+.pp-message-excerpt {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.pp-empty {
+  text-align: center;
+  padding: 80px 10px;
+  color: var(--p-muted);
+}
+.pp-empty > .p-glyph {
+  height: 42px;
+  width: 42px;
+  margin: 0 auto 18px;
+}
+.pp-skeleton i {
+  display: block;
+  height: 90px;
+  background: var(--p-panel);
+  border-radius: 9px;
+  margin: 14px 0;
+}
+.pp-skeleton i:nth-child(2) {
+  height: 160px;
+}
+.pp-skeleton p {
+  color: var(--p-muted);
+  text-align: center;
+}
+.pp-auth {
+  position: relative;
+  isolation: isolate;
+  min-height: 650px;
+  padding: 18px !important;
+}
+.pp-auth-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 1;
+}
+.pp-auth-top > button {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.pp-auth-hero {
+  height: 160px;
+  margin: 16px -18px 0;
+  overflow: hidden;
+  position: relative;
+}
+.pp-auth-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.pp-auth-body {
+  position: relative;
+  padding: 20px 0;
+}
+.pp-auth-heading small {
+  color: var(--p-accent);
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+.pp-auth-heading h2 {
+  margin-top: 4px;
+}
+.pp-auth-options,
+.pp-agree {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--p-muted);
+  margin: 15px 0;
+}
+.pp-auth-options {
+  justify-content: space-between;
+}
+.pp-auth-options label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.pp-auth-options button {
+  font-size: 11px;
+}
+.pp-auth input[type="checkbox"] {
+  accent-color: var(--p-accent);
+  width: 13px;
+  height: 13px;
+  margin: 0;
+}
+.pp-auth-support {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+.pp-auth-support button {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--p-muted);
+  font-size: 11px;
+}
+.pp-auth-1 {
+  background: linear-gradient(135deg, var(--p-accent), var(--p-accent2));
+}
+.pp-auth-1 .pp-auth-top {
+  color: var(--p-onAccent);
+}
+.pp-auth-1 .pp-auth-hero {
+  height: 175px;
+  margin-top: 10px;
+}
+.pp-auth-1 .pp-auth-body {
+  padding: 22px 20px;
+  background: var(--p-panel);
+  margin: 0 -8px;
+  border-radius: 24px 24px 14px 14px;
+}
+.pp-auth-1 .pp-auth-options {
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.pp-auth-2 {
+  background: var(--p-panel);
+}
+.pp-auth-2 .pp-auth-hero {
+  position: absolute;
+  inset: 0 0 auto;
+  margin: 0;
+  height: 310px;
+  z-index: -1;
+  mask-image: linear-gradient(#000, transparent);
+}
+.pp-auth-2 .pp-auth-body {
+  margin-top: 145px;
+  padding: 0;
+}
+.pp-auth-2 .pp-auth-heading h2 {
+  color: var(--p-accent);
+}
+.pp-auth-2 .pp-tabs {
+  background: transparent;
+  padding: 0;
+  justify-content: flex-start;
+}
+.pp-auth-2 .pp-tabs button {
+  flex: none;
+  padding: 5px 15px;
+  border-radius: 0;
+}
+.pp-auth-2 .pp-tabs button[aria-pressed="true"] {
+  background: transparent;
+  border-bottom: 2px solid var(--p-accent);
+  color: var(--p-accent);
+}
+.pp-auth-3 {
+  background: radial-gradient(
+    ellipse at top,
+    color-mix(in srgb, var(--p-accent) 25%, var(--p-bg)),
+    var(--p-bg) 55%
+  );
+}
+.pp-auth-3 .pp-auth-top > .p-logo-asset {
+  visibility: hidden;
+}
+.pp-auth-3 .pp-auth-hero {
+  display: grid;
+  place-items: center;
+  height: 110px;
+}
+.pp-auth-3 .pp-auth-hero > .p-logo-asset {
+  width: 160px;
+  height: 50px;
+}
+.pp-auth-3 .pp-auth-heading {
+  text-align: center;
+}
+.pp-auth-3 .pp-auth-body {
+  padding: 10px 10px 25px;
+}
+.pp-auth-4 {
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--p-accent) 26%, var(--p-bg)),
+    var(--p-bg) 70%
+  );
+}
+.pp-auth-4 .pp-auth-hero {
+  width: 90px;
+  height: 90px;
+  float: right;
+  border-radius: 50%;
+  margin: 20px 0 0 10px;
+  border: 5px solid color-mix(in srgb, var(--p-accent) 18%, transparent);
+}
+.pp-auth-4 .pp-auth-heading {
+  padding: 25px 0;
+}
+.pp-auth-4 .pp-tabs {
+  clear: both;
+  background: transparent;
+  padding: 0;
+}
+.pp-auth-4 .pp-tabs button {
+  border-radius: 20px;
+}
+.pp-auth-4 .pp-submit {
+  width: 62%;
+  display: block;
+  margin: 24px auto 12px;
+  border-radius: 24px;
+}
+.pp-auth-4 .pp-field > div {
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--p-panel) 60%, transparent);
+}
+.pp-bottom {
+  min-height: 64px;
+  padding-top: 9px;
+}
+.pp-bottom .pp-nav-icon {
+  display: grid;
+  place-items: center;
+  position: relative;
+  height: 28px;
+  width: 38px;
+  border-radius: 20px;
+}
+.pp-bottom-1 .pp-nav-center .pp-nav-icon,
+.pp-bottom-2 .pp-nav-center .pp-nav-icon,
+.pp-bottom-3 .pp-nav-center .pp-nav-icon,
+.pp-bottom-4 .pp-nav-center .pp-nav-icon {
+  margin-top: -25px;
+  margin-bottom: 6px;
+  height: 44px;
+  width: 44px;
+  border-radius: 50%;
+  background: linear-gradient(130deg, var(--p-accent), var(--p-accent2));
+  color: var(--p-onAccent);
+  box-shadow: 0 0 0 5px var(--p-bg);
+}
+.pp-bottom-2 {
+  border-radius: 15px 15px 0 0;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--p-accent) 15%, var(--p-panel)),
+    var(--p-panel)
+  );
+}
+.pp-bottom-2 .pp-nav-center .pp-nav-icon {
+  border-radius: 12px;
+  transform: rotate(-8deg);
+}
+.pp-bottom-2 .pp-nav-center .p-glyph {
+  transform: rotate(8deg);
+}
+.pp-bottom-3 {
+  border-radius: 24px 24px 0 0;
+  border-top: 2px solid color-mix(in srgb, var(--p-accent) 35%, transparent);
+}
+.pp-bottom-3 .pp-nav-center .pp-nav-icon {
+  width: 54px;
+  height: 44px;
+  border-radius: 50% 50% 15px 15px;
+  box-shadow: 0 0 0 7px var(--p-panel);
+}
+.pp-bottom-4 {
+  margin: 0 8px 8px;
+  border-radius: 14px;
+  box-shadow:
+    0 4px 16px #0004,
+    inset 0 2px 0 color-mix(in srgb, var(--p-accent) 40%, transparent);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--p-accent) 20%, var(--p-panel)),
+    var(--p-panel)
+  );
+}
+.pp-bottom-4 .pp-nav-center .pp-nav-icon {
+  border-radius: 12px;
+  box-shadow:
+    0 3px 0 color-mix(in srgb, var(--p-accent) 55%, var(--p-bg)),
+    0 5px 10px #0004;
+  margin-top: -23px;
+}
+.pp-bottom-5 button[aria-current="page"] .pp-nav-icon {
+  background: color-mix(in srgb, var(--p-accent) 15%, transparent);
+}
+.ng-player.pp-mini {
+  height: 165px;
+}
+.pp-mini .p-mini-canvas {
+  padding: 0;
+}
+.pp-mini .pp-page {
+  padding: 16px;
+  min-height: 550px;
+}
+.pp-mini-bottom .p-mini-canvas {
+  height: 210px;
+  padding-top: 65px;
+}
+.pp-mini-bottom .p-bottom {
+  position: relative;
+  margin-top: 25px;
+}
+.ng-player[data-active-page="登入注册"] [data-slot="header"],
+.ng-player[data-active-page="登入注册"] [data-slot="download"],
+.ng-player[data-active-page="登入注册"] [data-slot="bottom"],
+.ng-player[data-active-page="登入注册"] [data-slot="addons"] {
+  display: none;
+}
+.ng-player[data-active-page="登入注册"] .p-scroll {
+  padding-bottom: 0;
+}
+.ng-player[data-active-page]:not([data-active-page="首页"])
+  [data-slot="download"],
+.ng-player[data-active-page]:not([data-active-page="首页"])
+  [data-slot="addons"] {
+  display: none;
+}
+.ng-player:is(
+    [data-active-page="充值"],
+    [data-active-page="钱包"],
+    [data-active-page="提款"],
+    [data-active-page="VIP"],
+    [data-active-page="站内信"]
+  )
+  [data-slot="header"] {
+  display: none;
+}
+.pp-auth-1 .pp-auth-hero {
+  height: 155px;
+}
+.pp-auth-1 .pp-auth-image {
+  object-fit: contain;
+  object-position: right bottom;
+}
+.pp-auth-1 .pp-field > div {
+  border: 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--p-text) 24%, transparent);
+  border-radius: 0;
+  padding: 0 2px;
+}
+.pp-auth-1 .pp-submit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  color: var(--p-accent);
+  text-align: left;
+  font-size: 18px;
+  margin-top: 22px;
+}
+.pp-auth-1 .pp-submit:after {
+  content: "→";
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  background: var(--p-text);
+  color: var(--p-panel);
+  border-radius: 50%;
+  font-size: 24px;
+}
+.pp-auth-4 .pp-auth-image {
+  object-fit: contain;
+}

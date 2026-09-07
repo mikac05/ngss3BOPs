@@ -30,6 +30,11 @@ ngss3BOPs/
 ## 🚀 包含原型详细说明
 
 ### 1. 管理端 (Back Office)
+- **[个性化改版](backoffice/personalization/)**：
+  - PC 管理端，保留 Element Plus 风格与独立 H5 预览；建议窗口宽度至少 1366 px。
+  - NG 主题 58 款组件样式，支持绿黑、橙白、藍白，以及租户默认值和玩家可选范围。
+  - [PM / UI 演示指南](backoffice/personalization/presentation.html) · [五分钟提词](backoffice/personalization/PRESENTATION.md) · [组件与开发说明](backoffice/personalization/README.md)。
+  - 使用合成数据；保存仅在当前页面会话生效，刷新后重置，可导出 JSON 留存。真实接口另行接入。
 - **游戏统计管理看板 (`/backoffice/game-stats/`)**：
   - 面向游戏平台运营与管理团队。
   - 支持多日期与统计维度（平台、游戏、币种）筛选、实时 KPI 指标、多系列趋势折线图、构成与损益排行分析、明细下钻表格、排序分页与数据导出。
@@ -47,5 +52,5 @@ ngss3BOPs/
 
 ## 🌐 本地预览与 GitHub Pages
 
-- **本机预览**：直接以浏览器开启 `index.html` 即可完整体验所有原型。
+- **本机预览**：在仓库根目录运行 `python -m http.server 8765 --bind 127.0.0.1`，浏览器打开 `http://127.0.0.1:8765/`。个性化页使用同源 iframe 通信，请通过 HTTP 预览。
 - **GitHub Pages**：推送到 `main` 分支后，GitHub Pages 自动以 `index.html` 作为根目录对外提供服务。

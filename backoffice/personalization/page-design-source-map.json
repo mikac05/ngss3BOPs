@@ -1,0 +1,284 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-07",
+  "evidence": "Figma browser observed / Prototype-only implementation",
+  "fileKey": "hlTfe3BQv3dkk09sC2nIj2",
+  "pageNode": "0:1",
+  "pageName": "ngss3元件組件",
+  "scope": "Six named non-home groups. 首页区 is preserved from the previous implementation.",
+  "counts": {
+    "newGroups": 6,
+    "newStyles": 21,
+    "preservedHomeStyles": 37,
+    "totalStyles": 58
+  },
+  "inspection": "Page metadata and browser canvas/layer tree inspected. Figma MCP quota prevented further get_design_context calls. Images recovered using the browser inspector.",
+  "groups": [
+    {
+      "setting": "authVisual",
+      "sourceGroup": "登录注册页",
+      "sourceNode": "838:7449",
+      "url": "https://www.figma.com/design/hlTfe3BQv3dkk09sC2nIj2/ngss3?node-id=838-7449",
+      "previewPage": "登入注册",
+      "renderKey": "auth",
+      "styles": [
+        {
+          "number": 1,
+          "label": "样式一",
+          "description": "插画分区",
+          "behavior": "插画在上，表单独立成区。"
+        },
+        {
+          "number": 2,
+          "label": "样式二",
+          "description": "背景渐隐",
+          "behavior": "背景渐隐至表单，文字保持清晰。"
+        },
+        {
+          "number": 3,
+          "label": "样式三",
+          "description": "品牌居中",
+          "behavior": "品牌居中，登录与注册使用一致的表单结构。"
+        },
+        {
+          "number": 4,
+          "label": "样式四",
+          "description": "轻量圆角",
+          "behavior": "柔和渐变与圆角按钮，支持切换登录方式。"
+        }
+      ],
+      "palettes": [
+        "BDOK (绿黑)",
+        "橙白",
+        "藍白"
+      ],
+      "settingLabel": "登录注册"
+    },
+    {
+      "setting": "depositPage",
+      "sourceGroup": "钱包充值页",
+      "sourceNode": "436:6663",
+      "url": "https://www.figma.com/design/hlTfe3BQv3dkk09sC2nIj2/ngss3?node-id=436-6663",
+      "previewPage": "充值",
+      "renderKey": "deposit",
+      "styles": [
+        {
+          "number": 1,
+          "label": "样式一",
+          "description": "分组表单",
+          "behavior": "余额、渠道、金额依序分组。"
+        },
+        {
+          "number": 2,
+          "label": "样式二",
+          "description": "图标渠道",
+          "behavior": "图标渠道横向排列，金额快捷按钮集中展示。"
+        },
+        {
+          "number": 3,
+          "label": "样式三",
+          "description": "紧凑分栏",
+          "behavior": "余额与操作分栏，充值表单更紧凑。"
+        }
+      ],
+      "palettes": [
+        "BDOK (绿黑)",
+        "橙白",
+        "藍白"
+      ],
+      "settingLabel": "钱包充值"
+    },
+    {
+      "setting": "profileLayout",
+      "sourceGroup": "个人中心页",
+      "sourceNode": "473:14976",
+      "url": "https://www.figma.com/design/hlTfe3BQv3dkk09sC2nIj2/ngss3?node-id=473-14976",
+      "previewPage": "账户",
+      "renderKey": "profile",
+      "styles": [
+        {
+          "number": 1,
+          "label": "样式一",
+          "description": "居中账户",
+          "behavior": "头像与余额居中，常用功能分组排列。"
+        },
+        {
+          "number": 2,
+          "label": "样式二",
+          "description": "图标总览",
+          "behavior": "账户信息紧凑展示，功能以图标网格展开。"
+        },
+        {
+          "number": 3,
+          "label": "样式三",
+          "description": "钱包概览",
+          "behavior": "余额与资金入口优先，其他功能使用清晰列表。"
+        }
+      ],
+      "palettes": [
+        "BDOK (绿黑)",
+        "橙白",
+        "藍白"
+      ],
+      "settingLabel": "个人中心"
+    },
+    {
+      "setting": "vipPage",
+      "sourceGroup": "VIP页面",
+      "sourceNode": "729:8096",
+      "url": "https://www.figma.com/design/hlTfe3BQv3dkk09sC2nIj2/ngss3?node-id=729-8096",
+      "previewPage": "VIP",
+      "renderKey": "vip",
+      "styles": [
+        {
+          "number": 1,
+          "label": "样式一",
+          "description": "徽章总览",
+          "behavior": "等级徽章与进度居中，权益分类展示。"
+        },
+        {
+          "number": 2,
+          "label": "样式二",
+          "description": "等级卡片",
+          "behavior": "横向选择等级，权益以列表展示。"
+        },
+        {
+          "number": 3,
+          "label": "样式三",
+          "description": "权益网格",
+          "behavior": "等级进度置顶，权益以两列卡片展示。"
+        }
+      ],
+      "palettes": [
+        "BDOK (绿黑)",
+        "橙白",
+        "藍白"
+      ],
+      "settingLabel": "VIP 页面"
+    },
+    {
+      "setting": "inbox",
+      "sourceGroup": "站内信",
+      "sourceNode": "838:4636",
+      "url": "https://www.figma.com/design/hlTfe3BQv3dkk09sC2nIj2/ngss3?node-id=838-4636",
+      "previewPage": "站内信",
+      "renderKey": "inbox",
+      "styles": [
+        {
+          "number": 1,
+          "label": "样式一",
+          "description": "分类卡片",
+          "behavior": "图标分类与独立消息卡片。"
+        },
+        {
+          "number": 2,
+          "label": "样式二",
+          "description": "紧凑列表",
+          "behavior": "分类页签与紧凑行，点击查看内容。"
+        },
+        {
+          "number": 3,
+          "label": "样式三",
+          "description": "摘要列表",
+          "behavior": "直接显示消息摘要，详情可展开。"
+        }
+      ],
+      "palettes": [
+        "BDOK (绿黑)",
+        "橙白",
+        "藍白"
+      ],
+      "settingLabel": "站内信"
+    },
+    {
+      "setting": "bottomNav",
+      "sourceGroup": "底部导航",
+      "sourceNode": "838:8320",
+      "url": "https://www.figma.com/design/hlTfe3BQv3dkk09sC2nIj2/ngss3?node-id=838-8320",
+      "previewPage": "首页",
+      "renderKey": "bottom",
+      "styles": [
+        {
+          "number": 1,
+          "label": "样式一",
+          "description": "悬起圆钮",
+          "behavior": "中间入口突出，其他入口保持等距。"
+        },
+        {
+          "number": 2,
+          "label": "样式二",
+          "description": "居中凸起",
+          "behavior": "中央入口抬高，使用圆角容器。"
+        },
+        {
+          "number": 3,
+          "label": "样式三",
+          "description": "弧形底座",
+          "behavior": "中央入口与弧形容器相连。"
+        },
+        {
+          "number": 4,
+          "label": "样式四",
+          "description": "立体底座",
+          "behavior": "立体底座强调中央入口。"
+        },
+        {
+          "number": 5,
+          "label": "样式五",
+          "description": "简洁平铺",
+          "behavior": "图标与文字均匀平铺，选中态使用主题色。"
+        }
+      ],
+      "palettes": [
+        "BDOK (绿黑)",
+        "橙白",
+        "藍白"
+      ],
+      "settingLabel": "底部导航"
+    }
+  ],
+  "assets": [
+    {
+      "file": "assets/ng-design/auth-ensemble.webp",
+      "node": "1353:16959",
+      "imageHash": "dfd4b800232689e06854dd8977e2454568a3d170",
+      "use": "Style 1 login illustration; reused across the three palettes",
+      "bytes": 1049198,
+      "sha256": "647fff9322ea461f0ca0849c5f233a696b2fa5050f6f26c38adb07a41bea8345",
+      "conversion": "Lossless WebP, exact=True; decoded RGBA pixel equality verified against source PNG."
+    },
+    {
+      "file": "assets/ng-design/auth-miner.webp",
+      "node": "1345:32423",
+      "imageHash": "73d45cbaf3107eb3c6e0da1e70fb40a4bf2c7942",
+      "use": "Style 2 character artwork; source orange example, reused across palettes",
+      "bytes": 5184946,
+      "sha256": "84f4a5463f615429c1d77c075e6bac4b0ae1114728ed757207960a6b9c98f505",
+      "conversion": "Lossless WebP, exact=True; decoded RGBA pixel equality verified against source PNG."
+    }
+  ],
+  "adaptations": [
+    "Layouts are web adaptations, not pixel-exact screenshot copies.",
+    "Existing exported icon library is shared across pages; distinct decorative icons and all per-color character substitutions are not reproduced.",
+    "Style 4 auth illustration reuses the existing exported download illustration; the original small 3D artwork remains for UI confirmation.",
+    "Login and registration support separate optional uploaded images; masking is applied in CSS.",
+    "Withdrawal/history previews are supporting flows, not additional counted Figma styles."
+  ],
+  "excluded": [
+    {
+      "node": "233:6109",
+      "name": "首页区组件设计",
+      "reason": "User requested preserving already-built home group."
+    },
+    {
+      "node": "797:5824",
+      "name": "Group 1321316534",
+      "reason": "Hidden, unlabelled helper with records/rules layers; not a named additional style group."
+    }
+  ],
+  "remaining": [
+    "UI confirmation of exact final decoration and per-color artwork",
+    "Real account/auth/payment/VIP/inbox APIs",
+    "Server enforcement of tenant choices and persistence"
+  ]
+}

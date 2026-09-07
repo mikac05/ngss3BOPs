@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>个性化改版 · NGSS管理系统</title>
+    <link rel="stylesheet" href="customize-base.css?v=pages-20260907-5" />
+    <link rel="stylesheet" href="player-components.css?v=pages-20260907-5" />
+    <link rel="stylesheet" href="player-pages.css?v=pages-20260907-5" />
+    <link rel="stylesheet" href="customize-studio.css?v=pages-20260907-5" />
+  </head>
+  <body>
+    <a class="skip" href="#object-detail">跳到设置</a>
+    <aside class="backoffice-sidebar" aria-label="后台导航">
+      <div class="backoffice-logo">
+        <span aria-hidden="true">▦</span> NGSS管理系统
+      </div>
+      <nav>
+        <div class="backoffice-menu"><span>⌂</span>首页</div>
+        <div class="backoffice-menu"><span>♙</span>会员管理<i>⌄</i></div>
+        <div class="backoffice-menu"><span>▤</span>彩票管理<i>⌄</i></div>
+        <div class="backoffice-menu"><span>▥</span>报表统计<i>⌄</i></div>
+        <div class="backoffice-menu"><span>▦</span>考勤管理<i>⌄</i></div>
+        <div class="backoffice-menu expanded">
+          <span>ϟ</span>运营管理<i>⌃</i>
+        </div>
+        <div class="backoffice-submenu">
+          <div>APP安装引导管理</div>
+          <div>域名管理</div>
+          <div>安卓马甲包管理</div>
+          <div>仿应用商店模板管理</div>
+          <div>推广渠道管理</div>
+          <div class="active" aria-current="page">个性化改版</div>
+          <div>归因埋点管理</div>
+        </div>
+        <div class="backoffice-menu"><span>◇</span>游戏管理<i>⌄</i></div>
+        <div class="backoffice-menu"><span>♙</span>代理管理<i>⌄</i></div>
+        <div class="backoffice-menu"><span>♧</span>优惠管理<i>⌄</i></div>
+        <div class="backoffice-menu"><span>▣</span>财务管理<i>⌄</i></div>
+        <div class="backoffice-menu"><span>♧</span>风控管理<i>⌄</i></div>
+        <div class="backoffice-menu"><span>▤</span>信息管理<i>⌄</i></div>
+        <div class="backoffice-menu"><span>⚙</span>系统管理<i>⌄</i></div>
+      </nav>
+    </aside>
+    <main class="backoffice-main">
+      <div class="backoffice-toolbar">
+        <button
+          class="backoffice-collapse"
+          data-studio="toggle-sidebar"
+          aria-label="收起后台导航"
+          aria-expanded="true"
+        >
+          ☰
+        </button>
+        <nav aria-label="面包屑">
+          运营管理 <span>/</span> <strong>个性化改版</strong>
+        </nav>
+        <span class="backoffice-user">站点管理员</span>
+      </div>
+      <div class="backoffice-tabs">
+        <span>⌂ 首页</span><span class="active">个性化改版</span>
+      </div>
+      <div class="customize-workspace">
+        <div class="studio-settings-workspace">
+          <header class="app-header">
+            <div class="studio-brand">
+              <div>
+                <h1>个性化改版</h1>
+                <p id="version-line"></p>
+              </div>
+            </div>
+            <div class="header-actions">
+              <select hidden id="theme-select" aria-label="选择主题"></select>
+              <button class="btn" data-action="open-diff">查看修改</button
+              ><button class="btn" data-action="cancel">撤销修改</button
+              ><button class="btn btn-brand" data-action="apply" id="apply-btn">
+                保存
+              </button>
+            </div>
+          </header>
+          <div class="app">
+            <aside class="rail" aria-label="外观设置导航">
+              <h2>设置</h2>
+              <input
+                class="tree-search"
+                id="object-search"
+                type="search"
+                placeholder="搜索设置"
+                aria-label="搜索物件"
+              />
+              <form id="filters" hidden></form>
+              <div id="tree"></div>
+            </aside>
+            <div class="studio-editor-scroll">
+              <section
+                class="detail"
+                id="object-detail"
+                tabindex="-1"
+              ></section>
+              <section
+                class="validation"
+                id="validation-pane"
+                aria-live="polite"
+              ></section>
+            </div>
+          </div>
+        </div>
+        <section
+          class="preview"
+          id="preview-pane"
+          aria-label="H5 玩家预览"
+        ></section>
+      </div>
+    </main>
+    <aside
+      class="dev-floating-panel"
+      id="dev-floating-panel"
+      aria-label="开发工具箱"
+    >
+      <button
+        class="dev-panel-header dev-panel-toggle"
+        data-action="toggle-dev-panel"
+        aria-expanded="false"
+        aria-controls="dev-tool-body"
+      >
+        开发工具箱 <span aria-hidden="true">⌃</span>
+      </button>
+      <div class="dev-panel-body" id="dev-tool-body">
+        <p class="studio-muted">
+          独立演示环境，使用合成资料。保存仅在本次会话生效；导出可留存配置。
+        </p>
+        <label
+          >测试租户<select id="tenant-select" aria-label="选择合成租户">
+            <option value="tenant-a">示例租户 A</option>
+            <option value="tenant-b">示例租户 B</option>
+          </select></label
+        >
+        <label
+          >界面语言<select id="ui-language-select" aria-label="选择介面语言">
+            <option value="zh">简体中文</option>
+            <option value="en">English</option>
+          </select></label
+        >
+        <button class="btn" data-action="open-checks">运行检查</button
+        ><button class="btn" data-studio="export">导出配置 JSON</button
+        ><a href="design-source-map.json" target="_blank"
+          >查看 Figma 对照表 ↗</a
+        >
+        <a href="presentation.html" target="_blank">演示指南 ↗</a>
+        <a href="page-design-source-map.json" target="_blank">页面组件对照表 ↗</a>
+        <details open>
+          <summary>模拟条件</summary>
+          <label
+            >检查场景
+            <select id="scene-select" aria-label="载入示范场景"></select>
+          </label>
+          <label
+            title="仅用于检查多语言长文案是否造成截断或碰撞，不是租户配置。"
+            >长文案压力测试
+            <select id="stress-select" aria-label="长文案版面测试">
+              <option value="off">关闭</option>
+              <option value="badges">徽章 +200–300%</option>
+              <option value="buttons">按钮 +100–200%</option>
+              <option value="nav">导航 +50–120%</option>
+              <option value="labels">表单标签 +50–100%</option>
+              <option value="headings">标题 +80–150%</option>
+              <option value="all">全部长文案</option>
+            </select>
+          </label>
+          <label
+            >内容状态
+            <select id="content-select">
+              <option value="normal">正常</option>
+              <option value="empty">空内容</option>
+              <option value="loading">加载中</option>
+              <option value="error">加载失败</option>
+            </select>
+          </label>
+          <label
+            >App 可用性
+            <select id="install-select">
+              <option value="on">已启用</option>
+              <option value="off">未启用</option>
+            </select>
+          </label>
+          <label
+            >功能可用性
+            <select id="capability-select">
+              <option value="">全部可用</option>
+              <option value="App download">App download 未启用</option>
+              <option value="VIP 页入口">VIP 页入口 未启用</option>
+              <option value="充值">充值 未启用</option>
+              <option value="钱包/纪录">钱包/纪录 未启用</option>
+              <option value="站内信">站内信 未启用</option>
+              <option value="用户验证">用户验证 未启用</option>
+            </select>
+          </label>
+          <div
+            style="
+              border-top: 1px solid var(--el-border-color-lighter);
+              padding-top: 10px;
+              margin-top: 6px;
+            "
+          >
+            <span
+              style="
+                font-size: 11px;
+                font-weight: 600;
+                color: var(--el-text-color-secondary);
+                display: block;
+                margin-bottom: 8px;
+              "
+              >状态与版本模拟</span
+            >
+            <div
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px"
+            >
+              <button
+                type="button"
+                class="btn tiny"
+                data-action="simulate-stale"
+              >
+                模拟过期草稿
+              </button>
+              <button
+                type="button"
+                class="btn tiny"
+                data-action="simulate-stale-preview"
+              >
+                模拟过期预览
+              </button>
+              <button
+                type="button"
+                class="btn tiny"
+                data-action="simulate-invalid"
+                style="grid-column: span 2"
+              >
+                模拟失效已套用配置
+              </button>
+              <button
+                type="button"
+                class="btn tiny btn-danger"
+                data-action="clear-sim"
+                style="grid-column: span 2"
+              >
+                清除模拟
+              </button>
+            </div>
+          </div>
+        </details>
+        <button class="btn" data-action="reset-page">重置当前页面</button
+        ><button class="btn btn-danger" data-action="reset-all">
+          重置全部外观
+        </button>
+      </div>
+    </aside>
+    <div
+      class="drawer"
+      id="diff-drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="diff-title"
+    ></div>
+    <div
+      class="drawer"
+      id="checks-drawer"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="checks-title"
+    ></div>
+    <div
+      class="modal"
+      id="confirm-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="confirm-title"
+    ></div>
+    <div class="studio-announcement" role="status" id="studio-status"></div>
+    <script src="ng-assets.js?v=pages-20260907-5"></script>
+    <script src="ng-design-catalog.js?v=pages-20260907-5"></script>
+    <script src="ng-page-designs.js?v=pages-20260907-5"></script>
+    <script src="player-components.js?v=pages-20260907-5"></script>
+    <script src="player-pages.js?v=pages-20260907-5"></script>
+    <script src="customize-studio.js?v=pages-20260907-5"></script>
+    <script src="customize-checks.js?v=pages-20260907-5"></script>
+    <script src="customize-core.js?v=pages-20260907-5"></script>
+  </body>
+</html>

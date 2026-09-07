@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8" />
+    <title>个性化改版 · 演示指南</title>
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #141414;
+        color: #e5eaf3;
+        font:
+          14px/1.6 "Microsoft YaHei",
+          Arial,
+          sans-serif;
+      }
+      main {
+        width: 1120px;
+        margin: 50px auto;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #414243;
+        padding-bottom: 25px;
+        margin-bottom: 25px;
+      }
+      h1 {
+        font-size: 28px;
+        margin: 6px 0;
+      }
+      h2 {
+        font-size: 17px;
+        margin: 0 0 10px;
+      }
+      p {
+        color: #a3a6ad;
+        margin: 8px 0;
+      }
+      a {
+        color: #79bbff;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      .start {
+        background: #337ab7;
+        color: white;
+        padding: 12px 22px;
+        border-radius: 4px;
+      }
+      small {
+        color: #79bbff;
+      }
+      .principles {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+      .card,
+      .step {
+        border: 1px solid #414243;
+        background: #1d1e1f;
+        border-radius: 5px;
+        padding: 22px;
+      }
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+      }
+      .step {
+        display: flex;
+        gap: 17px;
+      }
+      .number {
+        color: #79bbff;
+        font-size: 23px;
+      }
+      .step p {
+        margin: 0 0 12px;
+      }
+      .links {
+        display: flex;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+      .foot {
+        display: flex;
+        justify-content: space-between;
+        gap: 25px;
+        padding-top: 25px;
+        font-size: 12px;
+      }
+      .foot p {
+        max-width: 770px;
+      }
+      .review {
+        margin-top: 24px;
+        border-left: 3px solid #337ab7;
+        padding: 6px 20px;
+      }
+      .review p {
+        color: #e5eaf3;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <div>
+          <small>NGSS · 产品概念演示 / 5 MIN</small>
+          <h1>个性化改版</h1>
+          <p>设定本站外观，让玩家在允许的范围内选择。</p>
+        </div>
+        <a
+          class="start"
+          href="index.html?section=themeColor"
+          target="customize-demo"
+          >开始演示 ↗</a
+        >
+      </header>
+      <div class="principles">
+        <section class="card">
+          <h2>默认外观</h2>
+          <p>管理员选择主题与颜色<br />建立本站统一起点</p>
+        </section>
+        <section class="card">
+          <h2>玩家可选范围</h2>
+          <p>开放部分选项或完全固定<br />默认值始终保留</p>
+        </section>
+        <section class="card">
+          <h2>组件样式</h2>
+          <p>58 款布局 · 即时网页预览<br />复用数据、入口与共享组件</p>
+        </section>
+      </div>
+      <div class="steps">
+        <section class="step">
+          <span class="number">01</span>
+          <div>
+            <h2>默认值与玩家范围</h2>
+            <p>切换三种颜色，再只保留 NG 和两种玩家颜色。</p>
+            <a href="index.html?section=themeColor" target="customize-demo"
+              >主题与颜色 ↗</a
+            >
+          </div>
+        </section>
+        <section class="step">
+          <span class="number">02</span>
+          <div>
+            <h2>比较实际页面布局</h2>
+            <p>切换样式，点击充值金额与渠道，展示即时变化。</p>
+            <div class="links">
+              <a href="index.html?section=depositPage" target="customize-demo"
+                >钱包充值 ↗</a
+              ><a
+                href="index.html?section=profileLayout"
+                target="customize-demo"
+                >个人中心 ↗</a
+              >
+            </div>
+          </div>
+        </section>
+        <section class="step">
+          <span class="number">03</span>
+          <div>
+            <h2>组件内的交互</h2>
+            <p>查看不同等级权益、打开消息，再检查访客状态。</p>
+            <div class="links">
+              <a href="index.html?section=vipPage" target="customize-demo"
+                >VIP 页面 ↗</a
+              ><a href="index.html?section=inbox" target="customize-demo"
+                >站内信 ↗</a
+              >
+            </div>
+          </div>
+        </section>
+        <section class="step">
+          <span class="number">04</span>
+          <div>
+            <h2>完成外观配置</h2>
+            <p>切换登录样式与底部导航，查看修改并保存或撤销。</p>
+            <div class="links">
+              <a href="index.html?section=authVisual" target="customize-demo"
+                >登录注册 ↗</a
+              ><a href="index.html?section=bottomNav" target="customize-demo"
+                >底部导航 ↗</a
+              >
+            </div>
+          </div>
+        </section>
+      </div>
+      <section class="review">
+        <h2>这次评审要决定</h2>
+        <p>管理顺序是否清楚？哪些样式进入正式范围？各组件默认选择哪一款？</p>
+      </section>
+      <footer class="foot">
+        <p>
+          建议全程使用同一演示页的左侧导航；以上链接会重新打开对应页面。合成数据，保存仅在当前页面会话生效。布局已映射为网页组件，装饰素材与最终视觉待
+          UI 确认；真实权限、持久化与业务接口另行接入。
+        </p>
+        <div>
+          <a href="PRESENTATION.md">演示提词 ↗</a><br /><a
+            href="page-design-source-map.json"
+            >页面组件来源 ↗</a
+          >
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
