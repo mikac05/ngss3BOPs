@@ -20,7 +20,11 @@
   function img(group, key, cls = "p-icon") {
     const src = asset(group, key);
     return src
-      ? '<img class="' + cls + '" src="' + src + '" alt="" loading="lazy">'
+      ? '<img class="' +
+        cls +
+        '" src="' +
+        src +
+        '" alt="" loading="lazy" decoding="async">'
       : "";
   }
   const icons = {
@@ -184,6 +188,8 @@
     return (
       {
         取款: "提款",
+        登录: "登入注册",
+        注册: "登入注册",
         "钱包/纪录": "钱包",
         个人中心: "账户",
         "VIP 页入口": "VIP",
@@ -435,7 +441,7 @@
       text(c, "活动轮播图", "Promotion banners") +
       '">' +
       '<div class="p-banner-stage">' +
-      (s === 2 || s === 3
+      (s === 2 || s === 3 || s === 7 || s === 8
         ? bannerCard(c, i - 1, "p-banner-before") +
           bannerCard(c, i + 1, "p-banner-after")
         : "") +
@@ -514,6 +520,11 @@
     );
   }
   function categoryButtons(c) {
+    if (c.styles.category >= 6) {
+      const actual = c.styles.category;
+      const base = actual === 7 ? 1 : actual === 10 ? 4 : 5;
+      return categoryButtons({...c,styles:{...c.styles,category:base}}).replace('p-categories-' + base, 'p-categories-' + actual);
+    }
     const s = c.styles.category,
       display = c.values.categoryButtons;
     if (s === 3) return "";
@@ -694,7 +705,7 @@
         g.file +
         '" alt="' +
         esc(g.title) +
-        '" loading="lazy">' +
+        '" loading="lazy" decoding="async">' +
         (c.values.gameIconStyle === "附厂商标签"
           ? "<small>" + g.provider + "</small>"
           : ""),
@@ -737,12 +748,13 @@
         ) +
         "</div>"
       );
-    const groups =
-      c.query ||
-      c.recent ||
-      c.favorite ||
-      c.providers.length ||
-      c.category !== "ALL"
+    const groups = c.thumbnail
+      ? [["热门", "Hot", list.slice(0, 8)]]
+      : c.query ||
+          c.recent ||
+          c.favorite ||
+          c.providers.length ||
+          c.category !== "ALL"
         ? [["搜索结果", "Results", list]]
         : [
             ["热门", "Hot", list.slice(0, 12)],
@@ -1075,6 +1087,7 @@
     );
   }
   function footer(c) {
+    if (window.NGCurrent) return NGCurrent.footer(c);
     const s = c.values.footerStyle;
     return (
       '<footer class="p-footer p-footer-' +
@@ -1179,6 +1192,8 @@
       const page = NGPageComponents.render(c);
       if (page !== null) return page;
     }
+    const currentPage = window.NGCurrent?.page(c);
+    if (currentPage !== null && currentPage !== undefined) return currentPage;
     let html = "";
     if (page === "登入注册")
       html =
@@ -1513,8 +1528,9 @@
         downloadClosed: false,
       };
       root.classList.add("ng-player");
+      root.setAttribute("data-name", "H5玩家");
       root.innerHTML =
-        '<div class="p-scroll"><div data-slot="header"></div><div data-slot="download"></div><main><div data-slot="home"><div data-slot="carousel"></div><div data-slot="quickbar"></div><section class="p-game-region"><div data-slot="category"></div><div class="p-game-content"><div data-slot="search"></div><div data-slot="grid"></div></div></section><div data-slot="footer"></div></div><div data-slot="secondary"></div></main></div><div data-slot="bottom"></div><div data-slot="floating"></div><div data-slot="addons"></div><div data-slot="overlay"></div><div class="p-toast" role="status"></div>';
+        '<div class="p-scroll" data-name="页面内容"><div data-slot="header" data-name="顶部状态栏"></div><div data-slot="download" data-name="下载栏"></div><main data-name="主内容"><div data-slot="home" data-name="首页"><div data-slot="carousel" data-name="轮播图"></div><div data-slot="quickbar" data-name="资金快捷区"></div><section class="p-game-region" data-name="游戏区"><div data-slot="category" data-name="游戏分类"></div><div class="p-game-content" data-name="游戏内容"><div data-slot="search" data-name="搜索栏"></div><div data-slot="grid" data-name="游戏排列"></div></div></section><div data-slot="footer" data-name="页尾"></div></div><div data-slot="secondary" data-name="内页"></div></main></div><div data-slot="bottom" data-name="底部导航"></div><div data-slot="floating" data-name="快速选单"></div><div data-slot="addons" data-name="浮动入口"></div><div data-slot="overlay" data-name="弹层"></div><div class="p-toast" role="status" data-name="提示"></div>';
       this.slots = Object.fromEntries(
         [...root.querySelectorAll("[data-slot]")].map((n) => [
           n.dataset.slot,
@@ -1591,6 +1607,13 @@
         delete this.local.color;
         this.policyKey = policyKey;
       }
+      const appearanceKey=JSON.stringify(config.previewAppearance || null);
+      if (this.previewAppearanceKey !== appearanceKey) {
+        this.previewAppearanceKey=appearanceKey;
+        delete this.local.theme; delete this.local.color;
+        const choice=config.previewAppearance;
+        if(choice && config.policy?.themes.includes(choice.theme) && config.policy.colors[choice.theme]?.includes(choice.color)) Object.assign(this.local,choice);
+      }
       if (
         this.config &&
         JSON.stringify(this.config.styles) !== JSON.stringify(config.styles)
@@ -1624,7 +1647,8 @@
       )
         this.local.quick = true;
       if (config.focus !== "sidebar") this.local.sidebar = false;
-      if (config.focus === "popupStyle" && this.lastFocus !== "popupStyle") {
+      if (this.lastFocus === "popupStyle" && config.focus !== "popupStyle") this.local.sheet = false;
+      if (config.focus === "popupStyle" && (this.lastFocus !== "popupStyle" || this.config?.styles.popup !== config.styles.popup)) {
         this.local.sheet = true;
         this.local.filterDraft = {
           providers: [],
@@ -1695,6 +1719,7 @@
       this.root.dataset.button = v.buttonStyle;
       this.root.dataset.icon = v.gameIconStyle;
       this.root.dataset.popup = v.popupStyle;
+      this.root.dataset.grid = c.styles.grid;
       this.root.dataset.carouselMode = v.carouselStyle;
       this.patch(
         "header",
@@ -1716,17 +1741,18 @@
         "download",
         [
           c.styles.download,
+          c.current?.topDownloadBar?.content,
           c.install,
           v.topDownloadBar,
           c.downloadClosed,
           c.locale,
         ],
-        () => download(c),
+        () => NGCurrent.download(c, download(c)),
       );
       this.patch("carousel", [c.styles.carousel, c.banner, c.locale], () =>
         carousel(c),
       );
-      this.patch("quickbar", [c.auth, c.locale], () => quickbar(c));
+      this.patch("quickbar", [c.auth, c.locale, c.current?.gameLayout?.home], () => NGCurrent.home(c, quickbar(c)));
       this.patch(
         "category",
         [c.styles.category, c.category, c.locale, v.categoryButtons],
@@ -1738,8 +1764,8 @@
         () => search(c),
       );
       this.updateGrid();
-      this.patch("footer", [v.footerStyle, c.locale, c.theme], () => footer(c));
-      this.patch("bottom", [c.nav, c.page, c.locale, c.theme, c.styles.bottom], () => bottom(c));
+      this.patch("footer", [v.footerStyle, c.styles.footer, c.locale, c.theme], () => footer(c));
+      this.patch("bottom", [c.nav, c.page, c.auth, c.locale, c.theme, c.styles.bottom, c.appReplacement, c.current?.bottomNav?.appReplacement, c.current?.bottomNav?.appReplacementEnabled], () => bottom({...c, nav: NGCurrent.navPreview(c)}));
       this.patch(
         "addons",
         [
@@ -1774,6 +1800,9 @@
           c.sidebarExpanded,
           c.sheet,
           c.filterDraft,
+          c.focus,
+          c.styles.popup,
+          c.popupTab,
           c.styles.search,
           c.auth,
           c.locale,
@@ -1790,6 +1819,7 @@
                 'class="p-scrim"',
               ) + sidebar(c)
             );
+          if (c.sheet && c.focus === "popupStyle") return btn("close-filter", text(c,"关闭弹窗","Close dialog"), "", 'class="p-scrim"') + NGCurrent.popup(c);
           if (c.sheet)
             return (
               btn(
@@ -1889,7 +1919,9 @@
         l = this.local,
         t = (z, en) => text(c, z, en);
       let render = true;
+      if (a === "current-popup-tab") l.popupTab = Number(b.dataset.index);
       if (a === "page") {
+        if (["登录","注册"].includes(b.dataset.page)) l.authTab = b.dataset.page === "注册" ? 1 : 0;
         l.sidebar = l.quick = l.sheet = false;
         if (this.onNavigate) this.onNavigate(targetPage(b.dataset.page));
         else this.config.page = targetPage(b.dataset.page);
@@ -2038,6 +2070,7 @@
       banner: 0,
       install: true,
       quick: true,
+      thumbnail: true,
       sidebarGroup: "games",
       sidebarExpanded: true,
     };
@@ -2064,13 +2097,17 @@
     return (
       '<div class="ng-player p-mini p-mini-' +
       family +
+      '" data-name="样式预览 · ' +
+      family +
+      " " +
+      style +
       '" data-variant="' +
       style +
       '" data-category="' +
       c.styles.category +
       '" style="' +
       D.cssVars(color) +
-      '"><div class="p-mini-canvas">' +
+      '"><div class="p-mini-canvas" data-name="缩略画布">' +
       content +
       "</div></div>"
     );

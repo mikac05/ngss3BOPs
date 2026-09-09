@@ -1,0 +1,237 @@
+{
+  "version": "refined-20260909-2",
+  "observedDate": "2026-09-09",
+  "sources": {
+    "admin": "https://ngss3test16.ngss.bet/tenant/ops/personalization-index",
+    "player": "https://ngss3test16.ngss.bet/h5",
+    "method": "Edge UI and DOM inspection of both configuration tabs in edit mode; no live save performed"
+  },
+  "implementationEvidence": "Prototype-only: source layouts adapted with shared components and synthetic content; not a pixel-level or runtime equivalence certification",
+  "mapping": [
+    {
+      "source": "顶部下载栏样式",
+      "target": "首页组件 / 下载栏",
+      "object": "topDownloadBar",
+      "fields": [
+        "visibility",
+        "content.left",
+        "content.copy",
+        "content.right",
+        "content.background"
+      ],
+      "storage": "extra.content",
+      "preservesExistingDesigns": 4
+    },
+    {
+      "source": "轮播样式",
+      "currentCount": 3,
+      "target": "首页组件 / 轮播图",
+      "object": "carouselStyle",
+      "currentDesignIndices": [
+        6,
+        7,
+        8
+      ],
+      "preservesExistingDesigns": 5
+    },
+    {
+      "source": "首页游戏样式",
+      "currentCount": 5,
+      "target": "首页组件 / 游戏分类、游戏排列、资金快捷区、活动摘要",
+      "objects": [
+        "gameLayout",
+        "gameGridStyle"
+      ],
+      "categoryIndices": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "gridIndex": 4,
+      "extra": "gameLayout.extra.home",
+      "affectedRegions": [
+        "category",
+        "grid",
+        "quickbar"
+      ],
+      "requiresDraftImpactReview": false,
+      "compositionOnlyReference": [
+        {
+          "currentStyle": 1,
+          "categoryIndex": 6,
+          "gridIndex": 4,
+          "quick": false,
+          "promotions": false
+        },
+        {
+          "currentStyle": 2,
+          "categoryIndex": 7,
+          "gridIndex": 4,
+          "quick": true,
+          "promotions": false
+        },
+        {
+          "currentStyle": 3,
+          "categoryIndex": 8,
+          "gridIndex": 4,
+          "quick": true,
+          "promotions": false
+        },
+        {
+          "currentStyle": 4,
+          "categoryIndex": 9,
+          "gridIndex": 4,
+          "quick": false,
+          "promotions": false
+        },
+        {
+          "currentStyle": 5,
+          "categoryIndex": 10,
+          "gridIndex": 4,
+          "quick": true,
+          "promotions": true
+        }
+      ]
+    },
+    {
+      "source": "底部内容样式",
+      "currentCount": 4,
+      "target": "首页组件 / 页尾内容",
+      "object": "footerStyle",
+      "currentDesignIndices": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "source": "弹窗样式",
+      "currentCount": 3,
+      "target": "页面组件 / 弹窗",
+      "object": "popupStyle",
+      "currentDesignIndices": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "source": "个人中心样式",
+      "currentCount": 4,
+      "target": "页面组件 / 个人中心",
+      "object": "profileLayout",
+      "currentDesignIndices": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "preservesExistingDesigns": 3
+    },
+    {
+      "source": "底部导航 / 样式",
+      "currentCount": 4,
+      "target": "导航与功能入口 / 底部导航",
+      "object": "bottomNav",
+      "currentDesignIndices": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "preservesExistingDesigns": 5
+    },
+    {
+      "source": "底部导航 / 功能",
+      "target": "导航与功能入口 / 底部导航 / 功能与顺序",
+      "storage": [
+        "bottomNav.value.loggedOut",
+        "bottomNav.value.loggedIn"
+      ],
+      "currentSlotsPerAuth": 5,
+      "features": [
+        "searchable picker",
+        "ordering",
+        "per-auth theme reset"
+      ]
+    },
+    {
+      "source": "替代App下载",
+      "target": "导航与功能入口 / 底部导航 / App 下载替代入口",
+      "storage": [
+        "bottomNav.extra.appReplacement",
+        "bottomNav.extra.appReplacementEnabled"
+      ],
+      "scope": [
+        "loggedOut",
+        "loggedIn"
+      ],
+      "runtimeTrigger": "Open",
+      "preview": "Explicit preview toggle only; never inferred from download-bar visibility",
+      "decision": "Keep explicit target: live UI independently offers 19 functions; no confirmed fixed replacement. Default off, choose target only when enabled. Preserve target while disabled."
+    }
+  ],
+  "navigationChoices": [
+    "首页",
+    "活动",
+    "登录",
+    "注册",
+    "钱包",
+    "我的",
+    "VIP",
+    "APP下载",
+    "充值",
+    "提款",
+    "客服",
+    "发现",
+    "免费试玩",
+    "返水",
+    "任务",
+    "分享",
+    "推广",
+    "代理中心",
+    "利息宝"
+  ],
+  "aliases": {
+    "账户": "我的"
+  },
+  "boundaries": {
+    "layoutChoicesObserved": 23,
+    "downloadImageAcceptObserved": [
+      "image/jpeg",
+      "image/png",
+      "image/gif"
+    ],
+    "prototypeImageAccept": [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp"
+    ],
+    "prototypeImageLimitBytes": 2097152,
+    "save": "Existing local per-tenant session snapshot; no live backend write",
+    "visualQA": "Not performed for this version: file URL blocked by browser policy; no alternate transport or browser used to bypass",
+    "open": [
+      "App replacement runtime condition",
+      "Formal meanings and size limits of the two current download image fields",
+      "Post-save H5 behavior of every current style",
+      "Exact original icon and decoration equivalence"
+    ]
+  },
+  "prototypeAlternateEntry": {
+    "storage": "alternateButton.value",
+    "localSupportedThemes": [
+      "NG"
+    ],
+    "productionSupport": "Open",
+    "placements": [
+      "浮动收折",
+      "顶部状态列",
+      "底部导航自选槽位"
+    ],
+    "guards": "Explicit target, auth scope, valid existing slot, upstream capability and reachability checks retained"
+  }
+}

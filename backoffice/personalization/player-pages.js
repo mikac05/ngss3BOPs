@@ -37,7 +37,7 @@
       /^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(artwork)
         ? artwork
         : "";
-    const art = `<img class="pp-auth-image" src="${safeImage || "assets/ng-design/" + (n === 1 ? "auth-ensemble.webp" : n === 4 ? "1beb95363e651bdb7ed2.webp" : "auth-miner.webp")}" alt="">`;
+    const art = `<img class="pp-auth-image" src="${safeImage || "assets/ng-design/" + (n === 1 ? "auth-ensemble.webp" : n === 4 ? "1beb95363e651bdb7ed2.webp" : "auth-miner.webp")}" alt="" loading="lazy" decoding="async">`;
     const field = (zh, en, type = "text", suffix = "") =>
       `<label class="pp-field"><span>${t(c, zh, en)}</span><div>${icon(type === "password" ? "info" : "user")}<input data-auth-field type="${type}" autocomplete="off" placeholder="${t(c, zh, en)}">${suffix}</div></label>`;
     const form =
@@ -85,7 +85,7 @@
     return pageClass(
       "auth",
       n,
-      `<div class="pp-auth-top">${brand()}${link(c, "首页", "Home", "home")}</div><div class="pp-auth-hero">${n === 3 ? brand() : art}</div><div class="pp-auth-body">${form}</div>`,
+      `<div class="pp-auth-top">${brand()}${link(c, "首页", "Home", "home")}</div><div class="pp-auth-hero">${n === 3 ? brand() : art}</div><div class="pp-auth-body p-auth-form">${form}</div>`,
     );
   }
   function deposit(c) {
@@ -155,15 +155,19 @@
       ["设置", "Settings", "language"],
       ["客服", "Support", "info"],
       ["钱包", "History", "wallet"],
+      ["代理中心", "Agent center", "user"], ["报表", "Reports", "report"],
+      ["语言", "Language", "language"], ["交易", "Transactions", "trade"],
+      ["投注", "Bets", "game"], ["活跃度", "Activity", "gift"],
+      ["建议反馈", "Feedback", "info"], ["关于", "About", "info"],
     ];
     const identity = `<div class="pp-identity"><span class="pp-avatar">${icon("user")}</span><div><b>${t(c, "示例玩家", "Demo player")}</b><small>ID · DEMO1024</small></div>${link(c, "设置", "Settings", "info")}</div>`;
     const balance = `<div class="pp-balance">${money(c)}${walletActions(c)}</div>`;
     return pageClass(
       "profile",
       n,
-      identity +
-        balance +
-        vipCard(c) +
+      (n === 4 ? identity + vipCard(c) + balance
+        : n === 5 ? identity + vipCard(c) + '<div class="current-wallet-balances"><div><span>' + t(c,"现金钱包","Cash wallet") + '</span><strong>970.80</strong></div><div><span>' + t(c,"彩金钱包","Bonus wallet") + '</span><strong>120.00</strong></div></div>' + walletActions(c)
+        : identity + balance + vipCard(c)) +
         `<div class="pp-account-menu">${entries.map(([zh, en, i]) => link(c, zh, en, i)).join("")}</div><div class="pp-account-bottom">${link(c, "设置", "Language & appearance", "language")}${button("demo-submit", t(c, "退出登录", "Log out"))}</div>`,
     );
   }
@@ -272,11 +276,11 @@
     };
     return `<nav class="p-bottom pp-bottom pp-bottom-${n}" aria-label="${t(c, "主导航", "Primary navigation")}">${nav
       .map((p, i) => {
-        const [en, g] = map[p] || [p, "user"];
+        const [,en,g] = NGCurrent.navInfo(p);
         return button(
-          "page",
+          p === "APP下载" ? "download" : "page",
           `<span class="pp-nav-icon">${icon(g)}</span><span>${t(c, p, en)}</span>`,
-          `data-page="${p}" aria-current="${c.page === p ? "page" : "false"}"`,
+          `data-page="${p}" aria-current="${NGCurrent.canonical(c.page) === NGCurrent.canonical(p) ? "page" : "false"}"`,
           i === Math.floor(nav.length / 2) ? "pp-nav-center" : "",
         );
       })
@@ -415,7 +419,7 @@
       auth: "loggedIn",
       page: Object.keys(routes).find((p) => routes[p] === key) || "首页",
     };
-    return `<div class="ng-player p-mini pp-mini pp-mini-${key}" data-variant="${n}" style="${D.cssVars(color)}"><div class="p-mini-canvas">${renders[key](c)}</div></div>`;
+    return `<div class="ng-player p-mini pp-mini pp-mini-${key}" data-name="页面样式 · ${key} ${n}" data-variant="${n}" style="${D.cssVars(color)}"><div class="p-mini-canvas" data-name="缩略画布">${renders[key](c)}</div></div>`;
   }
   window.NGPageComponents = {
     render,

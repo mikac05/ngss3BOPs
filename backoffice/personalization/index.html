@@ -4,46 +4,51 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>个性化改版 · NGSS管理系统</title>
-    <link rel="stylesheet" href="customize-base.css?v=pages-20260907-6" />
-    <link rel="stylesheet" href="player-components.css?v=pages-20260907-6" />
-    <link rel="stylesheet" href="player-pages.css?v=pages-20260907-6" />
-    <link rel="stylesheet" href="customize-studio.css?v=pages-20260907-6" />
+    <script>
+      if (/[?&]capture=1(?:&|$)/.test(location.search))
+        document.documentElement.setAttribute("data-figma-capture", "");
+    </script>
+    <link rel="stylesheet" href="customize-base.css?v=controls-20260909-13" />
+    <link rel="stylesheet" href="player-components.css?v=controls-20260909-13" />
+    <link rel="stylesheet" href="player-pages.css?v=controls-20260909-13" />
+    <link rel="stylesheet" href="customize-studio.css?v=controls-20260909-13" />
+    <link rel="stylesheet" href="current-config.css?v=controls-20260909-13">
   </head>
-  <body>
-    <a class="skip" href="#object-detail">跳到设置</a>
-    <aside class="backoffice-sidebar" aria-label="后台导航">
-      <div class="backoffice-logo">
+  <body data-name="个性化改版">
+    <a class="skip" href="#object-detail" data-name="跳到设置">跳到设置</a>
+    <aside class="backoffice-sidebar" aria-label="后台导航" data-name="后台导航">
+      <div class="backoffice-logo" data-name="系统标志">
         <span aria-hidden="true">▦</span> NGSS管理系统
       </div>
-      <nav>
-        <div class="backoffice-menu"><span>⌂</span>首页</div>
-        <div class="backoffice-menu"><span>♙</span>会员管理<i>⌄</i></div>
-        <div class="backoffice-menu"><span>▤</span>彩票管理<i>⌄</i></div>
-        <div class="backoffice-menu"><span>▥</span>报表统计<i>⌄</i></div>
-        <div class="backoffice-menu"><span>▦</span>考勤管理<i>⌄</i></div>
-        <div class="backoffice-menu expanded">
+      <nav data-name="后台菜单">
+        <div class="backoffice-menu" data-name="首页"><span>⌂</span>首页</div>
+        <div class="backoffice-menu" data-name="会员管理"><span>♙</span>会员管理<i>⌄</i></div>
+        <div class="backoffice-menu" data-name="彩票管理"><span>▤</span>彩票管理<i>⌄</i></div>
+        <div class="backoffice-menu" data-name="报表统计"><span>▥</span>报表统计<i>⌄</i></div>
+        <div class="backoffice-menu" data-name="考勤管理"><span>▦</span>考勤管理<i>⌄</i></div>
+        <div class="backoffice-menu expanded" data-name="运营管理">
           <span>ϟ</span>运营管理<i>⌃</i>
         </div>
-        <div class="backoffice-submenu">
-          <div>APP安装引导管理</div>
-          <div>域名管理</div>
-          <div>安卓马甲包管理</div>
-          <div>仿应用商店模板管理</div>
-          <div>推广渠道管理</div>
-          <div class="active" aria-current="page">个性化改版</div>
-          <div>归因埋点管理</div>
+        <div class="backoffice-submenu" data-name="运营管理子菜单">
+          <div data-name="APP安装引导管理">APP安装引导管理</div>
+          <div data-name="域名管理">域名管理</div>
+          <div data-name="安卓马甲包管理">安卓马甲包管理</div>
+          <div data-name="仿应用商店模板管理">仿应用商店模板管理</div>
+          <div data-name="推广渠道管理">推广渠道管理</div>
+          <div class="active" aria-current="page" data-name="个性化改版">个性化改版</div>
+          <div data-name="归因埋点管理">归因埋点管理</div>
         </div>
-        <div class="backoffice-menu"><span>◇</span>游戏管理<i>⌄</i></div>
-        <div class="backoffice-menu"><span>♙</span>代理管理<i>⌄</i></div>
-        <div class="backoffice-menu"><span>♧</span>优惠管理<i>⌄</i></div>
-        <div class="backoffice-menu"><span>▣</span>财务管理<i>⌄</i></div>
-        <div class="backoffice-menu"><span>♧</span>风控管理<i>⌄</i></div>
-        <div class="backoffice-menu"><span>▤</span>信息管理<i>⌄</i></div>
-        <div class="backoffice-menu"><span>⚙</span>系统管理<i>⌄</i></div>
+        <div class="backoffice-menu" data-name="游戏管理"><span>◇</span>游戏管理<i>⌄</i></div>
+        <div class="backoffice-menu" data-name="代理管理"><span>♙</span>代理管理<i>⌄</i></div>
+        <div class="backoffice-menu" data-name="优惠管理"><span>♧</span>优惠管理<i>⌄</i></div>
+        <div class="backoffice-menu" data-name="财务管理"><span>▣</span>财务管理<i>⌄</i></div>
+        <div class="backoffice-menu" data-name="风控管理"><span>♧</span>风控管理<i>⌄</i></div>
+        <div class="backoffice-menu" data-name="信息管理"><span>▤</span>信息管理<i>⌄</i></div>
+        <div class="backoffice-menu" data-name="系统管理"><span>⚙</span>系统管理<i>⌄</i></div>
       </nav>
     </aside>
-    <main class="backoffice-main">
-      <div class="backoffice-toolbar">
+    <main class="backoffice-main" data-name="主工作区">
+      <div class="backoffice-toolbar" data-name="顶栏">
         <button
           class="backoffice-collapse"
           data-studio="toggle-sidebar"
@@ -52,17 +57,17 @@
         >
           ☰
         </button>
-        <nav aria-label="面包屑">
+        <nav aria-label="面包屑" data-name="面包屑">
           运营管理 <span>/</span> <strong>个性化改版</strong>
         </nav>
-        <span class="backoffice-user">站点管理员</span>
+        <span class="backoffice-user" data-name="站点管理员">站点管理员</span>
       </div>
-      <div class="backoffice-tabs">
+      <div class="backoffice-tabs" data-name="页签栏">
         <span>⌂ 首页</span><span class="active">个性化改版</span>
       </div>
-      <div class="customize-workspace">
-        <div class="studio-settings-workspace">
-          <header class="app-header">
+      <div class="customize-workspace" data-name="个性化工作区">
+        <div class="studio-settings-workspace" data-name="设置工作区">
+          <header class="app-header" data-name="页面标题">
             <div class="studio-brand">
               <div>
                 <h1>个性化改版</h1>
@@ -78,8 +83,8 @@
               </button>
             </div>
           </header>
-          <div class="app">
-            <aside class="rail" aria-label="外观设置导航">
+          <div class="app" data-name="设置与编辑">
+            <aside class="rail" aria-label="外观设置导航" data-name="设置目录">
               <h2>设置</h2>
               <input
                 class="tree-search"
@@ -89,18 +94,20 @@
                 aria-label="搜索物件"
               />
               <form id="filters" hidden></form>
-              <div id="tree"></div>
+              <div id="tree" data-name="设置清单"></div>
             </aside>
-            <div class="studio-editor-scroll">
+            <div class="studio-editor-scroll" data-name="编辑区">
               <section
                 class="detail"
                 id="object-detail"
                 tabindex="-1"
+                data-name="组件设置"
               ></section>
               <section
                 class="validation"
                 id="validation-pane"
                 aria-live="polite"
+                data-name="配置检查"
               ></section>
             </div>
           </div>
@@ -109,6 +116,7 @@
           class="preview"
           id="preview-pane"
           aria-label="H5 玩家预览"
+          data-name="H5预览"
         ></section>
       </div>
     </main>
@@ -116,6 +124,7 @@
       class="dev-floating-panel"
       id="dev-floating-panel"
       aria-label="开发工具箱"
+      data-name="开发工具箱"
     >
       <button
         class="dev-panel-header dev-panel-toggle"
@@ -129,7 +138,7 @@
         <p class="studio-muted">
           独立演示环境，使用合成资料。保存仅在本次会话生效；导出可留存配置。
         </p>
-        <label
+        <label hidden
           >测试租户<select id="tenant-select" aria-label="选择合成租户">
             <option value="tenant-a">示例租户 A</option>
             <option value="tenant-b">示例租户 B</option>
@@ -260,6 +269,7 @@
       role="dialog"
       aria-modal="true"
       aria-labelledby="diff-title"
+      data-name="查看修改"
     ></div>
     <div
       class="drawer"
@@ -267,6 +277,7 @@
       role="dialog"
       aria-modal="true"
       aria-labelledby="checks-title"
+      data-name="运行检查"
     ></div>
     <div
       class="modal"
@@ -274,15 +285,18 @@
       role="dialog"
       aria-modal="true"
       aria-labelledby="confirm-title"
+      data-name="确认对话框"
     ></div>
-    <div class="studio-announcement" role="status" id="studio-status"></div>
-    <script src="ng-assets.js?v=pages-20260907-6"></script>
-    <script src="ng-design-catalog.js?v=pages-20260907-6"></script>
-    <script src="ng-page-designs.js?v=pages-20260907-6"></script>
-    <script src="player-components.js?v=pages-20260907-6"></script>
-    <script src="player-pages.js?v=pages-20260907-6"></script>
-    <script src="customize-studio.js?v=pages-20260907-6"></script>
-    <script src="customize-checks.js?v=pages-20260907-6"></script>
-    <script src="customize-core.js?v=pages-20260907-6"></script>
+    <div class="studio-announcement" role="status" id="studio-status" data-name="状态提示"></div>
+    <script src="ng-assets.js?v=controls-20260909-13"></script>
+    <script src="ng-design-catalog.js?v=controls-20260909-13"></script>
+    <script src="ng-page-designs.js?v=controls-20260909-13"></script>
+    <script src="current-config.js?v=controls-20260909-13"></script>
+    <script src="player-components.js?v=controls-20260909-13"></script>
+    <script src="player-pages.js?v=controls-20260909-13"></script>
+    <script src="current-player.js?v=controls-20260909-13"></script>
+    <script src="customize-studio.js?v=controls-20260909-13"></script>
+    <script src="customize-checks.js?v=controls-20260909-13"></script>
+    <script src="customize-core.js?v=controls-20260909-13"></script>
   </body>
 </html>

@@ -4,8 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>NG · 玩家预览</title>
-    <link rel="stylesheet" href="player-components.css?v=pages-20260907-6" />
-    <link rel="stylesheet" href="player-pages.css?v=pages-20260907-6" />
+    <link rel="stylesheet" href="player-components.css?v=perf-20260909-10" />
+    <link rel="stylesheet" href="player-pages.css?v=perf-20260909-10" />
     <style>
       html,
       body {
@@ -14,7 +14,7 @@
         overflow: hidden;
       }
       body {
-        max-width: 480px;
+        width: 100%;
         margin: 0 auto;
         background: #202222;
       }
@@ -23,14 +23,17 @@
         min-height: 0;
       }
     </style>
+    <link rel="stylesheet" href="current-config.css?v=perf-20260909-10">
   </head>
-  <body>
-    <div id="player"></div>
-    <script src="ng-assets.js?v=pages-20260907-6"></script>
-    <script src="ng-design-catalog.js?v=pages-20260907-6"></script>
-    <script src="ng-page-designs.js?v=pages-20260907-6"></script>
-    <script src="player-components.js?v=pages-20260907-6"></script>
-    <script src="player-pages.js?v=pages-20260907-6"></script>
-    <script src="player-preview.js?v=pages-20260907-6"></script>
+  <body data-name="H5玩家预览">
+    <div id="player" data-name="玩家页面"></div>
+    <script src="ng-assets.js?v=perf-20260909-10"></script>
+    <script src="ng-design-catalog.js?v=perf-20260909-10"></script>
+    <script src="ng-page-designs.js?v=perf-20260909-10"></script>
+    <script src="current-config.js?v=perf-20260909-10"></script>
+    <script src="player-components.js?v=perf-20260909-10"></script>
+    <script src="player-pages.js?v=perf-20260909-10"></script>
+    <script src="current-player.js?v=perf-20260909-10"></script>
+    <script src="player-preview.js?v=perf-20260909-10"></script>
   </body>
 </html>

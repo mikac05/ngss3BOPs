@@ -6,7 +6,7 @@ window.NGChecks = function (check, a) {
     a.state.preview.page = "首页";
     a.state.draft.theme.extra = {};
   };
-  check("37. 37 Figma variants render in all three source palettes", () => {
+  check("37. Home variants render in all three source palettes", () => {
     baseline();
     return NGStudio.testPlayer((t) => {
       for (const color of ["BDOK", "橙白", "藍白"])
@@ -385,7 +385,7 @@ window.NGChecks = function (check, a) {
       });
     },
   );
-  check("54. 页面组件 21 款样式在三色与三种 H5 宽度可用", () => {
+  check("54. 页面组件全部样式在三色与三种 H5 宽度可用", () => {
     baseline();
     return NGStudio.testPlayer((t) => {
       for (const width of [320, 390, 480])
@@ -395,12 +395,15 @@ window.NGChecks = function (check, a) {
               t.root.style.width = width + "px";
               const c = D.clone(t.config);
               c.page = f.page;
+              c.focus = id;
               c.color = color;
               c.auth = "loggedIn";
               c.styles[f.key] = n;
               c.content = "normal";
               t.player.setConfig(c);
               const region = t.root.querySelector(
+                f.key === "footer" ? ".current-footer-" + n :
+                f.key === "popup" ? ".current-popup-" + n :
                 f.key === "bottom"
                   ? ".pp-bottom-" + n
                   : '[data-page-variant="' + f.key + "-" + n + '"]',
@@ -542,5 +545,35 @@ window.NGChecks = function (check, a) {
     const ok = a.state.draft.authVisual.extra.design.value === 4;
     a.state.draft.authVisual = before;
     return ok;
+  });
+  check("62. 现行 23 款配置与 19 个功能入口完整保留", () => {
+    return NGCurrent.nav.length === 19 && new Set(NGCurrent.nav.map(x=>x[0])).size === 19 &&
+      NGCurrent.homeCompositions.length === 5 && D.families.carouselStyle.titles.length - D.families.carouselStyle.currentStart === 3 &&
+      D.pageFamilies.footerStyle.titles.length === 4 && D.pageFamilies.popupStyle.titles.length === 3 &&
+      D.pageFamilies.profileLayout.titles.length - D.pageFamilies.profileLayout.currentStart === 4 &&
+      D.pageFamilies.bottomNav.titles.length - D.pageFamilies.bottomNav.currentStart === 4;
+  });
+  check("63. App 替代配置按登录状态独立，预览不改原导航", () => {
+    const c = {nav:["首页","活动","APP下载","VIP","我的"],auth:"loggedOut",appReplacement:true,current:{bottomNav:{appReplacement:{loggedOut:"客服",loggedIn:"任务"}}}};
+    const before=JSON.stringify(c.nav);
+    return NGCurrent.navPreview(c)[2] === "客服" && NGCurrent.navPreview({...c,auth:"loggedIn"})[2] === "任务" && JSON.stringify(c.nav)===before;
+  });
+  check("64. 下载文案转义，背景与图片拒绝无效输入", () => {
+    baseline();
+    const d=a.clone(a.state.draft);
+    d.topDownloadBar.extra.content={copy:"说明",background:"#123456",left:"https://invalid.example/image.svg"};
+    return D.validateDraft(d,a.state.theme,a.resolveAll().values.themeColor).some(x=>x.includes("图片")) && !NGCurrent.safeImage('data:image/svg+xml;base64,PHN2Zz4=');
+  });
+  check("65. 新增内容、替代入口和首页组合参与保存撤销", () => {
+    baseline();
+    a.state.draft.topDownloadBar.extra.content={copy:"下载说明",background:"#123456"};
+    a.state.draft.bottomNav.extra.appReplacement={loggedOut:"注册",loggedIn:"任务"};
+    a.state.draft.gameLayout.extra.home={quick:true,promotions:true};
+    const expected=JSON.stringify(a.state.draft);
+    if(!a.applyDraft(true))return false;
+    a.state.draft.topDownloadBar.extra.content.copy="修改";
+    a.state.draft.bottomNav.extra.appReplacement.loggedIn="客服";
+    a.state.draft.gameLayout.extra.home.promotions=false;
+    a.cancelDraft();return JSON.stringify(a.state.draft)===expected;
   });
 };

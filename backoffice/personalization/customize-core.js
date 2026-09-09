@@ -24,16 +24,7 @@
     "设置",
     "客服",
   ];
-  const NAV_CHOICES = [
-    "首页",
-    "活动",
-    "推广",
-    "VIP",
-    "账户",
-    "钱包",
-    "客服",
-    "我的",
-  ];
+  const NAV_CHOICES = NGCurrent.nav.map(x => x[0]);
   const LIVE_NAV = ["首页", "活动", "推广", "VIP", "账户"];
   const AXURE_NAV = ["首页", "活动", "钱包", "我的", "推广"];
   const THEME_NAV_COUNTS = { NG: 5, WG: 4, GAME: 3 };
@@ -1047,6 +1038,34 @@
     不可套用: "Not applicable",
     确认: "Confirm",
     返回: "Back",
+    "NGSS管理系统": "NGSS Admin System",
+    "会员管理": "Member Management",
+    "彩票管理": "Lottery Management",
+    "报表统计": "Reports & Statistics",
+    "考勤管理": "Attendance Management",
+    "运营管理": "Operations Management",
+    "APP安装引导管理": "App Install Guide Management",
+    "域名管理": "Domain Management",
+    "安卓马甲包管理": "Android Shell Package Management",
+    "仿应用商店模板管理": "Store Template Management",
+    "推广渠道管理": "Affiliate Channel Management",
+    "Affiliate渠道管理": "Affiliate Channel Management",
+    "个性化改版": "Customization Studio",
+    "归因埋点管理": "Attribution & Tracking",
+    "游戏管理": "Game Management",
+    "代理管理": "Agent Management",
+    "优惠管理": "Promotion Management",
+    "财务管理": "Finance Management",
+    "风控管理": "Risk Management",
+    "信息管理": "Information Management",
+    "系统管理": "System Management",
+    "站点管理员": "Site Admin",
+    "开发工具箱": "Developer Toolbox",
+    "收起后台导航": "Collapse sidebar",
+    "展开后台导航": "Expand sidebar",
+    "后台导航": "Backoffice Navigation",
+    "跳到设置": "Skip to settings",
+    "面包屑": "Breadcrumb",
     本站设定尚未储存: "This site’s settings are not saved",
     主题修改尚未储存: "Theme changes are not saved",
     取消未储存修改: "Discard unsaved changes",
@@ -1292,7 +1311,7 @@
     "关闭（OFF）": "Off (OFF)",
     '</div><p class="tiny">INHERIT=跟随主题默认；SET=租户值；关闭=OFF。重置回到 INHERIT。DERIVED=由上游物件唯读派生。</p></div>':
       '</div><p class="tiny">INHERIT=follow theme default; SET=tenant value; closed=OFF. Reset returns to INHERIT. DERIVED=read-only from an upstream object.</p></div>',
-    '<div class="panel"><h3>值</h3>': '<div class="panel"><h3>Value</h3>',
+    '<div class="panel"><h3>選項</h3>': '<div class="panel"><h3>Value</h3>',
     '<div class="panel"><h3>来源主题（混合主题演示）</h3><div class="mode-row">':
       '<div class="panel"><h3>Source theme (mixed-theme demo)</h3><div class="mode-row">',
     '<p class="tiny">同主题优先。跨主题：R0/R1=Warn，R2=Review；无安全回退=Block。</p></div></div>':
@@ -1686,59 +1705,9 @@
     开发与检查: "Developer tools",
     "导出配置 JSON": "Export configuration JSON",
     "查看 Figma 对照表 ↗": "View Figma source map ↗",
-    "演示指南 ↗": "Demo guide ↗",
-    "页面组件对照表 ↗": "Page component source map ↗",
     模拟条件: "Simulation conditions",
     重置当前页面: "Reset current page",
     重置全部外观: "Reset all appearance",
-  });
-  Object.assign(ZH_TO_EN, {
-    保存修改: "Save changes",
-    检查场景: "Check scenario",
-    内容状态: "Content state",
-    正常: "Normal",
-    空内容: "Empty",
-    加载中: "Loading",
-    加载失败: "Load error",
-    "App 可用性": "App availability",
-    功能可用性: "Feature availability",
-    已启用: "Enabled",
-    未启用: "Disabled",
-    全部可用: "All available",
-    NGSS管理系统: "NGSS Admin",
-    会员管理: "Members",
-    彩票管理: "Lottery",
-    报表统计: "Reports",
-    考勤管理: "Attendance",
-    APP安装引导管理: "App install guides",
-    域名管理: "Domains",
-    安卓马甲包管理: "Android packages",
-    仿应用商店模板管理: "App store templates",
-    推广渠道管理: "Acquisition channels",
-    归因埋点管理: "Attribution events",
-    游戏管理: "Games",
-    代理管理: "Agents",
-    优惠管理: "Promotions",
-    财务管理: "Finance",
-    风控管理: "Risk control",
-    信息管理: "Information",
-    系统管理: "System",
-    后台导航: "Admin navigation",
-    面包屑: "Breadcrumb",
-    "保存本站主题、颜色、组件样式与玩家可选范围。":
-      "Save the site theme, color, component styles and available player choices.",
-    "恢复上次保存的主题、颜色、组件样式与玩家可选范围。":
-      "Restore the last saved theme, color, styles and player choices.",
-    "已保存。": "Saved.",
-    "已撤销修改。": "Changes discarded.",
-    个性化改版: "Personalization redesign",
-    运营管理: "Operations",
-    站点管理员: "Site administrator",
-    开发工具箱: "Developer toolbox",
-    测试租户: "Test tenant",
-    界面语言: "Interface language",
-    "独立演示环境，使用合成资料。保存仅在本次会话生效；导出可留存配置。":
-      "Standalone demo with synthetic data. Saves last for this session; export to keep a copy.",
   });
   const EN_TO_ZH = {
     "Target / Prototype-only": "目标／仅原型",
@@ -1781,7 +1750,34 @@
   const sourceTextByNode = new WeakMap();
   const sourceAttrsByElement = new WeakMap();
 
+  function buildReplacer(dictionary) {
+    const keys = Object.keys(dictionary).sort(function (a, b) {
+      return b.length - a.length;
+    });
+    if (!keys.length) return function (text) { return text; };
+    const escaped = keys.map(function (k) {
+      return k.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    });
+    const regex = new RegExp(escaped.join("|"), "g");
+    const memo = new Map();
+    return function (text) {
+      if (typeof text !== "string" || !text) return text;
+      const cached = memo.get(text);
+      if (cached !== undefined) return cached;
+      const res = text.replace(regex, function (m) {
+        return dictionary[m] !== undefined ? dictionary[m] : m;
+      });
+      if (memo.size < 3000) memo.set(text, res);
+      return res;
+    };
+  }
+
+  const fastZhToEn = buildReplacer(ZH_TO_EN);
+  const fastEnToZh = buildReplacer(EN_TO_ZH);
+
   function replaceTerms(text, dictionary) {
+    if (dictionary === EN_TO_ZH) return fastEnToZh(text);
+    if (dictionary === ZH_TO_EN) return fastZhToEn(text);
     return Object.keys(dictionary)
       .sort(function (a, b) {
         return b.length - a.length;
@@ -1792,8 +1788,8 @@
   }
 
   function localizedText(source) {
-    if (state.uiLocale === "zh") return replaceTerms(source, EN_TO_ZH);
-    return replaceTerms(source, ZH_TO_EN);
+    if (state.uiLocale === "zh") return fastEnToZh(source);
+    return fastZhToEn(source);
   }
 
   function localizeInterface() {
@@ -1801,24 +1797,26 @@
     const walker = document.createTreeWalker(
       document.body,
       NodeFilter.SHOW_TEXT,
+      {
+        acceptNode: function (node) {
+          const parent = node.parentElement;
+          if (!parent) return NodeFilter.FILTER_REJECT;
+          const tag = parent.tagName;
+          if (tag === "SCRIPT" || tag === "STYLE") return NodeFilter.FILTER_REJECT;
+          if (parent.closest("[data-studio-localized]")) return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        },
+      },
     );
-    const nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(function (node) {
-      if (
-        node.parentElement &&
-        /^(SCRIPT|STYLE)$/.test(node.parentElement.tagName)
-      )
-        return;
-      if (
-        node.parentElement &&
-        node.parentElement.closest("[data-studio-localized]")
-      )
-        return;
+    let node;
+    while ((node = walker.nextNode())) {
       if (!sourceTextByNode.has(node))
         sourceTextByNode.set(node, node.nodeValue);
-      node.nodeValue = localizedText(sourceTextByNode.get(node));
-    });
+      const target = localizedText(sourceTextByNode.get(node));
+      if (node.nodeValue !== target) {
+        node.nodeValue = target;
+      }
+    }
     document
       .querySelectorAll("[placeholder], [title], [aria-label]")
       .forEach(function (element) {
@@ -1831,15 +1829,21 @@
           });
         }
         const original = sourceAttrsByElement.get(element);
-        if (original.placeholder !== null)
-          element.setAttribute(
-            "placeholder",
-            localizedText(original.placeholder),
-          );
-        if (original.title !== null)
-          element.setAttribute("title", localizedText(original.title));
-        if (original.ariaLabel !== null)
-          element.setAttribute("aria-label", localizedText(original.ariaLabel));
+        if (original.placeholder !== null) {
+          const next = localizedText(original.placeholder);
+          if (element.getAttribute("placeholder") !== next)
+            element.setAttribute("placeholder", next);
+        }
+        if (original.title !== null) {
+          const next = localizedText(original.title);
+          if (element.getAttribute("title") !== next)
+            element.setAttribute("title", next);
+        }
+        if (original.ariaLabel !== null) {
+          const next = localizedText(original.ariaLabel);
+          if (element.getAttribute("aria-label") !== next)
+            element.setAttribute("aria-label", next);
+        }
       });
   }
 
@@ -1910,7 +1914,7 @@
       needsAttention: false,
     },
     preview: {
-      viewport: 480,
+      viewport: 390,
       auth: "loggedIn",
       page: "首页",
       content: "normal",
@@ -2051,7 +2055,7 @@
   }
 
   function supportOf(item, theme) {
-    return item.support[theme];
+    return item.prototypeSupport?.[theme] ?? item.support[theme];
   }
 
   function isCrossTheme(item, row) {
@@ -2384,6 +2388,7 @@
       let outcome = "Allow";
       const reasons = [];
       const evidence = [item.evidence];
+      if (item.prototypeSupport?.[state.theme]) evidence.push("Prototype-only：本机交互已开放，正式产品支援状态仍待确认。");
       if (simulatedUnsupported)
         evidence.push(
           "Prototype-only/Open：不支持状态仅为示范情景，不是已证实主题事实。",
@@ -2580,7 +2585,7 @@
           AUTH[authKey],
         );
       }
-      if (new Set(nav).size !== nav.length) {
+      if (new Set(nav.map(NGCurrent.canonical)).size !== nav.length) {
         add(
           "bottomNav",
           "Block",
@@ -2842,8 +2847,10 @@
       state.draft,
       state.theme,
       values.themeColor,
+      { checkedNav: { loggedOut: navFor(values, "loggedOut"), loggedIn: navFor(values, "loggedIn") } },
     ).forEach(function (reason) {
-      add("theme", "Block", reason, "玩家外观");
+      const owner = /^(导航|App 替代)/.test(reason) ? "bottomNav" : /^下载/.test(reason) ? "topDownloadBar" : "theme";
+      add(owner, "Block", reason, owner === "bottomNav" ? "底部导航" : owner === "topDownloadBar" ? "下载栏" : "玩家外观");
     });
 
     items.forEach(function (row) {
@@ -2863,6 +2870,7 @@
       }
     });
 
+    items.forEach(row => { row.reasons = [...new Set(row.reasons)]; });
     const counts = {
       Allow: 0,
       Warn: 0,
@@ -2872,15 +2880,6 @@
     };
     items.forEach(function (row) {
       counts[row.outcome] += 1;
-    });
-    issues.forEach(function (issue) {
-      if (
-        issue.outcome === "Block" ||
-        issue.outcome === "Warn" ||
-        issue.outcome === "Review" ||
-        issue.outcome === "Auto-resolve"
-      )
-        counts[issue.outcome] += 0;
     });
     const blockCount = items.filter(function (row) {
       return row.outcome === "Block";
@@ -3113,7 +3112,8 @@
       }).join("") || '<p class="tiny">无匹配物件</p>';
   }
 
-  function renderLegacyDetail(resolved) {
+  function renderLegacyDetail(resolved, targetEl) {
+    const target = targetEl || els.detail;
     const item = byId[state.selectedId];
     const row = resolved.items.find(function (entry) {
       return entry.id === item.id;
@@ -3328,7 +3328,7 @@
         draft.mode +
         "（系统锁定）</span>";
     }
-    els.detail.innerHTML =
+    const legacyHtml =
       "<h2>" +
       item.label +
       ' <span class="help-tip" data-tip="直接选择样式即可覆盖；点击重置回到主题默认。">?</span> <span class="badge ' +
@@ -3345,15 +3345,12 @@
       item.risk +
       "</span></h2>" +
       '<p class="tiny">' +
-      item.page +
-      " · " +
-      item.type +
-      (item.required ? " · 必填" : "") +
+      window.NGCurrent.description(item.id, item.playerEffect) +
       "</p>" +
       '<div class="panel"><h3>状态与覆盖 <span class="help-tip" data-tip="直接点选下方样式即可自订覆盖；点选重置清除租户覆盖回到主题默认。">?</span></h3><div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">' +
       modeStatusHtml +
       "</div></div>" +
-      '<div class="panel"><h3>值</h3>' +
+      '<div class="panel"><h3>選項</h3>' +
       editor +
       "</div>" +
       (item.sourceThemeSelectable
@@ -3435,6 +3432,8 @@
           (state.acks.review[item.id] ? " checked" : "") +
           "> 我确认复核风险并允许储存</label>"
         : "");
+    target.innerHTML = legacyHtml;
+    return legacyHtml;
   }
 
   function t(locale, zh, hant, longLabel) {
@@ -3448,6 +3447,13 @@
   }
   function renderPreview(resolved) {
     window.NGStudio.preview(resolved);
+  }
+
+  function acknowledgementControl(row, surface) {
+    const kind = row.outcome === "Auto-resolve" ? "auto" : row.outcome === "Review" ? "review" : null;
+    if (!kind) return "";
+    const label = kind === "auto" ? "我确认自动解析结果" : "我确认复核风险并允许储存";
+    return '<label class="field"><input type="checkbox" data-action="ack-' + kind + '" data-id="' + row.id + '" id="ack-' + surface + '-' + row.id + '"' + (state.acks[kind][row.id] ? ' checked' : '') + '> ' + localizedText(label) + '</label>';
   }
 
   function renderValidation(resolved) {
@@ -4256,7 +4262,7 @@
       renderDetail(resolveAll());
       return (
         item.type === "single-select" &&
-        item.options.join("/") === "样式一/样式二/样式三" &&
+        item.options.join("/") === "样式一/样式二/样式三/样式四" &&
         !item.supportsOff &&
         !els.detail.querySelector("textarea") &&
         !els.detail.querySelector('input[type="url"]') &&
@@ -4311,7 +4317,7 @@
         t.config.page = "登入注册";
         t.player.setConfig(t.config);
         return (
-          home && !!t.root.querySelector('.pp-auth input[type="password"],.p-auth-form input[type="password"]')
+          home && !!t.root.querySelector('.p-auth-form input[type="password"]')
         );
       });
     });
@@ -4378,7 +4384,8 @@
     state.expectedVersion = entry.version;
     state.ui.lastKnownGood = clone(entry);
     state.ui.invalidApplied = false;
-    state.ui.fallbackMessage = "已保存。";
+    state.ui.fallbackMessage =
+      "已保存本地示例。刷新页面会重置；请导出配置留存。";
     if (!silent) renderAll();
     return true;
   }
@@ -4408,7 +4415,7 @@
     state.draft = clone(state.published.objects);
     state.acks = { auto: {}, review: {} };
     state.draft.theme.value = state.theme;
-    state.ui.fallbackMessage = "已撤销修改。";
+    state.ui.fallbackMessage = "已恢复上次保存的本地示例。";
   }
 
   function resetObject(id) {
@@ -4419,12 +4426,15 @@
     delete state.acks.review[id];
   }
 
-  function renderAll() {
+  let lastLocalizedLocale;
+  function renderAll(opts) {
+    opts = opts || {};
+    const positions = [...document.querySelectorAll(".studio-editor-scroll,.studio-nav-scroll,#tree,#object-detail,#preview-pane,main,body")].filter(el=>el.scrollTop || el.scrollLeft).map(el=>[el,el.scrollTop,el.scrollLeft]);
     const resolved = resolveAll();
     window.NGStudio.tree(resolved);
-    renderDetail(resolved);
+    if (!(opts.reuseDetail && window.NGStudio.syncStyleSelection(resolved)))
+      renderDetail(resolved);
     renderPreview(resolved);
-    renderValidation(resolved);
     if (els.tenant) els.tenant.value = state.tenantId;
     if (els.uiLanguage) els.uiLanguage.value = state.uiLocale;
     if (els.theme) els.theme.value = state.theme;
@@ -4435,8 +4445,20 @@
       installSel.value = state.preview.installEnabled ? "on" : "off";
     const capSel = document.getElementById("capability-select");
     if (capSel) capSel.value = state.preview.unavailableCapability || "";
-    localizeInterface();
+    if (lastLocalizedLocale !== state.uiLocale) {
+      localizeInterface();
+      lastLocalizedLocale = state.uiLocale;
+    }
     window.NGStudio.finish(resolved);
+    els.detail.querySelectorAll(".ux-help").forEach(function (el) { el.remove(); });
+    const selectedIssue = resolved.items.find(row => row.id === state.selectedId && row.outcome !== "Allow");
+    if (selectedIssue) {
+      const help=document.createElement("div"); help.className="ux-help";
+      const heading=document.createElement("strong"); heading.textContent=state.uiLocale === "en" ? "How to continue" : "如何完成設定";
+      help.append(heading,document.createTextNode(window.NGCurrent.guidance(selectedIssue.id,selectedIssue.reasons)));
+      els.detail.append(help);
+    }
+    positions.forEach(([el,top,left])=>{if(el.isConnected){el.scrollTop=top;el.scrollLeft=left;}});
     return resolved;
   }
 
@@ -4449,7 +4471,7 @@
   function confirmModal(title, body, okAction) {
     els.confirm.className = "modal open";
     els.confirm.innerHTML =
-      '<div class="modal-panel"><h2 id="confirm-title">' +
+      '<div class="modal-panel simple-confirm"><h2 id="confirm-title">' +
       title +
       "</h2><p>" +
       body +
@@ -4494,6 +4516,7 @@
       .join("");
 
   document.addEventListener("change", function (event) {
+    if (event.target.dataset.current || event.target.dataset.studio) return;
     const ackContextBefore = acknowledgementContext();
     const target = event.target;
     if (target.closest("[data-studio]")) return;
@@ -4533,11 +4556,8 @@
       document.documentElement.setAttribute("data-stress", target.value);
     if (target.id === "object-search") state.search = target.value;
     if (target.id === "vp-select")
-      state.preview.viewport = [320, 375, 390, 480].includes(
-        Number(target.value),
-      )
-        ? Number(target.value)
-        : 390;
+      state.preview.viewport =
+        target.value === "desktop" ? "desktop" : Number(target.value);
     if (target.id === "auth-select") state.preview.auth = target.value;
     if (target.id === "page-select") state.preview.page = target.value;
     if (target.id === "content-select") state.preview.content = target.value;
@@ -4584,7 +4604,7 @@
 
   document.addEventListener("click", function (event) {
     const btn = event.target.closest("[data-action], [data-ok]");
-    if (!btn || btn.closest("[data-studio]")) return;
+    if (!btn || btn.closest("[data-studio]") || btn.tagName !== "BUTTON") return;
     const ackContextBefore = acknowledgementContext();
     const action = btn.getAttribute("data-action");
     const id = btn.getAttribute("data-id");
@@ -4710,7 +4730,7 @@
       if (dirty()) {
         confirmModal(
           "取消未储存修改",
-          "恢复上次保存的主题、颜色、组件样式与玩家可选范围。",
+          "恢复此租户上次保存的本地示例，包括颜色、样式与玩家可选范围。",
           "cancel",
         );
         return;
@@ -4720,6 +4740,10 @@
     if (action === "preview-nav")
       state.preview.page = btn.getAttribute("data-page");
     if (action === "apply") {
+      if (window.NGStudio && window.NGStudio.confirmSave) {
+        window.NGStudio.confirmSave(resolveAll());
+        return;
+      }
       confirmModal(
         "保存修改",
         "保存本站主题、颜色、组件样式与玩家可选范围。",
@@ -4727,7 +4751,12 @@
       );
       return;
     }
-    if (action === "open-diff") window.NGStudio.diff(resolveAll());
+    if (action === "open-diff") {
+      if (window.NGStudio && window.NGStudio.diff) {
+        window.NGStudio.diff(resolveAll());
+        return;
+      }
+    }
     if (action === "open-checks") runChecks();
     if (action === "close-drawers") closeDrawers();
     if (action === "simulate-stale") state.published.version += 1;
@@ -4784,6 +4813,7 @@
 
   window.NGStudio.attach({
     state,
+    localizedText,
     CATALOG,
     byId,
     els,
@@ -4795,7 +4825,6 @@
     clone,
     themeDefaultFor,
     effectiveNav,
-    localizedText,
     snapshotState,
     restoreState,
     applyDraft,
