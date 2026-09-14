@@ -147,7 +147,7 @@
     range(cfg.budget.maxParticipants,0,1e7,'参加人数上限',true);range(cfg.budget.joinedCount,0,1e7,'已参加人数',true);
     ['free','task','assist'].forEach(k=>{const s=cfg.sources[k];if(s.enabled)Object.values(s).filter(v=>typeof v==='number').forEach(v=>range(v,0,1000,'来源次数',true));});
     range(cfg.assumptions.dailyVisitProb,0,1,'每日回访率');range(cfg.assumptions.taskCompletionProb,0,1,'任务完成率');range(cfg.assumptions.assistLambda,0,50,'预计合格好友数');
-    if(supply.all<cfg.targetSpins)red.push('全部来源仅 '+supply.all+' 次，少于解锁总次数 '+cfg.targetSpins+' 次');
+    if(supply.all<cfg.targetSpins)yellow.push('全部来源仅 '+supply.all+' 次，少于解锁总次数 '+cfg.targetSpins+' 次');
     if(supply.nonSocial<cfg.targetSpins)yellow.push('免费＋任务共 '+supply.nonSocial+' 次，需好友助力补足 '+(cfg.targetSpins-supply.nonSocial)+' 次');
     if(Math.round(cfg.budget.total*100)-Math.round(cfg.budget.actualSpent*100)-Math.round(cfg.budget.outstandingReserve*100)<Math.round(cfg.prize.finishPrize*100))red.push('余额不足以预留一笔转满解锁奖励');
     if(cfg.budget.joinMode==='auto'&&!cfg.budget.maxParticipants)red.push('打开即参加须设置参加人数上限');

@@ -19,7 +19,7 @@
       const supply=E.guaranteedTicketSupply(cfg);
       const freeRemaining=cfg.sources.free.enabled?Math.min(cfg.sources.free.cap,cfg.sources.free.ticketsPerDay*(cfg.personalDays-(this.freeDates.has(this.day)?1:0))):0;
       const assistRemaining=cfg.sources.assist.enabled?(cfg.sources.assist.ticketsPerFriend>0?cfg.sources.assist.cap:0):0;
-      if(freeRemaining+supply.task+assistRemaining<cfg.targetSpins)return {ok:false,message:'本次可领取次数不足，暂时无法参加。'};
+      if(freeRemaining+supply.task+assistRemaining<cfg.targetSpins)this.log('当前可领取次数不足解锁总次数，继续参加。');
       this.playNumber++;this.play={...this.empty(),status:'active',cfg,startsDay:this.day,endsDay:this.day+cfg.personalDays,id:'play-'+this.playNumber,plan:E.progressPlan(cfg),reserve:cost.hardReserve};this.joined++;this.reserved=money(this.reserved+cost.hardReserve);this.log('参加本局，预留 '+cost.hardReserve.toFixed(2)+'。');
       if(cfg.sources.free.enabled&&cfg.sources.free.grantMode==='auto_on_visit')this.grant('free');return {ok:true,message:'已参加活动。'};
     }
