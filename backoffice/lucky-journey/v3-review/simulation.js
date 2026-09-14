@@ -28,7 +28,7 @@
       let quantity,key;
       if(type==='free'){if(this.freeDates.has(this.day))return {ok:false,message:'今日已领取。'};quantity=source.ticketsPerDay;key=this.day;}
       else if(type==='task'){const task=cfg.tasks[id];if(!task?.enabled)return {ok:false,message:'该任务未开启。'};if(this.play.tasks.includes(id))return {ok:false,message:'本局已领取该任务奖励。'};quantity=source.ticketsPerTask;key=id;}
-      else {if(!id)return {ok:false,message:'请选择好友事件。'};if(!qualified)return {ok:false,message:source.depositRequired?'好友尚未完成充值。':'好友不符合助力条件。'};if(this.friends.has(id))return {ok:false,message:'该好友已助力。'};quantity=source.ticketsPerFriend;key=id;}
+      else {if(!id)return {ok:false,message:'请选择好友事件。'};if(typeof qualified==='object')qualified=qualified.eligible!==false&&(!source.depositRequired||Number(qualified.depositAmount)>=source.minDeposit);if(!qualified)return {ok:false,message:source.depositRequired?'好友累计成功充值未达 '+source.minDeposit+'。':'好友不符合助力条件。'};if(this.friends.has(id))return {ok:false,message:'该好友已助力。'};quantity=source.ticketsPerFriend;key=id;}
       quantity=Math.max(0,Math.min(quantity,source.cap-this.play.granted[type]));if(!quantity)return {ok:false,message:'本局领取次数已达上限。'};
       if(type==='free')this.freeDates.add(key);else if(type==='task')this.play.tasks.push(key);else this.friends.add(key);
       this.play.granted[type]+=quantity;this.play.tickets+=quantity;this.log(({free:'每日免费',task:'任务完成',assist:'好友助力'})[type]+'：+'+quantity+' 次。');return {ok:true,message:'已获得 '+quantity+' 次抽奖次数。'};

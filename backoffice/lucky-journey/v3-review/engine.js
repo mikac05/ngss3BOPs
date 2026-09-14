@@ -23,10 +23,10 @@
     sources: {
       free: { enabled: true, ticketsPerDay: 1, days: 7, cap: 7, grantMode: 'auto_on_visit' },
       task: { enabled: true, ticketsPerTask: 1, taskCount: 5, cap: 5 },
-      assist: { enabled: true, ticketsPerFriend: 1, cap: 5, depositRequired: false, allowPromotionDoubleReward: true }
+      assist: { enabled: true, ticketsPerFriend: 1, cap: 5, depositRequired: false, minDeposit: 1, allowPromotionDoubleReward: true }
     },
     tasks: [
-      { id: 'play_cat', type: 'play_category', name: '游玩指定类型', gameCategory: 'slot', threshold: 5, enabled: true },
+      { id: 'play_cat', type: 'play_category', name: '游玩指定类型', gameCategory: 'slot', threshold: 5, minBet: 1, enabled: true },
       { id: 'dep_c', type: 'deposit_count', name: '充值次数', threshold: 1, enabled: true },
       { id: 'dep_a', type: 'deposit_amount', name: '充值金额', threshold: 100, enabled: true },
       { id: 'bet_c', type: 'bet_count', name: '下注次数', threshold: 10, enabled: true },
@@ -145,7 +145,8 @@
     if(Math.abs(PHASES.reduce((v,k)=>v+cfg.phaseShares[k],0)-100)>.001)red.push('阶段占比合计须为 100%');
     ['total','actualSpent','outstandingReserve'].forEach(k=>range(cfg.budget[k],0,1e12,'预算金额'));
     range(cfg.budget.maxParticipants,0,1e7,'参加人数上限',true);range(cfg.budget.joinedCount,0,1e7,'已参加人数',true);
-    ['free','task','assist'].forEach(k=>{const s=cfg.sources[k];if(s.enabled)Object.values(s).filter(v=>typeof v==='number').forEach(v=>range(v,0,1000,'来源次数',true));});
+    ['free','task','assist'].forEach(k=>{const s=cfg.sources[k];if(s.enabled)Object.entries(s).filter(([key,v])=>key!=='minDeposit'&&typeof v==='number').map(([,v])=>v).forEach(v=>range(v,0,1000,'来源次数',true));});
+    if(cfg.sources.assist.enabled&&cfg.sources.assist.depositRequired)range(cfg.sources.assist.minDeposit,.01,1e9,'好友最低充值金额');(cfg.tasks||[]).filter(t=>t.enabled&&t.type==='play_category'&&cfg.sources.task.enabled).forEach(t=>range(t.minBet,.01,1e9,'每注最低金额'));
     range(cfg.assumptions.dailyVisitProb,0,1,'每日回访率');range(cfg.assumptions.taskCompletionProb,0,1,'任务完成率');range(cfg.assumptions.assistLambda,0,50,'预计合格好友数');
     if(PHASES.some(k=>cfg.prize[k].thanksPct>=80))yellow.push('谢谢参与比例较高，可能连续多转没有进度');if(Number.isInteger(cfg.targetSpins)&&cfg.targetSpins>=4&&cfg.targetSpins<=30&&progressPlan(cfg).some((r,i,rows)=>i>0&&r.target-rows[i-1].target<500))yellow.push('部分中奖进度小于 0.05%，请留意细砍体验');if(supply.all<cfg.targetSpins)yellow.push('全部来源仅 '+supply.all+' 次，少于解锁总次数 '+cfg.targetSpins+' 次');
     if(supply.nonSocial<cfg.targetSpins)yellow.push('免费＋任务共 '+supply.nonSocial+' 次，需好友助力补足 '+(cfg.targetSpins-supply.nonSocial)+' 次');

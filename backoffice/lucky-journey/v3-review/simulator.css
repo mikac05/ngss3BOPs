@@ -11,3 +11,5 @@
 .phone-progress{padding:14px}.phone-progress strong{font-size:24px}.phone small{font-size:12px}.phone-task b{font-size:14px}.phone-task button{min-height:40px;min-width:70px;font-size:12px}.phone-rules{font-size:12px;line-height:1.8}.phone-tasks{padding:14px}.phone .prize-popup{position:absolute;inset:0;padding:16px;backdrop-filter:none}.phone .prize-dialog{padding:24px 16px}.phone .prize-dialog>strong{font-size:26px}.player-warning{color:#ffda8e;font-size:12px;line-height:1.6;margin:10px 0 0}.external-tasks{display:grid;gap:10px;margin:16px 0}.external-tasks>div{display:flex;justify-content:space-between;align-items:center;gap:12px}.external-tasks button{min-width:88px}#simulationFeedback{font-size:13px;color:var(--muted)}#remainingSpins{color:#e7ecf5;margin-top:6px}.phone-progress .bar{height:10px}
 
 #freeBtn{font-size:12px;color:#b9c5d9;flex-shrink:0}.phone-task small{line-height:1.7}
+
+#ticketSources{scroll-margin-top:12px}#ticketSources:focus{outline:2px solid #79bbff;outline-offset:3px}
