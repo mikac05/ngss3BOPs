@@ -66,7 +66,7 @@
   // Returned collectible amount is authoritative; progress only adds amount * unit scale.
   const ITEMS={coin:{label:'金币',scale:10000,denominator:100},gem:{label:'宝石',scale:100,denominator:10000},star:{label:'星钻',scale:1,denominator:1000000}};
   function progressPlan(cfg){const n=allocatePhaseSpins(cfg.targetSpins,cfg.phaseShares),first=Math.round(cfg.firstSpinPct*10000),remaining=1000000-first;
-    return Array.from({length:cfg.targetSpins},(_,i)=>{const k=i+1,phase=phaseOf(k,cfg.targetSpins,cfg.phaseShares);if(k===1)return {phase,target:first};if(k===cfg.targetSpins)return {phase,target:1000000};const start=phase==='fast'?1:phase==='mid'?1+n.fast:1+n.fast+n.mid,low=phase==='fast'?first:phase==='mid'?first+remaining*.9:first+remaining*.999,high=phase==='fast'?first+remaining*.9:phase==='mid'?first+remaining*.999:1000000,t=(k-start)/n[phase];return {phase,target:Math.min(999999,Math.floor(low+(high-low)*(1-(1-t)*(1-t))))};});
+    return Array.from({length:cfg.targetSpins},(_,i)=>{const k=i+1,phase=phaseOf(k,cfg.targetSpins,cfg.phaseShares);if(k===1)return {phase,target:first};if(k===cfg.targetSpins)return {phase,target:1000000};const start=phase==='fast'?1:phase==='mid'?1+n.fast:1+n.fast+n.mid,low=phase==='fast'?first:phase==='mid'?first+remaining*.9:first+remaining*.999,high=phase==='fast'?first+remaining*.9:phase==='mid'?first+remaining*.999:1000000,t=(k-start)/n[phase];return {phase,target:Math.min(999999,Math.floor(low+(high-low)*(1-(1-t)*(1-t))))};}).reduce((rows,row,i)=>{const previous=rows.at(-1)?.target||0;row.target=Math.max(previous+1,Math.min(row.target,1000000-(cfg.targetSpins-i-1)));rows.push(row);return rows;},[]);
   }
   function drawProgress(cfg,k,units=0,rng=Math.random,outcome='random',plan){
     const row=(plan||progressPlan(cfg))[k-1],phase=row.phase,final=k===cfg.targetSpins;
@@ -141,13 +141,13 @@
     function range(v,min,max,label,integer=false){if(!Number.isFinite(v)||v<min||v>max||integer&&!Number.isInteger(v))red.push(label+'须为 '+min+'–'+max+(integer?' 的整数':''));}
     range(cfg.firstSpinPct,1,95,'第一转进度',true);range(cfg.targetSpins,4,30,'解锁总次数',true);range(cfg.personalDays,1,30,'可玩天数',true);range(cfg.prize.finishPrize,.01,1e9,'转满解锁金额');
     if(Number.isFinite(cfg.prize.finishPrize)&&Math.abs(cfg.prize.finishPrize*100-Math.round(cfg.prize.finishPrize*100))>1e-6)red.push('转满解锁金额最多两位小数');
-    PHASES.forEach(k=>{range(cfg.phaseShares[k],0,100,'阶段占比');range(cfg.prize[k].thanksPct,0,100,'谢谢参与比例');Object.values(cfg.prize[k].weights).forEach(v=>range(v,0,100,'道具概率'));if(Math.abs(Object.values(cfg.prize[k].weights).reduce((a,b)=>a+b,0)-100)>.001)red.push('道具概率合计须为 100%');});
+    PHASES.forEach(k=>{range(cfg.phaseShares[k],0,100,'阶段占比');range(cfg.prize[k].thanksPct,0,100,'谢谢参与比例');Object.values(cfg.prize[k].weights).forEach(v=>range(v,1,98,'道具概率',true));if(Math.abs(Object.values(cfg.prize[k].weights).reduce((a,b)=>a+b,0)-100)>.001)red.push('道具概率合计须为 100%');});
     if(Math.abs(PHASES.reduce((v,k)=>v+cfg.phaseShares[k],0)-100)>.001)red.push('阶段占比合计须为 100%');
     ['total','actualSpent','outstandingReserve'].forEach(k=>range(cfg.budget[k],0,1e12,'预算金额'));
     range(cfg.budget.maxParticipants,0,1e7,'参加人数上限',true);range(cfg.budget.joinedCount,0,1e7,'已参加人数',true);
     ['free','task','assist'].forEach(k=>{const s=cfg.sources[k];if(s.enabled)Object.values(s).filter(v=>typeof v==='number').forEach(v=>range(v,0,1000,'来源次数',true));});
     range(cfg.assumptions.dailyVisitProb,0,1,'每日回访率');range(cfg.assumptions.taskCompletionProb,0,1,'任务完成率');range(cfg.assumptions.assistLambda,0,50,'预计合格好友数');
-    if(supply.all<cfg.targetSpins)yellow.push('全部来源仅 '+supply.all+' 次，少于解锁总次数 '+cfg.targetSpins+' 次');
+    if(PHASES.some(k=>cfg.prize[k].thanksPct>=80))yellow.push('谢谢参与比例较高，可能连续多转没有进度');if(Number.isInteger(cfg.targetSpins)&&cfg.targetSpins>=4&&cfg.targetSpins<=30&&progressPlan(cfg).some((r,i,rows)=>i>0&&r.target-rows[i-1].target<500))yellow.push('部分中奖进度小于 0.05%，请留意细砍体验');if(supply.all<cfg.targetSpins)yellow.push('全部来源仅 '+supply.all+' 次，少于解锁总次数 '+cfg.targetSpins+' 次');
     if(supply.nonSocial<cfg.targetSpins)yellow.push('免费＋任务共 '+supply.nonSocial+' 次，需好友助力补足 '+(cfg.targetSpins-supply.nonSocial)+' 次');
     if(Math.round(cfg.budget.total*100)-Math.round(cfg.budget.actualSpent*100)-Math.round(cfg.budget.outstandingReserve*100)<Math.round(cfg.prize.finishPrize*100))red.push('余额不足以预留一笔转满解锁奖励');
     if(cfg.budget.joinMode==='auto'&&!cfg.budget.maxParticipants)red.push('打开即参加须设置参加人数上限');

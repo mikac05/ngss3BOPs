@@ -6,7 +6,7 @@
   const phaseLabel={fast:'快砍',mid:'中段',fine:'细砍'};
   const money=x=>Number(x).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
   function msg(message){$('#phoneToast').textContent=message;$('#phoneToast').hidden=false;clearTimeout(msg.timer);msg.timer=setTimeout(()=>$('#phoneToast').hidden=true,2800);}
-  const shownResults=new Set();let popupReturn=null;
+  $('.phone').append($('#prizePopup'));const shownResults=new Set();let popupReturn=null;
   function closePrize(){if($('#prizePopup').hidden)return;$('#prizePopup').hidden=true;if(popupReturn?.isConnected)popupReturn.focus();}
   function showPrize(record){if(!record||record.prize.type==='none'||shownResults.has(record.spinId))return;shownResults.add(record.spinId);const copy=resultCopy(record);popupReturn=document.activeElement;$('#prizeTitle').textContent=copy.title;$('#prizeAmount').textContent=copy.amount;$('#prizeMessage').textContent=copy.message;$('#prizeProgress').textContent=copy.progress;$('#prizePopup').dataset.kind=copy.kind;$('#prizeIcon').textContent=({coin:'◉',gem:'◆',star:'✦',complete:'♜'})[copy.kind];$('#prizePopup').hidden=false;$('#prizeClose').focus();}
   $('#prizeClose').onclick=closePrize;document.addEventListener('keydown',e=>{if(!$('#prizePopup').hidden){if(e.key==='Escape')closePrize();if(e.key==='Tab'){e.preventDefault();$('#prizeClose').focus();}}});
@@ -14,18 +14,21 @@
 
   function render(){
     const p=phoneFrozen||sim.play,c=p.cfg||config,supply=E.guaranteedTicketSupply(config),cost=E.playCostStats(config);
-    $('#activityName').textContent=c.basic.name;$('#personalTime').textContent=p.status==='unjoined'?'参加后 '+c.personalDays+' 天有效':'有效期剩余 '+Math.max(0,(p.endsDay??sim.day)-sim.day)+' 天';
+    $('#activityName').textContent=c.basic.name;$('#personalTime').textContent=p.status==='unjoined'?'含参加日共 '+c.personalDays+' 天有效':'有效期剩余 '+Math.max(0,(p.endsDay??sim.day)-sim.day)+' 天';
     $('#phoneStatus').textContent=label[p.status];$('#phoneProgressPct').textContent=p.progress.toFixed(4)+'%';$('#phoneProgressFill').style.width=p.progress+'%';$('#phoneTicketCount').textContent=p.tickets;$('#finishPrize').textContent=money(c.prize.finishPrize);
     $('#phoneHint').textContent=phoneFrozen?'正在确认开奖结果…':p.status==='unjoined'?'参加活动，开启探索。':p.status==='completed'?'进度已满，转满解锁已生成。':p.status==='active'?(p.tickets?'抽中金币、宝石或星钻增加进度。':'获取抽奖次数，继续探索。'):'本局已结束。';
     $('#wallet-cash').textContent=money(p.rewards.cash);['coin','gem','star'].forEach(k=>$('#collect-'+k).textContent=p.collectibles[k].toLocaleString('en-US',{maximumFractionDigits:4}));
     const joining=p.status==='unjoined'||p.status!=='active'&&config.basic.repeat;const joinBlock=!sim.campaignOpen?'活动已结束':sim.risk?'暂不可参加':sim.available()<cost.hardReserve||config.budget.maxParticipants>0&&sim.joined>=config.budget.maxParticipants?'本期名额已满':'';
     const main=$('#mainAction');main.textContent=busy?'开奖中…':phoneFrozen?'恢复连接':joining&&joinBlock?joinBlock:p.status==='unjoined'?'参加活动':p.status==='active'?(p.tickets?'转一次':'抽奖次数不足'):(config.basic.repeat&&sim.campaignOpen?'再次参加':label[p.status]);
     main.disabled=busy||(!phoneFrozen&&joining&&!!joinBlock)||(!phoneFrozen&&p.status==='active'&&!p.tickets)||(!phoneFrozen&&p.status!=='unjoined'&&p.status!=='active'&&!(config.basic.repeat&&sim.campaignOpen));
-    const last=p.records.at(-1);$('#resultBox').hidden=!last;$('#resultText').textContent=last?last.prize.label+(last.finish?' · 转满解锁 '+money(last.finish):''):'';$('#resultStatus').textContent=last?(last.finish?(last.payoutStatus==='pending'?'派奖处理中':'已发放'):'进度已更新'):'';
+    const last=p.records.at(-1);if(p.status==='completed')$('#phoneHint').textContent=last?.payoutStatus==='pending'?'奖金发放处理中，请稍后查看。':'奖金已发放，请查看钱包。';$('#resultBox').hidden=!last;$('#resultText').textContent=last?last.prize.label+(last.finish?' · 转满解锁 '+money(last.finish):''):'';$('#resultStatus').textContent=last?(last.prize.type==='none'?'本次未增加进度':last.finish?(last.payoutStatus==='pending'?'派奖处理中':'已发放'):'进度已更新'):'';
     const disabled=busy||phoneFrozen||p.status!=='active';
     $('#freeRow').hidden=!c.sources.free.enabled;$('#freeDesc').textContent='每日 '+c.sources.free.ticketsPerDay+' 次 · 本局上限 '+c.sources.free.cap+' 次';$('#freeBtn').disabled=true;$('#freeBtn').textContent=sim.freeDates.has(sim.day)?'今日已发放':'打开活动页发放';
     $('#taskRows').innerHTML=c.sources.task.enabled?c.tasks.map((task,i)=>task.enabled?`<div class="phone-task"><div><b>${esc(task.name)}</b><small>${taskDescription(task)} · +${c.sources.task.ticketsPerTask} 次</small></div><button data-task="${i}" ${disabled||p.tasks.includes(i)||p.granted.task>=c.sources.task.cap?'disabled':''}>${p.tasks.includes(i)?'已完成':'去完成'}</button></div>`:'').join(''):'';
     $('#friendRow').hidden=!c.sources.assist.enabled;$('#friendDesc').textContent='直接新注册好友'+(c.sources.assist.depositRequired?'完成充值后':'')+'助力 · 每人 '+c.sources.assist.ticketsPerFriend+' 次';$('#friendBtn').disabled=!!disabled||p.granted.assist>=c.sources.assist.cap;
+    $('#externalTasks').innerHTML=c.tasks.map((task,i)=>task.enabled&&c.sources.task.enabled?`<div><span>${esc(task.name)}</span><button data-complete-task="${i}" ${disabled||p.tasks.includes(i)||p.granted.task>=c.sources.task.cap?'disabled':''}>${p.tasks.includes(i)?'已完成':'模拟完成'}</button></div>`:'').join('');$('#completeFriendBtn').disabled=!!disabled||!c.sources.assist.enabled||p.granted.assist>=c.sources.assist.cap;
+    $('#remainingSpins').textContent=p.status==='completed'?'已完成 '+c.targetSpins+' 转':'转满需 '+c.targetSpins+' 转'+(p.status==='active'?' · 还需 '+Math.max(0,c.targetSpins-p.k)+' 转':'');
+    $('#playerSupplyWarning').hidden=supply.all>=c.targetSpins||p.status==='completed';$('#playerSupplyWarning').textContent='当前最多可得 '+supply.all+' 次，未达到转满所需次数。';
     $('#simStatus').textContent=label[sim.play.status];$('#simDay').textContent='第 '+(sim.day+1)+' 天';$('#simStep').textContent=sim.play.k+' / '+config.targetSpins;$('#simStage').textContent=sim.play.k?phaseLabel[E.phaseOf(sim.play.k,config.targetSpins,config.phaseShares)]:'—';
     $('#statTickets').textContent=supply.all;$('#statTarget').textContent=config.targetSpins;$('#statReserve').textContent=money(cost.hardReserve);$('#ledgerSpent').textContent=money(sim.spent);$('#ledgerReserved').textContent=money(sim.reserved);$('#ledgerAvailable').textContent=money(sim.available());
     $('#eventLog').innerHTML=sim.events.map(e=>`<li><span>第 ${e.day} 天</span>${esc(e.text)}</li>`).join('')||'<li class="muted">暂无记录</li>';
@@ -36,7 +39,7 @@
   function taskDescription(t){const category={slot:'电子',live:'真人',sport:'体育',chess:'棋牌',fish:'捕鱼'};if(t.type==='play_category')return category[t.gameCategory]+'有效注单 '+t.threshold+' 局';if(t.type==='deposit_count')return '成功充值 '+t.threshold+' 次';if(t.type==='deposit_amount')return '成功充值累计 '+t.threshold;if(t.type==='bet_count')return '有效注单 '+t.threshold+' 次';return '有效投注累计 '+t.threshold;}
   async function spin(){if(busy||!$('#prizePopup').hidden)return;const before=C.clone(sim.play);request='request-'+(++sim.sequence);const result=sim.spin(request);if(!result.ok){if(result.saved)phoneFrozen=before;handle(result);return;}
     busy=true;const turn=generation;const record=result.record;
-    const sector={coin:0,none:1,gem:2,star:4}[record.prize.type];const target=360-(sector*45+22.5);angle=Math.ceil(angle/360)*360+1080+target;
+    const sectors={coin:[0,5],none:[1,3,7],gem:[2,6],star:[4]}[record.prize.type];const sector=sectors[(record.k-1)%sectors.length];const target=360-(sector*45+22.5);angle=Math.ceil(angle/360)*360+1080+target;
     $('#wheelDisc').style.transition=$('#reduceMotion').checked?'none':'transform 950ms cubic-bezier(.15,.7,.12,1)';$('#wheelDisc').style.transform=`rotate(${angle}deg)`;
     phoneFrozen=before;render();await new Promise(r=>setTimeout(r,$('#reduceMotion').checked?0:980));if(turn!==generation)return;phoneFrozen=null;busy=false;handle(result);
   }
@@ -55,13 +58,15 @@
     if(name==='pending'){sim.payout='pending';$('#payout').value='pending';}
     render();
   }
-  function renderChecks(){const test=C.clone(config);test.assumptions.dailyVisitProb=Number($('#visitProb').value)/100;test.assumptions.taskCompletionProb=Number($('#taskProb').value)/100;test.assumptions.assistLambda=Number($('#friendLambda').value);const status=E.evaluatePublishStatus(test);$('#completionRate').textContent=(status.simRate*100).toFixed(1)+'%';$('#expectedCost').textContent=money(status.costStats.expected);$('#checkBadge').textContent=status.red.length?'未通过':status.yellow.length?'待确认':'检查通过';$('#checkBadge').className='badge '+(status.red.length?'danger':status.yellow.length?'warning':'good');$('#checkList').innerHTML=status.red.map(x=>`<li class="danger">${esc(x)}</li>`).join('')+status.yellow.map(x=>`<li class="warning">${esc(x)}</li>`).join('')||'<li class="good">当前设置通过配置检查。</li>';$('#publishBtn').disabled=status.red.length>0;return status;}
+  function renderChecks(){const test=C.clone(config);test.assumptions.dailyVisitProb=Number($('#visitProb').value)/100;test.assumptions.taskCompletionProb=Number($('#taskProb').value)/100;test.assumptions.assistLambda=Number($('#friendLambda').value);const status=E.evaluatePublishStatus(test);$('#completionRate').textContent=(status.simRate*100).toFixed(1)+'%';$('#expectedCost').textContent=money(status.costStats.expected);$('#checkBadge').textContent=status.red.length?'未通过':status.yellow.length?'有提醒':'检查通过';$('#checkBadge').className='badge '+(status.red.length?'danger':status.yellow.length?'warning':'good');$('#checkList').innerHTML=status.red.map(x=>`<li class="danger">${esc(x)}</li>`).join('')+status.yellow.map(x=>`<li class="warning">${esc(x)}</li>`).join('')||'<li class="good">当前设置通过配置检查。</li>';$('#publishBtn').disabled=status.red.length>0;return status;}
   const devToggle=$('#devToggle'),devPanel=$('#devPanel');
   function closeDev(){devPanel.hidden=true;devToggle.setAttribute('aria-expanded','false');devToggle.focus();}
   devToggle.onclick=()=>{devPanel.hidden=!devPanel.hidden;devToggle.setAttribute('aria-expanded',String(!devPanel.hidden));if(!devPanel.hidden)$('#devClose').focus();};
   $('#devClose').onclick=closeDev;document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!devPanel.hidden)closeDev();});
   $('#mainAction').onclick=()=>{if(phoneFrozen){phoneFrozen=null;handle(sim.spin(request));return;}if(sim.play.status==='unjoined'||sim.play.status!=='active')handle(sim.join());else spin();};
-  $('#freeBtn').onclick=()=>handle(sim.grant('free'));$('#taskRows').onclick=e=>{if(e.target.dataset.task!==undefined)handle(sim.grant('task',Number(e.target.dataset.task)));};$('#friendBtn').onclick=()=>handle(sim.grant('assist','friend-'+(++sim.sequence),true));
+  $('#freeBtn').onclick=()=>{};$('#taskRows').onclick=e=>{if(e.target.dataset.task!==undefined){const task=config.tasks[Number(e.target.dataset.task)];msg(task.type.startsWith('deposit')?'前往充值页面':'前往游戏页面');}};$('#friendBtn').onclick=()=>msg('邀请好友注册并完成助力条件，可获得抽奖次数。');
+  $('#externalTasks').onclick=e=>{if(e.target.dataset.completeTask!==undefined){const r=sim.grant('task',Number(e.target.dataset.completeTask));$('#simulationFeedback').textContent=r.message;handle(r);}};
+  $('#completeFriendBtn').onclick=()=>{const r=sim.grant('assist','friend-'+(++sim.sequence),true);$('#simulationFeedback').textContent=r.message;handle(r);};
   $('#reconnectBtn').onclick=()=>{phoneFrozen=null;handle(sim.spin(request));};$('#payoutRetryBtn').onclick=()=>handle(sim.retryPayout());$('#nextDayBtn').onclick=()=>handle(sim.nextDay());$('#campaignEndBtn').onclick=()=>handle(sim.endCampaign());
   $('#risk').onchange=e=>{sim.risk=e.target.checked;render();};$('#outcome').onchange=e=>sim.outcome=e.target.value;$('#network').onchange=e=>sim.network=e.target.value;$('#payout').onchange=e=>sim.payout=e.target.value;
   $('#friendEventBtn').onclick=()=>handle(sim.grant('assist','fixed-friend',true));$('#friendInvalidBtn').onclick=()=>handle(sim.grant('assist','invalid-friend',false));
