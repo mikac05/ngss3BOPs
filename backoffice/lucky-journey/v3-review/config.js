@@ -6,13 +6,13 @@
   function merge(base,source){for(const k of Object.keys(base)){if(source?.[k]!==undefined){if(base[k]&&typeof base[k]==='object'&&!Array.isArray(base[k]))merge(base[k],source[k]);else base[k]=clone(source[k]);}}return base;}
   function integerWeights(w){const keys=['coin','gem','star'], raw=keys.map(k=>Math.max(0,Number(w?.[k])||0)),sum=raw.reduce((a,b)=>a+b,0)||1;const scaled=raw.map(v=>v/sum*100), out=scaled.map(v=>Math.max(1,Math.floor(v)));while(out.reduce((a,b)=>a+b,0)>100){let i=out.indexOf(Math.max(...out));out[i]--;}while(out.reduce((a,b)=>a+b,0)<100){let i=scaled.map((v,j)=>v-out[j]).indexOf(Math.max(...scaled.map((v,j)=>v-out[j])));out[i]++;}return Object.fromEntries(keys.map((k,i)=>[k,out[i]]));}
   function normalize(source){const c=merge(defaults(),source||{});delete c.cohorts;delete c.matchedCohort;
-    ['fast','mid','fine'].forEach(k=>c.prize[k].weights=integerWeights(c.prize[k].weights));c.presentation.layout='compact';c.sources.free.grantMode='auto_on_visit';c.sources.free.days=c.personalDays;c.sources.task.taskCount=c.tasks.filter(t=>t.enabled).length;
+    if(Number.isFinite(c.firstSpinPct))c.firstSpinPct=Math.max(6,Math.min(94,Math.round(c.firstSpinPct)));['fast','mid','fine'].forEach(k=>c.prize[k].weights=integerWeights(c.prize[k].weights));c.presentation.layout='compact';c.sources.free.grantMode='auto_on_visit';c.sources.free.days=c.personalDays;c.sources.task.taskCount=c.tasks.filter(t=>t.enabled).length;
     c.tasks=c.tasks.map((task,i)=>({...defaults().tasks[i],...task}));
     c.basic.layerMode='all';c.basic.segments=[];
     ['start','end'].forEach(k=>{if(/^\d{4}-\d{2}-\d{2}$/.test(c.basic[k]))c.basic[k]+='T00:00';});
     c.basic.terminalCount=c.basic.terminals.length;return c;}
   function read(storage){try{const raw=JSON.parse(storage.getItem(key));return {config:normalize(raw?.config),savedAt:raw?.savedAt||null,version:raw?.version||null};}catch(e){return {config:defaults(),error:'已保存配置无法读取，已载入默认设置。'};}}
-  function save(storage,config){const record={version:5,savedAt:new Date().toISOString(),config:normalize(config)};storage.setItem(key,JSON.stringify(record));return record;}
+  function save(storage,config){const record={version:6,savedAt:new Date().toISOString(),config:normalize(config)};storage.setItem(key,JSON.stringify(record));return record;}
   function get(c,path){return path.split('.').reduce((v,k)=>v?.[k],c);}
   function set(c,path,value){const parts=path.split('.'),last=parts.pop();parts.reduce((v,k)=>v[k],c)[last]=value;}
   const esc=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));

@@ -65,7 +65,8 @@
   // After the guaranteed first attempt, pacing applies to remaining progress.
   // Returned collectible amount is authoritative; progress only adds amount * unit scale.
   const ITEMS={coin:{label:'金币',scale:10000,denominator:100},gem:{label:'宝石',scale:100,denominator:10000},star:{label:'星钻',scale:1,denominator:1000000}};
-  function progressPlan(cfg){const n=allocatePhaseSpins(cfg.targetSpins,cfg.phaseShares),first=Math.round(cfg.firstSpinPct*10000),remaining=1000000-first;
+  function sampleFirstUnits(cfg,rng=Math.random){const low=(cfg.firstSpinPct-5)*10000;return low+Math.floor(clamp(rng(),0,1-Number.EPSILON)*100001);}
+  function progressPlan(cfg,firstUnits=Math.round(cfg.firstSpinPct*10000)){const n=allocatePhaseSpins(cfg.targetSpins,cfg.phaseShares),first=firstUnits,remaining=1000000-first;
     return Array.from({length:cfg.targetSpins},(_,i)=>{const k=i+1,phase=phaseOf(k,cfg.targetSpins,cfg.phaseShares);if(k===1)return {phase,target:first};if(k===cfg.targetSpins)return {phase,target:1000000};const start=phase==='fast'?1:phase==='mid'?1+n.fast:1+n.fast+n.mid,low=phase==='fast'?first:phase==='mid'?first+remaining*.9:first+remaining*.999,high=phase==='fast'?first+remaining*.9:phase==='mid'?first+remaining*.999:1000000,t=(k-start)/n[phase];return {phase,target:Math.min(999999,Math.floor(low+(high-low)*(1-(1-t)*(1-t))))};}).reduce((rows,row,i)=>{const previous=rows.at(-1)?.target||0;row.target=Math.max(previous+1,Math.min(row.target,1000000-(cfg.targetSpins-i-1)));rows.push(row);return rows;},[]);
   }
   function drawProgress(cfg,k,units=0,rng=Math.random,outcome='random',plan){
@@ -139,7 +140,7 @@
 
   function evaluatePublishStatus(cfg){const red=[],yellow=[],supply=guaranteedTicketSupply(cfg);
     function range(v,min,max,label,integer=false){if(!Number.isFinite(v)||v<min||v>max||integer&&!Number.isInteger(v))red.push(label+'须为 '+min+'–'+max+(integer?' 的整数':''));}
-    range(cfg.firstSpinPct,1,95,'第一转进度',true);range(cfg.targetSpins,4,30,'解锁总次数',true);range(cfg.personalDays,1,30,'可玩天数',true);range(cfg.prize.finishPrize,.01,1e9,'转满解锁金额');
+    range(cfg.firstSpinPct,6,94,'首转平均进度',true);range(cfg.targetSpins,4,30,'解锁总次数',true);range(cfg.personalDays,1,30,'可玩天数',true);range(cfg.prize.finishPrize,.01,1e9,'转满解锁金额');
     if(Number.isFinite(cfg.prize.finishPrize)&&Math.abs(cfg.prize.finishPrize*100-Math.round(cfg.prize.finishPrize*100))>1e-6)red.push('转满解锁金额最多两位小数');
     PHASES.forEach(k=>{range(cfg.phaseShares[k],0,100,'阶段占比');range(cfg.prize[k].thanksPct,0,100,'谢谢参与比例');Object.values(cfg.prize[k].weights).forEach(v=>range(v,1,98,'道具概率',true));if(Math.abs(Object.values(cfg.prize[k].weights).reduce((a,b)=>a+b,0)-100)>.001)red.push('道具概率合计须为 100%');});
     if(Math.abs(PHASES.reduce((v,k)=>v+cfg.phaseShares[k],0)-100)>.001)red.push('阶段占比合计须为 100%');
@@ -158,5 +159,5 @@
     const simRate=completionProbability(cfg,cfg.targetSpins),costStats={expected:Number((simRate*cfg.prize.finishPrize).toFixed(4)),hardReserve:cfg.prize.finishPrize,counts:allocatePhaseSpins(cfg.targetSpins,cfg.phaseShares)},safeNewUsers=availableSlots(cfg);
     return {red,yellow,canPublish:!red.length,isGreen:!red.length&&!yellow.length,simRate,costStats,supply,safeNewUsers,greenSummary:'完成发放 '+cfg.prize.finishPrize+'，未完成不发奖。'};
   }
-  return {DEFAULT_CONFIG,UNITS,clamp,normalizePhaseShares,allocatePhaseSpins,phaseOf,drawProgress,progressPlan,progressPreview,guaranteedTicketSupply,playCostStats,completionProbability,availableSlots,evaluatePublishStatus};
+  return {DEFAULT_CONFIG,UNITS,clamp,normalizePhaseShares,allocatePhaseSpins,phaseOf,drawProgress,sampleFirstUnits,progressPlan,progressPreview,guaranteedTicketSupply,playCostStats,completionProbability,availableSlots,evaluatePublishStatus};
 }));

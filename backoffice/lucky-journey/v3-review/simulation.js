@@ -2,7 +2,7 @@
 (function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory(require('./engine.js'),require('./config.js'));else root.LJSimulation=factory(root.LuckyJourneyEngine,root.LJConfig);})(typeof window==='undefined'?globalThis:window,function(E,C){
   const money=v=>Math.round(v*100)/100||0;
   class Simulation {
-    constructor(config){this.config=C.normalize(config);this.day=0;this.campaignOpen=true;this.risk=false;this.network='normal';this.payout='posted';this.outcome='random';this.sequence=0;this.playNumber=0;this.freeDates=new Set();this.friends=new Set();this.requestCache=new Map();this.spent=this.config.budget.actualSpent;this.reserved=this.config.budget.outstandingReserve;this.joined=this.config.budget.joinedCount;this.pending=[];this.events=[];this.play=this.empty();}
+    constructor(config,rng=Math.random){this.rng=rng;this.config=C.normalize(config);this.day=0;this.campaignOpen=true;this.risk=false;this.network='normal';this.payout='posted';this.outcome='random';this.sequence=0;this.playNumber=0;this.freeDates=new Set();this.friends=new Set();this.requestCache=new Map();this.spent=this.config.budget.actualSpent;this.reserved=this.config.budget.outstandingReserve;this.joined=this.config.budget.joinedCount;this.pending=[];this.events=[];this.play=this.empty();}
     empty(){return {status:'unjoined',k:0,progress:0,progressUnits:0,collectibles:{coin:0,gem:0,star:0},tickets:0,rewards:{cash:0,credit:0,point:0},granted:{free:0,task:0,assist:0},tasks:[],records:[],reserve:0};}
     log(text){this.events.unshift({day:this.day+1,text});this.events=this.events.slice(0,60);}
     available(){return money(this.config.budget.total-this.spent-this.reserved);}
@@ -20,7 +20,7 @@
       const freeRemaining=cfg.sources.free.enabled?Math.min(cfg.sources.free.cap,cfg.sources.free.ticketsPerDay*(cfg.personalDays-(this.freeDates.has(this.day)?1:0))):0;
       const assistRemaining=cfg.sources.assist.enabled?(cfg.sources.assist.ticketsPerFriend>0?cfg.sources.assist.cap:0):0;
       if(freeRemaining+supply.task+assistRemaining<cfg.targetSpins)this.log('当前可领取次数不足解锁总次数，继续参加。');
-      this.playNumber++;this.play={...this.empty(),status:'active',cfg,startsDay:this.day,endsDay:this.day+cfg.personalDays,id:'play-'+this.playNumber,plan:E.progressPlan(cfg),reserve:cost.hardReserve};this.joined++;this.reserved=money(this.reserved+cost.hardReserve);this.log('参加本局，预留 '+cost.hardReserve.toFixed(2)+'。');
+      const firstUnits=E.sampleFirstUnits(cfg,this.rng);this.playNumber++;this.play={...this.empty(),status:'active',cfg,startsDay:this.day,endsDay:this.day+cfg.personalDays,id:'play-'+this.playNumber,firstUnits,plan:E.progressPlan(cfg,firstUnits),reserve:cost.hardReserve};this.joined++;this.reserved=money(this.reserved+cost.hardReserve);this.log('参加本局，预留 '+cost.hardReserve.toFixed(2)+'。');
       if(cfg.sources.free.enabled&&cfg.sources.free.grantMode==='auto_on_visit')this.grant('free');return {ok:true,message:'已参加活动。'};
     }
     grant(type,id,qualified=true){if(!this.active())return {ok:false,message:'当前无法领取。'};if(this.risk)return {ok:false,message:'领取暂不可用，请联系客服。'};
@@ -42,7 +42,7 @@
       const p=this.play,cfg=p.cfg,k=p.k+1,phase=E.phaseOf(k,cfg.targetSpins,cfg.phaseShares),odds=cfg.prize[phase];
       if(k>1&&k<cfg.targetSpins&&this.outcome==='thanks'&&odds.thanksPct===0)return {ok:false,message:'当前阶段谢谢参与比例为 0。'};
       if(k>1&&k<cfg.targetSpins&&this.outcome==='native'&&odds.thanksPct===100)return {ok:false,message:'当前阶段中奖比例为 0。'};
-      const prize=E.drawProgress(cfg,k,p.progressUnits,Math.random,this.outcome,p.plan);
+      const prize=E.drawProgress(cfg,k,p.progressUnits,this.rng,this.outcome,p.plan);
       p.k=k;p.progressUnits+=prize.gainUnits;p.progress=p.progressUnits/10000;p.tickets--;
       if(prize.type!=='none')p.collectibles[prize.type]+=prize.amount;
       const completed=p.progressUnits===1000000,finish=completed?cfg.prize.finishPrize:0,actual=finish;

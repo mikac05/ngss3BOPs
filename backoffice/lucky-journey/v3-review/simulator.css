@@ -13,3 +13,5 @@
 #freeBtn{font-size:12px;color:#b9c5d9;flex-shrink:0}.phone-task small{line-height:1.7}
 
 #ticketSources{scroll-margin-top:12px}#ticketSources:focus{outline:2px solid #79bbff;outline-offset:3px}
+
+.progress-money{display:flex;align-items:baseline;flex-wrap:wrap;gap:7px;margin:6px 0}.phone-progress .progress-money strong{font-size:34px;color:#ffcf72;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.progress-money>span{font-size:14px;color:#b9c5d9}.progress-money b{font-weight:500}#phoneProgressPct{font-size:13px;color:#b9c5d9;font-variant-numeric:tabular-nums}.sim-controls #remainingSpins{font-weight:600;margin-top:0}.phone-progress>small{line-height:1.7}
