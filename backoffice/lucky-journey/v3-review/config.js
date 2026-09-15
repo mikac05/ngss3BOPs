@@ -4,10 +4,10 @@
   const clone=x=>JSON.parse(JSON.stringify(x));
 
   const DEFAULT_WHEEL_IMAGES = {
-    thanks: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="%23262d3d" stroke="%234a5568" stroke-width="2"/><text x="32" y="40" font-size="28" text-anchor="middle">🎁</text></svg>',
-    coin: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="%23d35400" stroke="%23ffbd4a" stroke-width="2"/><circle cx="32" cy="32" r="22" fill="%23f39c12"/><text x="32" y="41" font-size="26" text-anchor="middle" font-weight="bold" fill="%23fff">💰</text></svg>',
-    gem: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="%236c3483" stroke="%23af7ac5" stroke-width="2"/><polygon points="32,10 50,26 32,54 14,26" fill="%239b59b6"/><text x="32" y="38" font-size="24" text-anchor="middle">💎</text></svg>',
-    star: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="%23117864" stroke="%2348c9b0" stroke-width="2"/><polygon points="32,8 39,23 55,25 43,37 46,53 32,45 18,53 21,37 9,25 25,23" fill="%231abc9c"/><text x="32" y="39" font-size="22" text-anchor="middle" fill="%23fff">⭐</text></svg>'
+    thanks: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23262d3d' stroke='%234a5568' stroke-width='2'/><text x='32' y='40' font-size='28' text-anchor='middle'>🎁</text></svg>",
+    coin: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23d35400' stroke='%23ffbd4a' stroke-width='2'/><circle cx='32' cy='32' r='22' fill='%23f39c12'/><text x='32' y='41' font-size='26' text-anchor='middle' font-weight='bold' fill='%23fff'>💰</text></svg>",
+    gem: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%236c3483' stroke='%23af7ac5' stroke-width='2'/><polygon points='32,10 50,26 32,54 14,26' fill='%239b59b6'/><text x='32' y='38' font-size='24' text-anchor='middle'>💎</text></svg>",
+    star: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23117864' stroke='%2348c9b0' stroke-width='2'/><polygon points='32,8 39,23 55,25 43,37 46,53 32,45 18,53 21,37 9,25 25,23' fill='%231abc9c'/><text x='32' y='39' font-size='22' text-anchor='middle' fill='%23fff'>⭐</text></svg>"
   };
 
   const DEFAULT_WHEEL_NAMES = {

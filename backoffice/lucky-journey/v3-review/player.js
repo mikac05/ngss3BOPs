@@ -20,10 +20,18 @@
     $('#prizeProgress').textContent=copy.progress;
     $('#prizePopup').dataset.kind=copy.kind;
     const imgs=config.presentation?.wheelImages||C.DEFAULT_WHEEL_IMAGES;
+    const iconEl=$('#prizeIcon');
+    iconEl.textContent='';
     if(imgs[copy.kind]){
-      $('#prizeIcon').innerHTML=`<img src="${imgs[copy.kind]}" style="width:56px;height:56px;object-fit:contain" alt="">`;
+      const imgEl=document.createElement('img');
+      imgEl.src=imgs[copy.kind];
+      imgEl.style.width='56px';
+      imgEl.style.height='56px';
+      imgEl.style.objectFit='contain';
+      imgEl.alt=names[copy.kind]||'';
+      iconEl.appendChild(imgEl);
     }else{
-      $('#prizeIcon').textContent=({coin:'◉',gem:'◆',star:'✦',complete:'♜'})[copy.kind];
+      iconEl.textContent=({coin:'◉',gem:'◆',star:'✦',complete:'♜'})[copy.kind]||'✦';
     }
     $('#prizePopup').hidden=false;$('#prizeClose').focus();
   }
