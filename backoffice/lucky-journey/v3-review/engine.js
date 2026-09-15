@@ -25,7 +25,7 @@
     sources: {
       free: { enabled: true, ticketsPerDay: 1, days: 7, cap: 7, grantMode: 'auto_on_visit' },
       task: { enabled: true, ticketsPerTask: 1, taskCount: 2, cap: 2 },
-      assist: { enabled: true, ticketsPerFriend: 1, cap: 5, depositRequired: false, minDeposit: 1, allowPromotionDoubleReward: true }
+      assist: { enabled: true, ticketsPerFriend: 1, cap: 5, depositRequired: false, minDeposit: 1 }
     },
     tasks: [
       { id: 'dep_a', type: 'deposit_amount', name: '充值金额', threshold: 100, enabled: true },
