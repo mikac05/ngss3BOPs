@@ -30,7 +30,12 @@ html.light{color-scheme:light;--bg:#f2f4f7;--panel:#fff;--soft:#f6f8fa;--input:#
 .wheel-image-thumb{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:var(--input);border:1px solid var(--border);overflow:hidden}
 .wheel-image-thumb img{width:100%;height:100%;object-fit:contain}
 .wheel-image-meta{display:grid;gap:8px;width:100%;justify-items:center}
-.wheel-image-meta strong{font-size:13px}
+.wheel-name-box{width:100%;display:flex;flex-direction:column;gap:3px;align-items:center}
+.wheel-name-label{font-size:11px;color:var(--muted);font-weight:500}
+.wheel-name-control{position:relative;width:100%;max-width:130px;display:flex;align-items:center}
+.wheel-name-input{width:100%;height:28px;font-size:12px;font-weight:600;text-align:center;padding:2px 34px 2px 8px;border-radius:4px;border:1px solid var(--border);background:var(--input);color:var(--text)}
+.wheel-name-input:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 2px rgba(64,158,255,.2)}
+.wheel-name-limit{position:absolute;right:6px;font-size:10px;color:var(--muted);pointer-events:none;white-space:nowrap}
 .wheel-image-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
 .button-sm{font-size:11px!important;padding:4px 8px!important;min-height:26px!important}
 .upload-label{cursor:pointer}

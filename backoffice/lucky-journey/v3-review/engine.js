@@ -229,7 +229,13 @@
       if(!cfg.basic.start||!cfg.basic.end||cfg.basic.start>=cfg.basic.end)red.push('活动开始时间须早于结束时间');
       if(!cfg.basic.terminalCount)red.push('至少选择一个申领终端');
       ['ipLimit','deviceLimit','wageringMultiple'].forEach(k=>range(cfg.basic[k],0,1e6,'基本资料限制',true));
+      if(cfg.basic.wallet&&cfg.basic.wallet!=='cash')red.push('派奖钱包必须为现金钱包');
       if(cfg.basic.repeat)yellow.push('重复参加不重复发放同日免费或同一好友助力');
+    }
+    if(cfg.presentation?.wheelNames){
+      Object.entries(cfg.presentation.wheelNames).forEach(([k,name])=>{
+        if(typeof name==='string'&&(name.trim().length<1||name.trim().length>6))red.push('转盘奖品名称长度须在 1~6 字之间以适配转盘');
+      });
     }
     (cfg.tasks||[]).filter(t=>t.enabled&&cfg.sources.task.enabled).forEach(t=>range(t.threshold,.01,1e9,'任务门槛',t.type.endsWith('_count')||t.type==='play_category'));
     const simRate=completionProbability(cfg,cfg.targetSpins),costStats={expected:Number((simRate*cfg.prize.finishPrize).toFixed(4)),hardReserve:cfg.prize.finishPrize,counts:allocatePhaseSpins(cfg.targetSpins,cfg.phaseShares)},safeNewUsers=availableSlots(cfg);

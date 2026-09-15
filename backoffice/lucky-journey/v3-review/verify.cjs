@@ -44,7 +44,7 @@ test('numeric shares only change the adjacent stage',()=>{const fine=admin.d.que
 test('changing global T updates every admin summary',()=>{fill(admin,'targetSpins',10);assert.equal(admin.d.getElementById('sideTarget').textContent,'10 次');assert(admin.d.getElementById('curveSummary').textContent.includes('第 10 次'));});
 test('phase numeric edits preserve exact total',()=>{fill(admin,'phaseShares.fast',55);const sum=['fast','mid','fine'].reduce((n,k)=>n+Number(admin.d.querySelector('[data-path="phaseShares.'+k+'"]').value),0);assert.equal(sum,100);});
 test('task toggle drops supply and disables threshold field',()=>{fill(admin,'tasks.0.enabled',false);assert.equal(admin.d.getElementById('sideTask').textContent,'1 次');assert(admin.d.querySelector('[data-path="tasks.0.threshold"]').disabled);});
-test('cash wallet enables wagering field',()=>{fill(admin,'basic.wallet','cash');assert(!admin.d.getElementById('wagerField').hidden);fill(admin,'basic.wallet','bonus');assert(admin.d.getElementById('wagerField').hidden);});
+test('reward wallet is locked to cash and wagering field is enabled',()=>{assert.equal(admin.d.querySelector('[data-path="basic.wallet"]').value,'cash');assert(admin.d.querySelector('[data-path="basic.wallet"]').disabled);assert(!admin.d.getElementById('wagerField').hidden);fill(admin,'basic.wallet','bonus');assert.equal(admin.d.querySelector('[data-path="basic.wallet"]').value,'cash');assert(!admin.d.getElementById('wagerField').hidden);});
 test('collapse can reopen without losing edits',()=>{const panel=admin.d.getElementById('prizes');panel.querySelector('.collapse').click();assert(panel.querySelector('.panel-body').hidden);panel.querySelector('.collapse').click();assert.equal(admin.d.querySelector('[data-path="targetSpins"]').value,'10');});
 test('draft round trip includes name mode and no tiers',()=>{fill(admin,'basic.nameMode','custom');fill(admin,'basic.name','测试活动');admin.d.getElementById('saveBtn').click();const record=JSON.parse(admin.w.localStorage.getItem(C.key));assert(!record.config.cohorts);fill(admin,'basic.name','临时');admin.d.getElementById('restoreBtn').click();assert.equal(admin.d.getElementById('nameMode').value,'custom');assert.equal(admin.d.querySelector('[data-path="basic.name"]').value,'测试活动');});
 let transfer=admin.w.localStorage.getItem(C.key);admin.dom.window.close();const player=mount('player.html',transfer);
@@ -182,6 +182,44 @@ test('tasks only contain deposit_amount and bet_amount; play_category, deposit_c
   assert.deepEqual(c.tasks.map(t=>t.name), ['充值金额', '下注金额']);
   assert(!c.tasks.some(t=>['play_category','deposit_count','bet_count'].includes(t.type)));
   assert(!c.tasks.some(t=>t.name.includes('游玩指定类型')||t.name.includes('充值次数')||t.name.includes('下注次数')));
+});
+
+test('wheel prize names are customizable with max length of 6 characters for wheel fit',()=>{
+  const c=cfg();
+  assert.deepEqual(c.presentation.wheelNames, { thanks: '谢谢参与', coin: '金币', gem: '宝石', star: '星钻' });
+  const m=mount('index.html');
+  const coinInput=m.d.querySelector('[data-path="presentation.wheelNames.coin"]');
+  assert(coinInput);
+  assert.equal(coinInput.getAttribute('maxlength'), '6');
+  fill(m,'presentation.wheelNames.coin','超级金币奖');
+  assert.equal(coinInput.value,'超级金币奖');
+  fill(m,'presentation.wheelNames.coin','超级无敌无敌金币');
+  assert.equal(coinInput.value.length, 6);
+  m.dom.window.close();
+});
+
+test('player wheel disc renders custom prize names and adapts font size for long labels',()=>{
+  const initial = JSON.stringify({
+    config: {
+      presentation: {
+        wheelNames: { thanks: '下次好运', coin: '至尊大金币', gem: '七彩宝石', star: '至尊大星钻' }
+      }
+    }
+  });
+  const m=mount('player.html', initial);
+  const text0 = m.d.getElementById('wheel-text-0');
+  assert.equal(text0.textContent, '至尊大金币');
+  assert.equal(text0.getAttribute('font-size'), '8.5');
+  const text1 = m.d.getElementById('wheel-text-1');
+  assert.equal(text1.textContent, '下次好运');
+  assert.equal(text1.getAttribute('font-size'), '10');
+  const text4 = m.d.getElementById('wheel-text-4');
+  assert.equal(text4.textContent, '至尊大星钻');
+  assert.equal(text4.getAttribute('font-size'), '8.5');
+  assert.equal(m.d.getElementById('wallet-label-coin').textContent, '至尊大金币');
+  assert.equal(m.d.getElementById('wallet-label-gem').textContent, '七彩宝石');
+  assert.equal(m.d.getElementById('wallet-label-star').textContent, '至尊大星钻');
+  m.dom.window.close();
 });
 
 (async()=>{const m=mount('player.html');m.d.getElementById('mainAction').click();m.d.getElementById('outcome').value='star';m.d.getElementById('outcome').dispatchEvent(new m.w.Event('change'));m.d.getElementById('mainAction').click();await new Promise(r=>setTimeout(r,25));test('winning spin opens popup with exact progress and closes without replay',()=>{assert(!m.d.getElementById('prizePopup').hidden);assert(m.d.getElementById('prizeAmount').textContent.includes('星钻'));const progress=Number(m.d.getElementById('phoneProgressPct').textContent.replace('%',''));assert(progress>=85&&progress<=95);m.d.getElementById('prizeClose').click();assert(m.d.getElementById('prizePopup').hidden);m.d.getElementById('reconnectBtn').click();assert(m.d.getElementById('prizePopup').hidden);assert.deepEqual(m.errors,[]);});m.dom.window.close();console.log('Verified '+count+' test groups.');})().catch(e=>{console.error(e);process.exitCode=1;});

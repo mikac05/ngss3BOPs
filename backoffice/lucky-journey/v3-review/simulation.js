@@ -74,10 +74,11 @@
     post(record){if(record.posted)return;record.posted=true;record.payoutStatus='posted';this.spent=money(this.spent+record.actual);const wallet=record.rewardWallet;wallet.cash=money(wallet.cash+record.finish);}
     retryPayout(){const pending=this.pending;pending.forEach(r=>{this.reserved=Math.max(0,money(this.reserved-r.actual));this.post(r);});this.pending=[];this.log('已完成 '+pending.length+' 笔待派奖记录。');return {ok:true,message:'待派奖记录已处理。'};}
   }
-  function resultCopy(record){const labels={coin:'金币',gem:'宝石',star:'星钻'},amount=record.prize.amount.toLocaleString('en-US',{maximumFractionDigits:4});
+  function resultCopy(record,customNames){const labels={coin:'金币',gem:'宝石',star:'星钻',...(customNames||{})},amount=record.prize.amount.toLocaleString('en-US',{maximumFractionDigits:4});
     if(record.completed)return {title:'转满解锁！',amount:record.finish.toFixed(2)+' 现金',message:record.payoutStatus==='pending'?'进度已满，奖金正在发放。':record.claimPending?'进度已满！请点击按钮领取现金奖金。':'进度已满，奖金已发放。',progress:'100% 完成',kind:'complete'};
-    const title=record.prize.type==='star'?(record.prize.amount>=1000?'星钻大丰收！':'星钻亮起来了！'):record.prize.type==='gem'?'宝石闪耀登场！':'金币惊喜到手！';
-    return {title,amount:amount+' '+labels[record.prize.type],message:'已加入探索进度，继续收集解锁奖金。',progress:'本次 +'+(record.prize.gainUnits/10000).toFixed(4)+'% · 当前 '+record.progress.toFixed(4)+'%',kind:record.prize.type};
+    const customLabel=labels[record.prize.type]||'';
+    const title=record.prize.type==='star'?(record.prize.amount>=1000?customLabel+'大丰收！':customLabel+'亮起来了！'):record.prize.type==='gem'?customLabel+'闪耀登场！':customLabel+'惊喜到手！';
+    return {title,amount:amount+' '+customLabel,message:'已加入探索进度，继续收集解锁奖金。',progress:'本次 +'+(record.prize.gainUnits/10000).toFixed(4)+'% · 当前 '+record.progress.toFixed(4)+'%',kind:record.prize.type};
   }
   return {Simulation,resultCopy};
 });

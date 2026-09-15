@@ -10,6 +10,13 @@
     star: 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="30" fill="%23117864" stroke="%2348c9b0" stroke-width="2"/><polygon points="32,8 39,23 55,25 43,37 46,53 32,45 18,53 21,37 9,25 25,23" fill="%231abc9c"/><text x="32" y="39" font-size="22" text-anchor="middle" fill="%23fff">⭐</text></svg>'
   };
 
+  const DEFAULT_WHEEL_NAMES = {
+    thanks: '谢谢参与',
+    coin: '金币',
+    gem: '宝石',
+    star: '星钻'
+  };
+
   function defaults(){
     return {
       ...clone(E.DEFAULT_CONFIG),
@@ -24,7 +31,7 @@
         repeat: false,
         ipLimit: 0,
         deviceLimit: 0,
-        wallet: 'bonus',
+        wallet: 'cash',
         wageringMultiple: 1,
         claimMode: 'auto',
         layerMode: 'all',
@@ -39,7 +46,8 @@
         icon: '🎁',
         showText: true,
         description: '获取抽奖次数，转满进度领取大奖。',
-        wheelImages: { ...DEFAULT_WHEEL_IMAGES }
+        wheelImages: { ...DEFAULT_WHEEL_IMAGES },
+        wheelNames: { ...DEFAULT_WHEEL_NAMES }
       }
     };
   }
@@ -83,6 +91,14 @@
     ['fast','mid','fine'].forEach(k=>c.prize[k].weights=integerWeights(c.prize[k].weights));
     c.presentation.layout='compact';
     c.presentation.wheelImages={...DEFAULT_WHEEL_IMAGES,...(source?.presentation?.wheelImages||c.presentation?.wheelImages||{})};
+    const rawNames = source?.presentation?.wheelNames || c.presentation?.wheelNames || {};
+    c.presentation.wheelNames = Object.fromEntries(
+      ['thanks','coin','gem','star'].map(k => {
+        const val = typeof rawNames[k] === 'string' ? rawNames[k].trim().slice(0, 6) : '';
+        return [k, val || DEFAULT_WHEEL_NAMES[k]];
+      })
+    );
+    c.basic.wallet='cash';
     c.basic.claimMode=['auto','manual'].includes(c.basic?.claimMode)?c.basic.claimMode:'auto';
 
     c.sources.free.grantMode='auto_on_visit';
@@ -117,5 +133,5 @@
   function set(c,path,value){const parts=path.split('.'),last=parts.pop();parts.reduce((v,k)=>v[k],c)[last]=value;}
   const esc=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 
-  return {key,clone,defaults,normalize,integerWeights,read,save,get,set,esc,DEFAULT_WHEEL_IMAGES};
+  return {key,clone,defaults,normalize,integerWeights,read,save,get,set,esc,DEFAULT_WHEEL_IMAGES,DEFAULT_WHEEL_NAMES};
 });

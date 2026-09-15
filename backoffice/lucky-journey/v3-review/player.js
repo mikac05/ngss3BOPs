@@ -11,7 +11,8 @@
   function showPrize(record){
     if(!record||record.prize.type==='none'||shownResults.has(record.spinId))return;
     shownResults.add(record.spinId);
-    const copy=resultCopy(record);
+    const names=config.presentation?.wheelNames||C.DEFAULT_WHEEL_NAMES;
+    const copy=resultCopy(record,names);
     popupReturn=document.activeElement;
     $('#prizeTitle').textContent=copy.title;
     $('#prizeAmount').textContent=copy.amount;
@@ -30,14 +31,32 @@
   document.addEventListener('keydown',e=>{if(!$('#prizePopup').hidden){if(e.key==='Escape')closePrize();if(e.key==='Tab'){e.preventDefault();$('#prizeClose').focus();}}});
   function handle(result){if(result?.message&&!result?.record)msg(result.message);render();showPrize(result?.record);}
 
-  function updateWheelImages(){
+  function updateWheelContent(){
     const imgs=config.presentation?.wheelImages||C.DEFAULT_WHEEL_IMAGES;
-    const mapping=[imgs.coin,imgs.thanks,imgs.gem,imgs.thanks,imgs.star,imgs.coin,imgs.gem,imgs.thanks];
+    const names=config.presentation?.wheelNames||C.DEFAULT_WHEEL_NAMES;
+    const imgMapping=[imgs.coin,imgs.thanks,imgs.gem,imgs.thanks,imgs.star,imgs.coin,imgs.gem,imgs.thanks];
+    const nameMapping=[names.coin||'金币',names.thanks||'谢谢参与',names.gem||'宝石',names.thanks||'谢谢参与',names.star||'星钻',names.coin||'金币',names.gem||'宝石',names.thanks||'谢谢参与'];
     for(let i=0;i<8;i++){
       const el=$('#wheel-img-'+i);
-      if(el)el.setAttribute('href',mapping[i]);
+      if(el)el.setAttribute('href',imgMapping[i]);
+      const tel=$('#wheel-text-'+i);
+      if(tel){
+        const txt=nameMapping[i];
+        tel.textContent=txt;
+        if(txt.length>4){
+          tel.setAttribute('font-size','8.5');
+          tel.setAttribute('letter-spacing','-0.5px');
+        }else{
+          tel.setAttribute('font-size','10');
+          tel.removeAttribute('letter-spacing');
+        }
+      }
     }
+    if($('#wallet-label-coin'))$('#wallet-label-coin').textContent=names.coin||'金币';
+    if($('#wallet-label-gem'))$('#wallet-label-gem').textContent=names.gem||'宝石';
+    if($('#wallet-label-star'))$('#wallet-label-star').textContent=names.star||'星钻';
   }
+  const updateWheelImages=updateWheelContent;
 
   function render(){
     const p=phoneFrozen||sim.play,c=p.cfg||config,supply=E.guaranteedTicketSupply(config),cost=E.playCostStats(config);
@@ -69,7 +88,7 @@
     $('#record').textContent=JSON.stringify(sim.play.records.at(-1)||{status:sim.play.status},null,2);
     $('#reconnectBtn').disabled=!request||busy;$('#payoutRetryBtn').disabled=!sim.pending.length||busy;$('#nextDayBtn').disabled=busy;$('#campaignEndBtn').disabled=!sim.campaignOpen||busy;
     $('#sourceLabel').textContent='已载入后台设置 · 转满 '+config.targetSpins+' 次';
-    updateWheelImages();
+    updateWheelContent();
     renderChecks();
   }
   function taskDescription(t){const category={slot:'电子',live:'真人',sport:'体育',chess:'棋牌',fish:'捕鱼'};if(t.type==='play_category')return category[t.gameCategory]+'有效注单 '+t.threshold+' 局 · 每注至少 '+money(t.minBet);if(t.type==='deposit_count')return '成功充值 '+t.threshold+' 次';if(t.type==='deposit_amount')return '成功充值累计 '+t.threshold;if(t.type==='bet_count')return '有效注单 '+t.threshold+' 次';return '有效投注累计 '+t.threshold;}
@@ -79,7 +98,7 @@
     $('#wheelDisc').style.transition=$('#reduceMotion').checked?'none':'transform 950ms cubic-bezier(.15,.7,.12,1)';$('#wheelDisc').style.transform=`rotate(${angle}deg)`;
     phoneFrozen=before;render();await new Promise(r=>setTimeout(r,$('#reduceMotion').checked?0:980));if(turn!==generation)return;phoneFrozen=null;busy=false;handle(result);
   }
-  function reset(c=config){closePrize();shownResults.clear();generation++;busy=false;phoneFrozen=null;request=null;config=C.normalize(c);sim=new Simulation(config);angle=0;$('#wheelDisc').style.transition='none';$('#wheelDisc').style.transform='rotate(0deg)';$('#outcome').value='random';$('#network').value='normal';$('#payout').value='posted';$('#risk').checked=false;$('#visitProb').value=config.assumptions.dailyVisitProb*100;$('#taskProb').value=config.assumptions.taskCompletionProb*100;$('#friendLambda').value=config.assumptions.assistLambda;updateWheelImages();render();}
+  function reset(c=config){closePrize();shownResults.clear();generation++;busy=false;phoneFrozen=null;request=null;config=C.normalize(c);sim=new Simulation(config);angle=0;$('#wheelDisc').style.transition='none';$('#wheelDisc').style.transform='rotate(0deg)';$('#outcome').value='random';$('#network').value='normal';$('#payout').value='posted';$('#risk').checked=false;$('#visitProb').value=config.assumptions.dailyVisitProb*100;$('#taskProb').value=config.assumptions.taskCompletionProb*100;$('#friendLambda').value=config.assumptions.assistLambda;updateWheelContent();render();}
   function fullSupply(){let r=sim.join();if(!r.ok)return r;for(let day=0;day<config.personalDays;day++){if(day)sim.nextDay();sim.grant('free');}config.tasks.forEach((_,i)=>sim.grant('task',i));for(let i=0;i<Math.ceil(config.sources.assist.cap/Math.max(1,config.sources.assist.ticketsPerFriend));i++)sim.grant('assist','scenario-friend-'+i,true);return {ok:true};}
   function scenario(name){reset(config);if(name==='fresh')return;
     if(name==='budget'){sim.config.budget.total=0;handle(sim.join());return;}
@@ -121,5 +140,5 @@
   $('#scenarios').onclick=e=>{const b=e.target.closest('[data-scenario]');if(b)scenario(b.dataset.scenario);};$('#resetBtn').onclick=()=>reset();$('#reloadBtn').onclick=()=>{if(!confirm('读取最新设置并重置模拟状态？'))return;const r=C.read(localStorage);reset(r.config);if(r.error)msg(r.error);};
   ['visitProb','taskProb','friendLambda'].forEach(id=>$('#'+id).oninput=renderChecks);
   $('#publishBtn').onclick=()=>{const status=renderChecks();if(!status.canPublish)return;try{localStorage.setItem(C.key+'-release',JSON.stringify({config,forecast:{dailyVisitProb:Number($('#visitProb').value)/100,taskCompletionProb:Number($('#taskProb').value)/100,assistLambda:Number($('#friendLambda').value)},checkedAt:new Date().toISOString(),status:'prototype'}));$('#publishResult').textContent='试算已保存至本机';}catch(e){$('#publishResult').textContent='本机保存失败。';}};
-  $('#themeBtn').onclick=()=>document.documentElement.classList.toggle('light');$('#reduceMotion').checked=matchMedia('(prefers-reduced-motion: reduce)').matches;$('#visitProb').value=config.assumptions.dailyVisitProb*100;$('#taskProb').value=config.assumptions.taskCompletionProb*100;$('#friendLambda').value=config.assumptions.assistLambda;updateWheelImages();render();
+  $('#themeBtn').onclick=()=>document.documentElement.classList.toggle('light');$('#reduceMotion').checked=matchMedia('(prefers-reduced-motion: reduce)').matches;$('#visitProb').value=config.assumptions.dailyVisitProb*100;$('#taskProb').value=config.assumptions.taskCompletionProb*100;$('#friendLambda').value=config.assumptions.assistLambda;updateWheelContent();render();
 })();
