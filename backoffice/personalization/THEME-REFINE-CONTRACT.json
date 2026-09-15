@@ -1,0 +1,526 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ThemeRefineContract",
+  "description": "Implementable contract data for CUST-P3 theme refine",
+  "version": "1.0.0",
+  "branch": "dev/customize-theme-refine",
+  "themes": {
+    "NG": {
+      "key": "NG",
+      "labelZh": "NG",
+      "labelEn": "NG",
+      "defaultPaletteId": "BDOK",
+      "primaryHex": "#75eb92",
+      "policy": "multi-option",
+      "status": "ready"
+    },
+    "PH": {
+      "key": "PH",
+      "labelZh": "菲律宾",
+      "labelEn": "Philippines",
+      "defaultPaletteId": "PHPINK",
+      "primaryHex": "#ff0055",
+      "figmaFile": "DnNve2QZ22LEFCqDWuuAMl",
+      "figmaNode": "873:153335",
+      "policy": "single-option",
+      "status": "ready"
+    },
+    "IN": {
+      "key": "IN",
+      "labelZh": "印度",
+      "labelEn": "India",
+      "defaultPaletteId": "INPLACEHOLDER",
+      "primaryHex": null,
+      "figmaFile": "XrzIsJfYarVffSI34zIwC4",
+      "figmaNode": "2078:305348",
+      "policy": "single-option",
+      "status": "deferred"
+    },
+    "SF": {
+      "key": "SF",
+      "labelZh": "星空",
+      "labelEn": "Starfield",
+      "defaultPaletteId": "SFPURPLE",
+      "primaryHex": "#7e00fd",
+      "figmaFile": "wHQsrb1CATZNliip44FdNf",
+      "figmaNode": "20:3700",
+      "policy": "single-option",
+      "status": "ready"
+    }
+  },
+  "palettes": {
+    "BDOK": {
+      "id": "BDOK",
+      "label": "绿黑",
+      "en": "Green / dark",
+      "accent": "#75eb92",
+      "accent2": "#a9e782",
+      "bg": "#202222",
+      "panel": "#292c2b",
+      "raised": "#3e4140",
+      "text": "#ffffff",
+      "muted": "#adb7ba",
+      "onAccent": "#183b25",
+      "source": true
+    },
+    "橙白": {
+      "id": "橙白",
+      "label": "橙白",
+      "en": "Orange / white",
+      "accent": "#f48d16",
+      "accent2": "#ffd900",
+      "bg": "#ebecf3",
+      "panel": "#ffffff",
+      "raised": "#f1f2f7",
+      "text": "#1c1e23",
+      "muted": "#707580",
+      "onAccent": "#472604",
+      "source": true
+    },
+    "藍白": {
+      "id": "藍白",
+      "label": "藍白",
+      "en": "Blue / white",
+      "accent": "#4781ff",
+      "accent2": "#47b5ff",
+      "bg": "#ebecf3",
+      "panel": "#ffffff",
+      "raised": "#f1f2f7",
+      "text": "#1c1e23",
+      "muted": "#707580",
+      "onAccent": "#ffffff",
+      "source": true
+    },
+    "PHPINK": {
+      "id": "PHPINK",
+      "label": "菲律宾粉",
+      "en": "Philippines Pink",
+      "accent": "#ff0055",
+      "accent2": "#f79908",
+      "bg": "#ffffff",
+      "panel": "#ffffff",
+      "raised": "#ffccdd",
+      "text": "#201330",
+      "muted": "#00000066",
+      "onAccent": "#ffffff",
+      "source": true,
+      "supportingTokens": {
+        "gold50": "#f79908",
+        "gold60": "#fcc136",
+        "gold70": "#fdd880",
+        "pink10": "#330011",
+        "pink20": "#660021",
+        "main7": "#201330"
+      }
+    },
+    "SFPURPLE": {
+      "id": "SFPURPLE",
+      "label": "星空紫",
+      "en": "Starfield Purple",
+      "accent": "#7e00fd",
+      "accent2": "#e100ff",
+      "bg": "#0f0c20",
+      "panel": "#1c1635",
+      "raised": "#2c2350",
+      "text": "#ffffff",
+      "muted": "#c8c5d8",
+      "onAccent": "#ffffff",
+      "source": true,
+      "supportingTokens": {
+        "pink50": "#e100ff",
+        "gray": "#c8c5d8",
+        "white": "#ffffff"
+      }
+    },
+    "INPLACEHOLDER": {
+      "id": "INPLACEHOLDER",
+      "label": "印度(待补)",
+      "en": "India (Deferred)",
+      "accent": "",
+      "accent2": "",
+      "bg": "",
+      "panel": "",
+      "raised": "",
+      "text": "",
+      "muted": "",
+      "onAccent": "",
+      "source": true,
+      "deferred": true
+    }
+  },
+  "themeColors": {
+    "NG": ["BDOK", "橙白", "藍白"],
+    "PH": ["PHPINK"],
+    "IN": ["INPLACEHOLDER"],
+    "SF": ["SFPURPLE"]
+  },
+  "navCounts": {
+    "NG": 5,
+    "PH": 5,
+    "IN": 5,
+    "SF": 5
+  },
+  "navDefaults": {
+    "NG": {
+      "loggedOut": ["首页", "活动", "推广", "VIP", "账户"],
+      "loggedIn": ["首页", "活动", "推广", "VIP", "账户"]
+    },
+    "PH": {
+      "loggedOut": ["首页", "活动", "推广", "VIP", "账户"],
+      "loggedIn": ["首页", "活动", "推广", "VIP", "账户"]
+    },
+    "IN": {
+      "loggedOut": ["首页", "活动", "推广", "VIP", "账户"],
+      "loggedIn": ["首页", "活动", "推广", "VIP", "账户"]
+    },
+    "SF": {
+      "loggedOut": ["首页", "活动", "VIP", "钱包", "我的"],
+      "loggedIn": ["首页", "活动", "VIP", "钱包", "我的"]
+    }
+  },
+  "catalogComponents": [
+    {
+      "id": "theme",
+      "label": "主题",
+      "themeOptions": {
+        "NG": ["NG"],
+        "PH": ["PH"],
+        "IN": ["IN"],
+        "SF": ["SF"]
+      }
+    },
+    {
+      "id": "themeColor",
+      "label": "主题颜色",
+      "themeOptions": {
+        "NG": ["BDOK", "橙白", "藍白"],
+        "PH": ["PHPINK"],
+        "IN": ["INPLACEHOLDER"],
+        "SF": ["SFPURPLE"]
+      }
+    },
+    {
+      "id": "categoryButtons",
+      "label": "分类按钮",
+      "themeOptions": {
+        "NG": ["图示+名称", "仅图示", "仅名称"],
+        "PH": ["图示+名称"],
+        "IN": ["图示+名称"],
+        "SF": ["图示+名称"]
+      }
+    },
+    {
+      "id": "topStatusBar",
+      "label": "顶部状态列",
+      "themeOptions": {
+        "NG": ["基本功能", "全部功能", "简洁", "钱包专注"],
+        "PH": ["基本功能"],
+        "IN": ["基本功能"],
+        "SF": ["基本功能"]
+      }
+    },
+    {
+      "id": "sidebar",
+      "label": "侧边栏",
+      "themeOptions": {
+        "NG": ["关闭", "左方", "右方"],
+        "PH": ["关闭"],
+        "IN": ["关闭"],
+        "SF": ["关闭"]
+      }
+    },
+    {
+      "id": "shortcuts",
+      "label": "快捷按钮",
+      "themeOptions": {
+        "NG": ["浮动并列", "浮动收折", "状态列按钮", "侧边栏内"],
+        "PH": ["浮动并列"],
+        "IN": ["浮动并列"],
+        "SF": ["浮动并列"]
+      }
+    },
+    {
+      "id": "gameLayout",
+      "label": "游戏排版",
+      "themeOptions": {
+        "NG": ["样式一", "样式二", "样式三", "样式四", "样式五", "现行一", "现行二", "现行三", "现行四", "现行五"],
+        "PH": ["样式一"],
+        "IN": ["样式一"],
+        "SF": ["样式五"]
+      }
+    },
+    {
+      "id": "gameGridStyle",
+      "label": "游戏区排版",
+      "themeOptions": {
+        "NG": ["样式一", "样式二", "样式三", "现行一"],
+        "PH": ["样式一"],
+        "IN": ["样式一"],
+        "SF": ["样式一"]
+      }
+    },
+    {
+      "id": "searchPagination",
+      "label": "搜索/分页",
+      "themeOptions": {
+        "NG": ["Open", "搜索列", "分頁"],
+        "PH": ["搜索列"],
+        "IN": ["搜索列"],
+        "SF": ["搜索列"]
+      }
+    },
+    {
+      "id": "topDownloadBar",
+      "label": "顶部下载栏",
+      "themeOptions": {
+        "NG": ["开启", "关闭"],
+        "PH": ["开启"],
+        "IN": ["开启"],
+        "SF": ["开启"]
+      }
+    },
+    {
+      "id": "downloadFAB",
+      "label": "下载FAB",
+      "themeOptions": {
+        "NG": ["开启", "关闭"],
+        "PH": ["开启"],
+        "IN": ["开启"],
+        "SF": ["开启"]
+      }
+    },
+    {
+      "id": "depositPage",
+      "label": "充值页",
+      "themeOptions": {
+        "NG": ["方式优先", "金额优先", "快捷模式"],
+        "PH": ["方式优先"],
+        "IN": ["方式优先"],
+        "SF": ["方式优先"]
+      }
+    },
+    {
+      "id": "recordsDisplay",
+      "label": "纪录顯示",
+      "themeOptions": {
+        "NG": ["下拉", "分页", "卡片"],
+        "PH": ["下拉"],
+        "IN": ["下拉"],
+        "SF": ["下拉"]
+      }
+    },
+    {
+      "id": "amountAutoInput",
+      "label": "额度自动输入",
+      "themeOptions": {
+        "NG": ["按钮", "滑杆", "关闭"],
+        "PH": ["按钮"],
+        "IN": ["按钮"],
+        "SF": ["按钮"]
+      }
+    },
+    {
+      "id": "vipCard",
+      "label": "显示VIP卡片",
+      "themeOptions": {
+        "NG": ["完整卡片", "紧凑卡片", "隐藏VIP资讯"],
+        "PH": ["完整卡片"],
+        "IN": ["完整卡片"],
+        "SF": ["完整卡片"]
+      }
+    },
+    {
+      "id": "vipPage",
+      "label": "VIP页",
+      "themeOptions": {
+        "NG": ["表格", "等级卡片", "特权清单"],
+        "PH": ["表格"],
+        "IN": ["表格"],
+        "SF": ["表格"]
+      }
+    },
+    {
+      "id": "inbox",
+      "label": "站内信",
+      "themeOptions": {
+        "NG": ["列表", "分类Tab", "对话流"],
+        "PH": ["列表"],
+        "IN": ["列表"],
+        "SF": ["列表"]
+      }
+    },
+    {
+      "id": "userVerification",
+      "label": "用户验证",
+      "themeOptions": {
+        "NG": ["列表", "步骤向导", "分块卡片"],
+        "PH": ["列表"],
+        "IN": ["列表"],
+        "SF": ["列表"]
+      }
+    },
+    {
+      "id": "bottomNav",
+      "label": "底部导航",
+      "themeOptions": {
+        "NG": ["LIVE_NAV (5-slot)"],
+        "PH": ["LIVE_NAV (5-slot)"],
+        "IN": ["LIVE_NAV (5-slot)"],
+        "SF": ["SF_NAV (5-slot: 首页/活动/VIP/钱包/我的)"]
+      }
+    },
+    {
+      "id": "popupStyle",
+      "label": "弹窗样式",
+      "themeOptions": {
+        "NG": ["样式一", "样式二", "样式三"],
+        "PH": ["样式一"],
+        "IN": ["样式一"],
+        "SF": ["样式一"]
+      }
+    },
+    {
+      "id": "alternateButton",
+      "label": "替代按钮",
+      "themeOptions": {
+        "NG": ["关闭", "浮动胶囊", "悬浮圆钮", "底部导航自选槽位"],
+        "PH": ["关闭"],
+        "IN": ["关闭"],
+        "SF": ["关闭"]
+      }
+    },
+    {
+      "id": "carouselStyle",
+      "label": "轮播样式",
+      "themeOptions": {
+        "NG": ["通用Banner", "小Banner", "轮播Banner"],
+        "PH": ["通用Banner"],
+        "IN": ["通用Banner"],
+        "SF": ["通用Banner"]
+      }
+    },
+    {
+      "id": "footerStyle",
+      "label": "页尾内容",
+      "themeOptions": {
+        "NG": ["样式一", "样式二", "样式三", "样式四"],
+        "PH": ["样式一"],
+        "IN": ["样式一"],
+        "SF": ["样式一"]
+      }
+    },
+    {
+      "id": "profileLayout",
+      "label": "个人中心版面",
+      "themeOptions": {
+        "NG": ["样式一", "样式二", "样式三", "样式四", "样式五", "现行一", "现行二", "现行三", "现行四"],
+        "PH": ["样式一"],
+        "IN": ["样式一"],
+        "SF": ["样式一"]
+      }
+    },
+    {
+      "id": "authVisual",
+      "label": "登入注册视觉",
+      "themeOptions": {
+        "NG": ["简洁框", "插画框"],
+        "PH": ["简洁框"],
+        "IN": ["简洁框"],
+        "SF": ["简洁框"]
+      }
+    },
+    {
+      "id": "brandMark",
+      "label": "品牌标志",
+      "themeOptions": {
+        "NG": ["本站品牌标志（固定）"],
+        "PH": ["本站品牌标志（固定）"],
+        "IN": ["本站品牌标志（固定）"],
+        "SF": ["本站品牌标志（固定）"]
+      }
+    },
+    {
+      "id": "buttonStyle",
+      "label": "按钮样式",
+      "themeOptions": {
+        "NG": ["样式一", "样式二", "样式三", "样式四"],
+        "PH": ["样式一"],
+        "IN": ["样式一"],
+        "SF": ["样式一"]
+      }
+    },
+    {
+      "id": "gameIconStyle",
+      "label": "游戏图标",
+      "themeOptions": {
+        "NG": ["标准", "极简"],
+        "PH": ["标准"],
+        "IN": ["标准"],
+        "SF": ["标准"]
+      }
+    }
+  ],
+  "constraints": [
+    {
+      "id": "topDownloadBar-app-download",
+      "condition": "topDownloadBar is set to OFF while App download capability is available",
+      "action": "disable or hide OFF option on topDownloadBar switch",
+      "protectedEntry": "App download bar and download FAB"
+    },
+    {
+      "id": "vipCard-vip-reachability",
+      "condition": "vipCard is set to '隐藏VIP资讯' while neither bottomNav nor alternateButton hosts VIP",
+      "action": "disable '隐藏VIP资讯' option in vipCard editor",
+      "protectedEntry": "VIP entry surface"
+    },
+    {
+      "id": "shortcuts-sidebar-host",
+      "condition": "shortcuts is set to '侧边栏内' while sidebar is '关闭'",
+      "action": "disable '侧边栏内' option when sidebar is OFF; disable closing sidebar when shortcuts are inside sidebar",
+      "protectedEntry": "Shortcuts entry surface"
+    },
+    {
+      "id": "compact-header-statusbar-shortcut",
+      "condition": "shortcuts is set to '状态列按钮' while topStatusBar is '简洁'",
+      "action": "mutually disable '简洁' topStatusBar when shortcuts are '状态列按钮', and vice-versa",
+      "protectedEntry": "Withdrawal / status-bar action reachability"
+    },
+    {
+      "id": "bottomNav-capabilities-reachability",
+      "condition": "A bottomNav slot edit zeroes the last remaining surface of a core CAPABILITIES item",
+      "action": "disable removing or reassigning that slot",
+      "protectedEntry": "Sole remaining capability surface"
+    },
+    {
+      "id": "alternateButton-target-selection",
+      "condition": "alternateButton mode is SET without an explicit target selected",
+      "action": "disable SET toggle until a target capability is chosen, or auto-default target to first available capability",
+      "protectedEntry": "Alternate button target integrity"
+    }
+  ],
+  "deletions": [
+    "customize-checks.js",
+    "customize-core.js: runChecks (1-36)",
+    "customize-core.js: CHECK_NAMES_ZH",
+    "customize-core.js: open-checks handler and WG/GAME demo scenes",
+    "customize-studio.js: testPlayer",
+    "index.html: #checks-drawer",
+    "index.html: [data-action='open-checks']",
+    "index.html: customize-checks.js script tag",
+    "player-components.js: Player.current() WG/GAME nav overrides"
+  ],
+  "migration": {
+    "themeMapping": {
+      "WG": "NG",
+      "GAME": "IN"
+    },
+    "colorMapping": {
+      "WG": "BDOK",
+      "GAME": "INPLACEHOLDER"
+    },
+    "sourceThemeMapping": {
+      "WG": "NG",
+      "GAME": "IN"
+    }
+  }
+}

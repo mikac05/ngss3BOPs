@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>好运探索季 V3｜业务与技术规范说明页 (Operator & Developer Guide)</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0d10;
+      --panel: #14171c;
+      --panel-2: #1a1e25;
+      --panel-3: #202630;
+      --border: #303845;
+      --border-strong: #475366;
+      --text: #f4f7fb;
+      --muted: #9da8b8;
+      --blue: #4a9cff;
+      --blue-soft: rgba(74, 156, 255, .14);
+      --green: #37d39a;
+      --amber: #ffbd4a;
+      --red: #ff6f7d;
+      --radius: 12px;
+      --shadow: 0 16px 40px rgba(0, 0, 0, .26);
+      --fast-color: #f39c12;
+      --mid-color: #9b59b6;
+      --fine-color: #1abc9c;
+    }
+
+    html.light {
+      color-scheme: light;
+      --bg: #f5f7fa;
+      --panel: #ffffff;
+      --panel-2: #fafbfc;
+      --panel-3: #f0f2f5;
+      --border: #dcdfe6;
+      --border-strong: #c0c4cc;
+      --text: #1f2329;
+      --muted: #606266;
+      --blue: #409eff;
+      --blue-soft: rgba(64, 158, 255, 0.14);
+      --green: #67c23a;
+      --amber: #e6a23c;
+      --red: #f56c6c;
+      --shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
+      --fast-color: #e67e22;
+      --mid-color: #8e44ad;
+      --fine-color: #16a085;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.6 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 28px;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel);
+      backdrop-filter: blur(14px);
+    }
+    .title-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    h1 { margin: 0; font-size: 18px; font-weight: 700; }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 24px;
+      padding: 2px 8px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      background: var(--panel-2);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .tag.pri { color: #9ecbff; border-color: rgba(74,156,255,.4); background: rgba(74,156,255,.1); }
+    .tag.success { color: #baf4df; border-color: rgba(55, 211, 154, .4); background: rgba(55, 211, 154, .1); }
+    .tag.warn { color: #ffe0a3; border-color: rgba(255, 189, 74, .4); background: rgba(255, 189, 74, .1); }
+
+    .btn {
+      min-height: 36px;
+      padding: 6px 14px;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all .15s;
+      cursor: pointer;
+    }
+    .btn:hover { border-color: var(--blue); color: var(--blue); }
+    .btn.primary { background: var(--blue); color: white; border-color: var(--blue); }
+    .btn.primary:hover { opacity: .9; color: white; }
+    .btn.ghost { background: transparent; }
+
+    .doc-container {
+      max-width: 1200px;
+      margin: 24px auto 80px;
+      padding: 0 24px;
+    }
+
+    /* Hero Banner CTA */
+    .hero-card {
+      background: linear-gradient(135deg, rgba(74, 156, 255, 0.16), rgba(55, 211, 154, 0.08)), var(--panel);
+      border: 1px solid rgba(74, 156, 255, 0.35);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow);
+    }
+    .hero-card h2 { margin: 0 0 8px; font-size: 22px; }
+    .hero-card p { margin: 0; color: var(--muted); font-size: 14px; max-width: 720px; }
+
+    /* Content Cards & Sections */
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    .card h2 {
+      margin: 0 0 16px;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 12px;
+    }
+    .card h3 {
+      margin: 20px 0 10px;
+      font-size: 15px;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card p { margin: 8px 0; }
+
+    .notice {
+      padding: 12px 16px;
+      border: 1px solid rgba(74, 156, 255, .28);
+      border-radius: 8px;
+      background: rgba(74, 156, 255, .08);
+      color: #d0e6ff;
+      margin: 14px 0;
+    }
+    .notice.warn { border-color: rgba(255, 189, 74, .35); background: rgba(255, 189, 74, .08); color: #ffe0a3; }
+    .notice.danger { border-color: rgba(255, 111, 125, .35); background: rgba(255, 111, 125, .08); color: #ffc6cc; }
+
+    /* Tables */
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 13px;
+    }
+    .doc-table th, .doc-table td {
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+    .doc-table th {
+      background: var(--panel-2);
+      color: var(--text);
+      font-weight: 700;
+    }
+    .doc-table tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    code {
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      padding: 2px 6px;
+      background: var(--panel-3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: #79bbff;
+      font-size: 12px;
+    }
+    pre {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      overflow-x: auto;
+      font-family: Consolas, Monaco, "Courier New", monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #e5eaf3;
+    }
+
+    .badge-pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+    .badge-pill.fast { background: rgba(243, 156, 18, 0.15); color: var(--fast-color); border: 1px solid var(--fast-color); }
+    .badge-pill.mid { background: rgba(155, 89, 182, 0.15); color: var(--mid-color); border: 1px solid var(--mid-color); }
+    .badge-pill.fine { background: rgba(26, 188, 156, 0.15); color: var(--fine-color); border: 1px solid var(--fine-color); }
+
+    .toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .toc a {
+      text-decoration: none;
+      padding: 6px 12px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      transition: all .15s;
+    }
+    .toc a:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    @media (max-width: 800px) {
+      .hero-card { flex-direction: column; align-items: flex-start; }
+      .topbar { padding: 12px 16px; }
+      .doc-container { padding: 0 14px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="title-row">
+      <a class="btn ghost" href="index.html">← 返回后台原型</a>
+      <h1>好运探索季 V3 业务与技术说明页</h1>
+      <span class="tag pri">说明页 (Guide)</span>
+      <span class="tag warn">Recommendation / 建议案</span>
+      <span class="tag">Prototype-only</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <a class="btn ghost" href="player.html">🎮 玩家前台</a>
+      <button class="btn ghost" type="button" id="themeBtn">☀️ 白天模式</button>
+      <a class="btn primary" href="index.html">打开后台原型 →</a>
+    </div>
+  </header>
+
+  <main class="doc-container">
+    <!-- 顶部 Banner 与 CTA -->
+    <div class="hero-card">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span class="tag pri">版本: V3</span>
+          <span class="tag warn">状态: Recommendation (非现网上线版本)</span>
+        </div>
+        <h2>好运探索季（Lucky Journey）V3 运营与开发完整规范</h2>
+        <p>
+          本说明页为运营管理人员提供清晰的体验闭环、7 步后台调优与发布规则；为开发人员提供严格的数学不变量、数据对象结构、单事务原子流程与边缘异常情境处理表。
+        </p>
+      </div>
+      <div style="flex-shrink:0">
+        <a class="btn primary" href="index.html" style="padding:10px 20px;font-size:15px">
+          🚀 打开后台交互原型
+        </a>
+      </div>
+    </div>
+
+    <!-- 目录导航 -->
+    <div class="toc">
+      <a href="#sec-ops">1. 给管理员 / 运营人员指南</a>
+      <a href="#sec-steps">2. 后台 7 步深度调参指南</a>
+      <a href="#sec-dev">3. 给开发人员技术规范</a>
+      <a href="#sec-transaction">4. 单事务原子抽奖流程</a>
+      <a href="#sec-situations">5. 40 项情境与异常处理表 (S01~S40)</a>
+      <a href="#sec-glossary">6. 核心中英文对照术语表</a>
+    </div>
+
+    <!-- 章节 1：给管理员 / 运营 -->
+    <section class="card" id="sec-ops">
+      <h2>1. 给管理员 / 运营人员指南 (Operator Guide)</h2>
+
+      <h3>1.1 活动本质与产品定位</h3>
+      <p>
+        <strong>好运探索季</strong>是 NGSS 针对高黏性活跃与长线留存设计的全新活动类型，与现行付费的<strong>幸运转盘（Lucky Wheel）</strong>并列并存，<strong>绝不替代幸运转盘</strong>。
+      </p>
+      <div class="notice">
+        <strong>核心产品目标：</strong>让玩家始终感受到「快要完成、而且数学上真的可以完成」，消除「永远差 0.01 刀」的挫败感，通过确定性推进激发长期做任务与社交促活。
+      </div>
+
+      <h3>1.2 玩家核心体验闭环 (Player Loop)</h3>
+      <ol style="line-height:1.8">
+        <li><strong>参加起点：</strong>玩家点击「参加活动」，初始进度明确展示为 <strong>0%</strong>，建立当前活动配置快照。</li>
+        <li><strong>首转飞跃：</strong>成功进行第 1 次转动，进度条瞬间跃升至后台设定的首转进度（建议默认 <strong>90%</strong>），大幅点燃玩家期待。</li>
+        <li><strong>获取抽奖次数：</strong>通过「每日免费抽」、「完成指定游戏或充值任务」、「邀请好友助力」三种独立途径获取抽奖次数。</li>
+        <li><strong>阶段性出奖：</strong>后续转动在「快砍（主要现金）」→「中段（主要积分）」→「细砍（主要点数）」中渐进开奖，并可能触发「越级加成」。</li>
+        <li><strong>终点满奖：</strong>在达到所属层级的目标转数 T 时，进度<strong>精确达到 100%</strong>，自动发放转满大奖（现金），本局顺利结案并关闭。</li>
+      </ol>
+
+      <h3>1.3 关键规则防坑指南（红线规范）</h3>
+      <div class="notice warn">
+        <strong>前台严禁展示「还差几次」：</strong>后台有明确的目标转数 T 与数学曲线，但<strong>前台界面绝不展示还差几次完成</strong>，避免形成法律承诺或导致玩家倒算成本。前台仅展示「当前进度 %」与「获取抽奖次数」的任务入口。
+      </div>
+      <p>
+        <strong>完成率是运营规划估算，绝非暗抽胜率：</strong>后台显示的完成率（如 69%）是系统根据玩家历史回访概率与任务完成率进行的<strong>离散分布卷积模拟</strong>，代表有多少人能拿齐 T 次；绝对不是给玩家暗抽「中/不中」。
+      </p>
+    </section>
+
+    <!-- 章节 2：后台 7 步深度调参指南 -->
+    <section class="card" id="sec-steps">
+      <h2>2. 后台 7 步深度调参指南 (7-Step Backoffice Architecture)</h2>
+
+      <table class="doc-table">
+        <thead>
+          <tr>
+            <th style="width:120px">步骤</th>
+            <th>核心调优字段</th>
+            <th>改什么（直接控制）</th>
+            <th>玩家会怎样（体验感知）</th>
+            <th>不要踩什么（避坑提示）</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Step 1<br>体验目标</strong></td>
+            <td><code>firstSpinPct</code><br><code>targetSpins (T)</code><br><code>curveGamma (γ)</code></td>
+            <td>定义标准玩家所需总转数 T (如 12)，首转飞跃百分比 (如 90%) 及收尾曲率 γ (如 1.8)。</td>
+            <td>第一转立刻到 90%，之后平滑推进，第 12 转精确达到 100%。</td>
+            <td>进度是确定性数学函数，<strong>无进度 RNG</strong>；所有分层共享首转 90%；不可设为 100%。</td>
+          </tr>
+          <tr>
+            <td><strong>Step 2<br>奖励阶段</strong></td>
+            <td><code>fastShare</code> (40%)<br><code>midShare</code> (35%)<br><code>fineShare</code> (25%)</td>
+            <td>划分快砍、中段、细砍三种奖励主题在总转数中的分配比例。</td>
+            <td>前几转主开爽快现金，中段累积积分，尾段主开点数微调。</td>
+            <td><strong>阶段占比仅决定转数跨度，不决定砍多少进度</strong>。三段严格保持 100%，由 Hamilton 最大余数法唯一分配。</td>
+          </tr>
+          <tr>
+            <td><strong>Step 3<br>抽奖次数</strong></td>
+            <td>每日免费<br>做任务 (5 项有限里程碑)<br>好友助力</td>
+            <td>配置每个来源的发放单位与每局上限；开启「非社交保证模式」。</td>
+            <td>做任务可自力更生；好友助力为加速通道而非强迫手段。</td>
+            <td>游玩指定类型为<strong>单选 Radio</strong>；关闭左侧开关整行灰化；非社交路径必须足以支撑标准 T。</td>
+          </tr>
+          <tr>
+            <td><strong>Step 4<br>转盘开奖</strong></td>
+            <td><code>thanksPct</code> (谢谢)<br><code>upgradePct</code> (越级)<br>小/中/大金额权重</td>
+            <td>定义各阶段绝对开奖概率：谢谢 + 越级 + 主奖励 = 100%。</td>
+            <td>越级直接抽中上一级货币或大档金额，带来惊喜反馈。</td>
+            <td><strong>绝不设第二套扇区概率表</strong>；奖品类型仅限「谢谢参与 / 现金 / 积分 / 点数」，<strong>严禁使用彩金作为奖品类型</strong>。</td>
+          </tr>
+          <tr>
+            <td><strong>Step 5<br>分层完成</strong></td>
+            <td><code>effectiveTargetSpins</code><br>VIP 门槛与充值门槛</td>
+            <td>为高价值玩家配置更小的有效转数 T（如 VIP4=10 转，VIP7=8 转）。</td>
+            <td>高层级首转同样到 90%，但总共只需更少转数即可转满 100%。</td>
+            <td><strong>废除模糊的「进度倍率」</strong>，改用直接可控的「有效 T」；避免与上半表参与层级冲突。</td>
+          </tr>
+          <tr>
+            <td><strong>Step 6<br>预算与反作弊</strong></td>
+            <td><code>budget.total</code><br><code>maxParticipants</code><br>硬预留责任</td>
+            <td>新玩家加入时，一次性全额锁定其有效 T 对应的最大现金派奖责任。</td>
+            <td>预算告急时仅关闭新玩家参加按钮，<strong>绝不动态调低在玩玩家的概率或奖金</strong>。</td>
+            <td>「怎么参加」默认且建议固定为<strong>点击参加</strong>；打开即参加需严控人数上限以防预算击穿。</td>
+          </tr>
+          <tr>
+            <td><strong>Step 7<br>仿真与发布</strong></td>
+            <td>红灯硬拦截<br>黄灯体验预警<br>单句绿色总结</td>
+            <td>全自动运行可行性、曲线合规、绝对概率与预算完整性体检。</td>
+            <td>保障活动零事故平稳上线，运营人员一眼洞悉承载容量。</td>
+            <td>红灯项完全清零方可发布；预设模版为一次性字段写入，非第三套规则。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 章节 3：给开发人员技术规范 -->
+    <section class="card" id="sec-dev">
+      <h2>3. 给开发人员技术规范 (Developer Specification)</h2>
+
+      <h3>3.1 核心架构原则</h3>
+      <div class="notice danger">
+        <strong>生产环境绝对禁止客户端计算奖励：</strong><br>
+        前端浏览器永不决定中奖类型、金额、进度增量或是否完成。客户端仅负责播放罗盘动画与展示已入库状态。任何离线运算仅限 Demo 原型。
+      </div>
+
+      <h3>3.2 数据模型定义 (Data Objects)</h3>
+      <pre>
+// 1. 活动配置版本快照 (ActivityConfigVersion)
+{
+  configVersionId: "cfg_v3_20260915",
+  activityId: "act_lj_01",
+  experience: {
+    firstSpinPct: 90,           // 首转百分比
+    standardTargetSpins: 12,    // 标准转数 T
+    curveGamma: 1.8,            // 曲线曲率
+    phaseShares: { fast: 40, mid: 35, fine: 25 }
+  },
+  sources: {
+    free: { enabled: true, ticketsPerDay: 1, cap: 7 },
+    task: { enabled: true, ticketsPerTask: 1, cap: 5 },
+    assist: { enabled: true, ticketsPerFriend: 1, friendCap: 5, cap: 5, depositRequired: false }
+  },
+  prize: {
+    finishPrizeCash: 5,
+    sizeWeights: [60, 30, 10],  // 小/中/大
+    fast: { thanksPct: 20, upgradePct: 8, amounts: [0.18, 0.5, 1.0] },
+    mid:  { thanksPct: 25, upgradePct: 10, amounts: [18, 50, 100] },
+    fine: { thanksPct: 30, upgradePct: 8,  amounts: [50, 100, 200] }
+  }
+}
+
+// 2. 玩家单局状态 (Play)
+{
+  playId: "play_99812",
+  memberId: "u_8848",
+  configVersionId: "cfg_v3_20260915",
+  joinedAt: "2026-09-15T10:00:00Z",
+  personalEndsAt: "2026-09-22T10:00:00Z",
+  effectiveTargetSpins: 12,     // 本局快照的有效 T
+  ticketsAvailable: 3,          // 当前可用次数
+  progressBp: 9000,             // 进度 Basis Points (10000 = 100%)
+  spinIndex: 1,                 // 已成功转动次数
+  liabilityReserved: 16.0,      // 剩余硬责任预留
+  status: "active"              // active | completed | expired | campaign_cut
+}
+
+// 3. 单次转盘持久化记录 (SpinRecord)
+{
+  spinId: "spin_99812_01",
+  requestId: "req_c3a8f1",      // 客户端幂等唯一键
+  playId: "play_99812",
+  k: 1,                         // 第几转
+  phase: "fast",                // 快砍/中段/细砍
+  progressBeforeBp: 0,
+  progressAfterBp: 9000,
+  gainBp: 9000,
+  prizeType: "cash",            // none | cash | credit | point
+  prizeAmount: 0.5,
+  cashEquivalent: 0.5,
+  upgraded: false,
+  finishPrizeTriggered: false,
+  createdAt: "2026-09-15T10:05:00Z"
+}
+      </pre>
+
+      <h3>3.3 确定性进度公式与唯一阶段函数</h3>
+      <p>
+        <strong>确定性进度函数：</strong>给定快照的 $F, T, \gamma$，进度 $P(k)$ 在任何节点均由确定性数学公式产出：
+      </p>
+      <pre>
+P(0) = 0
+P(1) = F
+P(T) = 100
+for 1 &lt; k &lt; T:
+  q = (k - 1) / (T - 1)
+  P(k) = F + (100 - F) * (1 - (1 - q)^γ)
+      </pre>
+      <p>
+        <strong>阶段整数分配（Hamilton 最大余数法）：</strong>
+        第 1 转固定为快砍。其余 $T-1$ 转中，先分配 fast、mid、fine 各 1 转底限，剩余配额按归一化比例使用 Hamilton 法分配，确保三个模块无论在前台预览、开奖还是预算预留中完全使用同一 <code>phaseOf(k, T, shares)</code> 函数。
+      </p>
+    </section>
+
+    <!-- 章节 4：单事务原子抽奖流程 -->
+    <section class="card" id="sec-transaction">
+      <h2>4. 单事务原子抽奖流程 (One-Transaction Spin Architecture)</h2>
+
+      <p>
+        服务端 <code>POST /api/lucky-journey/spin</code> 执行步骤必须在严格的数据库本地事务内完成：
+      </p>
+      <ol style="line-height:1.8">
+        <li><strong>请求幂等校验：</strong>检查 <code>requestId</code> 是否在 <code>SpinRecord</code> 中已存在。若存在，直接提交事务并返回原有记录，<strong>绝不重复扣减次数与重抽奖励</strong>。</li>
+        <li><strong>行级锁锁定 Play：</strong><code>SELECT * FROM Play WHERE playId = :id FOR UPDATE</code>。校验 <code>status === 'active'</code> 且 <code>ticketsAvailable &gt;= 1</code>。</li>
+        <li><strong>自增转数校验：</strong>计算当前步数 $k = \text{spinIndex} + 1$。若 $k &gt; \text{effectiveTargetSpins}$，直接拒绝。</li>
+        <li><strong>确定性计算进度：</strong>计算 $\text{progressAfter} = P(k)$，增量 $\Delta = \text{progressAfter} - \text{progressBefore}$。</li>
+        <li><strong>服务端安全 RNG 抽奖：</strong>使用系统安全随机数源（CSPRNG）抽取奖品类型（谢谢参与 / 越级 / 本段主奖）及金额档位（小/中/大）。</li>
+        <li><strong>扣减次数与落库：</strong>更新 <code>play.ticketsAvailable -= 1</code>，<code>play.spinIndex = k</code>，<code>play.progressBp = progressAfter</code>。</li>
+        <li><strong>终点奖励判定：</strong>若 $k = \text{effectiveTargetSpins}$，且此前未发过终点奖，生成终点大奖派发单 <code>RewardGrant(spinId:finish)</code>，并将 <code>play.status = 'completed'</code>。</li>
+        <li><strong>预算责任释放：</strong>扣减本转对应的预留上限 <code>liabilityReserved -= maxForThisSpin</code>，并将实际产生金额累加至 <code>BudgetLedger.actualSpent</code>。</li>
+        <li><strong>事务提交与 Outbox 派发：</strong>提交事务，异步通过 Outbox 事件将现金/积分派发给钱包适配器。</li>
+      </ol>
+    </section>
+
+    <!-- 章节 5：40 项情境与边缘异常处理表 -->
+    <section class="card" id="sec-situations">
+      <h2>5. 40 项情境与异常处理表 (Situations & Edge Cases S01~S40)</h2>
+
+      <table class="doc-table">
+        <thead>
+          <tr>
+            <th style="width:50px">ID</th>
+            <th style="width:160px">业务场景</th>
+            <th>V3 规范执行行为</th>
+            <th style="width:110px">设计依据</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>S01</strong></td>
+            <td>活动进行中点击参加</td>
+            <td>校验层级资格与预算预留，快照当前配置版本，创建 Play，初始进度严格为 0%。</td>
+            <td>真实起始</td>
+          </tr>
+          <tr>
+            <td><strong>S02</strong></td>
+            <td>活动时间结束后点击参加</td>
+            <td>API 拒绝并提示「活动已截止」，不创建 Play，不扣资源。</td>
+            <td>准入控制</td>
+          </tr>
+          <tr>
+            <td><strong>S03</strong></td>
+            <td>次数为 0 点击转盘</td>
+            <td>HTTP 409 / 业务拒绝，不扣次、不抽奖、不推进度，引导完成任务。</td>
+            <td>状态拦截</td>
+          </tr>
+          <tr>
+            <td><strong>S04</strong></td>
+            <td>第一转成功结算</td>
+            <td>进度精确到达 <code>firstSpinPct</code>（如 90%）；阶段为快砍；奖励依据快砍概率抽发。</td>
+            <td>体验爽感</td>
+          </tr>
+          <tr>
+            <td><strong>S05</strong></td>
+            <td>第 2 转至 T-1 转推进</td>
+            <td>进度严格按照曲线公式 $P(k)$ 计算；阶段严格按照 Hamilton <code>phaseOf</code> 判定。</td>
+            <td>确定性推进</td>
+          </tr>
+          <tr>
+            <td><strong>S06</strong></td>
+            <td>中段开出主奖励</td>
+            <td>发放活动积分；若触发越级加成，则直接开出快砍现金金额。</td>
+            <td>跨级激励</td>
+          </tr>
+          <tr>
+            <td><strong>S07</strong></td>
+            <td>细砍开出主奖励</td>
+            <td>发放活动点数；若触发越级加成，开出中段积分金额（细砍不连跳至现金）。</td>
+            <td>经济稳健</td>
+          </tr>
+          <tr>
+            <td><strong>S08</strong></td>
+            <td>抽中「谢谢参与」</td>
+            <td>本转无代币奖励入账，但确定性进度正常推进，绝不空耗次数。</td>
+            <td>正向反馈</td>
+          </tr>
+          <tr>
+            <td><strong>S09</strong></td>
+            <td>达到有效转数 k = T</td>
+            <td>进度精确收尾至 100.00%；触发并发放转满大奖（现金）；状态置为 completed。</td>
+            <td>无死锁通极大奖</td>
+          </tr>
+          <tr>
+            <td><strong>S10</strong></td>
+            <td>达成 100% 后剩余次数</td>
+            <td>主按钮锁定，API 拒绝继续抽奖；剩余次数标记为失效，不可继续开奖。</td>
+            <td>责任边界</td>
+          </tr>
+          <tr>
+            <td><strong>S11</strong></td>
+            <td>同 requestId 请求重试</td>
+            <td>命中幂等缓存，直接返回历史 <code>SpinRecord</code>，不重复扣次与出奖。</td>
+            <td>幂等性</td>
+          </tr>
+          <tr>
+            <td><strong>S12</strong></td>
+            <td>多端并发点击转盘</td>
+            <td>Play 行级悲观锁串行化处理；先到者成功执行，后者读新状态处理。</td>
+            <td>并发控制</td>
+          </tr>
+          <tr>
+            <td><strong>S13</strong></td>
+            <td>抽奖成功后网络断线</td>
+            <td>服务端已落库；客户端重连后凭同一 requestId 或查询状态直接恢复结果。</td>
+            <td>连接容灾</td>
+          </tr>
+          <tr>
+            <td><strong>S14</strong></td>
+            <td>派奖钱包服务暂时不可用</td>
+            <td>抽奖记录正常持久化，RewardGrant 标记为 pending，Outbox 持续重试派奖。</td>
+            <td>异步解耦</td>
+          </tr>
+          <tr>
+            <td><strong>S15</strong></td>
+            <td>好友完成合格注册</td>
+            <td>仅为邀请人增加抽奖次数，<strong>绝不直接改变邀请人的进度条</strong>。</td>
+            <td>助力机制</td>
+          </tr>
+          <tr>
+            <td><strong>S16</strong></td>
+            <td>开启充值门槛但好友未充值</td>
+            <td>下线仅注册时不发放助力次数，待好友充值成功结算后方才授予。</td>
+            <td>防刷门槛</td>
+          </tr>
+          <tr>
+            <td><strong>S17</strong></td>
+            <td>好友与外部推广返佣同时发生</td>
+            <td>好运探索季只记录本活动的 TicketLedger，两者独立计奖，不相互冲突。</td>
+            <td>多业务共存</td>
+          </tr>
+          <tr>
+            <td><strong>S18</strong></td>
+            <td>活动运行中运营中途修改配置</td>
+            <td>已在局内的 Play 继续沿用当时快照的 configVersionId，仅新加入 Play 采用新版。</td>
+            <td>配置版本化</td>
+          </tr>
+          <tr>
+            <td><strong>S19</strong></td>
+            <td>某项任务被运营关闭</td>
+            <td>新产生的该行为不再发次数，已发次数不受影响。</td>
+            <td>动态管控</td>
+          </tr>
+          <tr>
+            <td><strong>S20</strong></td>
+            <td>游玩指定类型游戏</td>
+            <td>仅统计单选配置的指定游戏类别（如电子），其他类别不予计入。</td>
+            <td>单选任务</td>
+          </tr>
+          <tr>
+            <td><strong>S21</strong></td>
+            <td>高 VIP 会员点击参加</td>
+            <td>依据分层配置赋予更小的有效转数 T（如 8 转），首转同样为 90%。</td>
+            <td>有效 T 驱动</td>
+          </tr>
+          <tr>
+            <td><strong>S22</strong></td>
+            <td>局内中途升级 VIP 或充值</td>
+            <td>V3 默认本局有效 T 保持快照不变，下一轮新 Play 自动匹配新高层级。</td>
+            <td>快照稳定性</td>
+          </tr>
+          <tr>
+            <td><strong>S23</strong></td>
+            <td>活动预算或名额耗尽</td>
+            <td>新玩家点击「参加活动」提示名额已满；局内老玩家正常完成，体验不受影响。</td>
+            <td>预算硬预留</td>
+          </tr>
+          <tr>
+            <td><strong>S24</strong></td>
+            <td>运营修改曲线曲率 γ</td>
+            <td>只影响修改后产生的新 Play，老玩家曲线绝不突变。</td>
+            <td>一致性保障</td>
+          </tr>
+          <tr>
+            <td><strong>S25</strong></td>
+            <td>允许重复参加开启新一轮</td>
+            <td>上一局 completed 后允许开新局，进度重归 0%；当日免费次数不可重复申领。</td>
+            <td>租户日去重</td>
+          </tr>
+          <tr>
+            <td><strong>S26</strong></td>
+            <td>新一局的任务统计</td>
+            <td>仅累计新局 <code>joinedAt</code> 之后发生的新结算，上一局充值累计不可穿透。</td>
+            <td>作用域隔离</td>
+          </tr>
+          <tr>
+            <td><strong>S27</strong></td>
+            <td>同一下线在第二局重复助力</td>
+            <td>拒绝发放，同一受邀下线在全活动生命周期内仅可贡献 1 次。</td>
+            <td>全活动唯一</td>
+          </tr>
+          <tr>
+            <td><strong>S28</strong></td>
+            <td>活动大时间截止 (afterEnd=cut)</td>
+            <td>强行关闭在玩 Play，清空未用次数，释放剩余未开预留责任，不补发大奖。</td>
+            <td>截断策略</td>
+          </tr>
+          <tr>
+            <td><strong>S29</strong></td>
+            <td>活动大时间截止 (afterEnd=finish)</td>
+            <td>停止新玩家加入，但局内玩家可继续做任务推进至个人截止日并领大奖。</td>
+            <td>做完策略</td>
+          </tr>
+          <tr>
+            <td><strong>S30</strong></td>
+            <td>个人窗口 (personalDays) 过期</td>
+            <td>自动结案关闭，未转出的未用次数失效，已派发奖励正常归属。</td>
+            <td>个人生命周期</td>
+          </tr>
+          <tr>
+            <td><strong>S31</strong></td>
+            <td>运营将总预算调低至已承诺责任以下</td>
+            <td>后台校验阻断并报错，禁止保存低于 <code>actualSpent + outstandingReserve</code> 的预算。</td>
+            <td>预算防击穿</td>
+          </tr>
+          <tr>
+            <td><strong>S32</strong></td>
+            <td>运营追加总预算</td>
+            <td>可用余额增加，系统自动重新开放新名额参加。</td>
+            <td>动态扩容</td>
+          </tr>
+          <tr>
+            <td><strong>S33</strong></td>
+            <td>运营修改阶段划分比例</td>
+            <td>新局采用新阶段分配计划，老局按原分配执行。</td>
+            <td>规则隔离</td>
+          </tr>
+          <tr>
+            <td><strong>S34</strong></td>
+            <td>配置出现 thanks + upgrade &gt; 100%</td>
+            <td>后台红灯拦截，禁止发布活动配置。</td>
+            <td>绝对概率合规</td>
+          </tr>
+          <tr>
+            <td><strong>S35</strong></td>
+            <td>总供给次数小于任一分层的有效 T</td>
+            <td>后台红灯拦截，数学上不可完成的活动禁止发布。</td>
+            <td>可行性硬阻断</td>
+          </tr>
+          <tr>
+            <td><strong>S36</strong></td>
+            <td>非社交路径不足但开启了保证模式</td>
+            <td>后台由黄灯升级为红灯阻断，确保无需拉人即可完成。</td>
+            <td>社交免受迫</td>
+          </tr>
+          <tr>
+            <td><strong>S37</strong></td>
+            <td>配置「打开活动页即参加」</td>
+            <td>后台出现强警告，并强制要求配置参与人数上限与足额预算。</td>
+            <td>高危防范</td>
+          </tr>
+          <tr>
+            <td><strong>S38</strong></td>
+            <td>充值发生退款或注单作废</td>
+            <td>任务仅在 settled 且不可逆状态发放；如遇极端恶意逆转依风控白名单处置。</td>
+            <td>资产安全</td>
+          </tr>
+          <tr>
+            <td><strong>S39</strong></td>
+            <td>风控检测到设备/IP 刷子</td>
+            <td>风控拦截后续抽奖发放或转入人工审查，<strong>绝不偷偷修改已生成的 SpinRecord</strong>。</td>
+            <td>数据真实</td>
+          </tr>
+          <tr>
+            <td><strong>S40</strong></td>
+            <td>前端罗盘动画卡死或异常</td>
+            <td>玩家可点击跳过动画，前端直接拉取服务端 SpinRecord 展示权威真实结果。</td>
+            <td>容错韧性</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 章节 6：核心中英文对照术语表 -->
+    <section class="card" id="sec-glossary">
+      <h2>6. 核心中英文对照术语表 (Bilingual Terminology Glossary)</h2>
+
+      <table class="doc-table">
+        <thead>
+          <tr>
+            <th>中文术语</th>
+            <th>英文规范术语 (Canonical Term)</th>
+            <th>定义与约束</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>好运探索季</strong></td>
+            <td>Lucky Journey</td>
+            <td>全新高黏性活动类型，与付费幸运转盘 (Lucky Wheel) 并存。</td>
+          </tr>
+          <tr>
+            <td><strong>第一转进度</strong></td>
+            <td>First Spin Percentage (F)</td>
+            <td>首转成功后直达的进度比例，全层级共享，默认建议 90%。</td>
+          </tr>
+          <tr>
+            <td><strong>标准转满次数</strong></td>
+            <td>Standard Target Spins (T)</td>
+            <td>标准层级玩家达成 100% 精确完成所需的转数，默认建议 12。</td>
+          </tr>
+          <tr>
+            <td><strong>有效转满次数</strong></td>
+            <td>Effective Target Spins</td>
+            <td>分层玩家由于 VIP/充值减免后实际需要的转数（如 8 或 10）。</td>
+          </tr>
+          <tr>
+            <td><strong>收尾细腻度</strong></td>
+            <td>Curve Gamma (γ)</td>
+            <td>进度公式曲率参数，控制第 2 转至 T-1 转的前快后细程度。</td>
+          </tr>
+          <tr>
+            <td><strong>转满大奖</strong></td>
+            <td>Finish Prize</td>
+            <td>第 T 转达到 100% 时发放的通关奖励（现金）。</td>
+          </tr>
+          <tr>
+            <td><strong>硬预留责任</strong></td>
+            <td>Hard Liability Reserve</td>
+            <td>玩家加入时预先冻结的最大可能现金当量支出责任。</td>
+          </tr>
+          <tr>
+            <td><strong>现金当量</strong></td>
+            <td>Cash Equivalent</td>
+            <td>将活动积分（100:1）和点数（10000:1）换算为现金价值的计量单位。</td>
+          </tr>
+          <tr>
+            <td><strong>越级加成</strong></td>
+            <td>Upgrade Probability</td>
+            <td>开奖时直接抽中上一级货币或大档金额的绝对概率。</td>
+          </tr>
+          <tr>
+            <td><strong>非社交保证模式</strong></td>
+            <td>Non-Social Guarantee Mode</td>
+            <td>要求仅凭免费+任务即可走完标准 T，无需依赖好友助力的发布模式。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 底部回到原型 CTA -->
+    <div style="text-align:center;margin:40px 0">
+      <a class="btn primary" href="index.html" style="padding:12px 28px;font-size:16px">
+        🚀 前往好运探索季 V3 后台原型 (index.html)
+      </a>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      var btn = document.getElementById('themeBtn');
+      btn.addEventListener('click', function () {
+        var isLight = document.documentElement.classList.toggle('light');
+        btn.textContent = isLight ? '🌙 深色模式' : '☀️ 白天模式';
+      });
+    }());
+  </script>
+</body>
+</html>

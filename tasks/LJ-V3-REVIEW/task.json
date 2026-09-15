@@ -1,0 +1,40 @@
+{
+  "task_id": "LJ-V3-REVIEW",
+  "repository": "bops",
+  "goal": "Retrieve the correct independent Lucky Journey v6 evidence and unresolved production/visual boundaries.",
+  "done_criteria": [
+    "Correct task and variant selected",
+    "Every required claim retains scope, evidence label and provenance",
+    "Unanswered questions and missing dependencies exposed",
+    "No unauthorized product or Git action"
+  ],
+  "checkpoint_ref": "bops:tasks/LJ-V3-REVIEW/checkpoint.json",
+  "artifact_prefixes": [
+    "bops:backoffice/lucky-journey/v3-review/",
+    "bops:tasks/LJ-V3-REVIEW/"
+  ],
+  "source_ids": [
+    "lj-v6",
+    "lj-ui",
+    "lj-boundaries",
+    "lj-publication-history",
+    "lj-old-variant"
+  ],
+  "fact_ids": [
+    "LJ-V6-FIRST-SPIN",
+    "LJ-RUNTIME-GAPS",
+    "LJ-PUBLICATION-REPORT",
+    "LJ-VARIANT-DISPLAY"
+  ],
+  "facets": [
+    "prototype-wallet-boundaries"
+  ],
+  "write_paths": [
+    "tasks/LJ-V3-REVIEW/"
+  ],
+  "authorization": "Retrieval pilot only. Future artifact or factual-memory writes require the active user task authorization; this definition grants none.",
+  "mode": "retrieval-pilot",
+  "skills_on_demand": [
+    "ngss3-handoff"
+  ]
+}

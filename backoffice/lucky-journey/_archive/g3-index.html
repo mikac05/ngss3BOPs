@@ -1,0 +1,1115 @@
+<!doctype html>
+<html lang="zh-Hans" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>好运探索季｜后台设定 Prototype</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fa;
+      --panel: #fff;
+      --panel-2: #fafbfc;
+      --panel-3: #f0f2f5;
+      --border: #dcdfe6;
+      --border-strong: #c0c4cc;
+      --text: #1f2329;
+      --muted: #606266;
+      --blue: #409eff;
+      --blue-soft: rgba(64,158,255,.14);
+      --green: #67c23a;
+      --amber: #e6a23c;
+      --red: #f56c6c;
+      --shadow: 0 2px 12px rgba(0,0,0,.06);
+      --fast: #67c23a;
+      --mid: #409eff;
+      --fine: #e6a23c;
+    }
+    html.dark {
+      color-scheme: dark;
+      --bg: #0b0d10;
+      --panel: #14171c;
+      --panel-2: #1a1e25;
+      --panel-3: #202630;
+      --border: #303845;
+      --border-strong: #475366;
+      --text: #f4f7fb;
+      --muted: #9da8b8;
+      --blue: #4a9cff;
+      --blue-soft: rgba(74,156,255,.14);
+      --green: #37d39a;
+      --amber: #ffbd4a;
+      --red: #ff6f7d;
+      --shadow: 0 16px 40px rgba(0,0,0,.26);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    .topbar, .footer-actions {
+      position: sticky; z-index: 20;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      padding: 12px 20px;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+    }
+    .footer-actions { bottom: 0; top: auto; border: 0; border-top: 1px solid var(--border); }
+    .title-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    h1 { margin: 0; font-size: 18px; }
+    .tag {
+      display: inline-flex; align-items: center; gap: 4px;
+      padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 700;
+      background: var(--panel-3); color: var(--muted); border: 1px solid var(--border);
+    }
+    .tag.ok { color: var(--green); border-color: color-mix(in srgb, var(--green) 40%, var(--border)); }
+    .tag.warn { color: var(--amber); }
+    .tag.bad { color: var(--red); }
+    .tag.pri { color: var(--blue); background: var(--blue-soft); border-color: transparent; }
+    .btn {
+      min-height: 34px; padding: 6px 12px; border-radius: 6px;
+      border: 1px solid var(--border); background: var(--panel); color: var(--text); cursor: pointer;
+    }
+    .btn.primary { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .btn.ghost { background: transparent; color: var(--muted); }
+    a.back {
+      display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px;
+      border: 1px solid var(--border); border-radius: 6px; background: var(--panel-2);
+      color: var(--blue); text-decoration: none; font-size: 12px; font-weight: 600;
+    }
+    .standard-shell, .content-editor-head, .section, .side-card {
+      max-width: 1440px; margin: 16px auto 0; padding: 0;
+      border: 1px solid var(--border); border-radius: 12px; background: var(--panel); box-shadow: var(--shadow);
+    }
+    .standard-shell { padding: 0; }
+    .standard-header-bar, .content-editor-head, .section-header {
+      display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap;
+      padding: 14px 16px; border-bottom: 1px solid var(--border); background: var(--panel-2);
+    }
+    .standard-title { display: flex; align-items: center; gap: 8px; font-weight: 800; }
+    .badge-live { font-size: 11px; color: var(--blue); font-weight: 700; }
+    .standard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .form-column { padding: 8px 18px 16px; }
+    .form-column + .form-column { border-left: 1px solid var(--border); }
+    .form-row {
+      display: grid; grid-template-columns: 132px minmax(0,1fr); gap: 12px;
+      align-items: center; padding: 10px 0; border-bottom: 1px dashed color-mix(in srgb, var(--border) 70%, transparent);
+    }
+    .form-row.align-start { align-items: start; }
+    .form-label { color: var(--text); font-weight: 700; font-size: 13px; }
+    .form-label.required::before { content: "*"; color: var(--red); margin-right: 4px; }
+    .input, select, textarea {
+      width: 100%; min-height: 36px; padding: 6px 10px;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--panel); color: var(--text);
+    }
+    textarea { min-height: 64px; resize: vertical; }
+    .input:focus, select:focus, textarea:focus { outline: 0; border-color: var(--blue); box-shadow: 0 0 0 2px var(--blue-soft); }
+    .helper { color: var(--muted); font-size: 12px; }
+    .tip {
+      position: relative;
+      display: inline-grid;
+      place-items: center;
+      width: 16px; height: 16px; margin-left: 4px; vertical-align: middle;
+      border: 1px solid #606266; border-radius: 50%;
+      color: #a3a6ad; font: 700 11px/1 sans-serif;
+      cursor: help; outline: none;
+    }
+    .tip::after {
+      content: attr(data-tooltip);
+      position: absolute; z-index: 80;
+      left: 50%; bottom: calc(100% + 8px);
+      width: max-content; max-width: min(340px, 72vw);
+      padding: 8px 10px; border: 1px solid var(--border-strong); border-radius: 4px;
+      background: #262727; color: #e5eaf3;
+      font: 12px/1.45 "Microsoft YaHei", sans-serif;
+      box-shadow: 0 8px 22px rgba(0,0,0,.35);
+      opacity: 0; pointer-events: none;
+      transform: translate(-50%, 4px);
+      transition: opacity .15s, transform .15s;
+      white-space: normal; text-align: left; font-weight: 400;
+    }
+    html.light .tip::after { background: #303133; color: #fff; }
+    .tip:hover::after, .tip:focus::after { opacity: 1; transform: translate(-50%, 0); }
+    th .tip, label .tip, .form-label .tip { font-weight: 700; }
+    .radio-group, .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px 14px; }
+    .el-radio-item, .el-checkbox-item { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+    .number-control { display: inline-flex; align-items: stretch; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; }
+    .number-control .input { border: 0; min-height: 32px; width: 72px; text-align: center; border-radius: 0; }
+    .number-step { width: 28px; border: 0; background: var(--panel-3); color: var(--text); cursor: pointer; }
+    .suffix { color: var(--muted); font-size: 12px; margin-left: 6px; }
+    .switch-control { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+    .switch-track { width: 40px; height: 20px; border-radius: 999px; background: #dcdfe6; position: relative; }
+    html.dark .switch-track { background: #3b4350; }
+    .switch-thumb { width: 16px; height: 16px; border-radius: 50%; background: #fff; position: absolute; top: 2px; left: 2px; transition: transform .18s; }
+    .switch-control.is-checked .switch-track { background: var(--blue); }
+    .switch-control.is-checked .switch-thumb { transform: translateX(20px); }
+    .palette-swatches, .icon-category-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .palette-item, .icon-tag {
+      display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px;
+      border: 1px solid var(--border); border-radius: 4px; cursor: pointer; font-size: 12px;
+    }
+    .palette-item.active, .icon-tag.active { border-color: var(--blue); color: var(--blue); background: var(--blue-soft); }
+    .swatch-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .banner-visual {
+      height: 88px; border-radius: 6px; padding: 12px 14px;
+      background: linear-gradient(135deg, #1d5a49, #0e3329); color: #e8fff6; position: relative;
+    }
+    .banner-tag { position: absolute; right: 8px; bottom: 6px; font-size: 10px; opacity: .7; }
+    .layout {
+      display: grid; grid-template-columns: minmax(0,1fr) 400px; gap: 20px;
+      max-width: 1440px; margin: 16px auto 80px; padding: 0 20px; align-items: start;
+    }
+    .content-editor-head { margin: 16px auto 0; padding: 14px 16px; max-width: 1440px; }
+    .setup-steps { display: flex; flex-wrap: wrap; gap: 6px; }
+    .setup-steps button {
+      border: 1px solid var(--border); background: var(--panel); color: var(--muted);
+      border-radius: 999px; padding: 6px 10px; cursor: pointer; font-size: 12px;
+    }
+    .setup-steps button.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .main { display: grid; gap: 14px; }
+    .side { position: sticky; top: 78px; display: grid; gap: 16px; width: 400px; max-width: 100%; }
+    .side-card, .now-card { width: 100%; min-height: 148px; padding: 20px 22px; box-sizing: border-box; }
+    .section { margin: 0; }
+    .section-body { padding: 16px 18px 18px; }
+    .section-title { display: flex; gap: 10px; align-items: center; }
+    .step {
+      width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center;
+      background: var(--blue-soft); color: var(--blue); font-weight: 800;
+    }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+    .field { display: grid; gap: 6px; }
+    .field > label { font-weight: 700; font-size: 13px; }
+    .notice { padding: 10px 12px; border-radius: 8px; background: var(--blue-soft); color: var(--text); font-size: 12px; }
+    .notice.warn { background: color-mix(in srgb, var(--amber) 14%, var(--panel)); }
+    .notice.bad { background: color-mix(in srgb, var(--red) 12%, var(--panel)); }
+    .source-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .source-table th, .source-table td { padding: 8px 6px; border-bottom: 1px solid var(--border); text-align: left; }
+    .source-table .input { min-height: 32px; }
+    .btn.compact { min-height: 30px; font-size: 12px; }
+    .table-scroll { overflow-x: auto; }
+    .src-sw {
+      width: 40px; height: 22px; border: 0; border-radius: 999px;
+      background: #3b4350; position: relative; cursor: pointer; padding: 0;
+    }
+    html.light .src-sw { background: #dcdfe6; }
+    .src-sw::after {
+      content: ""; position: absolute; top: 3px; left: 3px;
+      width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .18s;
+    }
+    .src-sw.on { background: var(--blue); }
+    .src-sw.on::after { transform: translateX(18px); }
+    #srcTable tbody tr.source-off td:not(:first-child) { opacity: .38; pointer-events: none; }
+    .source-table th { color: var(--muted); font-size: 12px; }
+    .mix-bar { display: flex; height: 18px; border-radius: 999px; overflow: hidden; background: var(--panel-3); }
+    .mix-bar span { display: block; height: 100%; }
+    .legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 12px; color: var(--muted); margin-top: 8px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+    .phase-bar { display: flex; height: 22px; border-radius: 6px; overflow: hidden; }
+    .phase-bar b { display: flex; align-items: center; justify-content: center; font-size: 10px; color: #fff; }
+    .curve-wrap { background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 8px; }
+    .share-row { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+    .phase-card {
+      border: 1px solid var(--border); border-radius: 10px; padding: 12px;
+      background: var(--panel-2); display: grid; gap: 8px;
+    }
+    .phase-card h3 { margin: 0; font-size: 13px; display: flex; justify-content: space-between; }
+    .amt-row { display: grid; grid-template-columns: 52px minmax(0,1fr); gap: 8px; align-items: center; font-size: 12px; color: var(--muted); }
+    .now-card {
+      border-radius: 12px;
+      background: linear-gradient(180deg, var(--blue-soft), transparent);
+      border: 1px solid color-mix(in srgb, var(--blue) 35%, var(--border));
+    }
+    .task-row {
+      display: grid; grid-template-columns: 28px 132px minmax(0,1fr);
+      gap: 10px; align-items: center;
+      padding: 12px 12px; border: 1px solid var(--border); border-radius: 10px;
+      background: var(--panel-2);
+    }
+    .task-row.off { opacity: .45; }
+    .task-row .task-name { font-weight: 700; font-size: 13px; }
+    .fill-bar { height: 18px; border-radius: 999px; background: var(--panel-3); overflow: hidden; display: flex; }
+    .fill-bar .done { background: linear-gradient(90deg, #37d39a, #409eff); }
+    .fill-bar .left { background: repeating-linear-gradient(90deg, #e6a23c, #e6a23c 6px, #f3d19e 6px, #f3d19e 12px); }
+    .now-card h3 { margin: 0 0 6px; font-size: 13px; color: var(--blue); }
+    .look { font-size: 12px; color: var(--muted); }
+    .look strong { color: var(--text); }
+    .summary-row { display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted); padding: 4px 0; }
+    .summary-row strong { color: var(--text); font-variant-numeric: tabular-nums; }
+    .validation-item { display: flex; gap: 6px; font-size: 12px; color: var(--muted); }
+    .validation-item.ok::before { content: "✓"; color: var(--green); }
+    .validation-item.warn::before { content: "!"; color: var(--amber); }
+    .validation-item.bad::before { content: "×"; color: var(--red); }
+    .gauge { height: 8px; border-radius: 999px; background: linear-gradient(90deg, var(--fast), var(--mid), var(--fine), var(--red)); position: relative; margin: 8px 0 18px; }
+    .needle { position: absolute; top: -4px; width: 2px; height: 16px; background: var(--text); }
+    .focus-ring { outline: 2px solid var(--blue); outline-offset: 2px; border-radius: 8px; }
+    .task-chip { display: flex; justify-content: space-between; gap: 8px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--panel-2); font-size: 12px; }
+    @media (max-width: 1100px) {
+      .standard-grid, .layout, .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .form-column + .form-column { border-left: 0; border-top: 1px solid var(--border); }
+      .side { position: static; width: 100%; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="title-row">
+      <a class="back" href="../../index.html">← 原型首页</a>
+      <h1>新增活动・好运探索季</h1>
+      <span class="tag">Prototype-only</span>
+      <span class="tag pri">对齐 NGSS 活动中心标准上半表</span>
+    </div>
+    <div>
+      <button class="btn" type="button" id="themeBtn">☀️ 白天模式</button>
+      <button class="btn ghost" type="button" onclick="resetDemo()">还原示例</button>
+      <button class="btn primary" type="button" onclick="flashSave()">保存设定</button>
+    </div>
+  </header>
+
+  <section class="standard-shell" aria-label="活动基本设定">
+    <div class="standard-header-bar">
+      <div class="standard-title">活动基本设定 <span class="badge-live">live 活动中心标准配置</span></div>
+      <div class="helper">字段结构对齐 ngss3test16 新增活动页；下半为探索季专属内容</div>
+    </div>
+    <div class="standard-grid">
+      <div class="form-column">
+        <div class="form-row">
+          <span class="form-label required">活动类型 <span class="tip" tabindex="0" data-tooltip="对应活动中心的活动类型。本页专属内容只在「好运探索季」出现；选幸运转盘则是现行付费转盘。">i</span></span>
+          <select class="input" id="activityType">
+            <option value="lucky_journey" selected>好运探索季 (Lucky Journey)</option>
+            <option value="wheel">幸运转盘 (Lucky Wheel)</option>
+            <option value="multiplier">倍率巅峰挑战</option>
+            <option value="treasure">天降夺宝</option>
+            <option value="invite">推广</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <span class="form-label required">活动名称 <span class="tip" tabindex="0" data-tooltip="与 live 新增活动相同：系统自带或自定义。前台活动列表显示这个名字。">i</span></span>
+          <div>
+            <div class="radio-group">
+              <label class="el-radio-item"><input type="radio" name="nameMode" value="system" checked> 系统自带</label>
+              <label class="el-radio-item"><input type="radio" name="nameMode" value="custom"> 自定义</label>
+            </div>
+            <input class="input" id="activityName" value="系统自带・好运探索季" style="margin-top:6px">
+          </div>
+        </div>
+        <div class="form-row">
+          <span class="form-label required">活动时间 <span class="tip" tabindex="0" data-tooltip="整档可参加的起迄。活动已结束后不能新参加、不计新奖。结束前已参加的人，未用次数与进度按下方「结束后」规则处理。">i</span></span>
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <input class="input" type="date" id="startDate" value="2026-09-15" style="width:auto">
+              <span class="helper">至</span>
+              <input class="input" type="date" id="endDate" value="2026-09-28" style="width:auto">
+            </div>
+            <div class="notice warn" style="margin-top:8px">活动时间结束后才点参加：不能加入，不发奖、不记进度。结束前已参加：已转出的奖照入账；未用次数与未转满进度，依「结束后」设定截断或允许做完本次。</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <span class="form-label required">可玩天数 <span class="tip" tabindex="0" data-tooltip="玩家点参加后有几天可做任务、转盘。全档只设一次。到期未用次数失效；已转出的奖保留。">i</span></span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="number-control">
+              <button class="number-step" type="button" onclick="step('personalDays',-1)">-</button>
+              <input class="input" id="personalDays" type="number" min="1" value="7">
+              <button class="number-step" type="button" onclick="step('personalDays',1)">+</button>
+            </div>
+            <span class="helper">天／每次参加</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <span class="form-label">可重复参加 <span class="tip" tabindex="0" data-tooltip="关闭＝整档只能参加一次。开启＝个人天数结束后，若活动时间未到，可再点参加开新的一轮。">i</span></span>
+          <label class="el-checkbox-item"><input type="checkbox" id="canRepeat"> 允许</label>
+        </div>
+        <div class="form-row">
+          <span class="form-label">活动结束后 <span class="tip" tabindex="0" data-tooltip="只影响结束前已参加的人。结束后新点参加一律拒绝。">i</span></span>
+          <div class="radio-group">
+            <label class="el-radio-item"><input type="radio" name="afterEnd" value="cut" checked> 截断未用次数</label>
+            <label class="el-radio-item"><input type="radio" name="afterEnd" value="finish"> 允许做完本次</label>
+          </div>
+        </div>
+        <div class="form-row">
+          <span class="form-label">同注册IP上限 <span class="tip" tabindex="0" data-tooltip="与推广、自定义活动相同。0＝不限制。用于限制同一 IP 注册号来助力／领奖。">i</span></span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="number-control">
+              <button class="number-step" type="button" onclick="step('ipLimit',-1)">-</button>
+              <input class="input" id="ipLimit" type="number" min="0" value="0">
+              <button class="number-step" type="button" onclick="step('ipLimit',1)">+</button>
+            </div>
+            <span class="helper">0 代表不限制</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <span class="form-label">同注册设备上限 <span class="tip" tabindex="0" data-tooltip="与同注册 IP 上限分开计算。0＝不限制。">i</span></span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="number-control">
+              <button class="number-step" type="button" onclick="step('deviceLimit',-1)">-</button>
+              <input class="input" id="deviceLimit" type="number" min="0" value="0">
+              <button class="number-step" type="button" onclick="step('deviceLimit',1)">+</button>
+            </div>
+            <span class="helper">0 代表不限制</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <span class="form-label required">参与会员层级 <span class="tip" tabindex="0" data-tooltip="即分层。同一活动类型多档时，分层不可重叠。玩家改层后的可见性依各活动既有规则。">i</span></span>
+          <div class="radio-group">
+            <label class="el-radio-item"><input type="radio" name="layerMode" value="all" checked> 全部层级</label>
+            <label class="el-radio-item"><input type="radio" name="layerMode" value="custom"> 指定层级</label>
+          </div>
+        </div>
+        <div class="form-row">
+          <span class="form-label required">派奖钱包 <span class="tip" tabindex="0" data-tooltip="转盘小奖与转满大奖进这个钱包。彩金钱包＝红利账本；现金钱包＝主现金，并出现打码倍率。">i</span></span>
+          <div class="radio-group">
+            <label class="el-radio-item"><input type="radio" name="wallet" value="bonus" checked onchange="syncWallet()"> 彩金钱包</label>
+            <label class="el-radio-item"><input type="radio" name="wallet" value="cash" onchange="syncWallet()"> 现金钱包</label>
+          </div>
+        </div>
+        <div class="form-row" id="wagerRow" style="display:none">
+          <span class="form-label required">打码倍率 <span class="tip" tabindex="0" data-tooltip="仅现金钱包显示。提款有效投注流水＝派奖金额 × 倍数。0＝无流水即可提款。不要把别档活动的彩金规则套过来。">i</span></span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="number-control">
+              <button class="number-step" type="button" onclick="step('wager',-1)">-</button>
+              <input class="input" id="wager" type="number" min="0" value="1">
+              <button class="number-step" type="button" onclick="step('wager',1)">+</button>
+            </div>
+            <span class="helper">现金钱包出款流水 = 奖励 × 倍数</span>
+          </div>
+        </div>
+        <div class="form-row align-start">
+          <span class="form-label required">活动申领终端 <span class="tip" tabindex="0" data-tooltip="live 规则：终端不能为空。APP 含安装包与 PWA，不含普通 H5 浏览（与人工优惠弹窗边界一致处需再验）。">i</span></span>
+          <div class="checkbox-group">
+            <label class="el-checkbox-item"><input type="checkbox" checked> H5领取</label>
+            <label class="el-checkbox-item"><input type="checkbox" checked> Android APP领取</label>
+            <label class="el-checkbox-item"><input type="checkbox" checked> IOS APP领取</label>
+            <label class="el-checkbox-item"><input type="checkbox" checked> PWA</label>
+          </div>
+        </div>
+      </div>
+      <div class="form-column">
+        <div class="form-row">
+          <span class="form-label">营销活动 <span class="tip" tabindex="0" data-tooltip="不决定能不能领。只控制是否还能出现在弹窗、轮播等其他广告位。">i</span></span>
+          <div class="switch-control" id="mktSwitch" onclick="this.classList.toggle('is-checked'); this.querySelector('em').textContent=this.classList.contains('is-checked')?'已开启':'已关闭'">
+            <div class="switch-track"><div class="switch-thumb"></div></div>
+            <em style="font-style:normal;font-size:13px">已关闭</em>
+          </div>
+        </div>
+        <div class="form-row">
+          <span class="form-label">选择排版 <span class="tip" tabindex="0" data-tooltip="活动页版型。与 live 新增活动相同。">i</span></span>
+          <div class="radio-group">
+            <label class="el-radio-item"><input type="radio" name="layoutStyle" checked> 自定义</label>
+            <label class="el-radio-item"><input type="radio" name="layoutStyle"> 版型 A</label>
+            <label class="el-radio-item"><input type="radio" name="layoutStyle"> 版型 B</label>
+          </div>
+        </div>
+        <div class="form-row align-start">
+          <span class="form-label">选择背景 <span class="tip" tabindex="0" data-tooltip="活动卡片／宣传图底色。live 后台同样用色板。">i</span></span>
+          <div class="palette-swatches">
+            <div class="palette-item active"><span class="swatch-dot" style="background:#1d5a49"></span>绿色</div>
+            <div class="palette-item"><span class="swatch-dot" style="background:#7a202c"></span>红色</div>
+            <div class="palette-item"><span class="swatch-dot" style="background:#7c6922"></span>黄色</div>
+            <div class="palette-item"><span class="swatch-dot" style="background:#4d2a6d"></span>紫色</div>
+            <div class="palette-item"><span class="swatch-dot" style="background:#1e3f66"></span>蓝色</div>
+          </div>
+        </div>
+        <div class="form-row align-start">
+          <span class="form-label">选择图标</span>
+          <div class="icon-category-tags">
+            <span class="icon-tag active">🎁 奖品</span>
+            <span class="icon-tag">🎰 赌场</span>
+            <span class="icon-tag">🎉 节日</span>
+            <span class="icon-tag">🔥 活动</span>
+          </div>
+        </div>
+        <div class="form-row align-start">
+          <span class="form-label">宣传图预览 <span class="tip" tabindex="0" data-tooltip="「是否展示文字」控制宣传图上的标题是否显示，与 live 一致。">i</span></span>
+          <div>
+            <div class="banner-visual">
+              <strong>做任务、邀好友，转好运</strong><br>
+              <span style="font-size:12px;opacity:.85">前期砍得快，后期越来越细，还差一点点就能领奖</span>
+              <span class="banner-tag">710 × 320</span>
+            </div>
+            <div class="radio-group" style="margin-top:6px;font-size:12px">
+              <span class="helper">是否展示文字</span>
+              <label class="el-radio-item"><input type="radio" name="bannerText" checked> 显示</label>
+              <label class="el-radio-item"><input type="radio" name="bannerText"> 隐藏</label>
+            </div>
+          </div>
+        </div>
+        <div class="form-row align-start">
+          <span class="form-label">宣传简介</span>
+          <textarea>每天做任务得抽奖次数，也可邀好友助力。转盘前期砍得快、后期越来越细，按活动说明转满即可领奖。</textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-editor-head">
+    <div>
+      <h2 style="margin:0">活动内容设定</h2>
+      <div class="helper">左边改规则，右边立刻看到「主要次数从哪来、好不好转满」。鼠标停在 <b>i</b> 上看这一项在调什么。</div>
+    </div>
+    <nav class="setup-steps" id="steps">
+      <button type="button" class="active" data-target="fuelSection">1 抽奖次数</button>
+      <button type="button" data-target="downlineSection">2 好友助力</button>
+      <button type="button" data-target="taskSection">3 做任务</button>
+      <button type="button" data-target="curveSection">4 进度条</button>
+      <button type="button" data-target="prizeSection">5 转盘开奖</button>
+      <button type="button" data-target="easeSection">6 容易完成</button>
+      <button type="button" data-target="budgetSection">7 预算</button>
+    </nav>
+  </section>
+
+  <div class="layout">
+    <main class="main">
+      <section class="section" id="fuelSection" data-focus="fuel">
+        <div class="section-header">
+          <div class="section-title"><span class="step">1</span><div><h2>抽奖次数</h2><div class="helper">调整活动主要目标</div></div></div>
+        </div>
+        <div class="section-body">
+          <div class="field" style="margin-bottom:12px">
+            <label>次数配比 <span class="tip" tabindex="0" data-tooltip="预设三种玩法。改完仍可再调每一行的「每日次数」。右边色条会告诉你现在谁是主力。">i</span></label>
+            <div class="radio-group" id="fuelTpl">
+              <label class="el-radio-item"><input type="radio" name="fuelTpl" value="explore_led" checked> 做任务为主</label>
+              <label class="el-radio-item"><input type="radio" name="fuelTpl" value="balanced"> 任务+助力</label>
+              <label class="el-radio-item"><input type="radio" name="fuelTpl" value="downline_led"> 助力为主</label>
+            </div>
+          </div>
+          <table class="source-table" id="srcTable">
+            <thead>
+              <tr>
+                <th></th>
+                <th>从哪来</th>
+                <th>每日次数 <span class="tip" tabindex="0" data-tooltip="这一来源每天给几次。好友助力调大就会变主力。">i</span></th>
+                <th>个人期内最多 <span class="tip" tabindex="0" data-tooltip="这次参加内，这个来源最多拿几次。">i</span></th>
+                <th>目标次数 <span class="tip" tabindex="0" data-tooltip="用来算比重。好友助力＝预计邀请几名合格新会员。">i</span></th>
+                <th>可完成活动 <span class="tip" tabindex="0" data-tooltip="勾选＝走完这些次数就能把进度砍完。主力建议勾上。">i</span></th>
+                <th>预计次数</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-src="free">
+                <td><button type="button" class="src-sw on" id="freeOn" aria-pressed="true"></button></td>
+                <td>每日免费抽</td>
+                <td><input class="input" id="freeEach" type="number" min="0" value="1" style="width:70px;min-height:32px"></td>
+                <td><input class="input" id="freeCap" type="number" min="0" value="7" style="width:70px;min-height:32px"></td>
+                <td><input class="input" id="freeEvents" type="number" min="0" value="7" style="width:70px;min-height:32px"></td>
+                <td><input type="checkbox" id="freeG" checked></td>
+                <td><strong id="freeSupply">7</strong></td>
+              </tr>
+              <tr data-src="exp">
+                <td><button type="button" class="src-sw on" id="expOn" aria-pressed="true"></button></td>
+                <td>做任务</td>
+                <td><input class="input" id="expEach" type="number" min="0" value="1" style="width:70px;min-height:32px"></td>
+                <td><input class="input" id="expCap" type="number" min="0" value="7" style="width:70px;min-height:32px"></td>
+                <td><input class="input" id="expEvents" type="number" min="0" value="7" style="width:70px;min-height:32px"></td>
+                <td><input type="checkbox" id="expG" checked></td>
+                <td><strong id="expSupply">7</strong></td>
+              </tr>
+              <tr data-src="dl">
+                <td><button type="button" class="src-sw on" id="dlOn" aria-pressed="true"></button></td>
+                <td><strong>好友助力</strong></td>
+                <td><input class="input" id="dlEach" type="number" min="0" value="1" style="width:70px;min-height:32px"></td>
+                <td><input class="input" id="dlCap" type="number" min="0" value="7" style="width:70px;min-height:32px"></td>
+                <td><input class="input" id="dlEvents" type="number" min="0" value="3" style="width:70px;min-height:32px"></td>
+                <td><input type="checkbox" id="dlG"></td>
+                <td><strong id="dlSupply">3</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="notice" style="margin-top:12px">关闭左方开关后，该列不发次数。好友助力只发次数，不会直接砍进度。</div>
+        </div>
+      </section>
+
+      <section class="section" id="downlineSection" data-focus="downline">
+        <div class="section-header">
+          <div class="section-title"><span class="step">2</span><div><h2>好友助力</h2><div class="helper">只算活动开始后的直接新注册下线</div></div></div>
+        </div>
+        <div class="section-body grid-2">
+          <div class="field"><label>需要充值 <span class="tip" tabindex="0" data-tooltip="开启后，助力须先完成充值。前台要写清楚，不能当隐藏门槛。">i</span></label>
+            <label class="el-checkbox-item"><input type="checkbox" id="needDeposit"> 开启</label>
+          </div>
+          <div class="field"><label>与推广同时发奖 <span class="tip" tabindex="0" data-tooltip="本活动发抽奖次数，推广若另有奖金可同时发。成本合并看，不得撤回已发推广奖励。">i</span></label>
+            <label class="el-checkbox-item"><input type="checkbox" id="stackPromo" checked> 允许</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="taskSection" data-focus="task">
+        <div class="section-header">
+          <div class="section-title"><span class="step">3</span><div><h2>做任务</h2><div class="helper">勾选要开的任务；勾选数量＝需完成项数。完成一项发几次，只在上方「抽奖次数 → 做任务 → 每日次数」调整。</div></div></div>
+        </div>
+        <div class="section-body" style="display:grid;gap:10px">
+          <div class="task-row" id="rowPlay">
+            <input type="checkbox" class="task-on" id="taskPlay" checked>
+            <span class="task-name">游玩指定类型</span>
+            <div class="radio-group">
+              <label class="el-radio-item"><input type="radio" name="playType" value="slot" checked> 电子</label>
+              <label class="el-radio-item"><input type="radio" name="playType" value="live"> 真人</label>
+              <label class="el-radio-item"><input type="radio" name="playType" value="sport"> 体育</label>
+              <label class="el-radio-item"><input type="radio" name="playType" value="chess"> 棋牌</label>
+              <label class="el-radio-item"><input type="radio" name="playType" value="fish"> 捕鱼</label>
+            </div>
+          </div>
+          <div class="task-row" id="rowDepC">
+            <input type="checkbox" class="task-on" id="taskDepC" checked>
+            <span class="task-name">充值次数</span>
+            <div style="display:flex;align-items:center;gap:8px"><input class="input" type="number" min="1" value="1" style="width:88px;min-height:32px"> <span class="helper">次</span></div>
+          </div>
+          <div class="task-row" id="rowDepA">
+            <input type="checkbox" class="task-on" id="taskDepA">
+            <span class="task-name">充值金额</span>
+            <div style="display:flex;align-items:center;gap:8px"><input class="input" type="number" min="0" value="100" style="width:120px;min-height:32px"> <span class="helper">以上</span></div>
+          </div>
+          <div class="task-row" id="rowBetC">
+            <input type="checkbox" class="task-on" id="taskBetC" checked>
+            <span class="task-name">下注次数</span>
+            <div style="display:flex;align-items:center;gap:8px"><input class="input" type="number" min="1" value="10" style="width:88px;min-height:32px"> <span class="helper">次</span></div>
+          </div>
+          <div class="task-row" id="rowBetA">
+            <input type="checkbox" class="task-on" id="taskBetA">
+            <span class="task-name">下注金额</span>
+            <div style="display:flex;align-items:center;gap:8px"><input class="input" type="number" min="0" value="50" style="width:120px;min-height:32px"> <span class="helper">以上</span></div>
+          </div>
+          <div class="notice" id="taskSummary">已勾选 3 项任务。完成一项发 1 次（上方抽奖来源已设）。</div>
+        </div>
+      </section>
+
+      <section class="section" id="curveSection" data-focus="curve">
+        <div class="section-header">
+          <div class="section-title"><span class="step">4</span><div><h2>进度条</h2><div class="helper">玩家开局是 0%。第一转跳到下方进度。之后快砍／中段／细砍把剩下的砍完。前台不显示还差几次。</div></div></div>
+        </div>
+        <div class="section-body">
+          <div class="grid-2">
+            <div class="field"><label>第一转 <span class="tip" tabindex="0" data-tooltip="进度百分比。玩家从 0 开始，第一转结算后跳到这个值。想一转就快满，调 90–99。">i</span></label>
+              <div style="display:flex;align-items:center;gap:8px">
+                <input class="input" id="firstSpin" type="number" min="1" max="99" step="0.1" value="90" style="max-width:140px">
+                <span class="helper">% 进度</span>
+              </div>
+            </div>
+            <div class="field"><label>目标旋转次数 <span class="tip" tabindex="0" data-tooltip="大约转几次能满。前台不展示这个数字。最后一转收尾到 100%。">i</span></label>
+              <input class="input" id="targetSpins" type="number" min="2" value="12">
+            </div>
+          </div>
+          <div class="share-row" style="margin-top:14px">
+            <div class="field"><label>快砍 % <span class="tip" tabindex="0" data-tooltip="第一转之后，剩下进度里这一段砍多少。同时这一段主要开现金。改这里，中段和细砍会自动补到 100。">i</span></label>
+              <input class="input share-in" id="fastShare" type="number" min="0" max="100" value="45">
+            </div>
+            <div class="field"><label>中段 % <span class="tip" tabindex="0" data-tooltip="剩下进度的中间段。这一段主要开积分。改一个，另外两个自动变。">i</span></label>
+              <input class="input share-in" id="midShare" type="number" min="0" max="100" value="35">
+            </div>
+            <div class="field"><label>细砍 % <span class="tip" tabindex="0" data-tooltip="最后磨的进度。这一段主要开点数。三项合计永远 100。">i</span></label>
+              <input class="input share-in" id="fineShare" type="number" min="0" max="100" value="20">
+            </div>
+          </div>
+          <div class="phase-bar" id="shareBar" style="margin-top:10px"></div>
+          <div class="curve-wrap" style="margin-top:14px">
+            <div class="helper" style="margin-bottom:8px">进度曲线（0 → 100，横轴是转了几次）</div>
+            <svg id="curveSvg" viewBox="0 0 360 130" width="100%" height="130" aria-label="进度曲线"></svg>
+            <div class="grid-2" style="margin-top:12px">
+              <div>
+                <div class="helper" style="margin-bottom:6px">参加时（未转）</div>
+                <div class="fill-bar" id="playerBar0"><span class="done" style="width:0%"></span><span class="left" style="width:100%"></span></div>
+                <div class="legend"><span>0%</span></div>
+              </div>
+              <div>
+                <div class="helper" style="margin-bottom:6px">第一转后</div>
+                <div class="fill-bar" id="playerBar"><span class="done" style="width:90%"></span><span class="left" style="width:10%"></span></div>
+                <div class="legend"><span>已推进 <strong id="remainPctLabel">90%</strong></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="prizeSection" data-focus="prize">
+        <div class="section-header">
+          <div class="section-title"><span class="step">5</span><div><h2>转盘开奖</h2><div class="helper">开奖跟进度段走：快砍主要开现金，中段积分，细砍点数。可越级直接对上一级。不要手填每个扇区机率——右侧会算出预估分布。</div></div></div>
+        </div>
+        <div class="section-body">
+          <div class="notice">换算写死：100 积分 = 1 现金；100 点数 = 1 积分。类型只有 谢谢参与／现金／积分／点数。</div>
+          <div class="grid-3" style="margin-top:12px">
+            <article class="phase-card">
+              <h3>快砍 <span class="tag pri">主要现金</span></h3>
+              <div class="field"><label>谢谢参与 % <span class="tip" tabindex="0" data-tooltip="这一段空转比例。只推进度，不入账。">i</span></label>
+                <input class="input" id="fastThanks" type="number" min="0" max="100" value="18">
+              </div>
+              <div class="field"><label>越级 % <span class="tip" tabindex="0" data-tooltip="快砍已是现金，越级＝抽到本段大档金额。">i</span></label>
+                <input class="input" id="fastUp" type="number" min="0" max="100" value="8">
+              </div>
+              <div class="amt-row"><span>小</span><input class="input" id="fastA1" type="number" min="0" step="0.01" value="0.18"></div>
+              <div class="amt-row"><span>中</span><input class="input" id="fastA2" type="number" min="0" step="0.01" value="0.5"></div>
+              <div class="amt-row"><span>大</span><input class="input" id="fastA3" type="number" min="0" step="0.01" value="1"></div>
+              <div class="helper">单位：现金</div>
+            </article>
+            <article class="phase-card">
+              <h3>中段 <span class="tag pri">主要积分</span></h3>
+              <div class="field"><label>谢谢参与 % <span class="tip" tabindex="0" data-tooltip="这一段空转比例。">i</span></label>
+                <input class="input" id="midThanks" type="number" min="0" max="100" value="22">
+              </div>
+              <div class="field"><label>越级 % <span class="tip" tabindex="0" data-tooltip="越级＝直接开现金（对奖）。">i</span></label>
+                <input class="input" id="midUp" type="number" min="0" max="100" value="10">
+              </div>
+              <div class="amt-row"><span>小</span><input class="input" id="midA1" type="number" min="0" value="18"></div>
+              <div class="amt-row"><span>中</span><input class="input" id="midA2" type="number" min="0" value="50"></div>
+              <div class="amt-row"><span>大</span><input class="input" id="midA3" type="number" min="0" value="100"></div>
+              <div class="helper">单位：积分（100＝1 现金）</div>
+            </article>
+            <article class="phase-card">
+              <h3>细砍 <span class="tag pri">主要点数</span></h3>
+              <div class="field"><label>谢谢参与 % <span class="tip" tabindex="0" data-tooltip="磨的时候空转可以多一点。">i</span></label>
+                <input class="input" id="fineThanks" type="number" min="0" max="100" value="28">
+              </div>
+              <div class="field"><label>越级 % <span class="tip" tabindex="0" data-tooltip="越级＝开积分。本版只跳一级，不会从点数直接跳现金。">i</span></label>
+                <input class="input" id="fineUp" type="number" min="0" max="100" value="6">
+              </div>
+              <div class="amt-row"><span>小</span><input class="input" id="fineA1" type="number" min="0" value="50"></div>
+              <div class="amt-row"><span>中</span><input class="input" id="fineA2" type="number" min="0" value="100"></div>
+              <div class="amt-row"><span>大</span><input class="input" id="fineA3" type="number" min="0" value="200"></div>
+              <div class="helper">单位：点数（100＝1 积分）</div>
+            </article>
+          </div>
+          <div class="field" style="margin-top:14px;max-width:240px">
+            <label>转满大奖（现金） <span class="tip" tabindex="0" data-tooltip="进度到 100% 才发一次，不占转盘。">i</span></label>
+            <input class="input" id="finishPrize" type="number" value="5">
+          </div>
+          <div class="helper" style="margin-top:12px">预估开奖分布（按目标次数加权，只读）</div>
+          <div class="mix-bar" id="prizeMixBar" style="margin-top:6px;height:22px"></div>
+          <div class="legend" id="prizeMixLegend"></div>
+        </div>
+      </section>
+
+      <section class="section" id="easeSection" data-focus="ease">
+        <div class="section-header">
+          <div class="section-title"><span class="step">6</span><div><h2>容易完成</h2><div class="helper">按会员等级与活动期内累计充值，加快后面几刀。第一转大家跳到同一进度。不改主货币。</div></div></div>
+          <button class="btn compact" type="button" id="addEaseBtn">＋ 新增一档</button>
+        </div>
+        <div class="section-body">
+          <div class="table-scroll">
+            <table class="source-table" id="easeTable">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>会员等级 ≥ <span class="tip" tabindex="0" data-tooltip="VIP／会员等级下限。多行都符合时用倍率最高的一行。">i</span></th>
+                  <th>期内累计充值 ≥ <span class="tip" tabindex="0" data-tooltip="只算本活动时间内充值。0＝不看充值。">i</span></th>
+                  <th>进度倍率 <span class="tip" tabindex="0" data-tooltip="1＝标准。1.5＝第二转起每刀多砍 50%，更快到 100%。">i</span></th>
+                  <th>越级加 % <span class="tip" tabindex="0" data-tooltip="加在该段越级%上。让大户比较容易开到上一级，但不是换表。">i</span></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="easeRows"></tbody>
+            </table>
+          </div>
+          <div class="notice" style="margin-top:12px" id="easePreview">预估转满次数会显示在这里。</div>
+        </div>
+      </section>
+
+      <section class="section" id="budgetSection" data-focus="budget">
+        <div class="section-header">
+          <div class="section-title"><span class="step">7</span><div><h2>预算</h2><div class="helper">助力为主时用次数上限算最坏，不能用「平均没人邀到」低估。积分／点数按换算折成现金当量。</div></div></div>
+        </div>
+        <div class="section-body grid-3">
+          <div class="field"><label>本活动预算 <span class="tip" tabindex="0" data-tooltip="全档可赔付上限。不够时先停新加入。">i</span></label><input class="input" id="budget" type="number" value="50000"></div>
+          <div class="field"><label>最多可参加人数 <span class="tip" tabindex="0" data-tooltip="每人最坏＝次数上限×单次小奖＋转满大奖。">i</span></label><input class="input" id="joinCap" type="number" value="800"></div>
+          <div class="field"><label>怎么参加 <span class="tip" tabindex="0" data-tooltip="建议点「参加」才开始个人天数并预留预算。打开即参加更像拼多多，但不好控预算与配置快照。">i</span></label>
+            <div class="radio-group">
+              <label class="el-radio-item"><input type="radio" name="joinMode" value="click" checked> 点击参加</label>
+              <label class="el-radio-item"><input type="radio" name="joinMode" value="auto"> 打开活动页即参加</label>
+            </div>
+          </div>
+        </div>
+        <div class="notice warn" style="margin:12px 18px 0">原型不写入正式租户。右侧绿灯齐了才能点确认。</div>
+      </section>
+    </main>
+
+    <aside class="side">
+      <section class="side-card now-card" id="nowCard">
+        <h3>你正在调</h3>
+        <div id="nowTitle" style="font-weight:800">抽奖次数</div>
+        <div id="nowFeel" style="margin:6px 0;font-size:13px">谁给的抽奖次数最多，谁就是主力。</div>
+        <div class="look">变化看这里：<strong id="nowLook">右边色条、主力徽章</strong></div>
+      </section>
+
+      <section class="side-card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h2 style="margin:0;font-size:15px">主要次数从哪来</h2>
+          <span class="tag pri" id="primaryTag">做任务</span>
+        </div>
+        <div class="mix-bar" id="mixBar" style="margin-top:10px"></div>
+        <div class="legend" id="mixLegend"></div>
+        <div class="summary-row"><span>预计可发</span><strong id="sumSupply">0 次</strong></div>
+        <div class="summary-row"><span>算进转满</span><strong id="sumG">0 次</strong></div>
+        <div class="summary-row"><span>不拉人能拿</span><strong id="sumSolo">0 次</strong></div>
+      </section>
+
+      <section class="side-card">
+        <h2 style="margin:0 0 10px;font-size:15px">玩家看到的进度</h2>
+        <div class="helper">参加时</div>
+        <div class="fill-bar" style="height:10px;margin:4px 0 10px"><span class="done" style="width:0%"></span><span class="left" style="width:100%"></span></div>
+        <div class="helper">第一转后</div>
+        <div class="fill-bar" style="height:14px"><span class="done" id="sideDone" style="width:90%"></span><span class="left" id="sideLeft" style="width:10%"></span></div>
+        <div class="summary-row" style="margin-top:12px"><span>第一转</span><strong id="sideRemain">90%</strong></div>
+        <div class="summary-row"><span>目标旋转次数</span><strong id="sideSpins">12</strong></div>
+        <div class="helper" style="margin-top:10px">前台不显示还差几次。</div>
+      </section>
+
+      <section class="side-card">
+        <div style="display:flex;justify-content:space-between"><h2 style="margin:0;font-size:15px">能否开启</h2><span class="tag" id="valTag">检查中</span></div>
+        <div id="valList" style="margin-top:8px;display:grid;gap:5px"></div>
+      </section>
+    </aside>
+  </div>
+
+  <div class="footer-actions">
+    <span class="helper">原型 · 不提交正式租户</span>
+    <div>
+      <button class="btn">取消</button>
+      <button class="btn">保存草稿</button>
+      <button class="btn primary" type="button" onclick="flashSave()">确认</button>
+    </div>
+  </div>
+
+  <script>
+    const FOCUS = {
+      fuel: { title: "抽奖次数", feel: "调整活动主要目标。每日次数只在这里调。", look: "右边色条、主力徽章" },
+      downline: { title: "好友助力", feel: "把每日次数和目标次数拉高，助力就会变主力。", look: "主力徽章是否变成「好友助力」" },
+      task: { title: "做任务", feel: "勾选要开的任务。完成一项发几次看上方抽奖次数。", look: "勾选数量、每日次数" },
+      curve: { title: "进度条", feel: "玩家从 0 开始。调第一转、以及同一列的快砍／中段／细砍。", look: "两条进度条、下降／上升曲线" },
+      prize: { title: "转盘开奖", feel: "快砍现金、中段积分、细砍点数。越级是开超过。不要手填扇区机率。", look: "预估开奖色条" },
+      ease: { title: "容易完成", feel: "高等级／高充值后面几刀更大，更快转满。第一转人人一样。", look: "预估转满次数" },
+      budget: { title: "预算", feel: "点参加才开始个人天数并预留预算。", look: "预算是否盖得住人数" }
+    };
+
+    const TPL = {
+      explore_led: { dlEach:1, dlDay:1, dlCap:7, dlEvents:3, dlG:false, expEach:1, expCap:7 },
+      balanced: { dlEach:2, dlDay:2, dlCap:14, dlEvents:7, dlG:true, expEach:1, expCap:7 },
+      downline_led: { dlEach:3, dlDay:3, dlCap:36, dlEvents:12, dlG:true, expEach:1, expCap:7 }
+    };
+
+    function n(id) { return Number(document.getElementById(id).value) || 0; }
+    function on(id) {
+      const el = document.getElementById(id);
+      if (!el) return false;
+      if (el.classList.contains("src-sw")) return el.classList.contains("on");
+      return !!el.checked;
+    }
+    function step(id, d) {
+      const el = document.getElementById(id);
+      el.value = Math.max(0, (Number(el.value)||0) + d);
+      render();
+    }
+    function taskCount() {
+      return ["taskPlay","taskDepC","taskDepA","taskBetC","taskBetA"].filter(on).length;
+    }
+    function supply(onId, eachId, eventsId, capId) {
+      if (!on(onId)) return 0;
+      return Math.min(n(eachId) * n(eventsId), n(capId) || Infinity);
+    }
+    const SHARE_IDS = ["fastShare","midShare","fineShare"];
+    function clamp(v, lo, hi) { return Math.min(hi, Math.max(lo, v)); }
+    function syncShares(changedId) {
+      const changed = clamp(Math.round(n(changedId)), 0, 100);
+      document.getElementById(changedId).value = changed;
+      const others = SHARE_IDS.filter(id => id !== changedId);
+      const rest = 100 - changed;
+      const o0 = n(others[0]), o1 = n(others[1]);
+      const sum = o0 + o1;
+      let n0;
+      if (sum <= 0) n0 = Math.round(rest / 2);
+      else n0 = Math.round(rest * o0 / sum);
+      n0 = clamp(n0, 0, rest);
+      document.getElementById(others[0]).value = n0;
+      document.getElementById(others[1]).value = rest - n0;
+    }
+    function addEase(data) {
+      const d = data || { vip:1, dep:0, mul:1, up:0 };
+      const tr = document.createElement("tr");
+      tr.innerHTML =
+        '<td><button type="button" class="src-sw on" aria-pressed="true"></button></td>' +
+        '<td><input class="input ease-vip" type="number" min="0" value="'+d.vip+'"></td>' +
+        '<td><input class="input ease-dep" type="number" min="0" value="'+d.dep+'"></td>' +
+        '<td><input class="input ease-mul" type="number" min="0.1" step="0.1" value="'+d.mul+'"></td>' +
+        '<td><input class="input ease-up" type="number" min="0" max="50" value="'+d.up+'"></td>' +
+        '<td><button class="btn ghost" type="button" data-del>删除</button></td>';
+      const sw = tr.querySelector(".src-sw");
+      sw.onclick = () => {
+        sw.classList.toggle("on");
+        sw.setAttribute("aria-pressed", sw.classList.contains("on"));
+        tr.classList.toggle("source-off", !sw.classList.contains("on"));
+        render();
+      };
+      tr.querySelector("[data-del]").onclick = () => { tr.remove(); render(); };
+      document.getElementById("easeRows").appendChild(tr);
+    }
+    function easeList() {
+      return [...document.querySelectorAll("#easeRows tr")].map(tr => ({
+        on: tr.querySelector(".src-sw").classList.contains("on"),
+        vip: Number(tr.querySelector(".ease-vip").value)||0,
+        dep: Number(tr.querySelector(".ease-dep").value)||0,
+        mul: Number(tr.querySelector(".ease-mul").value)||1,
+        up: Number(tr.querySelector(".ease-up").value)||0
+      })).filter(r => r.on);
+    }
+    function maxCashEq() {
+      const cash = Math.max(n("fastA1"), n("fastA2"), n("fastA3"));
+      const cred = Math.max(n("midA1"), n("midA2"), n("midA3")) / 100;
+      const pt = Math.max(n("fineA1"), n("fineA2"), n("fineA3")) / 10000;
+      return Math.max(cash, cred, pt);
+    }
+    function planGains(first, T, fs, ms, ns) {
+      const rest = Math.max(0, 100 - first);
+      const s = (fs+ms+ns)||1;
+      const restSpins = Math.max(1, T - 1);
+      const parts = [
+        { n: Math.max(1, Math.round(restSpins * fs/s)), share: fs/s },
+        { n: Math.max(1, Math.round(restSpins * ms/s)), share: ms/s },
+        { n: 0, share: ns/s }
+      ];
+      parts[2].n = Math.max(1, restSpins - parts[0].n - parts[1].n);
+      const gains = [first];
+      parts.forEach(p => {
+        const chunk = rest * p.share;
+        for (let i=0;i<p.n;i++) gains.push(chunk / p.n);
+      });
+      while (gains.length > T) gains.pop();
+      while (gains.length < T) gains.push(0);
+      const used = gains.slice(0,-1).reduce((a,b)=>a+b,0);
+      gains[gains.length-1] = Math.max(0, 100 - used);
+      return { gains, parts };
+    }
+    function spinsToFinish(first, T, fs, ms, ns, mul) {
+      const { gains } = planGains(first, T, fs, ms, ns);
+      let p = 0, k = 0;
+      while (p < 99.999 && k < 80) {
+        k += 1;
+        const g0 = k === 1 ? gains[0] : (gains[Math.min(k-1, gains.length-1)] * mul);
+        p = Math.min(100, p + g0);
+        if (k >= T) p = 100;
+      }
+      return k;
+    }
+    function renderCurve(first, T) {
+      const svg = document.getElementById("curveSvg");
+      if (!svg) return;
+      const { gains } = planGains(first, T, n("fastShare"), n("midShare"), n("fineShare"));
+      let p = 0, d = "M 16 114 ";
+      gains.forEach((g,i) => {
+        p = Math.min(100, p + g);
+        const x = 16 + (i+1) * (328 / gains.length);
+        const y = 114 - (p/100)*96;
+        d += "L "+x.toFixed(1)+" "+y.toFixed(1)+" ";
+      });
+      svg.innerHTML =
+        '<line x1="16" y1="18" x2="16" y2="114" stroke="currentColor" opacity=".25"/>' +
+        '<line x1="16" y1="114" x2="344" y2="114" stroke="currentColor" opacity=".25"/>' +
+        '<path d="'+d+'" fill="none" stroke="#409eff" stroke-width="2.4"/>' +
+        '<text x="20" y="14" font-size="10" fill="currentColor">进度 100%</text>' +
+        '<text x="268" y="126" font-size="10" fill="currentColor">转了几次 →</text>';
+    }
+    function prizeMix(T, fs, ms, ns) {
+      const s = (fs+ms+ns)||1;
+      const rest = Math.max(1, T-1);
+      const nFast = 1 + Math.max(1, Math.round(rest*fs/s));
+      const nMid = Math.max(1, Math.round(rest*ms/s));
+      const nFine = Math.max(1, T - nFast - nMid);
+      function split(count, thanks, up) {
+        const th = count * thanks/100;
+        const left = count - th;
+        const ug = left * up/100;
+        const nat = left - ug;
+        return { th, ug, nat };
+      }
+      const F = split(nFast, n("fastThanks"), n("fastUp"));
+      const M = split(nMid, n("midThanks"), n("midUp"));
+      const N = split(nFine, n("fineThanks"), n("fineUp"));
+      const thanks = F.th + M.th + N.th;
+      const cash = F.nat + F.ug + M.ug;
+      const credit = M.nat + N.ug;
+      const point = N.nat;
+      const tot = thanks + cash + credit + point || 1;
+      return {
+        rows: [
+          { name:"谢谢参与", v:thanks, color:"#909399" },
+          { name:"现金", v:cash, color:"#67c23a" },
+          { name:"积分", v:credit, color:"#409eff" },
+          { name:"点数", v:point, color:"#e6a23c" }
+        ].map(r => ({ ...r, p: Math.round(r.v/tot*100) }))
+      };
+    }
+    function model() {
+      const tasks = taskCount();
+      document.getElementById("expEvents").value = Math.max(1, tasks);
+      const free = supply("freeOn","freeEach","freeEvents","freeCap");
+      const exp = supply("expOn","expEach","expEvents","expCap");
+      const dl = supply("dlOn","dlEach","dlEvents","dlCap");
+      const total = free + exp + dl;
+      const g = (on("freeOn")&&on("freeG")?free:0) + (on("expOn")&&on("expG")?exp:0) + (on("dlOn")&&on("dlG")?dl:0);
+      const solo = free + exp;
+      const rows = [
+        { id:"free", name:"每日免费抽", v:free, color:"#909399" },
+        { id:"exp", name:"做任务", v:exp, color:"#409eff" },
+        { id:"dl", name:"好友助力", v:dl, color:"#e6a23c" }
+      ];
+      const primary = rows.slice().sort((a,b)=>b.v-a.v)[0];
+      const first = clamp(n("firstSpin"), 1, 99);
+      const T = Math.max(2, n("targetSpins"));
+      const shareSum = n("fastShare")+n("midShare")+n("fineShare");
+      const perWorst = (Math.max(n("freeCap")+n("expCap")+n("dlCap"), total)) * maxCashEq() + n("finishPrize");
+      const need = perWorst * n("joinCap");
+      const checks = [];
+      checks.push({ ok: shareSum === 100, level: shareSum===100?"ok":"bad", text: "快砍＋中段＋细砍 = "+shareSum+"%（需 100）" });
+      checks.push({ ok: total > 0, level: total>0?"ok":"bad", text: "至少有一个抽奖来源" });
+      checks.push({ ok: tasks >= 1, level: tasks>=1?"ok":"bad", text: "至少勾选 1 项任务" });
+      const primaryIsDl = primary && primary.id==="dl" && primary.v>0;
+      checks.push({ ok: !primaryIsDl || on("dlG"), level: (!primaryIsDl || on("dlG"))?"ok":"warn", text: primaryIsDl && !on("dlG") ? "主力是好友助力，但没勾「可完成活动」" : "主力已算进可完成活动" });
+      checks.push({ ok: n("budget") >= need, level: n("budget")>=need?"ok":"warn", text: "预算够覆盖人数 × 每人最坏现金当量（约 " + Math.round(need) + "）" });
+      const blocked = checks.some(c => c.level==="bad");
+      return { free, exp, dl, total, g, solo, rows, primary, first, T, tasks, checks, blocked, shareSum };
+    }
+    function render() {
+      document.getElementById("freeSupply").textContent = supply("freeOn","freeEach","freeEvents","freeCap");
+      document.getElementById("expSupply").textContent = supply("expOn","expEach","expEvents","expCap");
+      document.getElementById("dlSupply").textContent = supply("dlOn","dlEach","dlEvents","dlCap");
+      const m = model();
+      document.getElementById("mixBar").innerHTML = m.rows.map(r => {
+        const w = m.total ? (r.v/m.total*100) : 0;
+        return '<span style="width:'+w+'%;background:'+r.color+'"></span>';
+      }).join("");
+      document.getElementById("mixLegend").innerHTML = m.rows.map(r => {
+        const p = m.total ? Math.round(r.v/m.total*100) : 0;
+        return '<span><i class="dot" style="background:'+r.color+'"></i>'+r.name+' '+r.v+'（'+p+'%）</span>';
+      }).join("");
+      document.getElementById("primaryTag").textContent = m.total ? m.primary.name : "无";
+      document.getElementById("sumSupply").textContent = m.total + " 次";
+      document.getElementById("sumG").textContent = m.g + " 次";
+      document.getElementById("sumSolo").textContent = m.solo + " 次";
+      const filled = m.first;
+      document.getElementById("playerBar").innerHTML = '<span class="done" style="width:'+filled+'%"></span><span class="left" style="width:'+(100-filled)+'%"></span>';
+      document.getElementById("remainPctLabel").textContent = filled + "%";
+      document.getElementById("sideDone").style.width = filled + "%";
+      document.getElementById("sideLeft").style.width = (100-filled) + "%";
+      document.getElementById("sideRemain").textContent = filled + "%";
+      document.getElementById("sideSpins").textContent = m.T;
+      renderCurve(m.first, m.T);
+      const sb = document.getElementById("shareBar");
+      if (sb) {
+        sb.innerHTML =
+          '<b style="width:'+n("fastShare")+'%;background:var(--fast)">快砍 '+n("fastShare")+'</b>' +
+          '<b style="width:'+n("midShare")+'%;background:var(--mid)">中段 '+n("midShare")+'</b>' +
+          '<b style="width:'+n("fineShare")+'%;background:var(--fine)">细砍 '+n("fineShare")+'</b>';
+      }
+      const mix = prizeMix(m.T, n("fastShare"), n("midShare"), n("fineShare"));
+      const pbar = document.getElementById("prizeMixBar");
+      if (pbar) {
+        pbar.innerHTML = mix.rows.map(r => '<span style="width:'+r.p+'%;background:'+r.color+'"></span>').join("");
+        document.getElementById("prizeMixLegend").innerHTML = mix.rows.map(r =>
+          '<span><i class="dot" style="background:'+r.color+'"></i>'+r.name+' '+r.p+'%</span>'
+        ).join("");
+      }
+      const eases = easeList();
+      const prev = document.getElementById("easePreview");
+      if (prev) {
+        const base = spinsToFinish(m.first, m.T, n("fastShare"), n("midShare"), n("fineShare"), 1);
+        const bits = ["标准约 "+base+" 转"];
+        eases.filter(r => r.mul !== 1).forEach(r => {
+          bits.push("等级≥"+r.vip+"／充值≥"+r.dep+" → 约 "+spinsToFinish(m.first, m.T, n("fastShare"), n("midShare"), n("fineShare"), r.mul)+" 转");
+        });
+        prev.textContent = bits.join("。") + "。第一转人人相同。";
+      }
+      document.getElementById("taskSummary").textContent = "已勾选 " + m.tasks + " 项任务。完成一项发 " + n("expEach") + " 次（上方抽奖次数已设）。";
+      ["taskPlay","taskDepC","taskDepA","taskBetC","taskBetA"].forEach(id => {
+        const row = document.getElementById(id).closest(".task-row");
+        if (row) row.classList.toggle("off", !on(id));
+      });
+      ["freeOn","expOn","dlOn"].forEach(id => {
+        const sw = document.getElementById(id);
+        const tr = sw && sw.closest("tr");
+        if (tr) tr.classList.toggle("source-off", !on(id));
+      });
+      const list = document.getElementById("valList");
+      list.innerHTML = m.checks.map(c => '<div class="validation-item '+c.level+'">'+c.text+'</div>').join("");
+      const tag = document.getElementById("valTag");
+      tag.textContent = m.blocked ? "还不能开" : "可以开";
+      tag.className = "tag " + (m.blocked ? "bad" : "ok");
+    }
+    function setFocus(key) {
+      const f = FOCUS[key] || FOCUS.fuel;
+      document.getElementById("nowTitle").textContent = f.title;
+      document.getElementById("nowFeel").textContent = f.feel;
+      document.getElementById("nowLook").textContent = f.look;
+    }
+    function applyFuelTpl(name) {
+      const t = TPL[name]; if (!t) return;
+      ["dlEach","dlCap","dlEvents","expEach","expCap"].forEach(k => {
+        const el = document.getElementById(k); if (el) el.value = t[k];
+      });
+      const g = document.getElementById("dlG"); if (g) g.checked = t.dlG;
+      render();
+    }
+    function syncWallet() {
+      const cash = document.querySelector('input[name="wallet"]:checked').value === "cash";
+      document.getElementById("wagerRow").style.display = cash ? "grid" : "none";
+    }
+    function flashSave() {
+      const m = model();
+      alert(m.blocked ? "还不能开，请看右侧红灯。" : "已记在本页（不写入正式系统）。主要次数来自：" + m.primary.name);
+    }
+    function resetDemo() {
+      document.querySelector('input[name="fuelTpl"][value="explore_led"]').checked = true;
+      applyFuelTpl("explore_led");
+    }
+    document.getElementById("themeBtn").onclick = () => {
+      const dark = document.documentElement.classList.contains("dark");
+      document.documentElement.classList.toggle("dark", !dark);
+      document.documentElement.classList.toggle("light", dark);
+      document.getElementById("themeBtn").textContent = dark ? "🌙 夜间模式" : "☀️ 白天模式";
+    };
+    document.querySelectorAll(".palette-item").forEach(el => el.onclick = () => {
+      document.querySelectorAll(".palette-item").forEach(x => x.classList.remove("active"));
+      el.classList.add("active");
+    });
+    document.querySelectorAll(".icon-tag").forEach(el => el.onclick = () => {
+      document.querySelectorAll(".icon-tag").forEach(x => x.classList.remove("active"));
+      el.classList.add("active");
+    });
+    document.getElementById("addEaseBtn").onclick = () => { addEase(); render(); };
+    [{vip:1,dep:0,mul:1,up:0},{vip:4,dep:200,mul:1.2,up:2},{vip:7,dep:2000,mul:1.5,up:5}].forEach(addEase);
+    document.querySelectorAll(".src-sw").forEach(sw => {
+      if (sw.closest("#easeRows")) return;
+      sw.onclick = () => {
+        sw.classList.toggle("on");
+        sw.setAttribute("aria-pressed", sw.classList.contains("on"));
+        render();
+      };
+    });
+    SHARE_IDS.forEach(id => {
+      document.getElementById(id).addEventListener("change", () => { syncShares(id); render(); });
+    });
+    document.getElementById("fuelTpl").addEventListener("change", e => applyFuelTpl(e.target.value));
+    document.getElementById("personalDays").addEventListener("input", () => {
+      const d = Math.max(1, n("personalDays"));
+      ["freeEvents","freeCap"].forEach(id => document.getElementById(id).value = d);
+      render();
+    });
+    document.getElementById("steps").addEventListener("click", e => {
+      const btn = e.target.closest("button"); if (!btn) return;
+      document.querySelectorAll(".setup-steps button").forEach(b => b.classList.toggle("active", b===btn));
+      document.getElementById(btn.dataset.target).scrollIntoView({ behavior:"smooth", block:"start" });
+      const map = { fuelSection:"fuel", downlineSection:"downline", taskSection:"task", curveSection:"curve", prizeSection:"prize", easeSection:"ease", budgetSection:"budget" };
+      setFocus(map[btn.dataset.target]);
+    });
+    document.querySelector(".layout").addEventListener("focusin", e => {
+      const sec = e.target.closest("section.section");
+      if (sec && sec.dataset.focus) setFocus(sec.dataset.focus);
+    });
+    document.querySelector(".layout").addEventListener("click", e => {
+      const sec = e.target.closest("section.section");
+      if (sec && sec.dataset.focus) setFocus(sec.dataset.focus);
+    });
+    document.querySelector(".layout").addEventListener("input", render);
+    document.querySelector(".layout").addEventListener("change", render);
+    render();
+  </script>
+</body>
+</html>

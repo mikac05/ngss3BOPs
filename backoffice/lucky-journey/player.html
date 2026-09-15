@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>好运探索季 V3｜玩家前台与原型模拟器</title>
+  <link rel="stylesheet" href="player.css">
+</head>
+<body>
+
+  <!-- 全局顶部导航条（双向跳转、原型标识、全局操作） -->
+  <header class="global-topbar">
+    <div class="topbar-title-group">
+      <a class="topbar-btn" href="index.html">← 返回后台配置 (index.html)</a>
+      <div class="topbar-title">
+        <span>🎮 好运探索季 V3 玩家前台与仿真测试</span>
+      </div>
+      <span class="nav-tag proto">Prototype-only</span>
+      <span class="nav-tag warn">Recommendation / 建议案</span>
+    </div>
+    <div class="topbar-actions">
+      <a class="topbar-btn" href="guide.html">📖 业务与技术说明 (guide.html)</a>
+      <button class="topbar-btn" type="button" id="motionToggleBtn">🎬 动效正常</button>
+      <button class="topbar-btn" type="button" id="topbarResetBtn">🔄 全部重置</button>
+    </div>
+  </header>
+
+  <!-- 工作区：左侧玩家手机前台 + 右侧原型模拟器 -->
+  <main class="workbench-container">
+
+    <!-- ====================================================================
+         左侧：玩家手机前台 (~390x844 外壳)
+         ==================================================================== -->
+    <div class="phone-wrapper">
+      <div class="phone-device">
+        <!-- 灵动岛 / 听筒孔 -->
+        <div class="phone-island">
+          <div class="phone-camera-dot"></div>
+        </div>
+
+        <!-- 手机屏幕 -->
+        <div class="phone-screen" id="phoneScreen">
+
+          <!-- 手机状态栏 -->
+          <div class="screen-statusbar">
+            <span>09:41</span>
+            <span>5G 📶 100% 🔋</span>
+          </div>
+
+          <!-- 游戏活动顶部 -->
+          <div class="screen-app-header">
+            <div class="app-title-box">
+              <span class="app-title">好运探索季</span>
+              <span class="app-badge-proto">原型</span>
+            </div>
+            <span class="app-validity">个人有效 7 天</span>
+          </div>
+
+          <!-- 手机前台核心内容 -->
+          <div class="screen-content">
+
+            <!-- 1. 真实进度环 / 进度卡片 -->
+            <section class="progress-hero-card" aria-label="探索进度">
+              <div class="progress-header-row">
+                <span class="progress-caption">当前探索进度</span>
+                <span class="progress-percentage-num" id="phoneProgressPct">0.00%</span>
+              </div>
+
+              <!-- 进度条 -->
+              <div class="progress-track">
+                <div class="progress-fill" id="phoneProgressFill" style="width: 0%;"></div>
+              </div>
+
+              <!-- 进度提示（禁止使用任何剩余转数预估等文案） -->
+              <div class="progress-hint-box">
+                <span class="progress-hint-icon">✨</span>
+                <span id="phoneProgressHint">开始探索，第一次转动会大幅推进进度。</span>
+              </div>
+
+              <!-- 终点目标 -->
+              <div class="finish-prize-target-badge">
+                <span>终点奖励：进度达到 100% 即可领取</span>
+                <strong>¥5.00 现金</strong>
+              </div>
+            </section>
+
+            <!-- 2. 能量罗盘转盘（8等分装饰扇区，非概率饼图） -->
+            <section class="compass-section" aria-label="能量罗盘开奖">
+              <div class="compass-container">
+                <div class="compass-halo"></div>
+                <div class="compass-rim"></div>
+
+                <!-- 顶部指针 -->
+                <div class="compass-pointer">
+                  <svg viewBox="0 0 32 38" fill="none">
+                    <path d="M16 38L2 12C0 8 3 0 8 0H24C29 0 32 8 30 12L16 38Z" fill="url(#pointerGold)" />
+                    <circle cx="16" cy="12" r="5" fill="#fff" />
+                    <defs>
+                      <linearGradient id="pointerGold" x1="0" y1="0" x2="32" y2="38" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#ffd166"/>
+                        <stop offset="1" stop-color="#e67e22"/>
+                      </linearGradient>
+                    </defs>
+                  </svg>
+                </div>
+
+                <!-- 旋转轮盘（8个等分扇区，各 45°） -->
+                <div class="compass-disc" id="compassDisc">
+                  <svg class="compass-svg" viewBox="0 0 254 254">
+                    <!-- 扇区 0: 现金 (0°-45°) -->
+                    <path d="M 127 127 L 127 0 A 127 127 0 0 1 216.8 37.2 Z" fill="#d35400" stroke="#ffbd4a" stroke-width="1"/>
+                    <!-- 扇区 1: 谢谢参与 (45°-90°) -->
+                    <path d="M 127 127 L 216.8 37.2 A 127 127 0 0 1 254 127 Z" fill="#1b202e" stroke="#303845" stroke-width="1"/>
+                    <!-- 扇区 2: 活动积分 (90°-135°) -->
+                    <path d="M 127 127 L 254 127 A 127 127 0 0 1 216.8 216.8 Z" fill="#7d3c98" stroke="#af7ac5" stroke-width="1"/>
+                    <!-- 扇区 3: 谢谢参与 (135°-180°) -->
+                    <path d="M 127 127 L 216.8 216.8 A 127 127 0 0 1 127 254 Z" fill="#151924" stroke="#303845" stroke-width="1"/>
+                    <!-- 扇区 4: 活动点数 (180°-225°) -->
+                    <path d="M 127 127 L 127 254 A 127 127 0 0 1 37.2 216.8 Z" fill="#117864" stroke="#48c9b0" stroke-width="1"/>
+                    <!-- 扇区 5: 现金 (225°-270°) -->
+                    <path d="M 127 127 L 37.2 216.8 A 127 127 0 0 1 0 127 Z" fill="#b9770e" stroke="#ffbd4a" stroke-width="1"/>
+                    <!-- 扇区 6: 活动积分 (270°-315°) -->
+                    <path d="M 127 127 L 0 127 A 127 127 0 0 1 37.2 37.2 Z" fill="#6c3483" stroke="#af7ac5" stroke-width="1"/>
+                    <!-- 扇区 7: 谢谢参与 (315°-360°) -->
+                    <path d="M 127 127 L 37.2 37.2 A 127 127 0 0 1 127 0 Z" fill="#1b202e" stroke="#303845" stroke-width="1"/>
+
+                    <!-- 扇区文字与图标 -->
+                    <g font-size="11" font-weight="700" fill="#ffffff" text-anchor="middle">
+                      <!-- 0: 现金 (22.5°) -->
+                      <text transform="translate(127,127) rotate(22.5) translate(0,-80) rotate(-22.5)">💰 现金</text>
+                      <!-- 1: 谢谢参与 (67.5°) -->
+                      <text transform="translate(127,127) rotate(67.5) translate(0,-80) rotate(-67.5)" fill="#9da8b8">🎁 谢谢参与</text>
+                      <!-- 2: 活动积分 (112.5°) -->
+                      <text transform="translate(127,127) rotate(112.5) translate(0,-80) rotate(-112.5)">💎 活动积分</text>
+                      <!-- 3: 谢谢参与 (157.5°) -->
+                      <text transform="translate(127,127) rotate(157.5) translate(0,-80) rotate(-157.5)" fill="#9da8b8">🎁 谢谢参与</text>
+                      <!-- 4: 活动点数 (202.5°) -->
+                      <text transform="translate(127,127) rotate(202.5) translate(0,-80) rotate(-202.5)">⭐ 活动点数</text>
+                      <!-- 5: 现金 (247.5°) -->
+                      <text transform="translate(127,127) rotate(247.5) translate(0,-80) rotate(-247.5)">💰 现金</text>
+                      <!-- 6: 活动积分 (292.5°) -->
+                      <text transform="translate(127,127) rotate(292.5) translate(0,-80) rotate(-292.5)">💎 活动积分</text>
+                      <!-- 7: 谢谢参与 (337.5°) -->
+                      <text transform="translate(127,127) rotate(337.5) translate(0,-80) rotate(-337.5)" fill="#9da8b8">🎁 谢谢参与</text>
+                    </g>
+                  </svg>
+                </div>
+
+                <!-- 轮盘中心徽标 -->
+                <div class="compass-core">⚡</div>
+              </div>
+
+              <div class="compass-rule-caption">
+                ※ 转盘用于展示开奖结果；实际结果由服务器按本活动规则产生。
+              </div>
+            </section>
+
+            <!-- 3. 主操作区（剩余抽奖次数 + 转一次） -->
+            <section class="action-box">
+              <div class="ticket-status-pill">
+                <span>剩余抽奖次数</span>
+                <strong id="phoneTicketCount">0</strong>
+                <span>次</span>
+              </div>
+
+              <button class="btn-main-spin" id="btnMainSpin" type="button">
+                🌟 参加活动 (真实 0%)
+              </button>
+            </section>
+
+            <!-- 4. 奖励余额区（现金 / 活动积分 / 活动点数） -->
+            <section class="wallet-strip" aria-label="活动奖励余额">
+              <div class="wallet-cell cash">
+                <span class="wallet-cell-title">现金</span>
+                <span class="wallet-cell-val" id="walletCashVal">¥0.00</span>
+              </div>
+              <div class="wallet-cell credit">
+                <span class="wallet-cell-title">活动积分</span>
+                <span class="wallet-cell-val" id="walletCreditVal">0</span>
+              </div>
+              <div class="wallet-cell point">
+                <span class="wallet-cell-title">活动点数</span>
+                <span class="wallet-cell-val" id="walletPointVal">0</span>
+              </div>
+            </section>
+
+            <!-- 5. 抽奖次数获取区（做任务 / 每日免费 / 好友助力） -->
+            <section class="ticket-tasks-card" id="ticketTasksCard" aria-label="获取抽奖次数">
+              <div class="ticket-tasks-title">
+                <span>获取抽奖次数</span>
+                <span style="font-size:11px;color:var(--text-muted)">完成即领次数</span>
+              </div>
+
+              <!-- 每日免费 -->
+              <div class="task-item-row">
+                <div class="task-item-info">
+                  <span class="task-item-name">📅 每日免费探索</span>
+                  <span class="task-item-desc">每日登录免费获得 1 次抽奖次数</span>
+                </div>
+                <button class="task-action-btn" id="btnDailyFree" type="button">免费领取 (+1 次)</button>
+              </div>
+
+              <!-- 做任务列表 (5 项) -->
+              <div class="task-item-row">
+                <div class="task-item-info">
+                  <span class="task-item-name">🎮 游玩指定类型</span>
+                  <span class="task-item-desc">完成 5 局老虎机游戏（奖励 1 次）</span>
+                </div>
+                <button class="task-action-btn" id="btnTask_0" type="button">模拟完成 (+1 次)</button>
+              </div>
+
+              <div class="task-item-row">
+                <div class="task-item-info">
+                  <span class="task-item-name">💳 充值次数达成</span>
+                  <span class="task-item-desc">完成 1 次有效充值（奖励 1 次）</span>
+                </div>
+                <button class="task-action-btn" id="btnTask_1" type="button">模拟完成 (+1 次)</button>
+              </div>
+
+              <div class="task-item-row">
+                <div class="task-item-info">
+                  <span class="task-item-name">💰 充值金额累计</span>
+                  <span class="task-item-desc">累计充值满 100 元（奖励 1 次）</span>
+                </div>
+                <button class="task-action-btn" id="btnTask_2" type="button">模拟完成 (+1 次)</button>
+              </div>
+
+              <div class="task-item-row">
+                <div class="task-item-info">
+                  <span class="task-item-name">🎲 下注次数达成</span>
+                  <span class="task-item-desc">有效投注满 10 次（奖励 1 次）</span>
+                </div>
+                <button class="task-action-btn" id="btnTask_3" type="button">模拟完成 (+1 次)</button>
+              </div>
+
+              <div class="task-item-row">
+                <div class="task-item-info">
+                  <span class="task-item-name">🏆 下注金额累计</span>
+                  <span class="task-item-desc">有效投注金额满 50 元（奖励 1 次）</span>
+                </div>
+                <button class="task-action-btn" id="btnTask_4" type="button">模拟完成 (+1 次)</button>
+              </div>
+
+              <!-- 好友助力 -->
+              <div class="task-item-row">
+                <div class="task-item-info">
+                  <span class="task-item-name">👥 好友助力 (<span id="assistFriendCount">0/5</span> 位)</span>
+                  <span class="task-item-desc">每位好友奖励 1 次抽奖次数</span>
+                </div>
+                <button class="task-action-btn" id="btnFriendAssist" type="button">邀请好友助力 (+1 次)</button>
+              </div>
+
+              <!-- 助力规则说明（规范文案） -->
+              <div class="assist-rule-note">
+                ※ 规则：好友助力只算活动开始后的直接新注册下线。助力成功发放抽奖次数，不直接跳动进度。
+              </div>
+            </section>
+
+          </div>
+        </div>
+
+        <!-- 手机内提示 Toast -->
+        <div class="phone-toast" id="phoneToast">已获得 1 次抽奖次数</div>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         右侧：原型模拟器 (Ops / Dev Only)
+         ==================================================================== -->
+    <aside class="simulator-panel" aria-label="原型模拟器">
+      <div class="sim-header">
+        <div class="sim-title-group">
+          <span class="sim-title">⚙️ 原型模拟器</span>
+          <span class="nav-tag proto">Prototype-only</span>
+          <span class="sim-dev-tag">Ops / Dev Only</span>
+        </div>
+        <button class="topbar-btn" type="button" id="btnSimReset">↺ 重置前台状态 (0% 初始态)</button>
+      </div>
+
+      <!-- 模拟器提示说明 -->
+      <div class="sim-notice">
+        💡 <strong>原型模拟器说明：</strong>供运营与开发人员测算「每日免费 + 任务 + 助力」供给组合与终点完成率。
+        内部参数（如目标完成转数 T）仅用于后台核算，<strong>严格不对前台玩家显示</strong>。
+      </div>
+
+      <div class="sim-body">
+
+        <!-- 1. 会员层级选择器 (影响 T 快照) -->
+        <div class="sim-cohort-section">
+          <div class="sim-field-label">
+            <span>测试会员层级 (选择后重新加入)</span>
+            <span id="simCohortDesc" style="color:var(--gold);font-weight:600">当前层级目标转数 T = 12（注意：T 不在玩家手机端展示）</span>
+          </div>
+          <div class="cohort-buttons-grid">
+            <button class="cohort-btn active" type="button" data-cohort="standard">
+              标准玩家 (T=12)
+            </button>
+            <button class="cohort-btn" type="button" data-cohort="vip4_dep200">
+              VIP4+ 充值≥200 (T=10)
+            </button>
+            <button class="cohort-btn" type="button" data-cohort="vip7_dep2000">
+              VIP7+ 充值≥2000 (T=8)
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. 次数供给输入滑块 -->
+        <div class="sim-cohort-section">
+          <div class="sim-field-label">
+            <span>次数供给参数调节 (设置玩家获取的各渠道次数)</span>
+          </div>
+
+          <div class="sim-sliders-grid">
+            <!-- 每日免费 -->
+            <div class="sim-slider-card">
+              <div class="sim-slider-header">
+                <span>每日免费已领天数</span>
+                <span class="sim-slider-val" id="simValFree">7 天 (7 次)</span>
+              </div>
+              <input type="range" id="simSliderFree" min="0" max="7" value="7" step="1">
+              <span style="font-size:11px;color:var(--text-dim)">上限 7 天 (7 次)</span>
+            </div>
+
+            <!-- 已完成任务数 -->
+            <div class="sim-slider-card">
+              <div class="sim-slider-header">
+                <span>已完成任务项数</span>
+                <span class="sim-slider-val" id="simValTask">5 项 (5 次)</span>
+              </div>
+              <input type="range" id="simSliderTask" min="0" max="5" value="5" step="1">
+              <span style="font-size:11px;color:var(--text-dim)">已启用 5 项 (上限 5 次)</span>
+            </div>
+
+            <!-- 合格好友人数 -->
+            <div class="sim-slider-card">
+              <div class="sim-slider-header">
+                <span>合格好友人数</span>
+                <span class="sim-slider-val" id="simValAssist">0 人 (0 次)</span>
+              </div>
+              <input type="range" id="simSliderAssist" min="0" max="5" value="0" step="1">
+              <span style="font-size:11px;color:var(--text-dim)">直接新注册 (上限 5 次)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. 实时测算结果输出 -->
+        <div class="sim-outputs-card">
+          <div style="font-size:13px;font-weight:800;color:#fff;display:flex;justify-content:space-between">
+            <span>📊 模拟测算输出 (Live Outputs)</span>
+            <span style="font-size:11px;color:var(--text-muted)">走完此供给后的理论值</span>
+          </div>
+
+          <div class="output-metrics-grid">
+            <div class="metric-box highlight">
+              <span class="metric-box-title">本局可得抽奖次数</span>
+              <span class="metric-box-val" id="simOutTickets">12 次</span>
+            </div>
+
+            <div class="metric-box highlight">
+              <span class="metric-box-title">模拟最终进度 %</span>
+              <span class="metric-box-val" id="simOutProgress">100.00%</span>
+            </div>
+
+            <div class="metric-box status-pass" id="metricBoxComplete">
+              <span class="metric-box-title">是否完成本局</span>
+              <span class="metric-box-val" id="simOutComplete">✅ 已完成 (100%)</span>
+            </div>
+
+            <div class="metric-box">
+              <span class="metric-box-title">是否拿到转满大奖</span>
+              <span class="metric-box-val" id="simOutFinishPrize">¥5.00 现金</span>
+            </div>
+
+            <div class="metric-box">
+              <span class="metric-box-title">累计现金当量预期</span>
+              <span class="metric-box-val" id="simOutEv">¥7.86</span>
+            </div>
+
+            <div class="metric-box">
+              <span class="metric-box-title">预估活动积分</span>
+              <span class="metric-box-val" id="simOutCredit" style="color:var(--amethyst)">203 分</span>
+            </div>
+
+            <div class="metric-box">
+              <span class="metric-box-title">预估活动点数</span>
+              <span class="metric-box-val" id="simOutPoint" style="color:var(--cyan)">12,600 点</span>
+            </div>
+
+            <div class="metric-box">
+              <span class="metric-box-title">阶段分布</span>
+              <span class="metric-box-val" id="simOutPhaseDist" style="font-size:13px">5快 / 4中 / 3细</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. 快速验收测试用例预设 (Preset Buttons) -->
+        <div class="sim-cohort-section">
+          <div class="sim-field-label">
+            <span>快速验收用例预设 (Click to Test)</span>
+          </div>
+          <div class="sim-presets-row">
+            <button class="sim-preset-btn" type="button" id="btnPresetA">
+              ✅ 验收用例 1：7免费 + 5任务 + 0好友 → 12次 → 100% 完成
+            </button>
+            <button class="sim-preset-btn" type="button" id="btnPresetB">
+              ⚠️ 验收用例 2：3免费 + 2任务 + 0好友 → 5次 → 95.57% 未完成
+            </button>
+            <button class="sim-preset-btn" type="button" id="btnPresetC">
+              🌟 满额供给：7免费 + 5任务 + 5好友 → 17次 → 100% 完成
+            </button>
+          </div>
+        </div>
+
+        <!-- 5. 模拟执行动作栏 -->
+        <div class="sim-actions-row">
+          <button class="btn-sim-action primary" type="button" id="btnSimAuto">
+            ⚡ 一键按此供给自动转完 (Auto Spin)
+          </button>
+          <button class="btn-sim-action secondary" type="button" id="btnSimSync">
+            📥 同步供给到手机 (手动转一次)
+          </button>
+        </div>
+
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- ====================================================================
+       中奖暴击 / 谢谢参与 / 终点大奖弹窗 (Hype Stamp Modal)
+       ==================================================================== -->
+  <div class="hype-modal-overlay" id="hypeModalOverlay">
+    <div class="hype-card" id="hypeCard">
+      <div class="hype-stamp" id="hypeStamp">命中现金！</div>
+      <div class="hype-prize-display" id="hypePrizeDisplay">现金 1.00</div>
+      <div class="hype-punchline" id="hypePunchline">好运连连，奖励已存入活动钱包！</div>
+      <div class="hype-progress-delta" id="hypeProgressDelta">本转进度提升 +1.58%</div>
+      <button class="hype-confirm-btn" id="hypeConfirmBtn" type="button">开心收下</button>
+    </div>
+  </div>
+
+  <!-- 粒子特效画布（爆奖 / 暴击 / 终点撒花） -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- 经典脚本加载（Classic Scripts，兼容 file://） -->
+  <script src="engine.js"></script>
+  <script src="player.js"></script>
+</body>
+</html>

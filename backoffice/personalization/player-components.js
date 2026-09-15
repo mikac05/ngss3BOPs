@@ -251,13 +251,23 @@
     );
   }
   function brand(c) {
-    return c.theme === "NG"
-      ? '<span class="p-logo p-logo-asset" aria-label="NG LOGO"><span class="p-logo-letters"></span><span class="p-logo-accent"></span></span>'
-      : '<span class="p-logo" aria-label="' +
-          esc(c.theme + " LOGO") +
-          '"><b>' +
-          esc(c.theme) +
-          "</b> LOGO</span>";
+    if (c.theme === "NG") {
+      return '<span class="p-logo p-logo-asset p-logo-ng" aria-label="NG LOGO"><span class="p-logo-letters"></span><span class="p-logo-accent"></span></span>';
+    }
+    if (c.theme === "PH") {
+      return '<span class="p-logo p-logo-asset p-logo-ph" aria-label="PH LOGO"><span class="p-logo-letters">PH</span></span>';
+    }
+    if (c.theme === "SF") {
+      return '<span class="p-logo p-logo-asset p-logo-sf" aria-label="SF LOGO"><span class="p-logo-letters">SF</span></span>';
+    }
+    if (c.theme === "IN") {
+      return '<span class="p-logo p-logo-asset p-logo-in" aria-label="IN LOGO"><span class="p-logo-letters">IN</span><span class="p-in-badge">' + text(c, "印度", "India") + '</span></span>';
+    }
+    return '<span class="p-logo" aria-label="' +
+      esc(c.theme + " LOGO") +
+      '"><b>' +
+      esc(c.theme) +
+      "</b> LOGO</span>";
   }
   function header(c) {
     const s = c.styles.header,
@@ -1693,12 +1703,7 @@
           carousel: 1,
           download: 1,
         };
-        c.nav =
-          c.theme === "WG"
-            ? ["首页", "活动", "钱包", "账户"]
-            : c.theme === "GAME"
-              ? ["首页", "钱包", "账户"]
-              : this.config.nav;
+        c.nav = this.config.nav;
       }
       return c;
     }
@@ -1706,13 +1711,32 @@
       if (!this.config) return;
       const c = this.current(),
         v = c.values;
-      // Preserve sizing assigned by hosts and test fixtures; color changes touch tokens only.
-      D.cssVars(c.color)
-        .split(";")
-        .forEach((pair) => {
-          const [key, value] = pair.split(":");
-          this.root.style.setProperty(key, value);
+      // Clear previously assigned palette properties so themes without overrides (e.g. IN) or switching themes reset cleanly
+      [
+        "--p-accent",
+        "--p-accent2",
+        "--p-bg",
+        "--p-panel",
+        "--p-raised",
+        "--p-text",
+        "--p-muted",
+        "--p-onAccent",
+      ].forEach((k) => this.root.style.removeProperty(k));
+
+      const vars = D.cssVars(c.color);
+      if (vars) {
+        vars.split(";").forEach((pair) => {
+          if (!pair) return;
+          const idx = pair.indexOf(":");
+          if (idx !== -1) {
+            const key = pair.slice(0, idx).trim();
+            const value = pair.slice(idx + 1).trim();
+            if (key && value) {
+              this.root.style.setProperty(key, value);
+            }
+          }
         });
+      }
       this.root.dataset.theme = c.theme;
       this.root.dataset.activePage = c.page;
       this.root.dataset.category = c.styles.category;
@@ -1746,21 +1770,22 @@
           v.topDownloadBar,
           c.downloadClosed,
           c.locale,
+          c.theme,
         ],
         () => NGCurrent.download(c, download(c)),
       );
-      this.patch("carousel", [c.styles.carousel, c.banner, c.locale], () =>
+      this.patch("carousel", [c.styles.carousel, c.banner, c.locale, c.theme], () =>
         carousel(c),
       );
-      this.patch("quickbar", [c.auth, c.locale, c.current?.gameLayout?.home], () => NGCurrent.home(c, quickbar(c)));
+      this.patch("quickbar", [c.auth, c.locale, c.current?.gameLayout?.home, c.theme], () => NGCurrent.home(c, quickbar(c)));
       this.patch(
         "category",
-        [c.styles.category, c.category, c.locale, v.categoryButtons],
+        [c.styles.category, c.category, c.locale, v.categoryButtons, c.theme],
         () => categoryButtons(c),
       );
       this.patch(
         "search",
-        [c.styles.search, c.locale, c.providers, c.recent, c.favorite],
+        [c.styles.search, c.locale, c.providers, c.recent, c.favorite, c.theme],
         () => search(c),
       );
       this.updateGrid();
@@ -1776,6 +1801,7 @@
           v.alternateDisabled,
           c.auth,
           c.locale,
+          c.theme,
         ],
         () => addons(c),
       );
@@ -1788,7 +1814,7 @@
       this.slots.secondary.hidden = c.page === "首页";
       this.patch(
         "floating",
-        [c.styles.shortcuts, c.quick, v.shortcuts, c.page, c.locale],
+        [c.styles.shortcuts, c.quick, v.shortcuts, c.page, c.locale, c.theme],
         () => (c.page === "首页" ? floating(c) : ""),
       );
       this.patch(
@@ -2060,7 +2086,7 @@
         topDownloadBar: "开启",
         gameIconStyle: "标准",
       },
-      theme: "NG",
+      theme: color === "PHPINK" ? "PH" : color === "SFPURPLE" ? "SF" : color === "INPLACEHOLDER" ? "IN" : "NG",
       color,
       auth: "loggedIn",
       locale: "zh",
@@ -2074,6 +2100,7 @@
       sidebarGroup: "games",
       sidebarExpanded: true,
     };
+    if (c.theme === "SF" && family === "category") c.styles.category = 5;
     c.styles[family] = style;
     const functions = {
       category: categoryButtons,
@@ -2097,6 +2124,8 @@
     return (
       '<div class="ng-player p-mini p-mini-' +
       family +
+      '" data-theme="' +
+      c.theme +
       '" data-name="样式预览 · ' +
       family +
       " " +

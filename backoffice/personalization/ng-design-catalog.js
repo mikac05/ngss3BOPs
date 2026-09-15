@@ -214,39 +214,59 @@
       onAccent: "#ffffff",
       source: true,
     },
-    BDAK: {
-      id: "BDAK",
-      label: "BDAK",
-      en: "BDAK",
-      accent: "#ba9cff",
-      accent2: "#e3d5ff",
-      bg: "#f3f1f8",
-      panel: "#ffffff",
-      raised: "#e9e4f3",
-      text: "#282137",
-      muted: "#746880",
-      onAccent: "#2a1947",
-      source: false,
+    PHPINK: {
+      id: "PHPINK",
+      label: "菲律宾粉",
+      en: "Philippines Pink",
+      accent: "#ff0055",
+      accent2: "#f79908",
+      bg: "#330011",
+      panel: "#650525",
+      raised: "#a4164b",
+      text: "#ffffff",
+      muted: "#d093a7",
+      onAccent: "#ffffff",
+      source: true,
+      supportingTokens: {
+        gold50: "#f79908",
+        gold60: "#fcc136",
+        gold70: "#fdd880",
+        pink10: "#330011",
+        pink20: "#660021",
+        main7: "#201330",
+      },
     },
-    BDLKK: {
-      id: "BDLKK",
-      label: "BDLKK",
-      en: "BDLKK",
-      accent: "#efb44e",
-      accent2: "#ffd683",
-      bg: "#191d28",
-      panel: "#242b3c",
-      raised: "#323e53",
-      text: "#f8fafc",
-      muted: "#b0bbce",
-      onAccent: "#392708",
-      source: false,
+    SFPURPLE: {
+      id: "SFPURPLE",
+      label: "星空紫",
+      en: "Starfield Purple",
+      accent: "#7e00fd",
+      accent2: "#e100ff",
+      bg: "#0f0c20",
+      panel: "#1c1635",
+      raised: "#2c2350",
+      text: "#ffffff",
+      muted: "#c8c5d8",
+      onAccent: "#ffffff",
+      source: true,
+      supportingTokens: {
+        pink50: "#e100ff",
+        gray: "#c8c5d8",
+        white: "#ffffff",
+      },
+    },
+    INPLACEHOLDER: {
+      id: "INPLACEHOLDER", label: "印度金紫", en: "India Gold & Purple",
+      accent: "#F1AD10", accent2: "#a724c6", bg: "#20002e",
+      panel: "#410068", raised: "#65107f", text: "#ffffff",
+      muted: "#e7c88e", onAccent: "#402300", source: true,
     },
   };
   const themeColors = {
-    NG: ["BDOK", "橙白", "藍白", "BDAK", "BDLKK"],
-    WG: ["BDAK", "BDOK", "BDLKK"],
-    GAME: ["BDLKK", "BDOK", "BDAK"],
+    NG: ["BDOK", "橙白", "藍白"],
+    PH: ["PHPINK"],
+    IN: ["INPLACEHOLDER"],
+    SF: ["SFPURPLE"],
   };
   const clone = (value) => JSON.parse(JSON.stringify(value));
   function palette(value) {
@@ -255,17 +275,20 @@
   function cssVars(value) {
     const p = palette(value);
     return Object.entries(p)
-      .filter(([k]) =>
-        [
-          "accent",
-          "accent2",
-          "bg",
-          "panel",
-          "raised",
-          "text",
-          "muted",
-          "onAccent",
-        ].includes(k),
+      .filter(
+        ([k, v]) =>
+          [
+            "accent",
+            "accent2",
+            "bg",
+            "panel",
+            "raised",
+            "text",
+            "muted",
+            "onAccent",
+          ].includes(k) &&
+          v != null &&
+          v !== "",
       )
       .map(([k, v]) => "--p-" + k + ":" + v)
       .join(";");
@@ -281,9 +304,55 @@
   function defaultPolicy() {
     return {
       themes: ["NG"],
-      colors: { NG: ["BDOK", "橙白", "藍白"], WG: ["BDAK"], GAME: ["BDLKK"] },
-      defaults: { NG: "BDOK", WG: "BDAK", GAME: "BDLKK" },
+      colors: {
+        NG: ["BDOK", "橙白", "藍白"],
+        PH: ["PHPINK"],
+        IN: ["INPLACEHOLDER"],
+        SF: ["SFPURPLE"],
+      },
+      defaults: {
+        NG: "BDOK",
+        PH: "PHPINK",
+        IN: "INPLACEHOLDER",
+        SF: "SFPURPLE",
+      },
     };
+  }
+  function migratePlayerChoices(p) {
+    if (!p) return defaultPolicy();
+    p.themes = (p.themes || [])
+      .filter((t) => t !== "WG")
+      .map((t) => (t === "GAME" ? "IN" : t));
+    if (!p.themes.includes("NG")) p.themes.unshift("NG");
+    p.themes = [...new Set(p.themes)].filter((t) =>
+      ["NG", "PH", "IN", "SF"].includes(t),
+    );
+
+    delete p.colors.WG;
+    if (p.colors.GAME) {
+      p.colors.IN = ["INPLACEHOLDER"];
+      delete p.colors.GAME;
+    }
+    p.colors.NG = (p.colors.NG || []).filter((c) =>
+      ["BDOK", "橙白", "藍白"].includes(c),
+    );
+    if (!p.colors.NG.length) p.colors.NG = ["BDOK"];
+    if (!p.colors.PH) p.colors.PH = ["PHPINK"];
+    if (!p.colors.IN) p.colors.IN = ["INPLACEHOLDER"];
+    if (!p.colors.SF) p.colors.SF = ["SFPURPLE"];
+
+    delete p.defaults.WG;
+    if (p.defaults.GAME) {
+      p.defaults.IN = "INPLACEHOLDER";
+      delete p.defaults.GAME;
+    }
+    if (!["BDOK", "橙白", "藍白"].includes(p.defaults.NG))
+      p.defaults.NG = "BDOK";
+    if (!p.defaults.PH) p.defaults.PH = "PHPINK";
+    if (!p.defaults.IN) p.defaults.IN = "INPLACEHOLDER";
+    if (!p.defaults.SF) p.defaults.SF = "SFPURPLE";
+
+    return p;
   }
   function policy(draft) {
     return clone(draft.theme.extra.playerChoices || defaultPolicy());
@@ -299,18 +368,24 @@
     categories.evidence =
       "User-confirmed / Figma / Prototype-only 2026-09-07：游戏分类组件设计的五种样式。保留 gameLayout 旧 ID 兼容既有草稿；卡片排版拆为 gameGridStyle。";
     const color = catalog.find((x) => x.id === "themeColor");
-    color.options = ["BDOK", "BDAK", "BDLKK", "橙白", "藍白"];
+    color.options = ["BDOK", "橙白", "藍白", "PHPINK", "INPLACEHOLDER", "SFPURPLE"];
     color.themeOptions = themeColors;
-    color.support = { NG: true, WG: true, GAME: true };
+    color.support = { NG: true, PH: true, IN: true, SF: true };
     color.sourceThemeSelectable = false;
     color.evidence =
-      "User-confirmed 2026-09-07 / Prototype-only：NG 新增橙白与藍白，Figma 主色 #f48d16 / #4781ff。BDOK 对应既有绿黑预览；BDAK、BDLKK 为旧原型示意色，不是本 Figma 设计。";
+      "User-confirmed 2026-09-07 / Prototype-only：NG 新增橙白与藍白，Figma 主色 #f48d16 / #4781ff。BDOK 对应既有绿黑预览；PH 为粉金，SF 为星空紫，IN 印度待补。";
     const grid = {
       id: "gameGridStyle",
       page: "首页",
       label: "游戏区排版",
       type: "single-select",
       options: names.slice(0, 3),
+      themeOptions: {
+        NG: names.slice(0, 3),
+        PH: [names[0]],
+        IN: [names[0]],
+        SF: [names[0]],
+      },
       required: true,
       supportsOff: false,
       risk: "R0",
@@ -320,8 +395,8 @@
       playerEffect: "调整卡片排列与大小。",
       dependencies: "游戏分类、搜索。",
       fallback: "跟随当前主题默认。",
-      support: { NG: true, WG: true, GAME: true },
-      defaults: { NG: names[0], WG: names[0], GAME: names[0] },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: names[0], PH: names[0], IN: names[0], SF: names[0] },
     };
     catalog.splice(
       catalog.findIndex((x) => x.id === "gameLayout") + 1,
@@ -374,7 +449,15 @@
     });
     return errors;
   }
+  // Add future theme-local variants here; indices identify renderer variants, not other themes.
+  const boundStyleIndices = { PH: { default: [1] }, IN: { default: [1] }, SF: { default: [1], gameLayout: [5] } };
+  function availableStyleIndices(theme,id) {
+    const bound=boundStyleIndices[theme];
+    return bound ? (bound[id] || bound.default).slice() : (window.NGDesign.allFamilies?.()[id]?.titles || families[id]?.titles || []).map((_,i)=>i+1);
+  }
   window.NGDesign = {
+    boundStyleIndices,
+    availableStyleIndices,
     families,
     names,
     palettes,
@@ -385,6 +468,7 @@
     styleNumber,
     policy,
     defaultPolicy,
+    migratePlayerChoices,
     extendCatalog,
     validateDraft,
   };

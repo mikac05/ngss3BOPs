@@ -2,6 +2,8 @@
 
 本仓库为 NGSS3 产品管理端（Back Office）与玩家前端（Client）交互参考原型静态发布站点，支持 GitHub Pages 与本机无服务器浏览。
 
+**本机工作目录（User-confirmed 2026-09-10）：** `C:/Users/NGSS/Documents/ngss3BOPs/` · `file:///C:/Users/NGSS/Documents/ngss3BOPs/`。所有 agent 在此构建互动原型，不要写到知识库仓库 `NGSS3` 或过期路径 `Documents/Prototype/ngss3BOPs`。
+
 ---
 
 ## 📂 原型目录结构 (Architecture)

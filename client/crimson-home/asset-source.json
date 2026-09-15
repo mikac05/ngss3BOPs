@@ -1,0 +1,159 @@
+{
+  "source": "User-supplied index_short.svg and index_all.svg (2026-09-10)",
+  "sourceSHA256": {
+    "index_short.svg": "b4557d74f53becdf6b870ed119b6c41234ef536283d7a5f5649f64fbaf9add08",
+    "index_all.svg": "07540eb480d02cb648e07d16865f3d690912f9f2d699b7ed2011b19efa20d788"
+  },
+  "assets": {
+    "gift.webp": {
+      "svgImageIndex": 0,
+      "svgImageId": "image0_873_153335"
+    },
+    "coins-strip.webp": {
+      "svgImageIndex": 1,
+      "svgImageId": "image1_873_153335"
+    },
+    "pirate.webp": {
+      "svgImageIndex": 2,
+      "svgImageId": "image2_873_153335"
+    },
+    "gold-streak.webp": {
+      "svgImageIndex": 3,
+      "svgImageId": "image3_873_153335"
+    },
+    "floating-coins.webp": {
+      "svgImageIndex": 4,
+      "svgImageId": "image4_873_153335"
+    },
+    "trophy-glow.webp": {
+      "svgImageIndex": 21,
+      "svgImageId": "image21_873_153335"
+    },
+    "casino-background.webp": {
+      "svgImageIndex": 22,
+      "svgImageId": "image22_873_153335"
+    },
+    "fortune-coins.webp": {
+      "svgImageIndex": 24,
+      "svgImageId": "image24_873_153335"
+    },
+    "gold-coins.webp": {
+      "svgImageIndex": 25,
+      "svgImageId": "image25_873_153335"
+    },
+    "royal-crown.webp": {
+      "svgImageIndex": 31,
+      "svgImageId": "image31_873_153335"
+    },
+    "logo.webp": {
+      "svgImageIndex": 32,
+      "svgImageId": "image32_873_153335"
+    },
+    "hero-landscape.webp": {
+      "svgImageIndex": 33,
+      "svgImageId": "image33_873_153335"
+    },
+    "hero-character.webp": {
+      "svgImageIndex": 34,
+      "svgImageId": "image34_873_153335"
+    },
+    "deposit.webp": {
+      "svgImageIndex": 35,
+      "svgImageId": "image35_873_153335"
+    },
+    "withdraw.webp": {
+      "svgImageIndex": 36,
+      "svgImageId": "image36_873_153335"
+    },
+    "provider-tada.webp": {
+      "svgImageIndex": 37,
+      "svgImageId": "image37_873_153335"
+    },
+    "provider-jdb.webp": {
+      "svgImageIndex": 38,
+      "svgImageId": "image38_873_153335"
+    },
+    "provider-dream.webp": {
+      "svgImageIndex": 39,
+      "svgImageId": "image39_873_153335"
+    },
+    "nav-crown.webp": {
+      "svgImageIndex": 40,
+      "svgImageId": "image40_873_153335"
+    },
+    "pinata-wins.webp": {
+      "svgImageIndex": 5,
+      "svgImageId": "image5_873_153335"
+    },
+    "aztec-idols.webp": {
+      "svgImageIndex": 6,
+      "svgImageId": "image6_873_153335"
+    },
+    "sugar-bang-bang.webp": {
+      "svgImageIndex": 7,
+      "svgImageId": "image7_873_153335"
+    },
+    "fortune-gems.webp": {
+      "svgImageIndex": 8,
+      "svgImageId": "image8_873_153335"
+    },
+    "fortune-gems-2.webp": {
+      "svgImageIndex": 9,
+      "svgImageId": "image9_873_153335"
+    },
+    "fortune-gems-3.webp": {
+      "svgImageIndex": 10,
+      "svgImageId": "image10_873_153335"
+    },
+    "golden-empire.webp": {
+      "svgImageIndex": 11,
+      "svgImageId": "image11_873_153335"
+    },
+    "super-ace.webp": {
+      "svgImageIndex": 12,
+      "svgImageId": "image12_873_153335"
+    },
+    "wild-ace.webp": {
+      "svgImageIndex": 13,
+      "svgImageId": "image13_873_153335"
+    },
+    "mahjong-ways-2.webp": {
+      "svgImageIndex": 14,
+      "svgImageId": "image14_873_153335"
+    },
+    "wild-ape.webp": {
+      "svgImageIndex": 15,
+      "svgImageId": "image15_873_153335"
+    },
+    "wild-bandito.webp": {
+      "svgImageIndex": 16,
+      "svgImageId": "image16_873_153335"
+    },
+    "wild-bounty.webp": {
+      "svgImageIndex": 17,
+      "svgImageId": "image17_873_153335"
+    },
+    "redgreen-light.webp": {
+      "svgImageIndex": 18,
+      "svgImageId": "image18_873_153335"
+    },
+    "5min-wingo.webp": {
+      "svgImageIndex": 19,
+      "svgImageId": "image19_873_153335"
+    },
+    "10min-wingo.webp": {
+      "svgImageIndex": 20,
+      "svgImageId": "image20_873_153335"
+    },
+    "winners-art.webp": {
+      "source": "index_all.svg rendered at 2x",
+      "cropPixels": [
+        28,
+        2848,
+        760,
+        3416
+      ],
+      "purpose": "Ornate illustrated winner podium retained as source artwork"
+    }
+  }
+}

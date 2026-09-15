@@ -156,20 +156,85 @@
     baseExtend(catalog, defaults);
     for (const id of ["gameLayout", "gameGridStyle"]) {
       const item = catalog.find((x) => x.id === id);
-      item.options = D.names.slice(0, D.families[id].titles.length);
+      if (item) {
+        item.options = D.names.slice(0, D.families[id].titles.length);
+        if (id === "gameLayout") {
+          item.themeOptions = {
+            NG: D.names.slice(0, D.families[id].titles.length),
+            PH: ["样式一"],
+            IN: ["样式一"],
+            SF: ["样式五"],
+          };
+          item.support = { NG: true, PH: true, IN: true, SF: true };
+          item.defaults = {
+            NG: "样式一",
+            PH: "样式一",
+            IN: "样式一",
+            SF: "样式五",
+          };
+        } else if (id === "gameGridStyle") {
+          item.themeOptions = {
+            NG: D.names.slice(0, D.families[id].titles.length),
+            PH: ["样式一"],
+            IN: ["样式一"],
+            SF: ["样式一"],
+          };
+          item.support = { NG: true, PH: true, IN: true, SF: true };
+          item.defaults = {
+            NG: "样式一",
+            PH: "样式一",
+            IN: "样式一",
+            SF: "样式一",
+          };
+        }
+      }
     }
     for (const [id, count] of [
       ["footerStyle", 4],
       ["popupStyle", 3],
     ]) {
       const item = catalog.find((x) => x.id === id);
-      item.options = D.names.slice(0, count);
-      if (item.themeOptions) item.themeOptions.NG = item.options.slice();
+      if (item) {
+        item.options = D.names.slice(0, count);
+        item.themeOptions = {
+          NG: item.options.slice(),
+          PH: ["样式一"],
+          IN: ["样式一"],
+          SF: ["样式一"],
+        };
+        item.support = { NG: true, PH: true, IN: true, SF: true };
+        item.defaults = {
+          NG: "样式一",
+          PH: "样式一",
+          IN: "样式一",
+          SF: "样式一",
+        };
+      }
     }
-    catalog.find((x) => x.id === "alternateButton").prototypeSupport = {
-      NG: true,
-    };
-    catalog.find((x) => x.id === "bottomNav").options = nav.map((x) => x[0]);
+    const alt = catalog.find((x) => x.id === "alternateButton");
+    if (alt) {
+      alt.prototypeSupport = { NG: true, PH: true, IN: true, SF: true };
+      alt.support = { NG: true, PH: true, IN: true, SF: true };
+      alt.options = ["关闭", "浮动收折", "顶部状态列", "底部导航自选槽位"];
+      alt.themeOptions = {
+        NG: ["关闭", "浮动收折", "顶部状态列", "底部导航自选槽位"],
+        PH: ["关闭"],
+        IN: ["关闭"],
+        SF: ["关闭"],
+      };
+      alt.defaults = { NG: null, PH: null, IN: null, SF: null };
+    }
+    const bNav = catalog.find((x) => x.id === "bottomNav");
+    if (bNav) {
+      bNav.options = nav.map((x) => x[0]);
+      bNav.support = { NG: true, PH: true, IN: true, SF: true };
+      bNav.themeOptions = {
+        NG: ["LIVE_NAV (5-slot)"],
+        PH: ["LIVE_NAV (5-slot)"],
+        IN: ["LIVE_NAV (5-slot)"],
+        SF: ["SF_NAV (5-slot: 首页/活动/VIP/钱包/我的)"],
+      };
+    }
   };
   const priorValidate = D.validateDraft;
   D.validateDraft = (draft, theme, color, context = {}) => {
@@ -362,14 +427,7 @@
           }</section>`
         : ""
     }`;
-    const outcome = api
-      .resolveAll()
-      .items.find((x) => x.id === "alternateButton");
-    if (outcome.outcome !== "Allow")
-      api.els.detail.insertAdjacentHTML(
-        "beforeend",
-        `<section class="studio-card"><h3>${t("配置检查", "Configuration check")}</h3><ul class="current-check-reasons">${outcome.reasons.map((x) => `<li>${E(state().uiLocale === "en" ? api.localizedText(x) : x)}</li>`).join("")}</ul>${outcome.outcome === "Review" ? `<label><input type="checkbox" data-action="ack-review" data-id="alternateButton" ${state().acks.review.alternateButton ? "checked" : ""}>${t("我已确认替换槽位及受影响入口", "I have reviewed the replaced slot and affected entries")}</label>` : ""}</section>`,
-      );
+
   }
 
   function downloadEditor() {
@@ -393,11 +451,36 @@
         slot === "replacement"
           ? state().draft.bottomNav.extra.appReplacement?.[auth] || "APP下载"
           : slots[Number(slot)];
+
+    const countInNav = slots.filter(
+      (x, i) => i !== Number(slot) && canonical(x) === canonical(chosen),
+    ).length;
+    let isSoleSurface = false;
+    const protectedCaps = ["首页", "活动", "VIP", "钱包", "我的", "账户"];
+    if (
+      slot !== "replacement" &&
+      protectedCaps.includes(canonical(chosen)) &&
+      countInNav === 0
+    ) {
+      if (canonical(chosen) === "VIP") {
+        const vipOnCard =
+          state().draft.vipCard &&
+          state().draft.vipCard.value !== "隐藏VIP资讯" &&
+          state().draft.vipCard.mode !== "OFF";
+        const vipOnAlt =
+          state().draft.alternateButton?.mode === "SET" &&
+          state().draft.alternateButton?.value?.target === "VIP 页入口";
+        if (!vipOnCard && !vipOnAlt) isSoleSurface = true;
+      } else {
+        isSoleSurface = true;
+      }
+    }
+
     document.getElementById("current-picker")?.remove();
     const el = document.createElement("div");
     el.id = "current-picker";
     el.className = "current-modal";
-    el.innerHTML = `<section role="dialog" aria-modal="true" aria-labelledby="current-picker-title" class="current-picker-panel"><div class="studio-card-title"><h2 id="current-picker-title">${t(slot === "replacement" ? "选择 App 替代入口" : "选择导航功能", slot === "replacement" ? "Choose App replacement" : "Choose navigation entry")}</h2>${btn("close-picker", "×", `aria-label="${t("关闭", "Close")}"`)}</div><label class="current-field"><span>${t("搜索功能", "Search entries")}</span><input type="search" data-current="nav-search" placeholder="${t("名称或关键词", "Name or keyword")}"></label><div class="current-picker-grid">${nav
+    el.innerHTML = `<section role="dialog" aria-modal="true" aria-labelledby="current-picker-title" class="current-picker-panel"><div class="studio-card-title"><h2 id="current-picker-title">${t(slot === "replacement" ? "选择 App 替代入口" : "选择导航功能", slot === "replacement" ? "Choose App replacement" : "Choose navigation entry")}</h2>${btn("close-picker", "×", `aria-label="${t("关闭", "Close")}"`)}</div>${isSoleSurface ? `<div class="warn-box tiny" style="margin-bottom:8px; color:var(--el-color-danger, #f56c6c);">${t("「" + chosen + "」为当前核心受保护能力且无其他可用表面，不可替换。", "「" + chosen + "」is a core protected capability with no other surface and cannot be replaced.")}</div>` : ""}<label class="current-field"><span>${t("搜索功能", "Search entries")}</span><input type="search" data-current="nav-search" placeholder="${t("名称或关键词", "Name or keyword")}"></label><div class="current-picker-grid">${nav
       .map(([v, en, g]) => {
         const used =
           (slot === "replacement" && v === "APP下载") ||
@@ -406,10 +489,19 @@
               canonical(x) === v &&
               (slot === "replacement" ? v !== "APP下载" : i !== Number(slot)),
           );
+        const disabledSole = isSoleSurface && canonical(v) !== canonical(chosen);
+        const disabled = used || disabledSole;
+        const noteText = used
+          ? t("已在本组使用", "Already in this group")
+          : canonical(chosen) === v
+            ? t("当前选择", "Selected")
+            : disabledSole
+              ? t("核心入口不可替换", "Protected entry")
+              : "";
         return btn(
           "choose",
-          `${icon(g)}<strong>${t(v, en)}</strong><small>${used ? t("已在本组使用", "Already in this group") : canonical(chosen) === v ? t("当前选择", "Selected") : ""}</small>`,
-          `data-value="${v}" data-search="${v} ${en.toLowerCase()}" ${used ? "disabled" : ""} aria-pressed="${canonical(chosen) === v}"`,
+          `${icon(g)}<strong>${t(v, en)}</strong><small>${noteText}</small>`,
+          `data-auth="${auth}" data-slot="${slot}" data-value="${v}" data-search="${v} ${en.toLowerCase()}" ${disabled ? "disabled" : ""} aria-pressed="${canonical(chosen) === v}" title="${disabledSole ? t("此入口为唯一保留表面，不可替换", "Sole remaining surface") : ""}"`,
           "current-picker-item",
         );
       })
@@ -423,6 +515,7 @@
       }
     }
     document.body.append(el);
+    window.NGSelectionGuard?.decorate(el);
     el.querySelector("input").focus();
   }
   function attach(a) {
@@ -467,10 +560,23 @@
           row.extra.appReplacementEnabled ||= {};
           row.extra.appReplacementEnabled[picker.auth] = true;
         } else {
+          const oldVal = row.value[picker.auth][Number(picker.slot)];
+          const newVal = b.dataset.value;
           row.mode = "SET";
-          row.value[picker.auth][Number(picker.slot)] = b.dataset.value;
-          row.extra.preset ||= {};
-          row.extra.preset[picker.auth] = "custom";
+          row.value[picker.auth][Number(picker.slot)] = newVal;
+          const testResolve = api.resolveAll();
+          const hasReachabilityBlock = testResolve.items.some((it) =>
+            it.outcome === "Block" && (it.reasons || []).some((r) =>
+              r.includes("不可达") || r.includes("唯一表面") || r.includes("入口不可达")
+            )
+          );
+          if (hasReachabilityBlock) {
+            row.value[picker.auth][Number(picker.slot)] = oldVal;
+            state().ui.fallbackMessage = "不可替换此槽位：这是该核心受保护能力的唯一可见表面。";
+          } else {
+            row.extra.preset ||= {};
+            row.extra.preset[picker.auth] = "custom";
+          }
         }
         closePicker();
         touch();
@@ -543,7 +649,7 @@
           section.insertAdjacentHTML("beforeend",`<div class="current-replacement-choice">${btn("pick",target && target!=="APP下载" ? icon(navInfo(target)[2])+t(target,navInfo(target)[1]) : t("选择替代功能","Choose entry"),`data-auth="${b.dataset.auth}" data-slot="replacement"`,"btn")}</div>`);
         }
         const resolved=api.resolveAll();
-        window.NGStudio.tree(resolved);window.NGStudio.preview(resolved);window.NGStudio.finish(resolved);
+        api.renderAll();
         b.focus({preventScroll:true});
         return;
       }
@@ -551,11 +657,15 @@
         const row = state().draft.alternateButton;
         row.mode = b.checked ? "SET" : "OFF";
         row.value ||= {
-          placement: "",
-          target: "",
+          placement: "浮动收折",
+          target: "客服",
           authScope: "both",
           navSlot: { loggedOut: "", loggedIn: "" },
         };
+        if (b.checked) {
+          if (!row.value.target) row.value.target = "客服";
+          if (!row.value.placement) row.value.placement = "浮动收折";
+        }
         touch();
         return;
       }
@@ -704,7 +814,13 @@
     homeControls: (resolved) => {
       const value = resolved.values.categoryButtons;
       const quick = state().draft.gameLayout.extra.home?.quick !== false;
-      return `<div class="studio-detail-fields"><div class="studio-detail-field"><strong id="game-category-label">${t("分类按钮", "Category buttons")}</strong><div class="studio-option-group" role="group" aria-labelledby="game-category-label">${["图示+名称","仅名称","仅图示"].map((v,i)=>`<button type="button" class="btn ${v===value ? "is-selected" : ""}" data-action="set-value" data-id="categoryButtons" data-value="${encodeURIComponent(v)}" aria-pressed="${v===value}">${t(v,["Icon + label","Label only","Icon only"][i])}</button>`).join("")}</div></div><div class="studio-detail-field studio-detail-toggle"><div><strong>${t("资金快捷区", "Wallet shortcuts")}</strong><p class="studio-caption">${t("在游戏区显示资金操作快捷入口。", "Show wallet actions in the game area.")}</p></div><label class="studio-switch"><input type="checkbox" data-current="home-quick" aria-label="${t("资金快捷区", "Wallet shortcuts")}" ${quick ? "checked" : ""}><span></span><b>${t(quick ? "开启" : "关闭",quick ? "On" : "Off")}</b></label></div></div><p class="studio-caption">${t("切换游戏样式时保留这些选择。", "These choices remain when changing game styles.")}</p>`;
+      const catItem = api.byId && api.byId.categoryButtons;
+      const catOptsRaw = catItem && catItem.themeOptions && catItem.themeOptions[state().theme];
+      const catOpts = Array.isArray(catOptsRaw)
+        ? catOptsRaw
+        : (catItem && Array.isArray(catItem.options) && catItem.options) || ["图示+名称"];
+      const catEn = { "图示+名称": "Icon + label", "仅名称": "Label only", "仅图示": "Icon only" };
+      return `<div class="studio-detail-fields"><div class="studio-detail-field"><strong id="game-category-label">${t("分类按钮", "Category buttons")}</strong><div class="studio-option-group" role="group" aria-labelledby="game-category-label">${catOpts.map((v)=>`<button type="button" class="btn ${v===value ? "is-selected" : ""}" data-action="set-value" data-id="categoryButtons" data-value="${encodeURIComponent(v)}" aria-pressed="${v===value}">${t(v,catEn[v] || v)}</button>`).join("")}</div></div><div class="studio-detail-field studio-detail-toggle"><div><strong>${t("资金快捷区", "Wallet shortcuts")}</strong><p class="studio-caption">${t("在游戏区显示资金操作快捷入口。", "Show wallet actions in the game area.")}</p></div><label class="studio-switch"><input type="checkbox" data-current="home-quick" aria-label="${t("资金快捷区", "Wallet shortcuts")}" ${quick ? "checked" : ""}><span></span><b>${t(quick ? "开启" : "关闭",quick ? "On" : "Off")}</b></label></div></div><p class="studio-caption">${t("切换游戏样式时保留这些选择。", "These choices remain when changing game styles.")}</p>`;
     },
     navPreview: (config) =>
       config.appReplacement &&

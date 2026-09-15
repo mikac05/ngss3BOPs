@@ -1,0 +1,2194 @@
+<!doctype html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>好运探索季｜新增活动</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0d10;
+      --panel: #14171c;
+      --panel-2: #1a1e25;
+      --panel-3: #202630;
+      --border: #303845;
+      --border-strong: #475366;
+      --text: #f4f7fb;
+      --muted: #9da8b8;
+      --blue: #4a9cff;
+      --blue-soft: rgba(74, 156, 255, .14);
+      --green: #37d39a;
+      --amber: #ffbd4a;
+      --red: #ff6f7d;
+      --radius: 12px;
+      --shadow: 0 16px 40px rgba(0, 0, 0, .26);
+      --el-color-primary: #409eff;
+      --el-color-success: #67c23a;
+      --el-color-warning: #e6a23c;
+      --el-color-danger: #f56c6c;
+      --el-bg-color: #141414;
+      --el-bg-color-overlay: #1d1e1f;
+      --el-border-color: #414243;
+      --el-border-color-light: #363637;
+      --el-text-color-primary: #e5eaf3;
+      --el-text-color-regular: #cfd3dc;
+      --el-text-color-secondary: #a3a6ad;
+      --fast-color: #f39c12;
+      --mid-color: #9b59b6;
+      --fine-color: #1abc9c;
+    }
+
+    html.light {
+      color-scheme: light;
+      --bg: #f5f7fa;
+      --panel: #ffffff;
+      --panel-2: #fafbfc;
+      --panel-3: #f0f2f5;
+      --border: #dcdfe6;
+      --border-strong: #c0c4cc;
+      --text: #1f2329;
+      --muted: #606266;
+      --blue: #409eff;
+      --blue-soft: rgba(64, 158, 255, 0.14);
+      --green: #67c23a;
+      --amber: #e6a23c;
+      --red: #f56c6c;
+      --shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.06);
+      --el-color-primary: #409eff;
+      --el-color-success: #67c23a;
+      --el-color-warning: #e6a23c;
+      --el-color-danger: #f56c6c;
+      --el-bg-color: #ffffff;
+      --el-bg-color-overlay: #ffffff;
+      --el-border-color: #dcdfe6;
+      --el-border-color-light: #e4e7ed;
+      --el-text-color-primary: #1f2329;
+      --el-text-color-regular: #303133;
+      --el-text-color-secondary: #606266;
+      --fast-color: #e67e22;
+      --mid-color: #8e44ad;
+      --fine-color: #16a085;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 80% 0%, rgba(74, 156, 255, .08), transparent 34%), var(--bg);
+      color: var(--text);
+      font: 14px/1.5 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 28px;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel);
+      backdrop-filter: blur(14px);
+    }
+    .title-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    h1 { margin: 0; font-size: 18px; font-weight: 700; }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 24px;
+      padding: 2px 8px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      background: var(--panel-2);
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .tag.pri { color: #9ecbff; border-color: rgba(74,156,255,.4); background: rgba(74,156,255,.1); }
+    .tag.success { color: #baf4df; border-color: rgba(55, 211, 154, .4); background: rgba(55, 211, 154, .1); }
+    .tag.warn { color: #ffe0a3; border-color: rgba(255, 189, 74, .4); background: rgba(255, 189, 74, .1); }
+    .tag.danger { color: #fab6b6; border-color: rgba(245, 108, 108, .4); background: rgba(245, 108, 108, .1); }
+
+    .btn {
+      min-height: 36px;
+      padding: 6px 14px;
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      background: var(--panel-2);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all .15s;
+    }
+    .btn:hover { border-color: var(--blue); color: var(--blue); }
+    .btn.primary { background: var(--blue); color: white; border-color: var(--blue); }
+    .btn.primary:hover { opacity: .9; color: white; }
+    .btn.ghost { background: transparent; }
+    .btn.compact { min-height: 28px; padding: 3px 8px; font-size: 12px; }
+    .btn.danger { background: rgba(245,108,108,.1); color: var(--red); border-color: rgba(245,108,108,.3); }
+
+    /* Upper Standard Shell */
+    .standard-shell, .content-editor-head, .section, .side-card {
+      max-width: 1440px;
+      margin: 16px auto 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+    .standard-shell { padding: 0; }
+    .standard-header-bar, .content-editor-head, .section-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      background: var(--panel-2);
+    }
+    .standard-title { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 15px; }
+    .badge-live { font-size: 11px; color: var(--blue); font-weight: 700; background: var(--blue-soft); padding: 2px 6px; border-radius: 4px; }
+    .standard-grid { display: grid; grid-template-columns: 1fr 1fr; }
+    .form-column { padding: 12px 22px 20px; }
+    .form-column + .form-column { border-left: 1px solid var(--border); }
+    .form-row {
+      display: grid;
+      grid-template-columns: 140px minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      padding: 11px 0;
+      border-bottom: 1px dashed color-mix(in srgb, var(--border) 65%, transparent);
+    }
+    .form-row.align-start { align-items: start; }
+    .form-label { color: var(--text); font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 4px; }
+    .form-label.required::before { content: "*"; color: var(--red); margin-right: 2px; }
+
+    .input, select, textarea {
+      width: 100%;
+      min-height: 38px;
+      padding: 6px 12px;
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      background: var(--panel-2);
+      color: var(--text);
+      outline: none;
+    }
+    textarea { min-height: 68px; resize: vertical; }
+    .input:focus, select:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 2px var(--blue-soft); }
+    .helper { color: var(--muted); font-size: 12px; }
+
+    /* Hover Tooltip (i) */
+    .tip {
+      position: relative;
+      display: inline-grid;
+      place-items: center;
+      width: 16px;
+      height: 16px;
+      border: 1px solid var(--border-strong);
+      border-radius: 50%;
+      color: var(--muted);
+      font: 700 11px/1 sans-serif;
+      cursor: help;
+      outline: none;
+    }
+    .tip::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      z-index: 100;
+      left: 50%;
+      bottom: calc(100% + 8px);
+      width: max-content;
+      max-width: min(380px, 80vw);
+      padding: 9px 12px;
+      border: 1px solid var(--border-strong);
+      border-radius: 6px;
+      background: #1f2329;
+      color: #f4f7fb;
+      font: 12px/1.45 Inter, "Microsoft YaHei", sans-serif;
+      box-shadow: 0 10px 26px rgba(0,0,0,.45);
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 4px);
+      transition: opacity .15s, transform .15s;
+      white-space: pre-wrap;
+      text-align: left;
+      font-weight: normal;
+    }
+    html.light .tip::after { background: #ffffff; color: #1f2329; border-color: #c0c4cc; box-shadow: 0 8px 22px rgba(0,0,0,.15); }
+    .tip:hover::after, .tip:focus::after { opacity: 1; transform: translate(-50%, 0); }
+
+    .radio-group, .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px 16px; }
+    .el-radio-item, .el-checkbox-item { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; font-size: 13px; }
+    .number-control { display: inline-flex; align-items: stretch; border: 1px solid var(--border-strong); border-radius: 6px; overflow: hidden; }
+    .number-control .input { border: 0; min-height: 34px; width: 72px; text-align: center; border-radius: 0; background: var(--panel); }
+    .number-step { width: 30px; border: 0; background: var(--panel-3); color: var(--text); cursor: pointer; font-weight: bold; }
+    .number-step:hover { background: var(--blue); color: white; }
+
+    /* Switch */
+    .switch-wrap { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; }
+    .switch-track { width: 42px; height: 22px; border-radius: 999px; background: #3b4350; position: relative; transition: background .18s; }
+    html.light .switch-track { background: #dcdfe6; }
+    .switch-thumb { width: 16px; height: 16px; border-radius: 50%; background: #fff; position: absolute; top: 3px; left: 3px; transition: transform .18s; }
+    .switch-wrap.on .switch-track { background: var(--blue); }
+    .switch-wrap.on .switch-thumb { transform: translateX(20px); }
+
+    /* Palettes & Badges */
+    .palette-swatches { display: flex; gap: 8px; }
+    .palette-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .palette-item.active { border-color: var(--blue); color: var(--blue); background: var(--blue-soft); }
+    .swatch-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+    .icon-category-tags { display: flex; gap: 8px; }
+    .icon-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .icon-tag.active { border-color: var(--blue); color: var(--blue); background: var(--blue-soft); }
+
+    .banner-visual {
+      height: 84px;
+      border-radius: 8px;
+      padding: 12px 16px;
+      background: linear-gradient(135deg, #164e63, #065f46);
+      color: #ecfdf5;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .banner-tag { position: absolute; right: 10px; bottom: 8px; font-size: 10px; opacity: .7; }
+
+    /* Lower Section Setup */
+    .content-editor-head {
+      margin: 20px auto 0;
+      padding: 14px 20px;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .setup-steps { display: flex; flex-wrap: wrap; gap: 6px; }
+    .setup-steps button {
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 6px 14px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      transition: all .15s;
+    }
+    .setup-steps button.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 400px;
+      gap: 20px;
+      max-width: 1440px;
+      margin: 0 auto 80px;
+      padding: 0;
+      align-items: start;
+    }
+    .main { display: grid; gap: 16px; min-width: 0; }
+    .side {
+      position: sticky;
+      top: 80px;
+      display: grid;
+      gap: 16px;
+      width: 400px;
+      max-width: 100%;
+    }
+
+    .section { margin: 0; }
+    .section-title { display: flex; gap: 12px; align-items: center; }
+    .step-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-weight: 800;
+    }
+    .section-body { padding: 20px; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .field { display: grid; gap: 7px; align-content: start; }
+    .field > label { color: var(--text); font-weight: 700; font-size: 13px; display: flex; align-items: center; gap: 4px; }
+
+    .notice {
+      padding: 12px 14px;
+      border: 1px solid rgba(74, 156, 255, .28);
+      border-radius: 8px;
+      background: rgba(74, 156, 255, .08);
+      color: #d0e6ff;
+      font-size: 13px;
+    }
+    .notice.warn { border-color: rgba(255, 189, 74, .28); background: rgba(255, 189, 74, .08); color: #ffe0a3; }
+    .notice.danger { border-color: rgba(255, 111, 125, .35); background: rgba(255, 111, 125, .08); color: #ffc6cc; }
+    .notice.success { border-color: rgba(55, 211, 154, .28); background: rgba(55, 211, 154, .08); color: #c8f6e6; }
+
+    /* Templates bar */
+    .template-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: var(--panel-3);
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    /* Phase Bars & Curves */
+    .phase-bar {
+      display: flex;
+      height: 28px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .phase-bar-segment {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 11px;
+      transition: width .2s;
+    }
+    .phase-fast { background: var(--fast-color); }
+    .phase-mid { background: var(--mid-color); }
+    .phase-fine { background: var(--fine-color); }
+
+    .curve-chart-card {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 14px;
+    }
+
+    /* Source Tables */
+    .source-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .source-table th, .source-table td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: middle;
+    }
+    .source-table th { color: var(--muted); font-size: 12px; font-weight: 600; }
+    .source-table tr.row-disabled td:not(:first-child) {
+      opacity: .38;
+      pointer-events: none;
+    }
+
+    .task-card-list { display: grid; gap: 10px; margin-top: 10px; }
+    .task-item-row {
+      display: grid;
+      grid-template-columns: 28px 130px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--panel-2);
+    }
+    .task-item-row.disabled { opacity: .45; }
+
+    /* Prize Phase Cards */
+    .phase-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      background: var(--panel-2);
+      display: grid;
+      gap: 10px;
+    }
+    .phase-card h3 {
+      margin: 0;
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .amt-row {
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr);
+      gap: 8px;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Cohort Table */
+    .cohort-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .cohort-table th, .cohort-table td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+    .cohort-table th { color: var(--muted); font-size: 12px; font-weight: 600; }
+    .cohort-table tr:hover { background: rgba(74, 156, 255, .04); }
+
+    /* Side Inspector Cards */
+    .side-card { padding: 18px 20px; margin-top: 0; }
+    .now-card {
+      background: linear-gradient(180deg, var(--blue-soft), transparent);
+      border: 1px solid rgba(74, 156, 255, .35);
+    }
+    .now-card h3 { margin: 0 0 6px; font-size: 13px; color: var(--blue); }
+    .now-card .look { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    .now-card .look strong { color: var(--text); }
+
+    .summary-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 4px 0;
+    }
+    .summary-row strong { color: var(--text); font-variant-numeric: tabular-nums; }
+
+    .fill-bar {
+      height: 14px;
+      border-radius: 999px;
+      background: var(--panel-3);
+      overflow: hidden;
+      display: flex;
+      margin: 6px 0 10px;
+      border: 1px solid var(--border);
+    }
+    .fill-bar .done {
+      background: linear-gradient(90deg, #37d39a, #4a9cff);
+      transition: width .25s ease;
+    }
+    .fill-bar .left {
+      background: rgba(255, 255, 255, .05);
+    }
+
+    .check-item {
+      display: flex;
+      gap: 8px;
+      font-size: 12px;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .check-item.ok::before { content: "✓"; color: var(--green); font-weight: 800; }
+    .check-item.warn { color: #ffe0a3; }
+    .check-item.warn::before { content: "!"; color: var(--amber); font-weight: 800; }
+    .check-item.danger { color: #fab6b6; }
+    .check-item.danger::before { content: "×"; color: var(--red); font-weight: 800; }
+
+    /* Simulator Panel */
+    .sim-board {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 14px;
+    }
+    .sim-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    .sim-prize-display {
+      padding: 12px;
+      border-radius: 8px;
+      background: var(--panel-3);
+      text-align: center;
+      font-size: 15px;
+      font-weight: bold;
+      color: var(--blue);
+      margin: 10px 0;
+    }
+
+    @media (max-width: 1100px) {
+      .standard-grid, .layout, .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .form-column + .form-column { border-left: 0; border-top: 1px solid var(--border); }
+      .side { position: static; width: 100%; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="title-row">
+      <a class="btn ghost compact" href="../../index.html">← 原型首页</a>
+      <h1>新增活动・好运探索季</h1>
+      <span class="tag pri">新活动</span>
+      <span class="tag warn">Recommendation / 建议案</span>
+      <span class="tag">Prototype-only</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px">
+      <a class="btn ghost" href="player.html">🎮 玩家前台</a>
+      <a class="btn ghost" href="guide.html">说明</a>
+      <button class="btn ghost" type="button" id="themeToggleBtn">☀️ 白天模式</button>
+      <button class="btn ghost" type="button" id="resetBtn">还原</button>
+      <button class="btn primary" type="button" id="publishBtn">发布</button>
+    </div>
+  </header>
+
+  <!-- 上半表：活动中心标准字段（对齐 MAH standard-shell） -->
+  <section class="standard-shell" aria-label="活动基本设定">
+    <div class="standard-header-bar">
+      <div class="standard-title">活动基本设定</div>
+      <div class="helper">和活动中心新增页同一套上半栏</div>
+    </div>
+    <div class="standard-grid">
+      <!-- 左列 -->
+      <div class="form-column">
+        <div class="form-row">
+          <span class="form-label required">活动类型
+            <span class="tip" tabindex="0" data-tooltip="本页是好运探索季，和幸运转盘分开。">i</span>
+          </span>
+          <select class="input" id="activityType">
+            <option value="lucky_journey" selected>好运探索季</option>
+            <option value="wheel">幸运转盘</option>
+            <option value="multiplier">倍率巅峰挑战</option>
+            <option value="treasure">天降夺宝</option>
+            <option value="invite">推广</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <span class="form-label required">活动名称
+            <span class="tip" tabindex="0" data-tooltip="前台列表上的名字。">i</span>
+          </span>
+          <div>
+            <div class="radio-group">
+              <label class="el-radio-item"><input type="radio" name="nameMode" value="system" checked> 系统自带</label>
+              <label class="el-radio-item"><input type="radio" name="nameMode" value="custom"> 自定义</label>
+            </div>
+            <input class="input" id="activityName" value="好运探索季・限时启航" style="margin-top:6px">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <span class="form-label required">活动时间
+            <span class="tip" tabindex="0" data-tooltip="过期不能新参加。已经发出的奖不撤。">i</span>
+          </span>
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <input class="input" type="date" id="startDate" value="2026-09-15" style="width:auto">
+              <span class="helper">至</span>
+              <input class="input" type="date" id="endDate" value="2026-09-28" style="width:auto">
+            </div>
+            <div class="notice warn" style="margin-top:8px">
+              活动时间结束后才点参加：拒绝加入，不发奖、不记进度。结束前已参加：依据下方「活动结束后」配置处理。
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <span class="form-label required">可玩天数
+            <span class="tip" tabindex="0" data-tooltip="点参加后能玩几天。到期没用的次数作废。">i</span>
+          </span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="number-control">
+              <button class="number-step" type="button" id="daysMinus">-</button>
+              <input class="input" id="personalDays" type="number" min="1" max="30" value="7">
+              <button class="number-step" type="button" id="daysPlus">+</button>
+            </div>
+            <span class="helper">天</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <span class="form-label">可重复参加
+            <span class="tip" tabindex="0" data-tooltip="上一轮结束后，活动没过期可以再来一局。">i</span>
+          </span>
+          <label class="el-checkbox-item"><input type="checkbox" id="canRepeat"> 允许</label>
+        </div>
+
+        <div class="form-row">
+          <span class="form-label">活动结束后
+            <span class="tip" tabindex="0" data-tooltip="活动到期时：已在玩的人是截断次数，还是让他做完这局。">i</span>
+          </span>
+          <div class="radio-group">
+            <label class="el-radio-item"><input type="radio" name="afterEnd" value="finish" checked> 允许做完本次</label>
+            <label class="el-radio-item"><input type="radio" name="afterEnd" value="cut"> 截断未用次数</label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <span class="form-label">同注册IP上限
+            <span class="tip" tabindex="0" data-tooltip="同一 IP 最多几个号。0=不限。">i</span>
+          </span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="number-control">
+              <button class="number-step" type="button" onclick="stepVal('ipLimit',-1)">-</button>
+              <input class="input" id="ipLimit" type="number" min="0" value="0">
+              <button class="number-step" type="button" onclick="stepVal('ipLimit',1)">+</button>
+            </div>
+            <span class="helper">0=不限</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <span class="form-label">同注册设备上限
+            <span class="tip" tabindex="0" data-tooltip="同一设备最多几个号。0=不限。和 IP 分开算。">i</span>
+          </span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="number-control">
+              <button class="number-step" type="button" onclick="stepVal('deviceLimit',-1)">-</button>
+              <input class="input" id="deviceLimit" type="number" min="0" value="0">
+              <button class="number-step" type="button" onclick="stepVal('deviceLimit',1)">+</button>
+            </div>
+            <span class="helper">0=不限</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <span class="form-label required">参与会员层级
+            <span class="tip" tabindex="0" data-tooltip="谁能看见、能参加。">i</span>
+          </span>
+          <div class="radio-group">
+            <label class="el-radio-item"><input type="radio" name="layerMode" value="all" checked> 全部层级</label>
+            <label class="el-radio-item"><input type="radio" name="layerMode" value="custom"> 指定层级</label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <span class="form-label required">派奖钱包
+            <span class="tip" tabindex="0" data-tooltip="现金奖进这个钱包。选现金才要打码。">i</span>
+          </span>
+          <div class="radio-group">
+            <label class="el-radio-item"><input type="radio" name="wallet" value="bonus" checked id="walletBonus"> 彩金钱包</label>
+            <label class="el-radio-item"><input type="radio" name="wallet" value="cash" id="walletCash"> 现金钱包</label>
+          </div>
+        </div>
+
+        <div class="form-row" id="wagerRow" style="display:none">
+          <span class="form-label required">打码倍率
+            <span class="tip" tabindex="0" data-tooltip="提现要打的流水倍数。0=不用打。">i</span>
+          </span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="number-control">
+              <button class="number-step" type="button" onclick="stepVal('wager',-1)">-</button>
+              <input class="input" id="wager" type="number" min="0" value="1">
+              <button class="number-step" type="button" onclick="stepVal('wager',1)">+</button>
+            </div>
+            <span class="helper">流水 = 奖金 × 倍数</span>
+          </div>
+        </div>
+
+        <div class="form-row align-start">
+          <span class="form-label required">申领终端
+            <span class="tip" tabindex="0" data-tooltip="哪些端能玩。至少勾一个。">i</span>
+          </span>
+          <div class="checkbox-group">
+            <label class="el-checkbox-item"><input type="checkbox" checked> H5 网页</label>
+            <label class="el-checkbox-item"><input type="checkbox" checked> Android APP</label>
+            <label class="el-checkbox-item"><input type="checkbox" checked> iOS APP</label>
+            <label class="el-checkbox-item"><input type="checkbox" checked> PWA</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右列 -->
+      <div class="form-column">
+        <div class="form-row">
+          <span class="form-label">营销活动
+            <span class="tip" tabindex="0" data-tooltip="只控制弹窗和轮播，不管能不能领。">i</span>
+          </span>
+          <div class="switch-wrap" id="mktSwitchWrap" onclick="toggleMktSwitch()">
+            <div class="switch-track"><div class="switch-thumb"></div></div>
+            <span class="helper" id="mktSwitchLabel">已关闭</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <span class="form-label">选择排版
+            <span class="tip" tabindex="0" data-tooltip="前台版式。">i</span>
+          </span>
+          <div class="radio-group">
+            <label class="el-radio-item"><input type="radio" name="layoutStyle" checked> 自定义风格</label>
+            <label class="el-radio-item"><input type="radio" name="layoutStyle"> 版型 A (紧凑)</label>
+            <label class="el-radio-item"><input type="radio" name="layoutStyle"> 版型 B (全幅)</label>
+          </div>
+        </div>
+
+        <div class="form-row align-start">
+          <span class="form-label">选择背景
+            <span class="tip" tabindex="0" data-tooltip="活动页配色。">i</span>
+          </span>
+          <div class="palette-swatches">
+            <div class="palette-item active" onclick="selectPalette(this, '#1d5a49')"><span class="swatch-dot" style="background:#1d5a49"></span>松柏绿</div>
+            <div class="palette-item" onclick="selectPalette(this, '#7a202c')"><span class="swatch-dot" style="background:#7a202c"></span>绯红</div>
+            <div class="palette-item" onclick="selectPalette(this, '#7c6922')"><span class="swatch-dot" style="background:#7c6922"></span>暖金</div>
+            <div class="palette-item" onclick="selectPalette(this, '#4d2a6d')"><span class="swatch-dot" style="background:#4d2a6d"></span>紫罗兰</div>
+            <div class="palette-item" onclick="selectPalette(this, '#1e3f66')"><span class="swatch-dot" style="background:#1e3f66"></span>深海蓝</div>
+          </div>
+        </div>
+
+        <div class="form-row align-start">
+          <span class="form-label">选择图标</span>
+          <div class="icon-category-tags">
+            <span class="icon-tag active" onclick="selectIconTag(this)">🎁 探索宝盒</span>
+            <span class="icon-tag" onclick="selectIconTag(this)">🎰 幸运罗盘</span>
+            <span class="icon-tag" onclick="selectIconTag(this)">🎉 启航庆典</span>
+            <span class="icon-tag" onclick="selectIconTag(this)">🔥 热门挑战</span>
+          </div>
+        </div>
+
+        <div class="form-row align-start">
+          <span class="form-label">宣传图预览
+            <span class="tip" tabindex="0" data-tooltip="列表图。图上已有字就选隐藏。">i</span>
+          </span>
+          <div>
+            <div class="banner-visual" id="bannerVisual">
+              <strong>启航好运探索・首转直达 90%</strong>
+              <span style="font-size:12px;opacity:.88">做任务、邀好友积攒探索能量，100% 必得终点大奖</span>
+              <span class="banner-tag">710 × 320</span>
+            </div>
+            <div class="radio-group" style="margin-top:8px">
+              <span class="helper">是否展示文字：</span>
+              <label class="el-radio-item"><input type="radio" name="bannerText" value="show" checked onchange="toggleBannerText(true)"> 显示</label>
+              <label class="el-radio-item"><input type="radio" name="bannerText" value="hide" onchange="toggleBannerText(false)"> 隐藏</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row align-start">
+          <span class="form-label">宣传简介</span>
+          <textarea id="promoDesc" class="input">每日登录领取免费探索次数，完成游戏与充值任务加速推进。前快后细，转满 100% 即可领取终点大奖！</textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 下半区：好运探索季 V3 7 步深度配置导航 -->
+  <section class="content-editor-head">
+    <div>
+      <h2 style="margin:0;font-size:16px">活动内容</h2>
+      <div class="helper">左边改，右边看结果。</div>
+    </div>
+    <nav class="setup-steps" id="stepsNav">
+      <button type="button" class="active" onclick="jumpStep(1)">1 进度</button>
+      <button type="button" onclick="jumpStep(2)">2 阶段</button>
+      <button type="button" onclick="jumpStep(3)">3 次数</button>
+      <button type="button" onclick="jumpStep(4)">4 开奖</button>
+      <button type="button" onclick="jumpStep(5)">5 谁更快满</button>
+      <button type="button" onclick="jumpStep(6)">6 预算</button>
+      <button type="button" onclick="jumpStep(7)">7 检查</button>
+    </nav>
+  </section>
+
+  <div class="layout">
+    <main class="main">
+      <!-- Step 1: 体验目标 -->
+      <section class="section" id="step1Section" data-step="1" data-step-name="进度">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="step-num">1</span>
+            <div>
+              <h2 style="margin:0;font-size:15px">进度</h2>
+              <div class="helper">第一转跳多少、转几次能满。</div>
+            </div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="template-bar">
+            <span style="font-weight:bold;font-size:12px;color:var(--text)">常用：</span>
+            <button class="btn compact" type="button" onclick="applyTemplate('balanced')">常用 12 转</button>
+            <button class="btn compact" type="button" onclick="applyTemplate('conversion')">快满 10 转</button>
+            <button class="btn compact" type="button" onclick="applyTemplate('social')">要拉人 12 转</button>
+          </div>
+
+          <div class="grid-3">
+            <div class="field">
+              <label>第一转
+                <span class="tip" tabindex="0" data-tooltip="第一转后进度条跳到这里。不能设 100。">i</span>
+              </label>
+              <div style="display:flex;align-items:center;gap:6px">
+                <input class="input" id="firstSpinPct" type="number" min="50" max="98" step="0.5" value="90">
+                <span class="helper">%</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>转满次数
+                <span class="tip" tabindex="0" data-tooltip="一般玩家转几次能满。前台不显示这个数字。">i</span>
+              </label>
+              <input class="input" id="standardTargetSpins" type="number" min="4" max="30" value="12">
+            </div>
+
+            <div class="field">
+              <label>曲线
+                <span class="tip" tabindex="0" data-tooltip="越大前面涨越快。不管能不能满。">i</span>
+              </label>
+              <input class="input" id="curveGamma" type="number" min="1.0" max="3.0" step="0.1" value="1.8">
+            </div>
+          </div>
+
+          <div class="curve-chart-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <span style="font-weight:700;font-size:13px">进度曲线</span>
+              <span class="helper" id="curveMetricsLabel">P(0)=0% | P(1)=90% | P(12)=100%</span>
+            </div>
+            <svg id="curveSvg" viewBox="0 0 460 140" width="100%" height="140" style="background:var(--panel-3);border-radius:6px"></svg>
+            <div class="grid-3" style="margin-top:12px;font-size:12px">
+              <div>一半时：<strong id="halfProgressLabel">--</strong></div>
+              <div>倒数第 2 转：<strong id="penultimateLabel">--</strong></div>
+              <div>最细一刀：<strong id="minGainLabel">--</strong></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 2: 奖励阶段 -->
+      <section class="section" id="step2Section" data-step="2" data-step-name="阶段">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="step-num">2</span>
+            <div>
+              <h2 style="margin:0;font-size:15px">阶段</h2>
+              <div class="helper">这几转开什么。进度条另外算。</div>
+            </div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="grid-3">
+            <div class="field">
+              <label>快砍转数占比 %
+                <span class="tip" tabindex="0" data-tooltip="前几转主要开现金。三段加起来必须 100。">i</span>
+              </label>
+              <input class="input share-input" id="fastShare" type="number" min="10" max="80" value="40">
+            </div>
+
+            <div class="field">
+              <label>中段转数占比 %
+                <span class="tip" tabindex="0" data-tooltip="中间几转主要开积分。">i</span>
+              </label>
+              <input class="input share-input" id="midShare" type="number" min="10" max="80" value="35">
+            </div>
+
+            <div class="field">
+              <label>细砍转数占比 %
+                <span class="tip" tabindex="0" data-tooltip="最后几转主要开点数。至少 1 转。">i</span>
+              </label>
+              <input class="input share-input" id="fineShare" type="number" min="10" max="80" value="25">
+            </div>
+          </div>
+
+          <div class="phase-bar" id="phaseSegmentBar">
+            <div class="phase-bar-segment phase-fast" id="barFast" style="width:40%">快砍 40%</div>
+            <div class="phase-bar-segment phase-mid" id="barMid" style="width:35%">中段 35%</div>
+            <div class="phase-bar-segment phase-fine" id="barFine" style="width:25%">细砍 25%</div>
+          </div>
+
+          <div class="notice" style="margin-top:14px" id="phaseAllocDetail">
+            第 1 转算快砍。12 转：快砍 5、中段 4、细砍 3。
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 3: 抽奖次数 -->
+      <section class="section" id="step3Section" data-step="3" data-step-name="次数">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="step-num">3</span>
+            <div>
+              <h2 style="margin:0;font-size:15px">次数从哪来</h2>
+              <div class="helper">关掉开关，这一行就不发。</div>
+            </div>
+          </div>
+          <div>
+            <label class="el-checkbox-item" style="font-weight:700">
+              <input type="checkbox" id="nonSocialGuarantee" checked> 不拉人也能满
+              <span class="tip" tabindex="0" data-tooltip="打开后：不拉人次数也必须够转满，不够不能发。">i</span>
+            </label>
+          </div>
+        </div>
+        <div class="section-body">
+          <table class="source-table" id="sourcesTable">
+            <thead>
+              <tr>
+                <th style="width:50px">启用</th>
+                <th>来源</th>
+                <th>每次给</th>
+                <th>上限</th>
+                <th>本局最多</th>
+                <th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- 每日免费 -->
+              <tr id="rowSrcFree">
+                <td>
+                  <div class="switch-wrap on" id="swFree" onclick="toggleSourceRow('free')">
+                    <div class="switch-track"><div class="switch-thumb"></div></div>
+                  </div>
+                </td>
+                <td><strong>每日免费抽</strong></td>
+                <td>
+                  <input class="input" id="freeTicketsPerDay" type="number" min="1" value="1" style="width:70px">
+                  <span class="helper">次/天</span>
+                </td>
+                <td>
+                  <span>可领天数：<strong id="freeDaysLabel">7</strong> 天</span>
+                </td>
+                <td>
+                  <input class="input" id="freeCap" type="number" min="1" value="7" style="width:70px">
+                  <span class="helper">次/局</span>
+                </td>
+                <td>
+                  <span class="tag">memberId + activityId + tenantDate</span>
+                  <div class="helper">同一天不重领</div>
+                </td>
+              </tr>
+
+              <!-- 做任务 -->
+              <tr id="rowSrcTask">
+                <td>
+                  <div class="switch-wrap on" id="swTask" onclick="toggleSourceRow('task')">
+                    <div class="switch-track"><div class="switch-thumb"></div></div>
+                  </div>
+                </td>
+                <td><strong>做任务（有限里程碑）</strong></td>
+                <td>
+                  <input class="input" id="taskTicketsPerTask" type="number" min="1" value="1" style="width:70px">
+                  <span class="helper">次/任务</span>
+                </td>
+                <td>
+                  <span>已启用 <strong id="enabledTaskCountLabel">5</strong> 项任务</span>
+                </td>
+                <td>
+                  <input class="input" id="taskCap" type="number" min="1" value="5" style="width:70px">
+                  <span class="helper">次/局</span>
+                </td>
+                <td>
+                  <span class="tag">playId + taskId</span>
+                  <div class="helper">只算加入之后的</div>
+                </td>
+              </tr>
+
+              <!-- 好友助力 -->
+              <tr id="rowSrcAssist">
+                <td>
+                  <div class="switch-wrap on" id="swAssist" onclick="toggleSourceRow('assist')">
+                    <div class="switch-track"><div class="switch-thumb"></div></div>
+                  </div>
+                </td>
+                <td><strong>好友助力</strong></td>
+                <td>
+                  <input class="input" id="assistTicketsPerFriend" type="number" min="1" value="1" style="width:70px">
+                  <span class="helper">次/合格好友</span>
+                </td>
+                <td>
+                  <span>合格好友上限：</span>
+                  <input class="input" id="assistFriendCap" type="number" min="1" value="5" style="width:64px;display:inline-block">
+                </td>
+                <td>
+                  <input class="input" id="assistCap" type="number" min="1" value="5" style="width:70px">
+                  <span class="helper">次/局</span>
+                </td>
+                <td>
+                  <span class="tag">activityId + downlineMemberId</span>
+                  <div class="helper">活动开始后的直接新下线，一人只算一次</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- 任务展开列表 -->
+          <div style="margin-top:16px" id="tasksConfigPanel">
+            <div style="font-weight:700;font-size:13px;margin-bottom:8px">📋 任务里程碑配置：</div>
+            <div class="task-card-list">
+              <div class="task-item-row" id="taskRowPlay">
+                <input type="checkbox" id="taskPlayOn" checked onchange="updateTaskSettings()">
+                <span>游玩指定类型</span>
+                <div>
+                  <div class="radio-group" style="display:inline-flex">
+                    <label class="el-radio-item"><input type="radio" name="playCategory" value="slot" checked> 电子</label>
+                    <label class="el-radio-item"><input type="radio" name="playCategory" value="live"> 真人</label>
+                    <label class="el-radio-item"><input type="radio" name="playCategory" value="sport"> 体育</label>
+                    <label class="el-radio-item"><input type="radio" name="playCategory" value="chess"> 棋牌</label>
+                    <label class="el-radio-item"><input type="radio" name="playCategory" value="fish"> 捕鱼</label>
+                  </div>
+                  <span class="helper" style="margin-left:12px">满 5 局</span>
+                </div>
+              </div>
+
+              <div class="task-item-row" id="taskRowDepC">
+                <input type="checkbox" id="taskDepCOn" checked onchange="updateTaskSettings()">
+                <span>充值次数</span>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span class="helper">充值</span>
+                  <input class="input" type="number" min="1" value="1" style="width:70px">
+                  <span class="helper">次</span>
+                </div>
+              </div>
+
+              <div class="task-item-row" id="taskRowDepA">
+                <input type="checkbox" id="taskDepAOn" checked onchange="updateTaskSettings()">
+                <span>充值金额</span>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span class="helper">充值满</span>
+                  <input class="input" type="number" min="10" value="100" style="width:90px">
+                  <span class="helper">元以上</span>
+                </div>
+              </div>
+
+              <div class="task-item-row" id="taskRowBetC">
+                <input type="checkbox" id="taskBetCOn" checked onchange="updateTaskSettings()">
+                <span>下注次数</span>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span class="helper">注单</span>
+                  <input class="input" type="number" min="1" value="10" style="width:70px">
+                  <span class="helper">次</span>
+                </div>
+              </div>
+
+              <div class="task-item-row" id="taskRowBetA">
+                <input type="checkbox" id="taskBetAOn" checked onchange="updateTaskSettings()">
+                <span>下注金额</span>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span class="helper">投注满</span>
+                  <input class="input" type="number" min="10" value="50" style="width:90px">
+                  <span class="helper">元以上</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 助力高级门槛 -->
+          <div class="grid-2" style="margin-top:14px;padding:12px;background:var(--panel-3);border-radius:8px" id="assistExtraPanel">
+            <div class="field">
+              <label>好友助力需要完成充值
+                <span class="tip" tabindex="0" data-tooltip="好友要充过值才算。前台必须写明。">i</span>
+              </label>
+              <label class="el-checkbox-item"><input type="checkbox" id="assistDepositReq"> 开启充值门槛</label>
+            </div>
+            <div class="field">
+              <label>与推广同时发奖
+                <span class="tip" tabindex="0" data-tooltip="推广奖金和这里的次数可以一起发。">i</span>
+              </label>
+              <label class="el-checkbox-item"><input type="checkbox" id="assistPromoStack" checked> 允许</label>
+            </div>
+          </div>
+
+          <!-- 供给核验 -->
+          <div class="notice success" style="margin-top:14px" id="supplyReport">
+            不拉人 12 次，够转满。全算上最多 17 次。
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 4: 转盘开奖 -->
+      <section class="section" id="step4Section" data-step="4" data-step-name="开奖">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="step-num">4</span>
+            <div>
+              <h2 style="margin:0;font-size:15px">开奖</h2>
+              <div class="helper">谢谢 + 越级 + 本段主奖 = 100%。</div>
+            </div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="notice" style="margin-bottom:14px">
+            100 积分 = 1 现金；100 点数 = 1 积分。
+          </div>
+
+          <div class="grid-3">
+            <!-- 快砍 -->
+            <article class="phase-card">
+              <h3>快砍 <span class="tag" style="color:var(--fast-color)">现金</span></h3>
+              <div class="field">
+                <label>谢谢参与 %
+                  <span class="tip" tabindex="0" data-tooltip="这转没奖，进度照走。谢谢+越级不能超过 100。">i</span>
+                </label>
+                <input class="input prize-prob-in" id="fastThanks" type="number" min="0" max="90" value="20">
+              </div>
+              <div class="field">
+                <label>越级 %
+                  <span class="tip" tabindex="0" data-tooltip="开到现金大档。">i</span>
+                </label>
+                <input class="input prize-prob-in" id="fastUpgrade" type="number" min="0" max="50" value="8">
+              </div>
+              <div class="field">
+                <label>现金 %</label>
+                <input class="input" id="fastNative" readonly value="72%" style="opacity:.8">
+              </div>
+              <div class="amt-row"><span>小档</span><input class="input" id="fastA1" type="number" step="0.01" value="0.18"></div>
+              <div class="amt-row"><span>中档</span><input class="input" id="fastA2" type="number" step="0.01" value="0.5"></div>
+              <div class="amt-row"><span>大档</span><input class="input" id="fastA3" type="number" step="0.01" value="1.0"></div>
+              <div class="helper">现金</div>
+            </article>
+
+            <!-- 中段 -->
+            <article class="phase-card">
+              <h3>中段 <span class="tag" style="color:var(--mid-color)">积分</span></h3>
+              <div class="field">
+                <label>谢谢参与 %
+                  <span class="tip" tabindex="0" data-tooltip="这转没奖，进度照走。">i</span>
+                </label>
+                <input class="input prize-prob-in" id="midThanks" type="number" min="0" max="90" value="25">
+              </div>
+              <div class="field">
+                <label>越级 %
+                  <span class="tip" tabindex="0" data-tooltip="直接开现金。">i</span>
+                </label>
+                <input class="input prize-prob-in" id="midUpgrade" type="number" min="0" max="50" value="10">
+              </div>
+              <div class="field">
+                <label>积分 %</label>
+                <input class="input" id="midNative" readonly value="65%" style="opacity:.8">
+              </div>
+              <div class="amt-row"><span>小档</span><input class="input" id="midA1" type="number" value="18"></div>
+              <div class="amt-row"><span>中档</span><input class="input" id="midA2" type="number" value="50"></div>
+              <div class="amt-row"><span>大档</span><input class="input" id="midA3" type="number" value="100"></div>
+              <div class="helper">积分</div>
+            </article>
+
+            <!-- 细砍 -->
+            <article class="phase-card">
+              <h3>细砍 <span class="tag" style="color:var(--fine-color)">点数</span></h3>
+              <div class="field">
+                <label>谢谢参与 %
+                  <span class="tip" tabindex="0" data-tooltip="这转没奖，进度照走。">i</span>
+                </label>
+                <input class="input prize-prob-in" id="fineThanks" type="number" min="0" max="90" value="30">
+              </div>
+              <div class="field">
+                <label>越级 %
+                  <span class="tip" tabindex="0" data-tooltip="开积分，不会直接开现金。">i</span>
+                </label>
+                <input class="input prize-prob-in" id="fineUpgrade" type="number" min="0" max="50" value="8">
+              </div>
+              <div class="field">
+                <label>点数 %</label>
+                <input class="input" id="fineNative" readonly value="62%" style="opacity:.8">
+              </div>
+              <div class="amt-row"><span>小档</span><input class="input" id="fineA1" type="number" value="50"></div>
+              <div class="amt-row"><span>中档</span><input class="input" id="fineA2" type="number" value="100"></div>
+              <div class="amt-row"><span>大档</span><input class="input" id="fineA3" type="number" value="200"></div>
+              <div class="helper">点数</div>
+            </article>
+          </div>
+
+          <div class="grid-2" style="margin-top:16px">
+            <div class="field">
+              <label>转满大奖（现金）
+                <span class="tip" tabindex="0" data-tooltip="进度到 100% 发一次。参加时先扣预算。">i</span>
+              </label>
+              <div style="display:flex;align-items:center;gap:6px">
+                <input class="input" id="finishPrizeCash" type="number" min="1" value="5">
+                <span class="helper">到 100% 发一次</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>小 / 中 / 大
+                <span class="tip" tabindex="0" data-tooltip="小/中/大出现比例，加起来 100。">i</span>
+              </label>
+              <div style="display:flex;gap:6px">
+                <input class="input" id="weightSmall" type="number" value="60" style="text-align:center" title="小档">
+                <input class="input" id="weightMid" type="number" value="30" style="text-align:center" title="中档">
+                <input class="input" id="weightBig" type="number" value="10" style="text-align:center" title="大档">
+              </div>
+            </div>
+          </div>
+
+          <div class="notice" style="margin-top:14px" id="prizeStatsPreview">
+            平均每人本局约 <strong id="evCostLabel">7.86</strong> 元；最坏预留 <strong id="maxReserveLabel">17.00</strong> 元。
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 5: 分层完成 -->
+      <section class="section" id="step5Section" data-step="5" data-step-name="谁更快满">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="step-num">5</span>
+            <div>
+              <h2 style="margin:0;font-size:15px">谁更快满</h2>
+              <div class="helper">VIP／充值高的人，少转几次就能满。第一转大家一样。</div>
+            </div>
+          </div>
+          <button class="btn compact" type="button" onclick="addCohortRow()">＋ 加一档</button>
+        </div>
+        <div class="section-body">
+          <table class="cohort-table" id="cohortsTable">
+            <thead>
+              <tr>
+                <th style="width:40px">启用</th>
+                <th>名称</th>
+                <th>VIP ≥</th>
+                <th>充值 ≥</th>
+                <th>转满次数</th>
+                <th>越级 +%</th>
+                <th>目标满%</th>
+                <th>预估满%</th>
+                <th style="width:40px">操作</th>
+              </tr>
+            </thead>
+            <tbody id="cohortRowsBody">
+              <!-- 动态加载行 -->
+            </tbody>
+          </table>
+
+          <div class="notice" style="margin-top:14px">
+            加入时按当时 VIP 和充值对上最容易的一档。第一转大家相同。
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 6: 预算与反作弊 -->
+      <section class="section" id="step6Section" data-step="6" data-step-name="预算">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="step-num">6</span>
+            <div>
+              <h2 style="margin:0;font-size:15px">预算</h2>
+              <div class="helper">人一参加就先扣预留。钱不够只停新人，已在玩的不改。</div>
+            </div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div class="grid-3">
+            <div class="field">
+              <label>总预算
+                <span class="tip" tabindex="0" data-tooltip="整档最多能赔多少。">i</span>
+              </label>
+              <div style="display:flex;align-items:center;gap:6px">
+                <input class="input" id="budgetTotal" type="number" min="1000" step="1000" value="50000">
+                <span class="helper">元</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>人数上限
+                <span class="tip" tabindex="0" data-tooltip="最多几人参加。0=只看预算。">i</span>
+              </label>
+              <div style="display:flex;align-items:center;gap:6px">
+                <input class="input" id="budgetMaxParticipants" type="number" min="1" value="800">
+                <span class="helper">人</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>怎么参加
+                <span class="tip" tabindex="0" data-tooltip="建议点参加。打开即参加容易一下子占满名额。">i</span>
+              </label>
+              <div class="radio-group" style="margin-top:6px">
+                <label class="el-radio-item"><input type="radio" name="joinMode" value="click" checked> 点击参加</label>
+                <label class="el-radio-item"><input type="radio" name="joinMode" value="auto"> 打开即参加</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="curve-chart-card" style="margin-top:14px">
+            <div style="font-weight:700;font-size:13px;margin-bottom:10px">现在账上</div>
+            <div class="grid-3">
+              <div class="summary-row"><span>已发出</span><strong id="ledgerSpentLabel">0.00 元</strong></div>
+              <div class="summary-row"><span>已预留</span><strong id="ledgerReserveLabel">13,600.00 元</strong></div>
+              <div class="summary-row"><span>还能用</span><strong id="ledgerAvailLabel" style="color:var(--green)">36,400.00 元</strong></div>
+            </div>
+            <div style="margin-top:10px;font-size:12px;color:var(--muted)">
+              每人最多约 17 元。还能接 <strong id="safeUsersLabel" style="color:var(--text)">2,141</strong> 人。
+            </div>
+          </div>
+
+          <div class="notice" style="margin-top:14px">免费同一天不重领。任务只算加入之后。助力只算活动开始后的直接新下线，一人一次。预算或名额满了只停新人。</div>
+        </div>
+      </section>
+
+      <!-- Step 7: 仿真与发布 -->
+      <section class="section" id="step7Section" data-step="7" data-step-name="检查">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="step-num">7</span>
+            <div>
+              <h2 style="margin:0;font-size:15px">检查</h2>
+              <div class="helper">能发再发。下面可以试转。</div>
+            </div>
+          </div>
+        </div>
+        <div class="section-body">
+          <div id="publishCheckPanel" style="margin-bottom:16px">
+            <!-- 动态红黄绿灯 -->
+          </div>
+
+          <div class="sim-board">
+            <div class="sim-header">
+              <span style="font-weight:700;font-size:14px">试转</span>
+              <div>
+                <button class="btn compact ghost" type="button" onclick="simReset()">重来</button>
+                <button class="btn compact primary" type="button" id="simSpinBtn" onclick="simSpin()">转一次</button>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <div class="helper">进度</div>
+                <div class="fill-bar" style="height:20px;margin-top:6px">
+                  <span class="done" id="simProgressBar" style="width:0%"></span>
+                  <span class="left" id="simProgressLeft" style="width:100%"></span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:12px;font-weight:bold">
+                  <span id="simSpinCountLabel">还没转</span>
+                  <span id="simPctLabel">0.00%</span>
+                </div>
+              </div>
+
+              <div>
+                <div class="helper">这转开到</div>
+                <div class="sim-prize-display" id="simPrizeCard">
+                  点「转一次」
+                </div>
+                <div style="font-size:12px;color:var(--muted)" id="simPhaseLabel">阶段：-</div>
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <details style="font-size:12px;color:var(--muted)">
+                <summary style="cursor:pointer">记录</summary>
+                <pre id="simRecordJson" style="background:var(--panel-3);padding:10px;border-radius:6px;overflow-x:auto;margin-top:6px">{ "status": "idle" }</pre>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 右侧 ~400px Sticky Inspector -->
+    <aside class="side">
+      <!-- 动态卡片 1：你正在调 -->
+      <section class="side-card now-card">
+        <h3>正在改</h3>
+        <div id="inspectorStepTitle" style="font-weight:800;font-size:15px">进度</div>
+        <div id="inspectorStepFeel" style="margin:6px 0;font-size:13px">第一转跳多少，转几次能满。</div>
+        <div class="look">看这里：<strong id="inspectorStepLook">进度条、曲线</strong></div>
+      </section>
+
+      <!-- 动态卡片 2：玩家看到的进度 -->
+      <section class="side-card">
+        <h2 style="margin:0 0 10px;font-size:14px">玩家进度</h2>
+        <div class="helper">刚参加</div>
+        <div class="fill-bar"><span class="done" style="width:0%"></span><span class="left" style="width:100%"></span></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:-6px;margin-bottom:10px">
+          <span>0%</span>
+          <span>还没转</span>
+        </div>
+
+        <div class="helper">第一转后</div>
+        <div class="fill-bar"><span class="done" id="inspFirstSpinBar" style="width:90%"></span><span class="left" id="inspFirstSpinLeft" style="width:10%"></span></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:-6px">
+          <span></span>
+          <span id="inspFirstSpinLabel" style="font-weight:700;color:var(--text)">90.00%</span>
+        </div>
+        <div class="notice" style="margin-top:10px;padding:8px 10px;font-size:11px">
+前台不显示剩余转数预估。
+        </div>
+      </section>
+
+      <!-- 动态卡片 3：次数供给核对 -->
+      <section class="side-card">
+        <h2 style="margin:0 0 10px;font-size:14px">次数</h2>
+        <div class="summary-row"><span>免费</span><strong id="inspFreeSupply">7 次</strong></div>
+        <div class="summary-row"><span>任务</span><strong id="inspTaskSupply">5 次</strong></div>
+        <div class="summary-row"><span>助力</span><strong id="inspAssistSupply">5 次</strong></div>
+        <div style="border-top:1px dashed var(--border);margin:6px 0"></div>
+        <div class="summary-row"><span>不拉人</span><strong id="inspNonSocialSupply">12 次</strong></div>
+        <div class="summary-row"><span>全算上</span><strong id="inspAllSupply" style="color:var(--green)">17 次</strong></div>
+        <div class="summary-row"><span>要转满</span><strong id="inspTargetT">12 次</strong></div>
+      </section>
+
+      <!-- 动态卡片 4：分层完成率 -->
+      <section class="side-card">
+        <h2 style="margin:0 0 10px;font-size:14px">谁更快满</h2>
+        <div id="inspCohortsSummary" style="display:grid;gap:6px;font-size:12px">
+          <!-- 动态注入分层估算 -->
+        </div>
+        <div class="helper" style="margin-top:8px">
+          这是预估，不是抽奖。
+        </div>
+      </section>
+
+      <!-- 动态卡片 5：预算与发布体检 -->
+      <section class="side-card">
+        <h2 style="margin:0 0 10px;font-size:14px">能不能发</h2>
+        <div id="inspPublishStatusBadge" style="margin-bottom:10px">
+          <span class="tag success" style="font-size:13px;padding:4px 10px">可以发</span>
+        </div>
+        <div class="summary-row"><span>平均每人</span><strong id="inspEvCost">7.86 元</strong></div>
+        <div class="summary-row"><span>每人最多</span><strong id="inspHardReserve">17.00 元</strong></div>
+        <div class="summary-row"><span>还能接</span><strong id="inspSafeCap">2,141 人</strong></div>
+        <button class="btn primary" type="button" style="width:100%;margin-top:14px" onclick="triggerPublish()">
+          保存并开启
+        </button>
+      </section>
+    </aside>
+  </div>
+
+  <!-- 引入非模块化 engine.js -->
+  <script src="engine.js"></script>
+
+  <script>
+    (function () {
+      'use strict';
+      var E = window.LuckyJourneyEngine;
+      if (!E) {
+        console.error('LuckyJourneyEngine not found!');
+        return;
+      }
+
+      // Local State cloned from engine.DEFAULT_CONFIG
+      var state = JSON.parse(JSON.stringify(E.DEFAULT_CONFIG));
+
+      // DOM Elements cache
+      var elThemeBtn = document.getElementById('themeToggleBtn');
+      var elResetBtn = document.getElementById('resetBtn');
+      var elPublishBtn = document.getElementById('publishBtn');
+
+      // Upper Inputs
+      var elActivityType = document.getElementById('activityType');
+      var elActivityName = document.getElementById('activityName');
+      var elStartDate = document.getElementById('startDate');
+      var elEndDate = document.getElementById('endDate');
+      var elPersonalDays = document.getElementById('personalDays');
+      var elCanRepeat = document.getElementById('canRepeat');
+      var elIpLimit = document.getElementById('ipLimit');
+      var elDeviceLimit = document.getElementById('deviceLimit');
+      var elWalletBonus = document.getElementById('walletBonus');
+      var elWalletCash = document.getElementById('walletCash');
+      var elWagerRow = document.getElementById('wagerRow');
+      var elWager = document.getElementById('wager');
+
+      // Step 1 Inputs
+      var elFirstSpinPct = document.getElementById('firstSpinPct');
+      var elStandardTargetSpins = document.getElementById('standardTargetSpins');
+      var elCurveGamma = document.getElementById('curveGamma');
+      var elCurveSvg = document.getElementById('curveSvg');
+
+      // Step 2 Inputs
+      var elFastShare = document.getElementById('fastShare');
+      var elMidShare = document.getElementById('midShare');
+      var elFineShare = document.getElementById('fineShare');
+      var elBarFast = document.getElementById('barFast');
+      var elBarMid = document.getElementById('barMid');
+      var elBarFine = document.getElementById('barFine');
+      var elPhaseAllocDetail = document.getElementById('phaseAllocDetail');
+
+      // Step 3 Inputs
+      var elNonSocialGuarantee = document.getElementById('nonSocialGuarantee');
+      var elFreeTicketsPerDay = document.getElementById('freeTicketsPerDay');
+      var elFreeCap = document.getElementById('freeCap');
+      var elTaskTicketsPerTask = document.getElementById('taskTicketsPerTask');
+      var elTaskCap = document.getElementById('taskCap');
+      var elAssistTicketsPerFriend = document.getElementById('assistTicketsPerFriend');
+      var elAssistFriendCap = document.getElementById('assistFriendCap');
+      var elAssistCap = document.getElementById('assistCap');
+      var elAssistDepositReq = document.getElementById('assistDepositReq');
+      var elAssistPromoStack = document.getElementById('assistPromoStack');
+
+      // Step 4 Inputs
+      var elFastThanks = document.getElementById('fastThanks');
+      var elFastUpgrade = document.getElementById('fastUpgrade');
+      var elFastNative = document.getElementById('fastNative');
+      var elMidThanks = document.getElementById('midThanks');
+      var elMidUpgrade = document.getElementById('midUpgrade');
+      var elMidNative = document.getElementById('midNative');
+      var elFineThanks = document.getElementById('fineThanks');
+      var elFineUpgrade = document.getElementById('fineUpgrade');
+      var elFineNative = document.getElementById('fineNative');
+      var elFinishPrizeCash = document.getElementById('finishPrizeCash');
+
+      // Step 6 Inputs
+      var elBudgetTotal = document.getElementById('budgetTotal');
+      var elBudgetMaxParticipants = document.getElementById('budgetMaxParticipants');
+
+      // Inspector Elements
+      var elInspFirstSpinBar = document.getElementById('inspFirstSpinBar');
+      var elInspFirstSpinLeft = document.getElementById('inspFirstSpinLeft');
+      var elInspFirstSpinLabel = document.getElementById('inspFirstSpinLabel');
+      var elInspFreeSupply = document.getElementById('inspFreeSupply');
+      var elInspTaskSupply = document.getElementById('inspTaskSupply');
+      var elInspAssistSupply = document.getElementById('inspAssistSupply');
+      var elInspNonSocialSupply = document.getElementById('inspNonSocialSupply');
+      var elInspAllSupply = document.getElementById('inspAllSupply');
+      var elInspTargetT = document.getElementById('inspTargetT');
+      var elInspCohortsSummary = document.getElementById('inspCohortsSummary');
+      var elInspEvCost = document.getElementById('inspEvCost');
+      var elInspHardReserve = document.getElementById('inspHardReserve');
+      var elInspSafeCap = document.getElementById('inspSafeCap');
+      var elInspPublishStatusBadge = document.getElementById('inspPublishStatusBadge');
+
+      // Simulator State
+      var simPlayer = {
+        active: false,
+        k: 0,
+        progress: 0,
+        effectiveT: 12,
+        history: []
+      };
+
+      // Theme toggle
+      elThemeBtn.addEventListener('click', function () {
+        var isLight = document.documentElement.classList.toggle('light');
+        elThemeBtn.textContent = isLight ? '🌙 深色模式' : '☀️ 白天模式';
+      });
+
+      // Wallet selection toggle wager row
+      function checkWallet() {
+        if (elWalletCash.checked) {
+          elWagerRow.style.display = 'grid';
+        } else {
+          elWagerRow.style.display = 'none';
+        }
+      }
+      elWalletBonus.addEventListener('change', checkWallet);
+      elWalletCash.addEventListener('change', checkWallet);
+
+      // Step val helper
+      window.stepVal = function (id, delta) {
+        var input = document.getElementById(id);
+        if (!input) return;
+        var min = input.min !== '' ? Number(input.min) : 0;
+        var max = input.max !== '' ? Number(input.max) : 99999;
+        var next = Math.max(min, Math.min(max, (Number(input.value) || 0) + delta));
+        input.value = next;
+        input.dispatchEvent(new Event('input'));
+      };
+
+      document.getElementById('daysMinus').addEventListener('click', function () {
+        stepVal('personalDays', -1);
+      });
+      document.getElementById('daysPlus').addEventListener('click', function () {
+        stepVal('personalDays', 1);
+      });
+
+      // Step nav switching & inspector focus
+      var steps = [
+        { id: 1, title: '进度', feel: '第一转跳多少，转几次能满。', look: '曲线、第一转进度条' },
+        { id: 2, title: '阶段', feel: '这几转开现金、积分还是点数。', look: '三段色条' },
+        { id: 3, title: '次数', feel: '免费、任务、助力各给几次。', look: '不拉人够不够转满' },
+        { id: 4, title: '开奖', feel: '谢谢 + 越级 + 本段主奖 = 100%。', look: '平均成本、每人最多' },
+        { id: 5, title: '谁更快满', feel: 'VIP／充值高的人少转几次。', look: '预估满的比例' },
+        { id: 6, title: '预算', feel: '钱不够只停新人。', look: '已发、已预留、还能用' },
+        { id: 7, title: '检查', feel: '能不能发。下面可以试转。', look: '红黄灯、试转' }
+      ];
+
+      window.jumpStep = function (stepIdx) {
+        var buttons = document.querySelectorAll('#stepsNav button');
+        buttons.forEach(function (b, i) {
+          b.classList.toggle('active', i === stepIdx - 1);
+        });
+        var targetSection = document.getElementById('step' + stepIdx + 'Section');
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        var meta = steps[stepIdx - 1];
+        if (meta) {
+          document.getElementById('inspectorStepTitle').textContent = meta.title;
+          document.getElementById('inspectorStepFeel').textContent = meta.feel;
+          document.getElementById('inspectorStepLook').textContent = meta.look;
+        }
+      };
+
+      // Template Applicator
+      window.applyTemplate = function (tplName) {
+        if (tplName === 'balanced') {
+          elFirstSpinPct.value = 90;
+          elStandardTargetSpins.value = 12;
+          elCurveGamma.value = 1.8;
+          elFastShare.value = 40;
+          elMidShare.value = 35;
+          elFineShare.value = 25;
+          elNonSocialGuarantee.checked = true;
+        } else if (tplName === 'conversion') {
+          elFirstSpinPct.value = 92;
+          elStandardTargetSpins.value = 10;
+          elCurveGamma.value = 1.8;
+          elFastShare.value = 45;
+          elMidShare.value = 35;
+          elFineShare.value = 20;
+          elNonSocialGuarantee.checked = true;
+        } else if (tplName === 'social') {
+          elFirstSpinPct.value = 90;
+          elStandardTargetSpins.value = 12;
+          elCurveGamma.value = 2.0;
+          elFastShare.value = 35;
+          elMidShare.value = 35;
+          elFineShare.value = 30;
+          elNonSocialGuarantee.checked = false;
+        }
+        syncFromInputs();
+      };
+
+      // Source Row Switch Toggles
+      window.toggleSourceRow = function (srcKey) {
+        state.sources[srcKey].enabled = !state.sources[srcKey].enabled;
+        var sw = document.getElementById(srcKey === 'free' ? 'swFree' : srcKey === 'task' ? 'swTask' : 'swAssist');
+        var row = document.getElementById(srcKey === 'free' ? 'rowSrcFree' : srcKey === 'task' ? 'rowSrcTask' : 'rowSrcAssist');
+        if (sw) sw.classList.toggle('on', state.sources[srcKey].enabled);
+        if (row) row.classList.toggle('row-disabled', !state.sources[srcKey].enabled);
+        if (srcKey === 'task') {
+          var p = document.getElementById('tasksConfigPanel');
+          if (p) p.style.opacity = state.sources.task.enabled ? '1' : '0.4';
+        }
+        if (srcKey === 'assist') {
+          var ap = document.getElementById('assistExtraPanel');
+          if (ap) ap.style.opacity = state.sources.assist.enabled ? '1' : '0.4';
+        }
+        recalcAndRender();
+      };
+
+      // Task settings update
+      window.updateTaskSettings = function () {
+        var count = 0;
+        ['taskPlayOn', 'taskDepCOn', 'taskDepAOn', 'taskBetCOn', 'taskBetAOn'].forEach(function (id) {
+          if (document.getElementById(id) && document.getElementById(id).checked) count++;
+        });
+        state.sources.task.taskCount = count;
+        document.getElementById('enabledTaskCountLabel').textContent = count;
+        elTaskCap.value = count;
+        state.sources.task.cap = count;
+        recalcAndRender();
+      };
+
+      // Banner text toggle
+      window.toggleBannerText = function (show) {
+        var v = document.getElementById('bannerVisual');
+        if (!v) return;
+        v.querySelector('strong').style.display = show ? 'block' : 'none';
+        v.querySelector('span').style.display = show ? 'block' : 'none';
+      };
+
+      // Mkt switch
+      window.toggleMktSwitch = function () {
+        var wrap = document.getElementById('mktSwitchWrap');
+        var label = document.getElementById('mktSwitchLabel');
+        var on = wrap.classList.toggle('on');
+        label.textContent = on ? '已开启' : '已关闭';
+      };
+
+      // Palettes & Tags
+      window.selectPalette = function (el, col) {
+        document.querySelectorAll('.palette-item').forEach(function (p) { p.classList.remove('active'); });
+        el.classList.add('active');
+        document.getElementById('bannerVisual').style.background = 'linear-gradient(135deg, ' + col + ', #0b0d10)';
+      };
+
+      window.selectIconTag = function (el) {
+        document.querySelectorAll('.icon-tag').forEach(function (t) { t.classList.remove('active'); });
+        el.classList.add('active');
+      };
+
+      // Phase share inputs normalization
+      function handleShareInput(targetId) {
+        var f = Number(elFastShare.value) || 0;
+        var m = Number(elMidShare.value) || 0;
+        var n = Number(elFineShare.value) || 0;
+        var total = f + m + n;
+        if (total === 0) { f = 40; m = 35; n = 25; total = 100; }
+        var norm = E.normalizePhaseShares({ fast: f, mid: m, fine: n });
+        state.phaseShares = norm;
+        elBarFast.style.width = norm.fast.toFixed(1) + '%';
+        elBarFast.textContent = '快砍 ' + Math.round(norm.fast) + '%';
+        elBarMid.style.width = norm.mid.toFixed(1) + '%';
+        elBarMid.textContent = '中段 ' + Math.round(norm.mid) + '%';
+        elBarFine.style.width = norm.fine.toFixed(1) + '%';
+        elBarFine.textContent = '细砍 ' + Math.round(norm.fine) + '%';
+        recalcAndRender();
+      }
+      elFastShare.addEventListener('input', function () { handleShareInput('fastShare'); });
+      elMidShare.addEventListener('input', function () { handleShareInput('midShare'); });
+      elFineShare.addEventListener('input', function () { handleShareInput('fineShare'); });
+
+      // Cohort rows rendering
+      function renderCohortRows(force) {
+        var tbody = document.getElementById('cohortRowsBody');
+        if (!tbody) return;
+
+        var cohortsTable = document.getElementById('cohortsTable');
+        var isTypingInTable = cohortsTable && cohortsTable.contains(document.activeElement);
+
+        if (!force && (isTypingInTable || tbody.children.length === state.cohorts.length)) {
+          Array.from(tbody.children).forEach(function (tr, idx) {
+            var c = state.cohorts[idx];
+            if (!c) return;
+            var simP = Math.round(E.completionProbability(state, c.targetSpins) * 100);
+            var simCell = tr.querySelector('.cohort-sim-p');
+            if (simCell) simCell.textContent = simP + '%';
+          });
+          return;
+        }
+
+        tbody.innerHTML = '';
+        state.cohorts.forEach(function (c, idx) {
+          var tr = document.createElement('tr');
+          var simP = Math.round(E.completionProbability(state, c.targetSpins) * 100);
+          tr.innerHTML =
+            '<td><input type="checkbox" ' + (c.enabled ? 'checked' : '') + ' onchange="toggleCohort(' + idx + ', this.checked)"></td>' +
+            '<td><input class="input compact" value="' + c.name + '" oninput="updateCohort(' + idx + ', \'name\', this.value)" style="min-width:140px"></td>' +
+            '<td><input class="input compact" type="number" min="1" max="10" value="' + c.vipMin + '" oninput="updateCohort(' + idx + ', \'vipMin\', this.value)" style="width:55px"></td>' +
+            '<td><input class="input compact" type="number" min="0" step="50" value="' + c.depositMin + '" oninput="updateCohort(' + idx + ', \'depositMin\', this.value)" style="width:80px"></td>' +
+            '<td><input class="input compact" type="number" min="4" max="30" value="' + c.targetSpins + '" oninput="updateCohort(' + idx + ', \'targetSpins\', this.value)" style="width:65px;font-weight:700"></td>' +
+            '<td><input class="input compact" type="number" min="0" max="20" value="' + c.upgradeAddPct + '" oninput="updateCohort(' + idx + ', \'upgradeAddPct\', this.value)" style="width:55px"></td>' +
+            '<td><input class="input compact" type="number" min="10" max="100" value="' + c.targetCompletionRate + '" oninput="updateCohort(' + idx + ', \'targetCompletionRate\', this.value)" style="width:60px"></td>' +
+            '<td><strong class="cohort-sim-p" style="color:var(--blue)">' + simP + '%</strong></td>' +
+            '<td>' + (idx > 0 ? '<button class="btn compact danger" type="button" onclick="removeCohortRow(' + idx + ')">×</button>' : '<span class="helper">基线</span>') + '</td>';
+          tbody.appendChild(tr);
+        });
+      }
+
+      window.toggleCohort = function (idx, checked) {
+        state.cohorts[idx].enabled = checked;
+        renderCohortRows(true);
+        recalcAndRender();
+      };
+      window.updateCohort = function (idx, field, val) {
+        if (field === 'name') state.cohorts[idx].name = val;
+        else state.cohorts[idx][field] = Number(val) || 0;
+        recalcAndRender();
+      };
+      window.removeCohortRow = function (idx) {
+        state.cohorts.splice(idx, 1);
+        renderCohortRows(true);
+        recalcAndRender();
+      };
+      window.addCohortRow = function () {
+        var nextVip = (state.cohorts[state.cohorts.length - 1] ? state.cohorts[state.cohorts.length - 1].vipMin + 1 : 4);
+        state.cohorts.push({
+          id: 'c_' + Date.now(),
+          name: 'VIP' + nextVip + '+ 会员',
+          enabled: true,
+          vipMin: nextVip,
+          depositMin: nextVip * 300,
+          targetSpins: Math.max(4, state.targetSpins - 2),
+          upgradeAddPct: 3,
+          targetCompletionRate: 88
+        });
+        renderCohortRows(true);
+        recalcAndRender();
+      };
+
+      // Main sync from form to state
+      function syncFromInputs() {
+        state.personalDays = Number(elPersonalDays.value) || 7;
+        state.firstSpinPct = Number(elFirstSpinPct.value) || 90;
+        state.targetSpins = Number(elStandardTargetSpins.value) || 12;
+        state.curveGamma = Number(elCurveGamma.value) || 1.8;
+        state.nonSocialGuaranteed = elNonSocialGuarantee.checked;
+
+        // Sources
+        state.sources.free.ticketsPerDay = Number(elFreeTicketsPerDay.value) || 1;
+        state.sources.free.days = state.personalDays;
+        state.sources.free.cap = Number(elFreeCap.value) || 7;
+        document.getElementById('freeDaysLabel').textContent = state.personalDays;
+
+        var taskCount = 0;
+        ['taskPlayOn', 'taskDepCOn', 'taskDepAOn', 'taskBetCOn', 'taskBetAOn'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el && el.checked) taskCount++;
+        });
+        state.sources.task.taskCount = taskCount;
+        state.sources.task.ticketsPerTask = Number(elTaskTicketsPerTask.value) || 1;
+        state.sources.task.cap = Number(elTaskCap.value) || taskCount;
+
+        state.sources.assist.ticketsPerFriend = Number(elAssistTicketsPerFriend.value) || 1;
+        state.sources.assist.friendCap = Number(elAssistFriendCap.value) || 5;
+        state.sources.assist.cap = Number(elAssistCap.value) || 5;
+        state.sources.assist.depositRequired = elAssistDepositReq.checked;
+        state.sources.assist.allowPromotionDoubleReward = elAssistPromoStack.checked;
+
+        // Prize
+        state.prize.fast.thanksPct = Number(elFastThanks.value) || 0;
+        state.prize.fast.upgradePct = Number(elFastUpgrade.value) || 0;
+        var fastNative = Math.max(0, 100 - state.prize.fast.thanksPct - state.prize.fast.upgradePct);
+        elFastNative.value = fastNative + '%';
+
+        state.prize.mid.thanksPct = Number(elMidThanks.value) || 0;
+        state.prize.mid.upgradePct = Number(elMidUpgrade.value) || 0;
+        var midNative = Math.max(0, 100 - state.prize.mid.thanksPct - state.prize.mid.upgradePct);
+        elMidNative.value = midNative + '%';
+
+        state.prize.fine.thanksPct = Number(elFineThanks.value) || 0;
+        state.prize.fine.upgradePct = Number(elFineUpgrade.value) || 0;
+        var fineNative = Math.max(0, 100 - state.prize.fine.thanksPct - state.prize.fine.upgradePct);
+        elFineNative.value = fineNative + '%';
+
+        state.prize.finishPrize = Number(elFinishPrizeCash.value) || 5;
+
+        state.prize.fast.amounts = [
+          Number(document.getElementById('fastA1').value) || 0.18,
+          Number(document.getElementById('fastA2').value) || 0.5,
+          Number(document.getElementById('fastA3').value) || 1.0
+        ];
+        state.prize.mid.amounts = [
+          Number(document.getElementById('midA1').value) || 18,
+          Number(document.getElementById('midA2').value) || 50,
+          Number(document.getElementById('midA3').value) || 100
+        ];
+        state.prize.fine.amounts = [
+          Number(document.getElementById('fineA1').value) || 50,
+          Number(document.getElementById('fineA2').value) || 100,
+          Number(document.getElementById('fineA3').value) || 200
+        ];
+
+        state.prize.sizeWeights = [
+          Number(document.getElementById('weightSmall').value) || 60,
+          Number(document.getElementById('weightMid').value) || 30,
+          Number(document.getElementById('weightBig').value) || 10
+        ];
+
+        // Budget
+        state.budget.total = Number(elBudgetTotal.value) || 50000;
+        state.budget.maxParticipants = Number(elBudgetMaxParticipants.value) || 800;
+        var joinRadio = document.querySelector('input[name="joinMode"]:checked');
+        state.budget.joinMode = joinRadio ? joinRadio.value : 'click';
+        var afterEndRadio = document.querySelector('input[name="afterEnd"]:checked');
+        state.budget.afterEnd = afterEndRadio ? afterEndRadio.value : 'finish';
+
+        recalcAndRender();
+      }
+
+      // Curve Chart SVG Renderer
+      function renderCurveSvg(curve, T) {
+        var w = 460;
+        var h = 140;
+        var pLeft = 36;
+        var pRight = 16;
+        var pTop = 14;
+        var pBottom = 26;
+        var chartW = w - pLeft - pRight;
+        var chartH = h - pTop - pBottom;
+
+        var points = [];
+        for (var k = 0; k <= T; k++) {
+          var x = pLeft + (k / T) * chartW;
+          var y = pTop + chartH - (curve[k] / 100) * chartH;
+          points.push({ x: x, y: y, k: k, val: curve[k] });
+        }
+
+        var pathD = 'M ' + points[0].x + ' ' + points[0].y;
+        for (var i = 1; i < points.length; i++) {
+          pathD += ' L ' + points[i].x + ' ' + points[i].y;
+        }
+
+        var svgHtml =
+          '<line x1="' + pLeft + '" y1="' + (pTop + chartH) + '" x2="' + (w - pRight) + '" y2="' + (pTop + chartH) + '" stroke="#475366" stroke-width="1"/>' +
+          '<line x1="' + pLeft + '" y1="' + pTop + '" x2="' + (w - pRight) + '" y2="' + pTop + '" stroke="#363637" stroke-dasharray="3,3"/>' +
+          '<text x="' + (pLeft - 6) + '" y="' + (pTop + chartH + 4) + '" fill="#9da8b8" font-size="10" text-anchor="end">0%</text>' +
+          '<text x="' + (pLeft - 6) + '" y="' + (pTop + 4) + '" fill="#9da8b8" font-size="10" text-anchor="end">100%</text>' +
+          '<path d="' + pathD + '" fill="none" stroke="#4a9cff" stroke-width="2.5" stroke-linecap="round"/>';
+
+        points.forEach(function (pt) {
+          if (pt.k === 0 || pt.k === 1 || pt.k === Math.floor(T / 2) || pt.k === T - 1 || pt.k === T) {
+            svgHtml +=
+              '<circle cx="' + pt.x + '" cy="' + pt.y + '" r="3.5" fill="#fff" stroke="#4a9cff" stroke-width="2"/>' +
+              '<text x="' + pt.x + '" y="' + (pTop + chartH + 16) + '" fill="#9da8b8" font-size="9" text-anchor="middle">k' + pt.k + '</text>' +
+              '<text x="' + pt.x + '" y="' + (pt.y - 6) + '" fill="#e5eaf3" font-size="9" font-weight="bold" text-anchor="middle">' + Math.round(pt.val) + '%</text>';
+          }
+        });
+
+        elCurveSvg.innerHTML = svgHtml;
+      }
+
+      // Recalculate & Render Everything
+      function recalcAndRender() {
+        var T = state.targetSpins;
+        var curve = E.progressCurve(T, state.firstSpinPct, state.curveGamma);
+        renderCurveSvg(curve, T);
+
+        // Metrics in Step 1
+        document.getElementById('curveMetricsLabel').textContent = '0% → 第一转 ' + state.firstSpinPct + '% → ' + T + ' 转满';
+        var halfK = Math.floor(T / 2);
+        document.getElementById('halfProgressLabel').textContent = curve[halfK] + '%';
+        document.getElementById('penultimateLabel').textContent = curve[T - 1] + '%';
+        var minGain = E.progressGain(T - 1, T, state.firstSpinPct, state.curveGamma);
+        document.getElementById('minGainLabel').textContent = minGain + '% / 转';
+
+        // Phase Allocations in Step 2
+        var alloc = E.allocatePhaseSpins(T, state.phaseShares);
+        var totalFast = 1 + alloc.fast;
+        elPhaseAllocDetail.innerHTML =
+          '第 1 转算快砍。共 ' + T + ' 转：' +
+          '<span style="color:var(--fast-color)">快砍 ' + totalFast + '</span>，' +
+          '<span style="color:var(--mid-color)">中段 ' + alloc.mid + '</span>，' +
+          '<span style="color:var(--fine-color)">细砍 ' + alloc.fine + '</span>。';
+
+        // Supplies in Step 3
+        var supply = E.guaranteedTicketSupply(state);
+        var report = document.getElementById('supplyReport');
+        if (supply.nonSocial >= T) {
+          report.className = 'notice success';
+          report.innerHTML = '不拉人 ' + supply.nonSocial + ' 次，够转满 ' + T + ' 次。全算上最多 ' + supply.all + ' 次。';
+        } else {
+          if (state.nonSocialGuaranteed) {
+            report.className = 'notice danger';
+            report.innerHTML = '不拉人只有 ' + supply.nonSocial + ' 次，不够转满 ' + T + ' 次。开了「不拉人也能满」，不能发。';
+          } else {
+            report.className = 'notice warn';
+            report.innerHTML = '不拉人只有 ' + supply.nonSocial + ' 次，要靠助力（' + supply.assist + '）才能转满。';
+          }
+        }
+
+        // Cost & Reserve in Step 4
+        var cost = E.playCostStats(state, T);
+        document.getElementById('evCostLabel').textContent = cost.expected.toFixed(4);
+        document.getElementById('maxReserveLabel').textContent = cost.hardReserve.toFixed(2);
+
+        // Budget Ledger in Step 6
+        var maxPart = state.budget.maxParticipants || 800;
+        var hardReserveTotal = maxPart * cost.hardReserve;
+        var actualSpent = state.budget.actualSpent || 0;
+        var avail = state.budget.total - actualSpent - hardReserveTotal;
+        var safeUsers = Math.max(0, Math.floor((state.budget.total - actualSpent) / cost.hardReserve));
+
+        document.getElementById('ledgerSpentLabel').textContent = actualSpent.toFixed(2) + ' 元';
+        document.getElementById('ledgerReserveLabel').textContent = hardReserveTotal.toLocaleString() + '.00 元';
+        document.getElementById('ledgerAvailLabel').textContent = avail.toLocaleString() + '.00 元';
+        document.getElementById('ledgerAvailLabel').style.color = avail >= 0 ? 'var(--green)' : 'var(--red)';
+        document.getElementById('safeUsersLabel').textContent = safeUsers.toLocaleString();
+
+        // Inspector Updates
+        elInspFirstSpinBar.style.width = state.firstSpinPct + '%';
+        elInspFirstSpinLeft.style.width = (100 - state.firstSpinPct) + '%';
+        elInspFirstSpinLabel.textContent = state.firstSpinPct.toFixed(1) + '%';
+
+        elInspFreeSupply.textContent = supply.free + ' 次';
+        elInspTaskSupply.textContent = supply.task + ' 次';
+        elInspAssistSupply.textContent = supply.assist + ' 次';
+        elInspNonSocialSupply.textContent = supply.nonSocial + ' 次';
+        elInspAllSupply.textContent = supply.all + ' 次';
+        elInspTargetT.textContent = T + ' 次';
+
+        elInspEvCost.textContent = cost.expected.toFixed(2) + ' 元';
+        elInspHardReserve.textContent = cost.hardReserve.toFixed(2) + ' 元';
+        elInspSafeCap.textContent = safeUsers.toLocaleString() + ' 人';
+
+        // Cohort summaries
+        renderCohortRows();
+        var cohortsHtml = '';
+        state.cohorts.forEach(function (c) {
+          if (!c.enabled) return;
+          var simP = Math.round(E.completionProbability(state, c.targetSpins) * 100);
+          cohortsHtml +=
+            '<div class="summary-row"><span>' + c.name + ' (T=' + c.targetSpins + ')：</span>' +
+            '<span>预估 <strong>' + simP + '%</strong> / 目标 ' + c.targetCompletionRate + '%</span></div>';
+        });
+        elInspCohortsSummary.innerHTML = cohortsHtml;
+
+        // Publish Checks Evaluation
+        var pub = E.evaluatePublishStatus(state);
+        renderPublishCheckUI(pub);
+
+        // Simulator target spins sync
+        simPlayer.effectiveT = T;
+      }
+
+      function renderPublishCheckUI(pub) {
+        var panel = document.getElementById('publishCheckPanel');
+        var badge = document.getElementById('inspPublishStatusBadge');
+        if (!panel) return;
+
+        var html = '';
+        if (pub.canPublish && pub.isGreen) {
+          badge.innerHTML = '<span class="tag success" style="font-size:13px;padding:4px 10px">可以发</span>';
+          html += '<div class="notice success" style="font-size:13px">' + pub.greenSummary + '</div>';
+        } else if (pub.canPublish && !pub.isGreen) {
+          badge.innerHTML = '<span class="tag warn" style="font-size:13px;padding:4px 10px">有 ' + pub.yellow.length + ' 条提醒，仍可发</span>';
+          html += '<div class="notice warn">提醒<ul style="margin:4px 0 0;padding-left:18px">';
+          pub.yellow.forEach(function (y) { html += '<li>' + y + '</li>'; });
+          html += '</ul><div style="margin-top:6px;font-size:12px">' + pub.greenSummary + '</div></div>';
+        } else {
+          badge.innerHTML = '<span class="tag danger" style="font-size:13px;padding:4px 10px">有 ' + pub.red.length + ' 条必须改，不能发</span>';
+          html += '<div class="notice danger">必须改<ul style="margin:4px 0 0;padding-left:18px">';
+          pub.red.forEach(function (r) { html += '<li>' + r + '</li>'; });
+          html += '</ul></div>';
+          if (pub.yellow.length > 0) {
+            html += '<div class="notice warn" style="margin-top:8px"><strong>附加黄灯注意：</strong><ul style="margin:4px 0 0;padding-left:18px">';
+            pub.yellow.forEach(function (y) { html += '<li>' + y + '</li>'; });
+            html += '</ul></div>';
+          }
+        }
+        panel.innerHTML = html;
+      }
+
+      // Mock Spin Simulator
+      window.simReset = function () {
+        simPlayer.active = true;
+        simPlayer.k = 0;
+        simPlayer.progress = 0;
+        simPlayer.history = [];
+        document.getElementById('simProgressBar').style.width = '0%';
+        document.getElementById('simProgressLeft').style.width = '100%';
+        document.getElementById('simPctLabel').textContent = '0.00%';
+        document.getElementById('simSpinCountLabel').textContent = '还没转';
+        document.getElementById('simPrizeCard').textContent = '点「转一次」';
+        document.getElementById('simPhaseLabel').textContent = '阶段：-';
+        document.getElementById('simRecordJson').textContent = JSON.stringify({ status: 'joined', progress: 0, k: 0 }, null, 2);
+        document.getElementById('simSpinBtn').disabled = false;
+      };
+
+      window.simSpin = function () {
+        if (simPlayer.k >= simPlayer.effectiveT) {
+          alert('已经满了，不能再转。');
+          return;
+        }
+
+        simPlayer.k += 1;
+        var k = simPlayer.k;
+        var T = simPlayer.effectiveT;
+        var phase = E.phaseOf(k, T, state.phaseShares);
+        var beforeProg = simPlayer.progress;
+        var afterProg = E.progressAt(k, T, state.firstSpinPct, state.curveGamma);
+        simPlayer.progress = afterProg;
+
+        // Draw Prize via engine mock
+        var prize = E.drawMockPrize(state, phase);
+        var isFinish = (k === T);
+
+        // Update UI
+        document.getElementById('simProgressBar').style.width = afterProg.toFixed(2) + '%';
+        document.getElementById('simProgressLeft').style.width = (100 - afterProg).toFixed(2) + '%';
+        document.getElementById('simPctLabel').textContent = afterProg.toFixed(2) + '%';
+        document.getElementById('simSpinCountLabel').textContent = k + ' / ' + T;
+        var phaseNames = { fast: '快砍', mid: '中段', fine: '细砍' };
+        document.getElementById('simPhaseLabel').textContent = '阶段：' + phaseNames[phase];
+
+        var prizeText = prize.label;
+        if (prize.upgraded) prizeText += '（越级）';
+        if (isFinish) {
+          prizeText += ' · 转满大奖 ' + state.prize.finishPrize;
+          document.getElementById('simSpinBtn').disabled = true;
+        }
+        document.getElementById('simPrizeCard').textContent = prizeText;
+
+        // Fake SpinRecord JSON
+        var mockRecord = {
+          requestId: 'mock_req_' + Date.now(),
+          spinId: 'spin_' + k + '_' + Date.now(),
+          k: k,
+          phase: phase,
+          progressBeforePct: beforeProg.toFixed(4),
+          progressAfterPct: afterProg.toFixed(4),
+          gainPct: (afterProg - beforeProg).toFixed(4),
+          prizeType: prize.type,
+          prizeAmount: prize.amount,
+          upgraded: prize.upgraded,
+          finishPrizeTriggered: isFinish,
+          finishPrizeAmount: isFinish ? state.prize.finishPrize : 0,
+          liabilityReleased: 1.0,
+          completed: isFinish
+        };
+        document.getElementById('simRecordJson').textContent = JSON.stringify(mockRecord, null, 2);
+      };
+
+      // Trigger Publish
+      window.triggerPublish = function () {
+        syncFromInputs();
+        var pub = E.evaluatePublishStatus(state);
+        if (!pub.canPublish) {
+          alert('不能发。先改这些：\n- ' + pub.red.join('\n- '));
+          return;
+        }
+        if (pub.yellow.length > 0) {
+          var confirmed = confirm('还有提醒：\n- ' + pub.yellow.join('\n- ') + '\n\n仍要发？');
+          if (!confirmed) return;
+        }
+        alert('已记下（原型，不写正式库）。\n' + pub.greenSummary);
+      };
+
+      elPublishBtn.addEventListener('click', window.triggerPublish);
+
+      // Reset Defaults
+      elResetBtn.addEventListener('click', function () {
+        if (!confirm('还原默认？')) return;
+        state = JSON.parse(JSON.stringify(E.DEFAULT_CONFIG));
+        elPersonalDays.value = state.personalDays;
+        elFirstSpinPct.value = state.firstSpinPct;
+        elStandardTargetSpins.value = state.targetSpins;
+        elCurveGamma.value = state.curveGamma;
+        elFastShare.value = state.phaseShares.fast;
+        elMidShare.value = state.phaseShares.mid;
+        elFineShare.value = state.phaseShares.fine;
+        elNonSocialGuarantee.checked = state.nonSocialGuaranteed;
+        elFreeTicketsPerDay.value = state.sources.free.ticketsPerDay;
+        elFreeCap.value = state.sources.free.cap;
+        elTaskTicketsPerTask.value = state.sources.task.ticketsPerTask;
+        elTaskCap.value = state.sources.task.cap;
+        elAssistTicketsPerFriend.value = state.sources.assist.ticketsPerFriend;
+        elAssistFriendCap.value = state.sources.assist.friendCap;
+        elAssistCap.value = state.sources.assist.cap;
+        elFastThanks.value = state.prize.fast.thanksPct;
+        elFastUpgrade.value = state.prize.fast.upgradePct;
+        elMidThanks.value = state.prize.mid.thanksPct;
+        elMidUpgrade.value = state.prize.mid.upgradePct;
+        elFineThanks.value = state.prize.fine.thanksPct;
+        elFineUpgrade.value = state.prize.fine.upgradePct;
+        elFinishPrizeCash.value = state.prize.finishPrize;
+        elBudgetTotal.value = state.budget.total;
+        elBudgetMaxParticipants.value = state.budget.maxParticipants;
+        var jRadio = document.querySelector('input[name="joinMode"][value="' + state.budget.joinMode + '"]');
+        if (jRadio) jRadio.checked = true;
+        var aRadio = document.querySelector('input[name="afterEnd"][value="' + state.budget.afterEnd + '"]');
+        if (aRadio) aRadio.checked = true;
+        ['taskPlayOn', 'taskDepCOn', 'taskDepAOn', 'taskBetCOn', 'taskBetAOn'].forEach(function (id) {
+          var el = document.getElementById(id);
+          if (el) el.checked = true;
+        });
+        updateTaskSettings();
+        renderCohortRows(true);
+        syncFromInputs();
+      });
+
+      // Bind all input event listeners
+      var allInputs = document.querySelectorAll('.input, .prize-prob-in');
+      allInputs.forEach(function (inp) {
+        inp.addEventListener('input', syncFromInputs);
+      });
+      elNonSocialGuarantee.addEventListener('change', syncFromInputs);
+      elAssistDepositReq.addEventListener('change', syncFromInputs);
+      elAssistPromoStack.addEventListener('change', syncFromInputs);
+      document.querySelectorAll('input[name="joinMode"]').forEach(function (r) {
+        r.addEventListener('change', syncFromInputs);
+      });
+      document.querySelectorAll('input[name="afterEnd"]').forEach(function (r) {
+        r.addEventListener('change', syncFromInputs);
+      });
+
+      // Initial Run
+      updateTaskSettings();
+      syncFromInputs();
+      simReset();
+    }());
+  </script>
+</body>
+</html>

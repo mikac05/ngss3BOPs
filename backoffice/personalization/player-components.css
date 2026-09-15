@@ -44,6 +44,644 @@
   background: var(--p-accent);
   mask-image: url(assets/ng-design/logo-accent.svg);
 }
+.p-logo-ph .p-logo-letters,
+.p-logo-sf .p-logo-letters,
+.p-logo-in .p-logo-letters {
+  mask-image: none;
+  background: none;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.p-logo-ph .p-logo-letters {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #ff0055;
+}
+.p-logo-sf .p-logo-letters {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 3px;
+  color: #ffffff;
+  text-shadow: 0 0 10px rgba(126, 0, 253, 0.7);
+}
+.p-logo-in .p-logo-letters {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--p-muted);
+}
+.p-in-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 9px;
+  font-weight: 500;
+  padding: 2px 6px;
+  margin-left: 6px;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--p-muted);
+  border: 1px solid currentColor;
+  letter-spacing: 0;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* ==========================================================================
+   THEME: PH (Philippines / JLJL4) — Light White / Pink / Gold
+   Canonical tokens:
+   Primary: #ff0055, Gold: #f79908 / #fcc136 / #fdd880, Raised: #ffccdd
+   Text: #201330, Muted: #00000066, onAccent: #ffffff, BG/Panel: #ffffff
+   Pink 10: #330011, Radius: 8px / 12px / 120px, Shadow: 0 8px 8px #27000059
+   ========================================================================== */
+
+.ng-player[data-theme="PH"] {
+  --p-accent: #ff0055;
+  --p-accent2: #f79908;
+  --p-bg: #ffffff;
+  --p-panel: #ffffff;
+  --p-raised: #ffccdd;
+  --p-text: #201330;
+  --p-muted: #00000066;
+  --p-onAccent: #ffffff;
+  --p-gold50: #f79908;
+  --p-gold60: #fcc136;
+  --p-gold70: #fdd880;
+  --p-pink10: #330011;
+  --p-pink20: #660021;
+  --p-main7: #201330;
+  --p-radius-s: 8px;
+  --p-radius-m: 12px;
+  --p-radius-full: 120px;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #ffffff;
+  color: #201330;
+}
+
+/* Header */
+.ng-player[data-theme="PH"] .p-header {
+  background: #ffffff;
+  border-bottom: 1px solid #ffccdd;
+  box-shadow: 0 2px 8px rgba(39, 0, 0, 0.05);
+}
+.ng-player[data-theme="PH"] .p-header-1 {
+  background: #ffffff;
+}
+.ng-player[data-theme="PH"] .p-header button {
+  color: #201330;
+}
+.ng-player[data-theme="PH"] .p-header-links button {
+  background: #fff5f8;
+  color: #ff0055;
+  border: 1px solid #ffccdd;
+  border-radius: 8px;
+}
+
+/* Header Balance Chip */
+.ng-player[data-theme="PH"] .p-balance {
+  background: #ffffff;
+  border: 1px solid #ffccdd;
+  border-radius: 8px;
+  color: #201330;
+  box-shadow: 0 2px 6px rgba(39, 0, 0, 0.04);
+}
+.ng-player[data-theme="PH"] .p-balance small {
+  color: #ff0055;
+  font-weight: 600;
+}
+.ng-player[data-theme="PH"] .p-balance b {
+  background: #f79908;
+  color: #ffffff;
+  border-radius: 6px;
+  font-weight: bold;
+}
+.ng-player[data-theme="PH"] .p-coin {
+  background: #fcc136;
+  color: #330011;
+}
+
+/* Header Auth Buttons (Logged Out) */
+.ng-player[data-theme="PH"] .p-auth button {
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 11px;
+}
+.ng-player[data-theme="PH"] .p-auth button:first-child {
+  background: #ffffff;
+  color: #ff0055;
+  border: 1px solid #ff0055;
+}
+.ng-player[data-theme="PH"] .p-auth button:last-child {
+  background: #ff0055;
+  color: #ffffff;
+  border: 1px solid #ff0055;
+  box-shadow: 0 2px 6px rgba(255, 0, 85, 0.25);
+  font-weight: 600;
+}
+
+/* Top Download Bar */
+.ng-player[data-theme="PH"] .p-download {
+  background: #ffffff;
+  border: 1px solid #ffccdd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(39, 0, 0, 0.06);
+  color: #201330;
+}
+.ng-player[data-theme="PH"] .p-download .p-download-copy strong,
+.ng-player[data-theme="PH"] .p-download .p-download-copy span {
+  color: #201330;
+}
+.ng-player[data-theme="PH"] .p-download-1 .p-download-cta,
+.ng-player[data-theme="PH"] .p-download .p-download-cta {
+  display: inline-flex;
+  background: #f79908;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(247, 153, 8, 0.3);
+}
+.ng-player[data-theme="PH"] .p-download .p-glyph {
+  color: #ff0055;
+}
+.ng-player[data-theme="PH"] .p-download .p-close {
+  color: #00000066;
+}
+
+/* Banner / Carousel */
+.ng-player[data-theme="PH"] .p-banner-card {
+  background: linear-gradient(135deg, #ffffff 0%, #ffccdd 100%);
+  border: 1px solid #ffccdd;
+  border-radius: 12px;
+  box-shadow: 0 8px 8px #27000059;
+  color: #201330;
+}
+.ng-player[data-theme="PH"] .p-banner-card strong,
+.ng-player[data-theme="PH"] .p-banner-card > div {
+  color: #201330;
+}
+.ng-player[data-theme="PH"] .p-banner-card button {
+  background: #ff0055;
+  color: #ffffff;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  box-shadow: 0 4px 10px rgba(255, 0, 85, 0.3);
+}
+.ng-player[data-theme="PH"] .p-banner-dots button {
+  color: #00000066;
+}
+.ng-player[data-theme="PH"] .p-banner-dots button[aria-pressed="true"] {
+  color: #ff0055;
+}
+
+/* Quickbar */
+.ng-player[data-theme="PH"] .p-quickbar {
+  background: #ffffff;
+  border: 1px solid #ffccdd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(39, 0, 0, 0.05);
+}
+.ng-player[data-theme="PH"] .p-quickbar button {
+  background: #fff5f8;
+  border: 1px solid #ffccdd;
+  border-radius: 8px;
+  color: #201330;
+}
+.ng-player[data-theme="PH"] .p-quickbar .p-glyph {
+  color: #f79908;
+}
+.ng-player[data-theme="PH"] .p-quickbar small {
+  color: #00000066;
+}
+
+/* Category Buttons & Game Region (Style 1 - default for PH) */
+.ng-player[data-theme="PH"] .p-categories-1 .p-category-list button {
+  background: #ffffff;
+  border: 1px solid #ffccdd;
+  border-radius: 8px;
+  color: #00000066;
+  box-shadow: 0 2px 4px rgba(39, 0, 0, 0.04);
+}
+.ng-player[data-theme="PH"] .p-categories-1 .p-category-list button.active {
+  background: #ff0055;
+  color: #ffffff;
+  border-color: #f79908;
+  box-shadow: 0 4px 10px rgba(255, 0, 85, 0.28);
+  font-weight: 600;
+}
+.ng-player[data-theme="PH"] .p-categories-1 .p-category-list button.active .p-glyph {
+  background-color: #ffffff;
+}
+.ng-player[data-theme="PH"][data-category="1"] .p-game-content {
+  background: #ffffff;
+  border: 1px solid #ffccdd;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(39, 0, 0, 0.04);
+}
+
+/* Search Bar */
+.ng-player[data-theme="PH"] .p-search-main label {
+  background: #ffffff;
+  border: 1px solid #ffccdd;
+  border-radius: 8px;
+  color: #201330;
+}
+.ng-player[data-theme="PH"] .p-search-main input {
+  color: #201330;
+}
+.ng-player[data-theme="PH"] .p-search-main .p-glyph {
+  color: #ff0055;
+}
+.ng-player[data-theme="PH"] .p-search-main > button {
+  background: #fff5f8;
+  border: 1px solid #ffccdd;
+  border-radius: 8px;
+  color: #201330;
+}
+.ng-player[data-theme="PH"] .p-provider-strip button {
+  background: #ffffff;
+  border: 1px solid #ffccdd;
+  border-radius: 8px;
+  color: #201330;
+}
+.ng-player[data-theme="PH"] .p-filter-tags span {
+  border-color: #f79908;
+  color: #f79908;
+}
+
+/* Game Cards */
+.ng-player[data-theme="PH"] .p-game-card {
+  background: #ffffff;
+  border: 1px solid #ffccdd;
+  border-radius: 8px;
+  box-shadow: 0 8px 8px #27000059;
+}
+.ng-player[data-theme="PH"] .p-game-card small {
+  color: #201330;
+  font-weight: 500;
+}
+
+/* Footer */
+.ng-player[data-theme="PH"] .p-footer-1 > div {
+  background: #ffffff;
+  border: 1px solid #ffccdd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(39, 0, 0, 0.05);
+}
+.ng-player[data-theme="PH"] .p-footer {
+  color: #00000066;
+}
+.ng-player[data-theme="PH"] .p-footer button,
+.ng-player[data-theme="PH"] .p-footer a {
+  color: #00000066;
+}
+.ng-player[data-theme="PH"] .p-footer .p-glyph {
+  color: #ff0055;
+}
+
+/* Bottom Nav */
+.ng-player[data-theme="PH"] .p-bottom {
+  background: #ffffff;
+  border-top: 1px solid #ffccdd;
+  box-shadow: 0 -4px 16px rgba(39, 0, 0, 0.06);
+}
+.ng-player[data-theme="PH"] .p-bottom button {
+  color: #00000066;
+}
+.ng-player[data-theme="PH"] .p-bottom button[aria-current="page"] {
+  color: #ff0055;
+  font-weight: 600;
+}
+.ng-player[data-theme="PH"] .p-bottom button[aria-current="page"]::after {
+  content: "";
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #f79908;
+  margin: 1px auto 0;
+}
+
+/* Floating Shortcuts */
+.ng-player[data-theme="PH"] .p-floating .p-float-toggle {
+  background: #ffffff;
+  border: 2px solid #ff0055;
+  color: #ff0055;
+  box-shadow: 0 8px 8px #27000059;
+}
+.ng-player[data-theme="PH"] .p-float-items {
+  background: #ffffff;
+  border: 1px solid #ffccdd;
+  box-shadow: 0 8px 8px #27000059;
+  border-radius: 20px;
+}
+
+/* ==========================================================================
+   THEME: SF (Starfield) — Dark Starfield
+   Canonical tokens:
+   Primary: #7e00fd, Accent2: #e100ff, Text: #ffffff, Muted: #c8c5d8
+   Fills for contrast: BG: #0f0c20, Panel: #1c1635, Raised: #2c2350
+   Compact category: gameLayout 样式五
+   Bottom nav: 首页 / 活动 / VIP / 钱包 / 我的
+   Floating chat + Download bar styled cleanly
+   ========================================================================== */
+
+.ng-player[data-theme="SF"] {
+  --p-accent: #7e00fd;
+  --p-accent2: #e100ff;
+  --p-bg: #0f0c20;
+  --p-panel: #1c1635;
+  --p-raised: #2c2350;
+  --p-text: #ffffff;
+  --p-muted: #c8c5d8;
+  --p-onAccent: #ffffff;
+  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0f0c20;
+  color: #ffffff;
+}
+
+/* Header */
+.ng-player[data-theme="SF"] .p-header {
+  background: #1c1635;
+  border-bottom: 1px solid #2c2350;
+  box-shadow: 0 2px 12px rgba(15, 12, 32, 0.9);
+}
+.ng-player[data-theme="SF"] .p-header-1 {
+  background: #1c1635;
+}
+.ng-player[data-theme="SF"] .p-header button {
+  color: #c8c5d8;
+}
+.ng-player[data-theme="SF"] .p-header-links button {
+  background: #2c2350;
+  color: #ffffff;
+  border: 1px solid #7e00fd;
+  border-radius: 6px;
+}
+
+/* Header Balance Chip */
+.ng-player[data-theme="SF"] .p-balance {
+  background: #2c2350;
+  border: 1px solid #7e00fd;
+  border-radius: 6px;
+  color: #ffffff;
+}
+.ng-player[data-theme="SF"] .p-balance small {
+  color: #c8c5d8;
+}
+.ng-player[data-theme="SF"] .p-balance b {
+  background: #7e00fd;
+  color: #ffffff;
+  border-radius: 4px;
+}
+.ng-player[data-theme="SF"] .p-coin {
+  background: #e100ff;
+  color: #ffffff;
+}
+
+/* Header Auth Buttons */
+.ng-player[data-theme="SF"] .p-auth button {
+  border-radius: 6px;
+  font-size: 11px;
+}
+.ng-player[data-theme="SF"] .p-auth button:first-child {
+  background: #2c2350;
+  color: #ffffff;
+  border: 1px solid #7e00fd;
+}
+.ng-player[data-theme="SF"] .p-auth button:last-child {
+  background: #7e00fd;
+  color: #ffffff;
+  border: 1px solid #e100ff;
+  box-shadow: 0 2px 10px rgba(126, 0, 253, 0.4);
+  font-weight: 600;
+}
+
+/* Top Download Bar */
+.ng-player[data-theme="SF"] .p-download {
+  background: #1c1635;
+  border: 1px solid rgba(126, 0, 253, 0.5);
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(15, 12, 32, 0.8);
+  color: #ffffff;
+}
+.ng-player[data-theme="SF"] .p-download .p-download-copy strong {
+  color: #ffffff;
+}
+.ng-player[data-theme="SF"] .p-download .p-download-copy span {
+  color: #c8c5d8;
+}
+.ng-player[data-theme="SF"] .p-download-1 .p-download-cta,
+.ng-player[data-theme="SF"] .p-download .p-download-cta {
+  display: inline-flex;
+  background: #7e00fd;
+  color: #ffffff;
+  border: 1px solid #e100ff;
+  border-radius: 6px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(126, 0, 253, 0.4);
+}
+.ng-player[data-theme="SF"] .p-download .p-glyph {
+  color: #e100ff;
+}
+.ng-player[data-theme="SF"] .p-download .p-close {
+  color: #c8c5d8;
+}
+
+/* Banner / Carousel */
+.ng-player[data-theme="SF"] .p-banner-card {
+  background: #1c1635;
+  border: 1px solid rgba(126, 0, 253, 0.45);
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(15, 12, 32, 0.8);
+  color: #ffffff;
+}
+.ng-player[data-theme="SF"] .p-banner-card strong {
+  color: #ffffff;
+}
+.ng-player[data-theme="SF"] .p-banner-card button {
+  background: #7e00fd;
+  color: #ffffff;
+  border: 1px solid #e100ff;
+  border-radius: 6px;
+  font-weight: 600;
+  box-shadow: 0 4px 14px rgba(126, 0, 253, 0.4);
+}
+.ng-player[data-theme="SF"] .p-banner-dots button {
+  color: #c8c5d8;
+}
+.ng-player[data-theme="SF"] .p-banner-dots button[aria-pressed="true"] {
+  color: #e100ff;
+}
+
+/* Quickbar */
+.ng-player[data-theme="SF"] .p-quickbar {
+  background: #1c1635;
+  border: 1px solid #2c2350;
+  border-radius: 8px;
+}
+.ng-player[data-theme="SF"] .p-quickbar button {
+  background: #2c2350;
+  border: 1px solid rgba(126, 0, 253, 0.2);
+  border-radius: 6px;
+  color: #ffffff;
+}
+.ng-player[data-theme="SF"] .p-quickbar .p-glyph {
+  color: #e100ff;
+}
+.ng-player[data-theme="SF"] .p-quickbar small {
+  color: #c8c5d8;
+}
+
+/* Compact Categories Look (Style 5 - bound for SF) */
+.ng-player[data-theme="SF"] .p-categories-5 {
+  margin-bottom: 10px;
+}
+.ng-player[data-theme="SF"] .p-categories-5 .p-category-list button {
+  background: #1c1635;
+  color: #c8c5d8;
+  border: 1px solid #2c2350;
+  border-radius: 6px;
+  font-weight: 500;
+  padding: 3px 8px;
+  min-height: 26px;
+}
+.ng-player[data-theme="SF"] .p-categories-5 .p-category-list button.active {
+  background: #7e00fd;
+  color: #ffffff;
+  border: 1px solid #e100ff;
+  box-shadow: 0 2px 8px rgba(126, 0, 253, 0.45);
+  font-weight: 600;
+}
+.ng-player[data-theme="SF"] .p-categories-5 .p-category-search {
+  background: #7e00fd;
+  color: #ffffff;
+  border: 1px solid rgba(225, 0, 255, 0.4);
+  border-radius: 6px;
+}
+
+/* Search Bar */
+.ng-player[data-theme="SF"] .p-search-main label {
+  background: #1c1635;
+  border: 1px solid #2c2350;
+  border-radius: 6px;
+  color: #ffffff;
+}
+.ng-player[data-theme="SF"] .p-search-main input {
+  color: #ffffff;
+}
+.ng-player[data-theme="SF"] .p-search-main .p-glyph {
+  color: #e100ff;
+}
+.ng-player[data-theme="SF"] .p-search-main > button {
+  background: #2c2350;
+  border: 1px solid #7e00fd;
+  color: #ffffff;
+  border-radius: 6px;
+}
+.ng-player[data-theme="SF"] .p-provider-strip button {
+  background: #1c1635;
+  border: 1px solid #2c2350;
+  color: #c8c5d8;
+  border-radius: 6px;
+}
+.ng-player[data-theme="SF"] .p-filter-tags span {
+  border-color: #7e00fd;
+  color: #e100ff;
+}
+
+/* Game Cards */
+.ng-player[data-theme="SF"] .p-game-card {
+  background: #1c1635;
+  border: 1px solid #2c2350;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(15, 12, 32, 0.6);
+}
+.ng-player[data-theme="SF"] .p-game-card small {
+  color: #ffffff;
+}
+
+/* Footer */
+.ng-player[data-theme="SF"] .p-footer-1 > div {
+  background: #1c1635;
+  border: 1px solid #2c2350;
+  border-radius: 8px;
+}
+.ng-player[data-theme="SF"] .p-footer {
+  color: #c8c5d8;
+}
+.ng-player[data-theme="SF"] .p-footer button,
+.ng-player[data-theme="SF"] .p-footer a {
+  color: #c8c5d8;
+}
+.ng-player[data-theme="SF"] .p-footer .p-glyph {
+  color: #e100ff;
+}
+
+/* Bottom Nav (5-slot: 首页/活动/VIP/钱包/我的) */
+.ng-player[data-theme="SF"] .p-bottom {
+  background: #1c1635;
+  border-top: 1px solid #2c2350;
+  box-shadow: 0 -4px 16px rgba(15, 12, 32, 0.8);
+}
+.ng-player[data-theme="SF"] .p-bottom button {
+  color: #c8c5d8;
+}
+.ng-player[data-theme="SF"] .p-bottom button[aria-current="page"] {
+  color: #e100ff;
+  font-weight: 600;
+}
+.ng-player[data-theme="SF"] .p-bottom button[aria-current="page"]::after {
+  content: "";
+  display: block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #e100ff;
+  box-shadow: 0 0 6px #e100ff;
+  margin: 1px auto 0;
+}
+
+/* Floating Chat Shortcut */
+.ng-player[data-theme="SF"] .p-floating .p-float-toggle {
+  background: #7e00fd;
+  color: #ffffff;
+  border: 1px solid #e100ff;
+  box-shadow: 0 4px 16px rgba(126, 0, 253, 0.5);
+}
+.ng-player[data-theme="SF"] .p-floating .p-float-toggle img {
+  display: none;
+}
+.ng-player[data-theme="SF"] .p-floating .p-float-toggle:not([aria-expanded="true"])::after {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 22px;
+  background-color: #ffffff;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M12 2C6.477 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5L2.5 21.5l4.646-.826A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm-1 13H8v-2h3v2zm5-4H8V9h8v2z'/%3E%3C/svg%3E") no-repeat center / contain;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'%3E%3Cpath d='M12 2C6.477 2 2 6.477 2 12c0 1.821.487 3.53 1.338 5L2.5 21.5l4.646-.826A9.957 9.957 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm-1 13H8v-2h3v2zm5-4H8V9h8v2z'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+.ng-player[data-theme="SF"] .p-float-items {
+  background: #1c1635;
+  border: 1px solid #2c2350;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(15, 12, 32, 0.9);
+}
+
+/* ==========================================================================
+   THEME: IN (India / Deferred) — Unstyled monochrome placeholder
+   No invented brand palette. Never fall back to NG green.
+   ========================================================================== */
+
+.ng-player[data-theme="IN"] {
+  /* Blank deferred tokens: desaturate inherited chrome. No invented India hex. */
+  filter: none;
+}
 .p-profile-4 {
   display: grid;
   grid-template-columns: 1fr;
@@ -1661,12 +2299,6 @@
 .ng-player[data-button="样式三"] button.p-primary {
   border-radius: 2px;
   box-shadow: 0 3px 0 color-mix(in srgb, var(--p-accent) 40%, #000);
-}
-.ng-player[data-theme="WG"] .p-header {
-  border-radius: 0 0 18px 18px;
-}
-.ng-player[data-theme="GAME"] .p-header {
-  border-bottom: 2px solid var(--p-accent);
 }
 .ng-player.p-mini {
   min-height: 0;

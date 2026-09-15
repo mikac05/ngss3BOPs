@@ -1001,3 +1001,6 @@ button.ux-header-icon,.ux-header-toggle { cursor:pointer; }
 #object-detail label.studio-switch { display:flex; flex-direction:row; align-items:center; gap:8px; flex:0 0 auto; }
 #object-detail .studio-switch>span { box-sizing:border-box; width:40px; min-width:40px; height:20px; flex:0 0 40px; }
 #object-detail .studio-switch input { width:40px; height:20px; top:50%; transform:translateY(-50%); }
+#object-detail label.studio-switch-lg { gap:12px; }
+#object-detail .studio-switch-lg>span { width:52px; min-width:52px; height:28px; flex:0 0 52px; }
+#object-detail .studio-switch-lg input { width:52px; height:28px; top:0; transform:none; }

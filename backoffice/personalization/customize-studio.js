@@ -14,8 +14,14 @@
     tx = (zh, en) => (s().uiLocale === "en" ? en : zh);
   const themeName = (n) =>
     n === "NG"
-      ? tx("完整 Figma 设计", "Complete Figma design")
-      : tx("既有原型 · 设计待补", "Existing prototype · design pending");
+      ? tx("NG (默认)", "NG (Default)")
+      : n === "PH"
+        ? tx("菲律宾", "Philippines")
+        : n === "IN"
+          ? tx("印度", "India")
+          : n === "SF"
+            ? tx("星空", "Starfield")
+            : n;
   const sourceURL = (node) =>
     "https://www.figma.com/design/15tSa9kHMmOouSzZ4mb8oE/Mika-Temp?node-id=" +
     node.replace(":", "-");
@@ -32,6 +38,11 @@
   const colorName = (n) => tx(D.palette(n).label, D.palette(n).en);
   const thumbnails = new Map();
   function cachedThumbnail(id, f, n, color) {
+    const boundTheme=color==="PHPINK"?"PH":color==="INPLACEHOLDER"?"IN":color==="SFPURPLE"?"SF":"NG";
+    if(boundTheme!=="NG") {
+      const part=({topStatusBar:"header",carouselStyle:"carousel",gameLayout:"category",gameGridStyle:"grid",bottomNav:"nav",shortcuts:"shortcuts"})[id];
+      return part ? `<img class="source-theme-thumbnail" src="assets/source-themes/${boundTheme}-${part}.webp" alt="${boundTheme} ${E(f.label)}">` : `<div class="source-theme-bound"><strong>${boundTheme}</strong><span>${tx("本主题默认样式","Theme default style")}</span></div>`;
+    }
     const key = JSON.stringify([id, n, color]);
     if (!thumbnails.has(key)) {
       if (thumbnails.size >= 256)
@@ -93,6 +104,7 @@
     api.renderAll(opts);
   }
   function styleCardName(f, i) {
+    if(s().theme!=="NG")return s().theme+" · "+tx("样式1","Style 1");
     const current = i >= (f.currentStart || 99);
     const name = current
       ? tx(
@@ -200,10 +212,23 @@
     s().preview.page =
       D.pageFamilies[id]?.page || (D.families[id] ? "首页" : map[id] || "首页");
   }
+  function editableItem(id,r) {
+    if(["theme","themeColor","bottomNav","gameLayout","authVisual"].includes(id))return true;
+    if(D.availableStyleIndices(s().theme,id).length>1)return true;
+    const item=api.byId[id],row=s().draft[id];
+    if(!item || ["FIXED","DERIVED"].includes(row.mode))return false;
+    const opts=item.themeOptions?.[s().theme] || item.options || [];
+    if(Array.isArray(opts) ? opts.filter(v=>v!=="关闭").length>1 : Object.values(opts).some(values=>values.length>1))return true;
+    const choices=Array.isArray(opts)?opts:Object.values(opts).flat();
+    if(item.supportsOff && choices.some(v=>v!=="关闭" && v!=null)) return true;
+    return false;
+  }
   function tree(r) {
+    if(!editableItem(s().selectedId,r) && !s().ui.homeSection)s().selectedId="themeColor";
     const q = s().search.toLowerCase().trim();
     const ids = Object.keys(D.families);
     const row = (id) => {
+      if(!editableItem(id,r))return "";
       const item = api.byId[id],
         label =
           id === "themeColor"
@@ -238,7 +263,7 @@
           : isChanged(id) || (id === "themeColor" && isChanged("theme"))
             ? '<span class="ux-modified-icon" aria-label="已修改" title="已修改">✎</span>'
             : D.allFamilies()[id]
-              ? D.allFamilies()[id].titles.length
+              ? (s().theme !== "NG" ? 1 : D.allFamilies()[id].titles.length)
               : "") +
         "</span></button>"
       );
@@ -353,7 +378,7 @@
       '<section class="studio-card"><div class="studio-card-title"><span class="studio-step">1</span><h3>' +
       tx("本站默认主题", "Default theme") +
       '</h3></div><div class="studio-themes">' +
-      ["NG", "WG", "GAME"]
+      ["NG", "PH", "IN", "SF"]
         .map((n) =>
           action(
             "theme",
@@ -401,7 +426,7 @@
         "Enable themes and colors. Keep one option to lock it. The default must remain enabled.",
       ) +
       '</p><div class="studio-policy">' +
-      ["NG", "WG", "GAME"]
+      ["NG", "PH", "IN", "SF"]
         .map((n) => {
           const enabled = p.themes.includes(n),
             isDefault = n === s().theme;
@@ -517,7 +542,7 @@
       api.els.detail.innerHTML = themePanel();
       return;
     }
-    if (!f || s().theme !== "NG") {
+    if (!f) {
       legacy(r);
       const panel = api.els.detail.querySelector(".evidence-risk-panel");
       if (panel) {
@@ -534,17 +559,6 @@
         .querySelector("h2")
         ?.querySelectorAll(".badge,.help-tip")
         .forEach((n) => n.remove());
-      if (f) {
-        const note = document.createElement("p");
-        note.className = "studio-callout";
-        note.textContent = tx(
-          "此 Figma 文件仅定义 NG。" + s().theme + " 暂使用既有原型设置。",
-          "This Figma file defines NG only. " +
-            s().theme +
-            " uses the existing prototype controls.",
-        );
-        api.els.detail.prepend(note);
-      }
       return;
     }
     const current = D.styleNumber(
@@ -564,6 +578,14 @@
     const hidden = supportsOff && isOff;
     const source = D.allFamilies()[id],
       chosen = source.notes[current - 1];
+
+    const lockSidebar = id === "sidebar" && s().draft.shortcuts?.value === "侧边栏内" && !hidden;
+    const switchLocked = lockSidebar;
+    const switchTooltip = lockSidebar
+        ? tx("快捷入口设于侧边栏内时不可关闭侧边栏", "Shortcuts are hosted in sidebar; cannot turn off sidebar")
+        : "";
+
+    const styleIndices = D.availableStyleIndices(s().theme,id).map(n=>n-1);
 
     // Harvest legacy functional controls
     legacy(r);
@@ -586,23 +608,33 @@
       tx("状态与开关", "Status & Switch") +
       "</h3></div>" +
       (supportsOff
-        ? '<div class="studio-visibility studio-visibility-card"><div class="studio-switch-desc"><strong>' +
-          tx("功能开关", "Master Switch") +
+        ? '<div class="studio-visibility studio-visibility-card' +
+          (hidden ? " is-off" : " is-on") +
+          (switchLocked ? " is-locked" : "") +
+          '"><div class="studio-switch-desc"><strong>' +
+          tx("向玩家展示此组件", "Show this component to players") +
           "</strong><span>" +
           tx(
             hidden
-              ? "当前已关闭，不向玩家展示此组件"
-              : "当前已开启，在站点向玩家正常展示",
+              ? "目前关闭。打开开关后，玩家首页会显示侧栏或此组件。"
+              : "目前开启。关闭后此组件不会出现在玩家端。",
             hidden
-              ? "Component disabled, hidden from players"
-              : "Component enabled and visible",
+              ? "Off. Turn on to show this component to players."
+              : "On. Turn off to hide this component from players.",
           ) +
-          '</span></div><label class="studio-switch"><input type="checkbox" data-studio="visibility" data-id="' +
+          '</span></div><label class="studio-switch studio-switch-lg"' +
+          (switchTooltip ? ' title="' + E(switchTooltip) + '"' : "") +
+          '><input type="checkbox" data-studio="visibility" data-id="' +
           id +
           '" ' +
           (!hidden ? "checked" : "") +
-          "><span></span><b>" +
-          tx(hidden ? "已关闭" : "已开启", hidden ? "Disabled" : "Enabled") +
+          (switchLocked ? " disabled" : "") +
+          '><span></span><b data-on="' +
+          tx("已开启", "On") +
+          '" data-off="' +
+          tx("已关闭", "Off") +
+          '">' +
+          tx(hidden ? "已关闭" : "已开启", hidden ? "Off" : "On") +
           "</b></label></div>"
         : '<div class="studio-visibility studio-visibility-card is-permanent"><div class="studio-switch-desc"><strong>' +
           tx("常驻基础组件", "Permanent Core Component") +
@@ -618,8 +650,8 @@
       (custom ? "dot-custom" : "dot-inherit") +
       '"></span><span>' +
       tx(
-        custom ? "已自定义本站配置" : "跟随 NG 默认",
-        custom ? "Custom style" : "Using NG default",
+        custom ? "已自定义本站配置" : "跟随 " + s().theme + " 默认",
+        custom ? "Custom style" : "Using " + s().theme + " default",
       ) +
       "</span></div>" +
       (custom
@@ -637,7 +669,7 @@
       '" data-name="视觉样式选择"><div class="studio-card-title"><span class="studio-step">2</span><h3>' +
       tx("视觉样式选择", "Visual Style Selection") +
       '</h3><span class="studio-count">' +
-      f.titles.length +
+      styleIndices.length +
       " " +
       tx("款样式", "styles") +
       "</span></div>" +
@@ -654,9 +686,11 @@
       '<div class="studio-style-grid ' +
       (hidden ? "is-dimmed" : "") +
       '" data-name="样式清单">' +
-      f.titles
+      styleIndices
         .map(
-          (title, i) =>
+          (i) => {
+            const title = f.titles[i];
+            return (
             '<div class="studio-style-card ' +
             (current === i + 1 && !hidden ? "active" : "") +
             '" data-name="' +
@@ -696,7 +730,9 @@
                 '"',
               "studio-style-select",
             ) +
-            "</div>",
+            "</div>"
+            );
+          },
         )
         .join("") +
       "</div>" +
@@ -707,9 +743,9 @@
             "Clicking any style will also enable this component.",
           )
         : tx(
-            chosen,
+            f.notes[current - 1] || chosen || "",
             "Selected: " +
-              f.english[current - 1] +
+              (f.english[current - 1] || "") +
               ". Try it in the interactive preview.",
           )) +
       "</p></section>" +
@@ -768,7 +804,7 @@
       } else if (id === "bottomNav") {
         lg.innerHTML = NGCurrent.navEditor();
       } else if (id === "topDownloadBar") {
-        lg.innerHTML = NGCurrent.downloadEditor();
+        lg.innerHTML = s().theme === "NG" ? NGCurrent.downloadEditor() : `<p class="studio-caption">${tx("使用本主题的下载入口，配色与图示随主题固定。","Uses this theme’s download entry with its fixed colors and artwork.")}</p>`;
       } else if (["gameGridStyle", "carouselStyle"].includes(id)) {
         lg.innerHTML =
           '<div class="studio-function-empty"><span class="studio-empty-icon">✓</span><div><strong>' +
@@ -906,7 +942,7 @@
             `<option value="${E(String(v))}" ${v === current ? "selected" : ""}>${E(label(v))}</option>`,
         )
         .join("");
-    const markup = `<div class="studio-preview-title"><h2>${tx("预览", "Preview")}</h2><div class="ux-auth-segments" role="group" aria-label="${tx("预览登录状态","Preview sign-in state")}">${["loggedOut","loggedIn"].map(auth=>action("preview-auth",tx(auth==="loggedOut" ? "登录前" : "登录后",auth==="loggedOut" ? "Signed out" : "Signed in"),`data-auth="${auth}" aria-pressed="${s().preview.auth===auth}"`,"ux-auth-option")).join("")}</div></div><div class="ux-preview-selects"><label>${tx("页面", "Page")}<select id="page-select">${options(pages, s().preview.page, (v) => tx(v, en[v]))}</select></label><label>${tx("配色", "Color")}<select data-studio="preview-color-select">${options(policy.colors[theme], color, colorName)}</select></label><label>${tx("主题", "Theme")}<select data-studio="preview-theme-select" ${policy.themes.length === 1 ? "disabled" : ""}>${options(policy.themes, theme, (v) => v)}</select></label></div>`;
+    const markup = `<div class="studio-preview-title"><h2>${tx("预览", "Preview")}</h2><div class="ux-auth-segments" role="group" aria-label="${tx("预览登录状态","Preview sign-in state")}">${["loggedOut","loggedIn"].map(auth=>action("preview-auth",tx(auth==="loggedOut" ? "登录前" : "登录后",auth==="loggedOut" ? "Signed out" : "Signed in"),`data-auth="${auth}" aria-pressed="${s().preview.auth===auth}"`,"ux-auth-option")).join("")}</div></div><div class="ux-preview-selects"><label>${tx("页面", "Page")}<select id="page-select">${options(pages, s().preview.page, (v) => tx(v, en[v]))}</select></label><label><span class="ux-player-choice-tip" tabindex="0" data-tip="${tx("玩家可选配色。仅切换预览，不修改本站默认。","Player-selectable colors. Changes the preview only, not site defaults.")}">${tx("配色", "Color")}</span><select data-studio="preview-color-select" ${policy.colors[theme].length===1 ? "disabled" : ""}>${options(policy.colors[theme], color, colorName)}</select></label><label><span class="ux-player-choice-tip" tabindex="0" data-tip="${tx("玩家可选主题。仅切换预览，不修改本站默认。","Player-selectable themes. Changes the preview only, not site defaults.")}">${tx("主题", "Theme")}</span><select data-studio="preview-theme-select" ${policy.themes.length === 1 ? "disabled" : ""}>${options(policy.themes, theme, (v) => v)}</select></label></div>`;
     const toolbar = pane.querySelector("#studio-preview-tools");
     if (toolbar.dataset.markup !== markup) {
       toolbar.innerHTML = markup;
@@ -927,15 +963,7 @@
     pane.querySelector("#studio-preview-note").innerHTML =
       '<p class="studio-preview-caption">' +
       E(s().theme + " · " + colorName(r.values.themeColor)) +
-      "</p>" +
-      (s().theme !== "NG"
-        ? '<p class="studio-callout">' +
-          tx(
-            "此主题为既有原型示意，未采用本 Figma 的专属设计。",
-            "This theme is a legacy prototype; its own Figma design is pending.",
-          ) +
-          "</p>"
-        : "");
+      "</p>";
     const styles = {};
     Object.entries(D.allFamilies()).forEach(([id, f]) => {
       styles[f.key] = D.styleNumber(
@@ -948,6 +976,7 @@
       schemaVersion: 1,
       tenantId: s().tenantId,
       theme: s().theme,
+      themeDefaults: Object.fromEntries(["NG","PH","IN","SF"].map(theme=>[theme,Object.fromEntries(api.CATALOG.map(item=>[item.id,api.themeDefaultFor(item.id,theme)]))])),
       color: r.values.themeColor,
       styles,
       media: s().draft.authVisual.extra.media || {},
@@ -998,15 +1027,18 @@
     const version = api.els.version;
     version.textContent = tx(api.dirty() ? "有未发布修改" : "已发布", api.dirty() ? "Unpublished changes" : "Published");
     api.els.apply.textContent = tx(s().ui.loadingApply ? "正在发布…" : "发布", s().ui.loadingApply ? "Publishing…" : "Publish");
+    api.els.apply.disabled = !r.canApply || s().ui.loadingApply;
+    api.els.apply.setAttribute("aria-disabled",String(api.els.apply.disabled));
+    api.els.apply.title = r.canApply ? "" : tx("当前设置暂时无法发布，请查看提示。","Publishing is unavailable. See the notice.");
+    let notice=document.getElementById("studio-settings-notice");
+    if(!notice){notice=document.createElement("div");notice.id="studio-settings-notice";notice.setAttribute("role","status");notice.setAttribute("aria-live","polite");api.els.detail.before(notice);}
+    const blocked=r.items.filter(row=>row.outcome==='Block'||row.outcome==='Auto-resolve');
+    const message=!r.canApply ? blocked.flatMap(row=>row.reasons).map(reason=>s().uiLocale==='en'?api.localizedText(reason):reason).join('；') : s().ui.fallbackMessage;
+    notice.replaceChildren();notice.hidden=!message;
+    if(message){const text=document.createElement("span");text.textContent=message;notice.append(text);if(!r.canApply && !s().preview.stale){const reload=document.createElement("button");reload.type="button";reload.textContent=tx("重新载入已发布设置","Reload published settings");reload.onclick=()=>{if(api.dirty()&&!window.confirm(tx("重新载入会放弃尚未发布的修改，是否继续？","Reloading discards unpublished changes. Continue?")))return;api.cancelDraft();s().expectedVersion=s().published.version;s().ui.invalidApplied=false;s().preview.stale=false;s().ui.fallbackMessage="";api.renderAll();};notice.append(reload);}if(s().preview.stale){const refresh=document.createElement("button");refresh.type="button";refresh.textContent=tx("刷新预览","Refresh preview");refresh.onclick=()=>{s().preview.stale=false;s().ui.fallbackMessage="";api.renderAll();};notice.append(refresh);}const dismiss=document.createElement("button");dismiss.type="button";dismiss.textContent="×";dismiss.setAttribute("aria-label",tx("关闭提示","Dismiss notice"));dismiss.disabled=!r.canApply;dismiss.onclick=()=>{s().ui.fallbackMessage="";api.renderAll();};notice.append(dismiss);}
     const validation = api.els.validation;
-    const groups = ["Allow", "Warn", "Auto-resolve", "Review", "Block"]
-      .map((n) => [n, r.items.filter((row) => row.outcome === n)])
-      .filter(([, rows]) => rows.length);
-    const selected = groups.find(([n]) => n === s().ui.checkFilter);
-    validation.classList.toggle("is-expanded", !!selected);
-    validation.setAttribute("data-studio-localized", "");
-    validation.setAttribute("data-name", tx("配置检查", "Configuration checks"));
-    validation.innerHTML = `<div class="ux-check-summary" data-name="检查摘要"><strong>${tx("配置检查", "Configuration checks")}</strong><div class="ux-check-counts">${groups.map(([n, rows]) => action("check-filter", `${n} <b>${rows.length}</b>`, `data-outcome="${n}" aria-expanded="${selected?.[0] === n}"`, "ux-check-chip " + badgeClass(n))).join("")}</div>${selected ? action("check-close", tx("收起", "Collapse"), "", "studio-text-btn") : ""}</div>${selected ? `<div class="ux-check-list">${selected[1].map((row) => `<article><div><strong>${E(row.label)}</strong><p>${E(row.outcome === "Allow" ? tx("检查通过，无需调整。", "Checks passed.") : NGCurrent.guidance(row.id, row.reasons))}</p>${row.outcome !== "Allow" ? `<p class="ux-check-reason">${row.reasons.map(E).join("；")}</p>` : ""}${["Review", "Auto-resolve"].includes(row.outcome) ? `<label><input type="checkbox" data-action="ack-${row.outcome === "Review" ? "review" : "auto"}" data-id="${row.id}" ${s().acks[row.outcome === "Review" ? "review" : "auto"][row.id] ? "checked" : ""}>${tx("已检查并确认", "Reviewed and confirmed")}</label>` : ""}</div><button type="button" class="studio-text-btn" data-action="select" data-id="${row.id}">${tx("前往调整", "Edit setting")}</button></article>`).join("")}</div>` : ""}`;
+    validation.hidden = true;
+    validation.replaceChildren();
     if (lastPanel !== s().selectedId) {
       document.querySelector(".studio-editor-scroll").scrollTop = 0;
       lastPanel = s().selectedId;
@@ -1016,6 +1048,7 @@
       .forEach((el) => el.closest(".studio-step-card")?.remove());
     api.els.detail.querySelectorAll('.studio-style-select small,.current-slot-choice strong').forEach(el=>{el.title=el.textContent;});
     headerControls(r);
+    document.querySelectorAll('.studio-theme-art').forEach(el=>{const theme=["PH","IN","SF"].find(n=>el.classList.contains("theme-"+n));if(theme){el.style.background=`url("assets/source-themes/${theme}-home.webp") center top / cover`;el.replaceChildren();}});
   }
 
   function headerControls(r) {
@@ -1040,20 +1073,7 @@
       const tip=oldReset ? tx("恢复默认样式，保留内容设置","Restore default style; keep content") : tx("恢复此项目的主题默认设置","Restore this item’s theme default");
       reset.dataset.tip=tip;reset.setAttribute("aria-label",tip);controls.append(reset);
     }
-    let toggle=detail.querySelector('.studio-step-card > .studio-visibility .studio-switch,.studio-card > .studio-visibility .studio-switch');
-    if(!toggle && item.supportsOff && !s().ui.homeSection && !["theme","themeColor"].includes(id)) {
-      toggle=document.createElement("label");toggle.innerHTML=`<input type="checkbox" data-studio="header-visible" data-id="${id}" ${row.mode!=="OFF" && row.value!=="关闭" ? "checked" : ""}><span></span>`;
-    }
-    if(toggle){
-      const box=toggle.querySelector('input'),tip=tx(box.checked ? "已开启：点击隐藏此组件" : "已关闭：点击显示此组件",box.checked ? "Visible: click to hide" : "Hidden: click to show");
-      toggle.className="ux-header-icon ux-header-toggle";toggle.dataset.tip=tip;box.setAttribute('aria-label',tip);
-      toggle.querySelectorAll('b').forEach(el=>el.remove());const graphic=toggle.querySelector('span');graphic.textContent="⏻";graphic.setAttribute('aria-hidden','true');controls.append(toggle);
-    }
     head.append(controls);
-    detail.querySelectorAll('.studio-step-card,.panel,.studio-card').forEach(panel=>{
-      const title=panel.querySelector('h3')?.textContent || '';
-      if(/状态与覆盖|状态与开关|Status & Switch|Status and Override/.test(title) || (panel.querySelector('.studio-visibility') && !panel.querySelector('button,input,select,textarea')))panel.remove();
-    });
     detail.querySelectorAll('.studio-step').forEach((el,i)=>el.textContent=i+1);
   }
 
@@ -1441,44 +1461,8 @@
 
           const rowIssue = itemsWithIssues.find((entry) => entry.id === id);
           let alertHtml = "";
-          if (
-            rowIssue &&
-            (rowIssue.outcome !== "Allow" || rowIssue.reasons.length > 0)
-          ) {
-            const isAcked =
-              (rowIssue.outcome === "Auto-resolve" && s().acks.auto[id]) ||
-              (rowIssue.outcome === "Review" && s().acks.review[id]);
-            alertHtml =
-              '<div class="review-card-alert alert-' +
-              rowIssue.outcome.toLowerCase().replace(/[^a-z0-9]/g, "-") +
-              '"><span class="badge ' +
-              badgeClass(rowIssue.outcome) +
-              '">' +
-              rowIssue.outcome +
-              '</span><div class="review-alert-content"><div class="review-alert-text">' +
-              rowIssue.reasons.map(E).join("；") +
-              "</div>" +
-              (rowIssue.outcome === "Auto-resolve"
-                ? '<small class="review-alert-note">' +
-                  (isAcked
-                    ? tx("✓ 已确认自动解析", "Auto-resolve acknowledged")
-                    : tx(
-                        "⚠ 未在编辑器确认自动解析",
-                        "Needs auto-resolve acknowledgment",
-                      )) +
-                  "</small>"
-                : "") +
-              (rowIssue.outcome === "Review"
-                ? '<small class="review-alert-note">' +
-                  (isAcked
-                    ? tx("✓ 已复核风险", "Risk acknowledged")
-                    : tx(
-                        "⚠ 未在编辑器复核风险",
-                        "Needs risk review acknowledgment",
-                      )) +
-                  "</small>"
-                : "") +
-              "</div></div>";
+          if(rowIssue && ["Block","Auto-resolve"].includes(rowIssue.outcome)) {
+            alertHtml='<div class="review-card-alert alert-block"><div class="review-alert-text">'+rowIssue.reasons.map(E).join("；")+'</div></div>';
           }
 
           let changeTag = tx("已修改", "Modified");
@@ -1542,8 +1526,8 @@
             "Review your changes, then click Confirm publish at the bottom right.",
           )
         : tx(
-            "当前草稿存在阻挡项（Block），请关闭此弹窗并在左侧详情面板中处理阻挡设置后再发布。",
-            "Current draft contains blocking issues. Please close this window and resolve them before publishing.",
+            "当前设置暂时无法发布，请关闭此窗口，按页面提示恢复后重试。",
+            "Publishing is unavailable. Close this window and follow the page notice to recover.",
           )
       : tx(
           "以下列出当前草稿与本站已生效配置之间的所有差异项与视觉效果对比。",
@@ -1566,7 +1550,7 @@
       (canApply ? "✓" : "✕") +
       "</span><span>" +
       (canApply
-        ? tx("检查通过 · 允许保存", "Checks Passed · Ready to Save")
+        ? tx("可发布", "Ready to publish")
         : tx("存在阻挡项 · 无法保存", "Blocked · Cannot Save")) +
       '</span></div><button type="button" class="review-close-btn" data-action="close-drawers" aria-label="' +
       tx("关闭", "Close") +
@@ -1661,7 +1645,12 @@
         row.extra.design = { mode: "SET", value: n, sourceTheme: s().theme };
       if (id === "sidebar") {
         row.mode = "SET";
-        row.value = n === 1 ? "右方" : "左方";
+        row.value =
+          s().theme === "NG"
+            ? n === 1
+              ? "右方"
+              : "左方"
+            : api.enableValueFor("sidebar", s().theme);
         row.sourceTheme = s().theme;
       }
       if (id === "topDownloadBar") {
@@ -1764,7 +1753,11 @@
       p = readPolicy();
     if(a==="header-visible") {
       const row=s().draft[b.dataset.id];row.mode=b.checked ? "SET" : "OFF";
-      if(b.checked && (row.value==null || row.value==="关闭")) row.value=api.themeDefaultFor(b.dataset.id,s().theme);
+      if(b.checked) row.value=api.enableValueFor(b.dataset.id,s().theme);
+      else {
+        row.value=null;
+        if(b.dataset.id==="topDownloadBar") s().preview.installEnabled=false;
+      }
       touch();return;
     }
     if (a === "auth-image") {
@@ -1866,19 +1859,24 @@
       p.defaults[n] = b.value;
       savePolicy(p);
     } else if (a === "visibility") {
-      const row = s().draft[b.dataset.id];
+      const id = b.dataset.id;
+      if (id === "sidebar" && s().draft.shortcuts?.value === "侧边栏内" && !b.checked) {
+        b.checked = true;
+        return;
+      }
+      const row = s().draft[id];
       row.mode = b.checked ? "SET" : "OFF";
       row.value = b.checked
-        ? b.dataset.id === "sidebar"
-          ? "左方"
-          : "开启"
+        ? api.enableValueFor(id, s().theme)
         : null;
       row.sourceTheme = s().theme;
+      if (id === "topDownloadBar" && !b.checked) s().preview.installEnabled = false;
     } else return;
     touch();
   }
   function attach(a) {
     api = a;
+    window.NGSelectionGuard?.attach(a);
     if (window.NGCurrent && typeof window.NGCurrent.attach === "function") {
       window.NGCurrent.attach(a);
     }
@@ -1907,21 +1905,6 @@
       }
     });
   }
-  function testPlayer(fn) {
-    preview(api.resolveAll());
-    const root = document.createElement("div");
-    root.style.cssText =
-      "position:fixed;left:-3000px;top:0;width:390px;height:650px";
-    document.body.append(root);
-    try {
-      const c = D.clone(config),
-        player = new NGPlayer.Player(root);
-      player.setConfig(c);
-      return fn({ root, player, config: c });
-    } finally {
-      root.remove();
-    }
-  }
   window.NGStudio = {
     attach,
     tree,
@@ -1932,7 +1915,6 @@
     confirmSave,
     focusPage,
     readPolicy,
-    testPlayer,
     syncStyleSelection,
   };
 })();

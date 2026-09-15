@@ -126,7 +126,8 @@
           !Number.isInteger(d.value) ||
           d.value < 1 ||
           d.value > f.titles.length ||
-          d.sourceTheme !== "NG")
+          !["NG", "PH", "IN", "SF"].includes(d.sourceTheme) ||
+          d.sourceTheme !== theme)
       )
         errors.push(f.label + " 的视觉样式无效。");
     });

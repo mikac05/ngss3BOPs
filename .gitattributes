@@ -1,0 +1,4 @@
+
+# Shared task/source hashes require exact bytes across operating systems.
+tasks/** -text whitespace=cr-at-eol
+backoffice/lucky-journey/v3-review/README.md -text whitespace=cr-at-eol

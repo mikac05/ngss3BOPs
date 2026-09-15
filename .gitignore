@@ -1,0 +1,7 @@
+# Host authorization state and raw provider working captures do not transfer.
+/.hermes-allow-agy-auto-approve
+/scratch_harvest/
+# Local dependencies and runtime caches
+node_modules/
+__pycache__/
+*.py[cod]

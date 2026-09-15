@@ -1,0 +1,30 @@
+{
+  "task_id": "LJ-V3-REVIEW",
+  "revision": 2,
+  "status": "retrieval-pilot-ready",
+  "next_action": "Select the user-requested v3-review change; inspect CALCULATION.md and relevant implementation before product edits. Preserve remaining-turn and v6 scope; no publication.",
+  "completed": [
+    "Source excerpts reconciled against the reviewed and current file hashes",
+    "Historical central handoff preserved byte-for-byte in cold archive; claim revision 2 updates its location only"
+  ],
+  "open_questions": [
+    "Production wallet and eligibility contracts unverified",
+    "Narrow-screen and full keyboard acceptance incomplete",
+    "Later v6 inclusion in historical release unverified"
+  ],
+  "source_ids": [
+    "lj-v6",
+    "lj-ui",
+    "lj-boundaries",
+    "lj-publication-history",
+    "lj-old-variant"
+  ],
+  "source_vector": {
+    "bops:backoffice/lucky-journey/v3-review/README.md": "cce42621bb52b952c0203093b3efe8f457dbc492123a320515954d0fedc017e7",
+    "ngss3:docs/09_archive/agent_handoffs/2026-09-11.md": "f8543fc4392c397be971efba8c0c4d6fbf406d58cbdd55ed85c4ffec69de32fc"
+  },
+  "pending_fact_deltas": [],
+  "validation_receipts": [],
+  "writer_epoch": 1,
+  "handoff_state": "not-transferred"
+}

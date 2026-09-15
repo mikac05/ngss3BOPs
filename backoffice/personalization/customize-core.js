@@ -8,7 +8,7 @@
     "导航",
     "其他",
   ];
-  const THEMES = ["NG", "WG", "GAME"];
+  const THEMES = ["NG", "PH", "IN", "SF"];
   const VIEWPORTS = [320, 375, 390, 480, "desktop"];
   const PLAYER_PAGES = [
     "首页",
@@ -27,16 +27,14 @@
   const NAV_CHOICES = NGCurrent.nav.map(x => x[0]);
   const LIVE_NAV = ["首页", "活动", "推广", "VIP", "账户"];
   const AXURE_NAV = ["首页", "活动", "钱包", "我的", "推广"];
-  const THEME_NAV_COUNTS = { NG: 5, WG: 4, GAME: 3 };
+  const THEME_NAV_COUNTS = { NG: 5, PH: 5, IN: 5, SF: 5 };
   const THEME_NAV_DEFAULTS = {
     NG: { loggedOut: LIVE_NAV.slice(), loggedIn: LIVE_NAV.slice() },
-    WG: {
-      loggedOut: ["首页", "活动", "VIP", "账户"],
-      loggedIn: ["首页", "活动", "钱包", "账户"],
-    },
-    GAME: {
-      loggedOut: ["首页", "活动", "账户"],
-      loggedIn: ["首页", "钱包", "账户"],
+    PH: { loggedOut: ["首页","活动","钱包","推广","账户"], loggedIn: ["首页","活动","钱包","推广","账户"] },
+    IN: { loggedOut: ["推广","活动","首页","钱包","我的"], loggedIn: ["推广","活动","首页","钱包","我的"] },
+    SF: {
+      loggedOut: ["首页", "活动", "VIP", "钱包", "我的"],
+      loggedIn: ["首页", "活动", "VIP", "钱包", "我的"],
     },
   };
   const AUTH = { loggedOut: "登入前", loggedIn: "登入後" };
@@ -113,39 +111,32 @@
 
   const THEME_DEFAULTS = {
     NG: Object.assign({}, NG_DEFAULTS),
-    WG: Object.assign({}, NG_DEFAULTS, {
-      theme: "WG",
-      themeColor: "BDAK",
-      sidebar: "左方",
-      gameLayout: "样式二",
-      popupStyle: "样式二",
-      carouselStyle: "通用Banner",
-      footerStyle: "样式一",
-      profileLayout: "样式二",
-      authVisual: "简洁框",
-      buttonStyle: "样式一",
-      gameIconStyle: "标准",
+    PH: Object.assign({}, NG_DEFAULTS, {
+      theme: "PH",
+      themeColor: "PHPINK",
+      searchPagination: "搜索列",
       bottomNav: {
-        loggedOut: THEME_NAV_DEFAULTS.WG.loggedOut.slice(),
-        loggedIn: THEME_NAV_DEFAULTS.WG.loggedIn.slice(),
+        loggedOut: THEME_NAV_DEFAULTS.PH.loggedOut.slice(),
+        loggedIn: THEME_NAV_DEFAULTS.PH.loggedIn.slice(),
       },
     }),
-    GAME: Object.assign({}, NG_DEFAULTS, {
-      theme: "GAME",
-      themeColor: "BDLKK",
-      categoryButtons: "仅图示",
-      sidebar: "关闭",
-      shortcuts: "浮动收折",
-      carouselStyle: "轮播Banner",
-      footerStyle: "样式三",
-      profileLayout: "样式四",
-      authVisual: "插画框",
-      buttonStyle: "样式三",
-      gameIconStyle: "极简",
-      gameLayout: "样式三",
+    IN: Object.assign({}, NG_DEFAULTS, {
+      theme: "IN",
+      themeColor: "INPLACEHOLDER",
+      searchPagination: "搜索列",
       bottomNav: {
-        loggedOut: THEME_NAV_DEFAULTS.GAME.loggedOut.slice(),
-        loggedIn: THEME_NAV_DEFAULTS.GAME.loggedIn.slice(),
+        loggedOut: THEME_NAV_DEFAULTS.IN.loggedOut.slice(),
+        loggedIn: THEME_NAV_DEFAULTS.IN.loggedIn.slice(),
+      },
+    }),
+    SF: Object.assign({}, NG_DEFAULTS, {
+      theme: "SF",
+      themeColor: "SFPURPLE",
+      gameLayout: "样式五",
+      searchPagination: "搜索列",
+      bottomNav: {
+        loggedOut: THEME_NAV_DEFAULTS.SF.loggedOut.slice(),
+        loggedIn: THEME_NAV_DEFAULTS.SF.loggedIn.slice(),
       },
     }),
   };
@@ -156,36 +147,46 @@
       page: "全局",
       label: "主题",
       type: "single-select",
-      options: ["NG", "WG", "GAME"],
+      options: ["NG", "PH", "IN", "SF"],
+      themeOptions: {
+        NG: ["NG"],
+        PH: ["PH"],
+        IN: ["IN"],
+        SF: ["SF"],
+      },
       required: true,
       supportsOff: false,
       risk: "R0",
-      sourceThemeSelectable: false,
       evidence:
-        "User-confirmed / Live-observed：NG 为 NGSS 默认主题；WG、GAME 为次主题且目录可能更小。",
+        "User-confirmed / Live-observed：NG 为 NGSS 默认主题；PH/IN/SF 各自绑定单组专属选项。",
       playerEffect: "切换整站视觉目录与可继承默认值；不改变账户、钱包或权限。",
       dependencies: "所有主题相关 chrome / variant。",
       fallback: "无 OFF。未知支持保留 Open。",
-      support: { NG: true, WG: true, GAME: true },
-      defaults: { NG: "NG", WG: "WG", GAME: "GAME" },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "NG", PH: "PH", IN: "IN", SF: "SF" },
     },
     {
       id: "themeColor",
       page: "全局",
       label: "主题颜色",
       type: "single-select",
-      options: ["BDOK", "BDAK", "BDLKK"],
+      options: ["BDOK", "橙白", "藍白", "PHPINK", "INPLACEHOLDER", "SFPURPLE"],
+      themeOptions: {
+        NG: ["BDOK", "橙白", "藍白"],
+        PH: ["PHPINK"],
+        IN: ["INPLACEHOLDER"],
+        SF: ["SFPURPLE"],
+      },
       required: true,
       supportsOff: false,
       risk: "R0",
-      sourceThemeSelectable: true,
       evidence:
-        "User-confirmed 2026-08-28：默认跟随所选主题；只有所选主题已声明支持时才允许租户 SET。选项与现网默认仍为 Prototype-only / Open。",
+        "User-confirmed 2026-08-28 / Contract：默认跟随所选主题；NG 提供 BDOK/橙白/藍白，PH 提供 PHPINK，SF 提供 SFPURPLE，IN 印度待补。",
       playerEffect: "改变主色与按钮色，不改变玩法或结算。",
       dependencies: "主题。",
       fallback: "INHERIT 至所选主题推荐色；未知则 Open。",
-      support: { NG: "open", WG: "open", GAME: "open" },
-      defaults: { NG: "BDOK", WG: "BDAK", GAME: "BDLKK" },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "BDOK", PH: "PHPINK", IN: "INPLACEHOLDER", SF: "SFPURPLE" },
     },
     {
       id: "categoryButtons",
@@ -193,36 +194,47 @@
       label: "分类按钮",
       type: "single-select",
       options: ["图示+名称", "仅名称", "仅图示"],
+      themeOptions: {
+        NG: ["图示+名称", "仅图示", "仅名称"],
+        PH: ["图示+名称"],
+        IN: ["图示+名称"],
+        SF: ["图示+名称"],
+      },
       required: true,
       supportsOff: false,
       risk: "R0/R1",
-      sourceThemeSelectable: true,
       evidence: "Prototype-only 选项；Live 默认按主题 INHERIT。",
       playerEffect: "首页分类入口呈现变化，不改变可玩游戏集合。",
       dependencies: "首页游戏浏览。",
       fallback: "INHERIT 主题默认。",
-      support: { NG: true, WG: true, GAME: true },
-      defaults: { NG: "图示+名称", WG: "图示+名称", GAME: "仅图示" },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "图示+名称", PH: "图示+名称", IN: "图示+名称", SF: "图示+名称" },
     },
     {
       id: "topStatusBar",
       page: "首页",
       label: "顶部状态列",
       type: "per-auth-select",
-      options: ["简洁", "基本功能", "全部功能"],
+      options: ["基本功能", "全部功能", "简洁", "钱包专注"],
+      themeOptions: {
+        NG: ["基本功能", "全部功能", "简洁", "钱包专注"],
+        PH: { loggedOut: ["基本功能"], loggedIn: ["全部功能"] },
+        IN: { loggedOut: ["基本功能"], loggedIn: ["全部功能"] },
+        SF: { loggedOut: ["基本功能"], loggedIn: ["全部功能"] },
+      },
       required: true,
       supportsOff: false,
       risk: "R1",
-      sourceThemeSelectable: true,
       evidence: "Prototype-only：登入前 / 登入後独立配置。",
       playerEffect: "改变顶栏密度与可放快捷入口；登入前预览不得出现余额。",
       dependencies: "快捷按钮、替代按钮；所有提供模式必须先通过响应式设计 QA。",
       fallback: "INHERIT 主题默认。",
-      support: { NG: true, WG: true, GAME: true },
+      support: { NG: true, PH: true, IN: true, SF: true },
       defaults: {
         NG: { loggedOut: "基本功能", loggedIn: "全部功能" },
-        WG: { loggedOut: "基本功能", loggedIn: "基本功能" },
-        GAME: { loggedOut: "简洁", loggedIn: "基本功能" },
+        PH: { loggedOut: "基本功能", loggedIn: "全部功能" },
+        IN: { loggedOut: "基本功能", loggedIn: "全部功能" },
+        SF: { loggedOut: "基本功能", loggedIn: "全部功能" },
       },
     },
     {
@@ -230,18 +242,23 @@
       page: "首页",
       label: "侧边栏",
       type: "single-select",
-      options: ["左方", "右方"],
+      options: ["关闭", "左方", "右方"],
+      themeOptions: {
+        NG: ["关闭", "左方", "右方"],
+        PH: ["左方"],
+        IN: ["左方"],
+        SF: ["左方"],
+      },
       required: false,
       supportsOff: true,
       risk: "R1",
-      sourceThemeSelectable: true,
       evidence:
         "Live-observed：NG 默认 关闭。User-confirmed 2026-08-28：关闭 = OFF。",
       playerEffect: "提供或收回侧栏宿主；OFF 时能力必须改走其他宿主。",
       dependencies: "快捷按钮=侧边栏内。",
       fallback: "NG 主题默认解析为 OFF。",
-      support: { NG: true, WG: true, GAME: "open" },
-      defaults: { NG: "关闭", WG: "左方", GAME: "关闭" },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "关闭", PH: "关闭", IN: "关闭", SF: "关闭" },
     },
     {
       id: "shortcuts",
@@ -249,96 +266,121 @@
       label: "快捷按钮",
       type: "single-select",
       options: ["浮动并列", "浮动收折", "状态列按钮", "侧边栏内"],
+      themeOptions: {
+        NG: ["浮动并列", "浮动收折", "状态列按钮", "侧边栏内"],
+        PH: ["浮动并列"],
+        IN: ["浮动并列"],
+        SF: ["浮动并列"],
+      },
       required: false,
       supportsOff: false,
       risk: "R1",
-      sourceThemeSelectable: true,
       evidence:
         "User-confirmed 2026-08-28：保留四种宿主选项且无 OFF。默认值与实际快捷功能集合仍为 Prototype-only / Open。",
       playerEffect: "改变快捷入口位置，不改变充值提款资格。",
       dependencies: "侧边栏、顶部状态列、取款/客服可达性。",
       fallback: "INHERIT 主题默认。",
-      support: { NG: true, WG: true, GAME: true },
-      defaults: { NG: "浮动并列", WG: "浮动并列", GAME: "浮动收折" },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "浮动并列", PH: "浮动并列", IN: "浮动并列", SF: "浮动并列" },
     },
     {
       id: "gameLayout",
       page: "首页",
       label: "游戏排版",
       type: "single-select",
-      options: ["样式一", "样式二", "样式三", "样式四", "样式五"],
+      options: ["样式一", "样式二", "样式三", "样式四", "样式五", "现行一", "现行二", "现行三", "现行四", "现行五"],
+      themeOptions: {
+        NG: ["样式一", "样式二", "样式三", "样式四", "样式五", "现行一", "现行二", "现行三", "现行四", "现行五"],
+        PH: ["样式一"],
+        IN: ["样式一"],
+        SF: ["样式五"],
+      },
       required: true,
       supportsOff: false,
       risk: "R0",
-      sourceThemeSelectable: true,
       evidence:
-        "User-confirmed 2026-09-04：游戏排版改为 Figma 对应的样式一至样式五；仅切换中央游戏浏览区，共用首页其他物件。",
+        "User-confirmed 2026-09-04 / Contract：Figma 对应的样式一至样式五；SF 绑定样式五（紧凑分类）。",
       playerEffect: "改变游戏卡片排布，不改变搜索结果或权限。",
       dependencies: "游戏浏览/搜索。",
       fallback: "INHERIT。",
-      support: { NG: true, WG: true, GAME: true },
-      defaults: { NG: "样式一", WG: "样式二", GAME: "样式三" },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "样式一", PH: "样式一", IN: "样式一", SF: "样式五" },
     },
     {
       id: "searchPagination",
       page: "首页",
-      label: "搜索/分页模式",
+      label: "搜索/分页",
       type: "single-select",
-      options: ["搜索列", "分页"],
+      options: ["Open", "搜索列", "分頁"],
+      themeOptions: {
+        NG: ["Open", "搜索列", "分頁"],
+        PH: ["搜索列"],
+        IN: ["搜索列"],
+        SF: ["搜索列"],
+      },
       required: false,
       supportsOff: false,
       risk: "R1",
-      sourceThemeSelectable: true,
       evidence:
-        "User-confirmed 2026-08-28：INHERIT 是唯一沿用主题默认的语意；SET 仅有 搜索列 / 分页，无 OFF。主题支援与现网默认仍为 Open。",
+        "User-confirmed 2026-08-28：INHERIT 是唯一沿用主题默认的语意；SET 仅有 搜索列 / 分页，无 OFF。",
       playerEffect:
-        "规划中的浏览模式；预览仅合成。GAME 无声明支持且无安全回退。",
+        "规划中的浏览模式；预览仅合成。",
       dependencies: "游戏浏览/搜索。",
-      fallback: "无安全回退（GAME = Block）。",
-      support: { NG: "open", WG: "open", GAME: "open" },
-      defaults: { NG: "Open", WG: "Open", GAME: "Open" },
-      unsafeIfUnsupported: true,
+      fallback: "INHERIT。",
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "Open", PH: "搜索列", IN: "搜索列", SF: "搜索列" },
     },
     {
       id: "topDownloadBar",
       page: "首页",
       label: "顶部下载栏",
       type: "single-select",
-      options: ["开启"],
+      options: ["开启", "关闭"],
+      themeOptions: {
+        NG: ["开启", "关闭"],
+        PH: ["开启"],
+        IN: ["开启"],
+        SF: ["开启"],
+      },
       required: false,
       supportsOff: true,
       risk: "R1",
-      sourceThemeSelectable: false,
       evidence:
         "Prototype-only。User-confirmed 2026-08-28：关闭 = OFF；下载FAB 跟随本物件。",
       playerEffect: "控制 App 下载栏与派生 下载FAB；OFF 时两者同时隐藏。",
       dependencies:
         "派生 下载FAB、App 安装能力（模拟）；所有提供组合必须先通过响应式设计 QA。",
       fallback: "INHERIT。",
-      support: { NG: true, WG: true, GAME: true },
-      defaults: { NG: "开启", WG: "开启", GAME: "开启" },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "开启", PH: "开启", IN: "开启", SF: "开启" },
     },
     {
       id: "downloadFAB",
       page: "首页",
       label: "下载FAB",
       type: "derived-readonly",
-      options: [],
+      options: ["开启", "关闭"],
+      themeOptions: {
+        NG: ["开启", "关闭"],
+        PH: ["开启"],
+        IN: ["开启"],
+        SF: ["开启"],
+      },
       required: false,
       supportsOff: false,
       derivedFrom: "topDownloadBar",
       risk: "R1",
-      sourceThemeSelectable: false,
       evidence:
         "User-confirmed 2026-08-28：跟随顶部下载栏，不单独支持 OFF 或租户覆盖。",
       playerEffect: "与顶部下载栏同步显示或隐藏，不产生独立租户差异。",
       dependencies: "顶部下载栏、App 安装能力（模拟）。",
       fallback: "由顶部下载栏解析结果派生。",
-      support: { NG: true, WG: true, GAME: true },
+      support: { NG: true, PH: true, IN: true, SF: true },
       defaults: {
-        NG: "跟随顶部下载栏",
-        WG: "跟随顶部下载栏",
-        GAME: "跟随顶部下载栏",
+        NG: "开启",
+        PH: "开启",
+        IN: "开启",
+        SF: "开启",
       },
     },
     {
@@ -346,154 +388,189 @@
       page: "钱包",
       label: "充值页",
       type: "single-select",
-      options: ["方式优先", "额度优先"],
+      options: ["方式优先", "金额优先", "快捷模式"],
+      themeOptions: {
+        NG: ["方式优先", "金额优先", "快捷模式"],
+        PH: ["方式优先"],
+        IN: ["方式优先"],
+        SF: ["方式优先"],
+      },
       required: true,
       supportsOff: false,
       risk: "R1/R2",
-      sourceThemeSelectable: true,
       evidence:
-        "User-confirmed 2026-08-28：方式优先 / 额度优先，无 OFF；仅版式，不改变充值资格、通道、限额或账务。",
+        "User-confirmed 2026-08-28：方式优先 / 金额优先 / 快捷模式，无 OFF；仅版式，不改变充值资格、通道、限额或账务。",
       playerEffect: "通道/额度信息架构，不改变结算。",
       dependencies: "充值能力可达性由导航/快捷按钮提供。",
       fallback: "INHERIT。",
-      support: { NG: true, WG: "open", GAME: "open" },
-      defaults: { NG: "方式优先", WG: "额度优先", GAME: "方式优先" },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "方式优先", PH: "方式优先", IN: "方式优先", SF: "方式优先" },
     },
     {
       id: "recordsDisplay",
       page: "钱包",
       label: "纪录顯示",
       type: "single-select",
-      options: ["下拉", "收折"],
+      options: ["下拉", "分页", "卡片"],
+      themeOptions: {
+        NG: ["下拉", "分页", "卡片"],
+        PH: ["下拉"],
+        IN: ["下拉"],
+        SF: ["下拉"],
+      },
       required: true,
       supportsOff: false,
       risk: "R1",
-      sourceThemeSelectable: true,
       evidence:
-        "User-confirmed 2026-08-28：下拉 / 收折，无 OFF；仅改变呈现，不删除、过滤或改变交易纪录。标签保持 纪录顯示。",
+        "User-confirmed 2026-08-28：下拉 / 分页 / 卡片，无 OFF；仅改变呈现，不删除、过滤或改变交易纪录。标签保持 纪录顯示。",
       playerEffect: "纪录呈现方式，不改变账本。",
       dependencies: "钱包/纪录。",
       fallback: "INHERIT。",
-      support: { NG: true, WG: true, GAME: "open" },
-      defaults: { NG: "下拉", WG: "收折", GAME: "下拉" },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "下拉", PH: "下拉", IN: "下拉", SF: "下拉" },
     },
     {
       id: "amountAutoInput",
       page: "钱包",
       label: "额度自动输入",
       type: "single-select",
-      options: ["按钮", "自动", "无"],
+      options: ["按钮", "滑杆", "关闭"],
+      themeOptions: {
+        NG: ["按钮", "滑杆", "关闭"],
+        PH: ["按钮"],
+        IN: ["按钮"],
+        SF: ["按钮"],
+      },
       required: false,
       supportsOff: false,
       risk: "R1/R2",
-      sourceThemeSelectable: false,
       evidence:
-        "User-confirmed 2026-08-28：按钮 / 自动 / 无，无 OFF。自动只使用上游建议值、可修改且绝不自动提交；不得改变额度、限额、资格、费率或入账。",
+        "User-confirmed 2026-08-28：按钮 / 滑杆 / 关闭，无 OFF。自动只使用上游建议值、可修改且绝不自动提交；不得改变额度、限额、资格、费率或入账。",
       playerEffect: "输入辅助；无 仍保留手动输入框，不改变钱包规则。",
       dependencies: "充值页。",
       fallback: "INHERIT。",
-      support: { NG: true, WG: "open", GAME: "open" },
-      defaults: { NG: "按钮", WG: "按钮", GAME: "无" },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "按钮", PH: "按钮", IN: "按钮", SF: "按钮" },
     },
     {
       id: "vipCard",
       page: "个人中心",
       label: "显示VIP卡片",
       type: "single-select",
-      options: ["完整卡片", "仅显示徽章", "隐藏VIP资讯"],
+      options: ["完整卡片", "紧凑卡片", "隐藏VIP资讯"],
+      themeOptions: {
+        NG: ["完整卡片", "紧凑卡片", "隐藏VIP资讯"],
+        PH: ["完整卡片"],
+        IN: ["完整卡片"],
+        SF: ["完整卡片"],
+      },
       required: true,
       supportsOff: false,
       risk: "R2",
-      sourceThemeSelectable: true,
       evidence:
-        "User-confirmed 2026-08-28：完整卡片 / 仅显示徽章 / 隐藏VIP资讯，无 OFF；隐藏是 SET 且仍必须保留 VIP 页入口。",
+        "User-confirmed 2026-08-28：完整卡片 / 紧凑卡片 / 隐藏VIP资讯，无 OFF；隐藏是 SET 且仍必须保留 VIP 页入口。",
       playerEffect: "个人中心 VIP 展示；不改变 VIP 等级或返水。",
       dependencies: "底部导航 VIP 槽位。",
       fallback: "INHERIT。",
-      support: { NG: true, WG: true, GAME: "open" },
-      defaults: { NG: "完整卡片", WG: "仅显示徽章", GAME: "完整卡片" },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "完整卡片", PH: "完整卡片", IN: "完整卡片", SF: "完整卡片" },
     },
     {
       id: "vipPage",
       page: "个人中心",
       label: "VIP页",
       type: "single-select",
-      options: ["表格", "卡片"],
+      options: ["表格", "等级卡片", "特权清单"],
+      themeOptions: {
+        NG: ["表格", "等级卡片", "特权清单"],
+        PH: ["表格"],
+        IN: ["表格"],
+        SF: ["表格"],
+      },
       required: true,
       supportsOff: false,
       risk: "R1/R2",
-      sourceThemeSelectable: true,
       evidence:
-        "User-confirmed 2026-08-28：表格 / 卡片，无 OFF；仅改变版面，不影响 VIP 等级、升降级、奖励或领取资格。",
+        "User-confirmed 2026-08-28：表格 / 等级卡片 / 特权清单，无 OFF；仅改变版面，不影响 VIP 等级、升降级、奖励或领取资格。",
       playerEffect: "VIP 页版式，不改变权益计算。",
       dependencies: "VIP 页入口。",
       fallback: "INHERIT。",
-      support: { NG: true, WG: true, GAME: "open" },
-      defaults: { NG: "表格", WG: "卡片", GAME: "卡片" },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "表格", PH: "表格", IN: "表格", SF: "表格" },
     },
     {
       id: "inbox",
       page: "个人中心",
       label: "站内信",
       type: "single-select",
-      options: ["列表", "已读收折"],
+      options: ["列表", "分类Tab", "对话流"],
+      themeOptions: {
+        NG: ["列表", "分类Tab", "对话流"],
+        PH: ["列表"],
+        IN: ["列表"],
+        SF: ["列表"],
+      },
       required: true,
       supportsOff: false,
       risk: "R2",
-      sourceThemeSelectable: false,
       evidence:
-        "User-confirmed 2026-08-28：列表 / 已读收折，无 OFF；未读保持可见，玩家不能删除。本原型不改变投递、已读判定或保存期限。",
+        "User-confirmed 2026-08-28：列表 / 分类Tab / 对话流，无 OFF；未读保持可见，玩家不能删除。本原型不改变投递、已读判定或保存期限。",
       playerEffect: "列表形态；无删除动作。已读可收折，未读保持可见。",
       dependencies: "个人中心。",
       fallback: "INHERIT。",
-      support: { NG: true, WG: true, GAME: "open" },
-      defaults: { NG: "列表", WG: "列表", GAME: "已读收折" },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "列表", PH: "列表", IN: "列表", SF: "列表" },
     },
     {
       id: "userVerification",
       page: "个人中心",
       label: "用户验证",
       type: "single-select",
-      options: ["列表", "多步"],
+      options: ["列表", "步骤向导", "分块卡片"],
+      themeOptions: {
+        NG: ["列表", "步骤向导", "分块卡片"],
+        PH: ["列表"],
+        IN: ["列表"],
+        SF: ["列表"],
+      },
       required: true,
       supportsOff: false,
       risk: "R2",
-      sourceThemeSelectable: false,
       evidence:
-        "User-confirmed 2026-08-28：列表 / 多步，无 OFF；仅流程呈现，保留上游要求的项目、顺序与状态，禁止无证据称为 KYC。",
+        "User-confirmed 2026-08-28：列表 / 步骤向导 / 分块卡片，无 OFF；仅流程呈现，保留上游要求的项目、顺序与状态，禁止无证据称为 KYC。",
       playerEffect: "验证任务排布，不改变审核状态、资格、权限或业务规则。",
       dependencies: "个人中心。",
       fallback: "INHERIT。",
-      support: { NG: true, WG: "open", GAME: "open" },
-      defaults: { NG: "列表", WG: "多步", GAME: "列表" },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "列表", PH: "列表", IN: "列表", SF: "列表" },
     },
     {
       id: "bottomNav",
       page: "导航",
       label: "底部导航",
       type: "per-auth-ordered-slots",
-      options: NAV_CHOICES,
+      options: ["LIVE_NAV (5-slot)"],
+      themeOptions: {
+        NG: ["LIVE_NAV (5-slot)"],
+        PH: ["LIVE_NAV (5-slot)"],
+        IN: ["LIVE_NAV (5-slot)"],
+        SF: ["SF_NAV (5-slot: 首页/活动/VIP/钱包/我的)"],
+      },
       required: true,
       supportsOff: false,
       risk: "R1/R2",
-      sourceThemeSelectable: false,
       evidence:
-        "User-confirmed 2026-08-28：槽位数量跟随主题，登入前 / 登入後分开设置，不提供 OFF 或空槽。NG 五槽组合为 Live-observed；认证态映射及 WG/GAME 数量是 Prototype-only / Open。",
+        "User-confirmed 2026-08-28：槽位数量跟随主题，登入前 / 登入後分开设置，不提供 OFF 或空槽。全主题固定五槽。",
       playerEffect: "改变主站可达宿主。能力仍须至少一处可见可操作表面。",
       dependencies:
         "主题槽位数量声明、认证态、VIP、取款、客服、个人中心、活动。",
       fallback: "各认证态回到所选主题默认；不补空槽、不自动注入客服。",
-      support: { NG: true, WG: "open", GAME: "open" },
+      support: { NG: true, PH: true, IN: true, SF: true },
       defaults: {
-        NG: { loggedOut: LIVE_NAV.slice(), loggedIn: LIVE_NAV.slice() },
-        WG: {
-          loggedOut: THEME_NAV_DEFAULTS.WG.loggedOut.slice(),
-          loggedIn: THEME_NAV_DEFAULTS.WG.loggedIn.slice(),
-        },
-        GAME: {
-          loggedOut: THEME_NAV_DEFAULTS.GAME.loggedOut.slice(),
-          loggedIn: THEME_NAV_DEFAULTS.GAME.loggedIn.slice(),
-        },
+        NG: { loggedOut: THEME_NAV_DEFAULTS.NG.loggedOut.slice(), loggedIn: THEME_NAV_DEFAULTS.NG.loggedIn.slice() },
+        PH: { loggedOut: THEME_NAV_DEFAULTS.PH.loggedOut.slice(), loggedIn: THEME_NAV_DEFAULTS.PH.loggedIn.slice() },
+        IN: { loggedOut: THEME_NAV_DEFAULTS.IN.loggedOut.slice(), loggedIn: THEME_NAV_DEFAULTS.IN.loggedIn.slice() },
+        SF: { loggedOut: THEME_NAV_DEFAULTS.SF.loggedOut.slice(), loggedIn: THEME_NAV_DEFAULTS.SF.loggedIn.slice() },
       },
     },
     {
@@ -501,43 +578,48 @@
       page: "其他",
       label: "弹窗样式",
       type: "single-select",
-      options: ["样式一", "样式二"],
+      options: ["样式一", "样式二", "样式三"],
+      themeOptions: {
+        NG: ["样式一", "样式二", "样式三"],
+        PH: ["样式一"],
+        IN: ["样式一"],
+        SF: ["样式一"],
+      },
       required: true,
       supportsOff: false,
       risk: "R0",
-      sourceThemeSelectable: true,
       evidence:
-        "User-confirmed 2026-08-28：样式一 / 样式二，无 OFF，仅视觉。跨主题 R0=Warn；未支援时仅可使用已声明安全回退，否则 Block。现网映射仍为 Open。",
+        "User-confirmed 2026-08-28：无 OFF，仅视觉。",
       playerEffect: "弹窗视觉，不改变文案业务规则。",
       dependencies: "主题支持。",
-      fallback: "GAME → NG 样式一（Auto-resolve）。",
-      support: { NG: true, WG: "open", GAME: "open" },
-      defaults: { NG: "样式一", WG: "Open", GAME: "Open" },
-      safeFallback: {
-        theme: "NG",
-        value: "样式一",
-        reason: "GAME 未声明弹窗样式，安全回退 NG 样式一",
-      },
+      fallback: "跟随主题默认。",
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "样式一", PH: "样式一", IN: "样式一", SF: "样式一" },
     },
     {
       id: "alternateButton",
       page: "其他",
       label: "替代按钮",
       type: "capability-placement",
-      options: ["浮动收折", "顶部状态列", "底部导航自选槽位"],
+      options: ["关闭", "浮动胶囊", "悬浮圆钮", "底部导航自选槽位"],
+      themeOptions: {
+        NG: ["关闭", "浮动胶囊", "悬浮圆钮", "底部导航自选槽位"],
+        PH: ["关闭"],
+        IN: ["关闭"],
+        SF: ["关闭"],
+      },
       required: false,
       supportsOff: true,
       risk: "R1",
-      sourceThemeSelectable: true,
       evidence:
-        "User-confirmed 2026-08-28：SET 必须指定位置、承载能力与认证范围；无 SET=未指定；不得隐式当作 客服。精确产品支持仍为 Open。",
+        "User-confirmed 2026-08-28：SET 必须指定位置、承载能力与认证范围；无 SET=未指定；不得隐式当作 客服。",
       playerEffect:
         "额外 chrome 宿主；只改变已声明能力的入口位置，不改变上游资格或业务规则。",
       dependencies:
         "承载能力声明、认证范围、底部导航、顶部状态列与保护能力可达性。",
       fallback: "INHERIT 跟随主题；OFF 明确无替代按钮；无静默宿主。",
-      support: { NG: "open", WG: "open", GAME: "open" },
-      defaults: { NG: null, WG: null, GAME: null },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: null, PH: null, IN: null, SF: null },
     },
     {
       id: "carouselStyle",
@@ -545,10 +627,15 @@
       label: "轮播样式",
       type: "single-select",
       options: ["通用Banner", "小Banner", "轮播Banner"],
+      themeOptions: {
+        NG: ["通用Banner", "小Banner", "轮播Banner"],
+        PH: ["通用Banner"],
+        IN: ["通用Banner"],
+        SF: ["通用Banner"],
+      },
       required: true,
       supportsOff: false,
       risk: "R0/R1",
-      sourceThemeSelectable: false,
       evidence:
         "User-approved Target；选项来自 Axure Prototype-only。仅控制视觉版式。",
       playerEffect:
@@ -556,60 +643,55 @@
       dependencies:
         "轮播内容与能力均由上游管理；所有提供选项已通过设计端响应式检查。",
       fallback: "仅可解析至所选主题默认并要求确认。",
-      support: { NG: true, WG: true, GAME: true },
-      defaults: { NG: "通用Banner", WG: "通用Banner", GAME: "轮播Banner" },
-      themeOptions: {
-        NG: ["通用Banner", "小Banner", "轮播Banner"],
-        WG: ["通用Banner", "小Banner"],
-        GAME: ["小Banner", "轮播Banner"],
-      },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "通用Banner", PH: "通用Banner", IN: "通用Banner", SF: "通用Banner" },
     },
     {
       id: "footerStyle",
       page: "全局",
       label: "页尾内容",
       type: "single-select",
-      options: ["样式一", "样式二", "样式三"],
+      options: ["样式一", "样式二", "样式三", "样式四"],
+      themeOptions: {
+        NG: ["样式一", "样式二", "样式三", "样式四"],
+        PH: ["样式一"],
+        IN: ["样式一"],
+        SF: ["样式一"],
+      },
       required: true,
       supportsOff: false,
       risk: "R1/R2",
-      sourceThemeSelectable: false,
       evidence:
-        "User-confirmed 2026-08-28：仅选择页尾预设版式，不直接编辑内容；精确现网名称 Open。",
+        "User-confirmed 2026-08-28：仅选择页尾预设版式，不直接编辑内容。",
       playerEffect:
         "只改变页尾结构与视觉，不改变文字、HTML、网址、法务/客服内容、路由或业务规则。",
       dependencies: "主题预设与设计系统；内容继续由既有上游来源管理。",
       fallback: "仅可解析至所选主题默认并要求确认。",
-      support: { NG: true, WG: true, GAME: true },
-      defaults: { NG: "样式一", WG: "样式一", GAME: "样式三" },
-      themeOptions: {
-        NG: ["样式一", "样式二", "样式三"],
-        WG: ["样式一", "样式二"],
-        GAME: ["样式二", "样式三"],
-      },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "样式一", PH: "样式一", IN: "样式一", SF: "样式一" },
     },
     {
       id: "profileLayout",
       page: "个人中心",
       label: "个人中心版面",
       type: "single-select",
-      options: ["样式一", "样式二", "样式三", "样式四", "样式五"],
+      options: ["样式一", "样式二", "样式三", "样式四", "样式五", "现行一", "现行二", "现行三", "现行四"],
+      themeOptions: {
+        NG: ["样式一", "样式二", "样式三", "样式四", "样式五", "现行一", "现行二", "现行三", "现行四"],
+        PH: ["样式一"],
+        IN: ["样式一"],
+        SF: ["样式一"],
+      },
       required: true,
       supportsOff: false,
       risk: "R1/R2",
-      sourceThemeSelectable: false,
       evidence: "User-approved Target；选项来自 Axure Prototype-only。",
       playerEffect:
         "改变个人中心版面，不移除账户、VIP、站内信、语言、客服、设置或用户验证能力。",
       dependencies: "所有个人中心保护能力必须保持可达。",
       fallback: "仅可解析至所选主题默认并要求确认。",
-      support: { NG: true, WG: true, GAME: true },
-      defaults: { NG: "样式一", WG: "样式二", GAME: "样式四" },
-      themeOptions: {
-        NG: ["样式一", "样式二", "样式三", "样式四", "样式五"],
-        WG: ["样式一", "样式二", "样式三"],
-        GAME: ["样式三", "样式四", "样式五"],
-      },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "样式一", PH: "样式一", IN: "样式一", SF: "样式一" },
     },
     {
       id: "authVisual",
@@ -617,44 +699,50 @@
       label: "登入注册视觉",
       type: "single-select",
       options: ["简洁框", "插画框"],
+      themeOptions: {
+        NG: ["简洁框", "插画框"],
+        PH: ["简洁框"],
+        IN: ["简洁框"],
+        SF: ["简洁框"],
+      },
       required: true,
       supportsOff: false,
       risk: "R1/R2",
-      sourceThemeSelectable: false,
       evidence:
         "User-approved Target；选项标签 Recommendation，现网映射 Open。",
       playerEffect:
         "只改变登入注册视觉，不改变认证、权限、验证码、验证或恢复规则。",
       dependencies: "登入注册入口、字段、错误、验证与恢复表面必须清晰可用。",
       fallback: "仅可解析至所选主题默认并要求确认。",
-      support: { NG: true, WG: true, GAME: true },
-      defaults: { NG: "简洁框", WG: "简洁框", GAME: "插画框" },
-      themeOptions: {
-        NG: ["简洁框", "插画框"],
-        WG: ["简洁框"],
-        GAME: ["插画框"],
-      },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "简洁框", PH: "简洁框", IN: "简洁框", SF: "简洁框" },
     },
     {
       id: "brandMark",
       page: "全局",
       label: "品牌标志",
       type: "fixed-readonly",
-      options: [],
+      options: ["本站品牌标志（固定）"],
+      themeOptions: {
+        NG: ["本站品牌标志（固定）"],
+        PH: ["本站品牌标志（固定）"],
+        IN: ["本站品牌标志（固定）"],
+        SF: ["本站品牌标志（固定）"],
+      },
       required: true,
       supportsOff: false,
       risk: "R2",
-      sourceThemeSelectable: false,
       evidence: "User-confirmed 2026-08-28：固定唯读，不提供 SET、OFF 或上传。",
       playerEffect:
         "显示本站品牌标志；缺少资产时仅回退本站站名，绝不取用其他站点资产。",
       dependencies: "本站品牌绑定与本站站名。",
       fallback: "本站站名（固定）。",
-      support: { NG: true, WG: true, GAME: true },
+      support: { NG: true, PH: true, IN: true, SF: true },
       defaults: {
         NG: "本站品牌标志（固定）",
-        WG: "本站品牌标志（固定）",
-        GAME: "本站品牌标志（固定）",
+        PH: "本站品牌标志（固定）",
+        IN: "本站品牌标志（固定）",
+        SF: "本站品牌标志（固定）",
       },
     },
     {
@@ -663,22 +751,22 @@
       label: "按钮样式",
       type: "single-select",
       options: ["样式一", "样式二", "样式三", "样式四"],
+      themeOptions: {
+        NG: ["样式一", "样式二", "样式三", "样式四"],
+        PH: ["样式一"],
+        IN: ["样式一"],
+        SF: ["样式一"],
+      },
       required: true,
       supportsOff: false,
       risk: "R1",
-      sourceThemeSelectable: false,
       evidence: "User-approved Target；选项来自 Axure Prototype-only。",
       playerEffect: "改变按钮视觉，不改变动作、权限、资格或业务状态。",
       dependencies:
         "默认、悬停、按下、选中、禁用、载入、错误与阻挡状态由设计系统保证。",
       fallback: "仅可解析至所选主题默认并要求确认。",
-      support: { NG: true, WG: true, GAME: true },
-      defaults: { NG: "样式一", WG: "样式一", GAME: "样式三" },
-      themeOptions: {
-        NG: ["样式一", "样式二", "样式三", "样式四"],
-        WG: ["样式一", "样式二"],
-        GAME: ["样式三", "样式四"],
-      },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "样式一", PH: "样式一", IN: "样式一", SF: "样式一" },
     },
     {
       id: "gameIconStyle",
@@ -686,19 +774,23 @@
       label: "游戏图标",
       type: "single-select",
       options: ["标准", "极简"],
+      themeOptions: {
+        NG: ["标准", "极简"],
+        PH: ["标准"],
+        IN: ["标准"],
+        SF: ["标准"],
+      },
       required: true,
       supportsOff: false,
       risk: "R1",
-      sourceThemeSelectable: false,
       evidence:
         "User-approved Target；选项标签 Recommendation，Figma Prototype-only。",
       playerEffect:
         "改变游戏与最爱图标视觉；收藏与启动能力持续可操作，不改变可玩游戏集合。",
       dependencies: "游戏标题、启动与收藏表面必须保持可辨识可操作。",
       fallback: "仅可解析至所选主题默认并要求确认。",
-      support: { NG: true, WG: true, GAME: true },
-      defaults: { NG: "标准", WG: "标准", GAME: "极简" },
-      themeOptions: { NG: ["标准", "极简"], WG: ["标准"], GAME: ["极简"] },
+      support: { NG: true, PH: true, IN: true, SF: true },
+      defaults: { NG: "标准", PH: "标准", IN: "标准", SF: "标准" },
     },
   ];
 
@@ -799,8 +891,8 @@
     仅图示: "Icon only",
     浮动收折: "Floating collapsible",
     主题: "Theme",
-    "User-confirmed / Live-observed：NG 为 NGSS 默认主题；WG、GAME 为次主题且目录可能更小。":
-      "User-confirmed / Live-observed: NG is the NGSS default theme; WG and GAME are secondary themes and may have a smaller catalog.",
+    "User-confirmed / Live-observed：NG 为 NGSS 默认主题；PH/IN/SF 各自绑定单组专属选项。":
+      "User-confirmed / Live-observed: NG is the NGSS default theme; PH, IN, and SF each bind their own exclusive option sets.",
     "切换整站视觉目录与可继承默认值；不改变账户、钱包或权限。":
       "Switches site-wide visual catalog and inheritable defaults; does not change account, wallet, or permissions.",
     "所有主题相关 chrome / variant。": "All theme-related chrome / variant.",
@@ -857,9 +949,6 @@
     分页: "Pagination",
     "User-confirmed 2026-08-28：INHERIT 是唯一沿用主题默认的语意；SET 仅有 搜索列 / 分页，无 OFF。主题支援与现网默认仍为 Open。":
       "User-confirmed 2026-08-28: INHERIT is the only follow-theme-default meaning; SET is Search bar / Pagination only, no OFF. Theme support and live defaults remain Open.",
-    "规划中的浏览模式；预览仅合成。GAME 无声明支持且无安全回退。":
-      "Planned browse mode; preview is composed only. GAME has no declared support and no safe fallback.",
-    "无安全回退（GAME = Block）。": "No safe fallback (GAME = Block).",
     顶部下载栏: "Top download bar",
     "Prototype-only。User-confirmed 2026-08-28：关闭 = OFF；下载FAB 跟随本物件。":
       "Prototype-only. User-confirmed 2026-08-28: Off = OFF; download FAB follows this object.",
@@ -927,8 +1016,8 @@
     "验证任务排布，不改变审核状态、资格、权限或业务规则。":
       "Verification-task layout; does not change review status, eligibility, permissions, or business rules.",
     底部导航: "Bottom nav",
-    "User-confirmed 2026-08-28：槽位数量跟随主题，登入前 / 登入後分开设置，不提供 OFF 或空槽。NG 五槽组合为 Live-observed；认证态映射及 WG/GAME 数量是 Prototype-only / Open。":
-      "User-confirmed 2026-08-28: Slot count follows the theme; logged-out / logged-in are set separately; no OFF or empty slots. NG five-slot mix is Live-observed; auth-state mapping and WG/GAME counts are Prototype-only / Open.",
+    "User-confirmed 2026-08-28：槽位数量跟随主题，登入前 / 登入後分开设置，不提供 OFF 或空槽。NG/PH/IN/SF 均为五槽。":
+      "User-confirmed 2026-08-28: Slot count follows the theme; logged-out / logged-in are set separately; no OFF or empty slots. All themes are 5 slots.",
     "改变主站可达宿主。能力仍须至少一处可见可操作表面。":
       "Changes the player-site reachable host. A capability must still have at least one visible, operable surface.",
     "主题槽位数量声明、认证态、VIP、取款、客服、个人中心、活动。":
@@ -941,9 +1030,6 @@
     "弹窗视觉，不改变文案业务规则。":
       "Modal visuals; does not change copy or business rules.",
     "主题支持。": "Theme support.",
-    "GAME → NG 样式一（Auto-resolve）。": "GAME → NG Style 1 (Auto-resolve).",
-    "GAME 未声明弹窗样式，安全回退 NG 样式一":
-      "GAME did not declare a modal style; safe fallback to NG Style 1",
     替代按钮: "Replacement button",
     底部导航自选槽位: "Custom bottom-nav slot",
     "User-confirmed 2026-08-28：SET 必须指定位置、承载能力与认证范围；无 SET=未指定；不得隐式当作 客服。精确产品支持仍为 Open。":
@@ -1288,8 +1374,8 @@
       ">Load theme defaults (this state)</button>",
     ">预览 Axure钱包我的</button></div></div>":
       ">Preview Axure Wallet Mine</button></div></div>",
-    '<p class="warn-box tiny">登入前 / 登入後分开设置；两边都必须填满主题声明槽数，不提供关闭或空槽。NG 五槽组合有现场观察证据；WG=4 / GAME=3 是已批准的合成测试情境，并非现网事实，正式声明支援前不可储存。Axure钱包我的 仅登入後五槽可预览，固定复核；客服不会被自动注入。</p>':
-      '<p class="warn-box tiny">Logged-out and logged-in are configured separately; both must fill the theme-declared slot count—no OFF or empty slots. NG five-slot mix has live-observed evidence; WG=4 / GAME=3 are approved synthetic test cases, not live facts—do not save until formally declared. Axure Wallet Mine is logged-in five-slot preview only, always Review; CS is not auto-injected.</p>',
+    '<p class="warn-box tiny">登入前 / 登入後分开设置；两边都必须填满主题声明槽数，不提供关闭或空槽。NG/PH/IN/SF 均为五槽。Axure钱包我的 仅登入後五槽可预览，固定复核；客服不会被自动注入。</p>':
+      '<p class="warn-box tiny">Logged-out and logged-in are configured separately; both must fill the theme-declared slot count—no OFF or empty slots. NG, PH, IN, and SF are all 5 slots. Axure Wallet Mine is logged-in five-slot preview only, always Review; CS is not auto-injected.</p>',
     '<label class="field">承载能力（必选；不会默认为客服）<select data-action="alt-capability"><option value="">（请选择已声明能力）</option>':
       '<label class="field">Hosted capability (required; does not default to CS)<select data-action="alt-capability"><option value="">(Select a declared capability)</option>',
     '</select></label><label class="field">认证范围<select data-action="alt-auth"><option value="both"':
@@ -1518,10 +1604,6 @@
     "Block · 取款不可达": "Block · Withdraw unreachable",
     "Block · VIP 不可达": "Block · VIP unreachable",
     "Block · 安装入口": "Block · Install entry",
-    "Warn · 跨主题 R0": "Warn · Cross-theme R0",
-    "Review · 跨主题 R2": "Review · Cross-theme R2",
-    "Auto-resolve · GAME 弹窗回退": "Auto-resolve · GAME popup fallback",
-    "Block · GAME 搜索无回退": "Block · GAME search with no fallback",
     "Design QA · 320–480 响应式顶栏": "Design QA · 320–480 responsive top bar",
     "Review · Axure钱包我的": "Review · Axure Wallet / Me",
     "Block · 替代按钮缺少能力": "Block · Alternate button missing capability",
@@ -1531,7 +1613,6 @@
     "Block · 未启用能力新 SET": "Block · New SET on disabled capability",
     "Review · 本站 Live 覆盖未生效":
       "Review · This-site Live override not in effect",
-    "Block · 换主题槽数不符": "Block · Theme change slot-count mismatch",
     "Block · 无效草稿": "Block · Invalid draft",
     "Allow · 登入前无余额": "Allow · No balance pre-login",
     "无效已套用配置已回退 last-known-good（模拟，非现网缓存）。":
@@ -1851,12 +1932,14 @@
     const row = state.draft.alternateButton;
     if (!row.value || typeof row.value !== "object")
       row.value = {
-        placement: "",
-        target: "",
+        placement: "浮动收折",
+        target: ALTERNATE_TARGETS[0] || "客服",
         authScope: "both",
         navSlot: { loggedOut: "", loggedIn: "" },
       };
     if (!row.value.navSlot) row.value.navSlot = { loggedOut: "", loggedIn: "" };
+    if (!row.value.target) row.value.target = ALTERNATE_TARGETS[0] || "客服";
+    if (!row.value.placement) row.value.placement = "浮动收折";
     return row.value;
   }
 
@@ -1950,24 +2033,57 @@
   };
   state.ui.lastKnownGood = clone(state.published);
 
+  function migrateDraft(draft) {
+    const alt = draft?.alternateButton?.value;
+    if(alt && typeof alt === "object") {
+      if(alt.placement === "浮动胶囊") alt.placement = "浮动收折";
+      if(alt.placement === "悬浮圆钮") alt.placement = "浮动收折";
+    }
+    if (!draft) return draft;
+    if (draft.theme) {
+      if (draft.theme.value === "WG") {
+        console.log("[migrateDraft] Rewriting WG -> NG");
+        draft.theme.value = "NG";
+      } else if (draft.theme.value === "GAME") {
+        console.log("[migrateDraft] Rewriting GAME -> IN");
+        draft.theme.value = "IN";
+      }
+    }
+    const theme = (draft.theme && draft.theme.value) || "NG";
+    CATALOG.forEach(function (item) {
+      const row = draft[item.id];
+      if (!row) return;
+      if (row.sourceTheme === "WG") row.sourceTheme = "NG";
+      if (row.sourceTheme === "GAME") row.sourceTheme = "IN";
+      if (item.id === "themeColor") {
+        if (row.value === "BDAK") row.value = "BDOK";
+        if (theme === "IN" && (row.value === "BDLKK" || !row.value)) row.value = "INPLACEHOLDER";
+      }
+      if (theme === "IN" && item.id !== "theme") {
+        const inDef = themeDefaultFor(item.id, "IN");
+        if (row.mode === "SET" && typeof row.value === "string") {
+          if (!themeOptionAllowed(item, "IN", row.value)) {
+            row.value = inDef;
+          }
+        }
+      }
+    });
+    if (theme === "IN" && draft.bottomNav) {
+      draft.bottomNav.value = clone(THEME_NAV_DEFAULTS.IN);
+    }
+    if (draft.theme && draft.theme.extra && draft.theme.extra.playerChoices) {
+      if (window.NGDesign && typeof window.NGDesign.migratePlayerChoices === "function") {
+        draft.theme.extra.playerChoices = window.NGDesign.migratePlayerChoices(draft.theme.extra.playerChoices);
+      }
+    }
+    return draft;
+  }
+
   function switchTheme(theme) {
     const previousDraft = state.draft;
     const previousTheme = state.theme;
     state.theme = theme;
     const nextDraft = inheritDraft(theme);
-    if (previousDraft && previousTheme !== theme) {
-      CATALOG.forEach(function (item) {
-        if (
-          item.id === "theme" ||
-          item.id === "downloadFAB" ||
-          item.id === "brandMark"
-        )
-          return;
-        const previous = previousDraft[item.id];
-        if (previous && (previous.mode === "SET" || previous.mode === "OFF"))
-          nextDraft[item.id] = clone(previous);
-      });
-    }
     nextDraft.theme.extra = clone(previousDraft.theme.extra || {});
     state.draft = nextDraft;
     state.draft.theme.value = theme;
@@ -1976,7 +2092,10 @@
     state.ui.supportedSim = null;
   }
 
+  const CORE_CAPABILITIES = { 充值: true, "钱包/纪录": true };
+
   function capabilityAvailable(name) {
+    if (CORE_CAPABILITIES[name]) return true;
     return (
       !state.preview.unavailableCapability ||
       state.preview.unavailableCapability !== name
@@ -1998,9 +2117,20 @@
     version: document.getElementById("version-line"),
     apply: document.getElementById("apply-btn"),
     diff: document.getElementById("diff-drawer"),
-    checks: document.getElementById("checks-drawer"),
     confirm: document.getElementById("confirm-modal"),
   };
+
+  function enableValueFor(id, theme) {
+    const item = byId[id];
+    const opts = themeOptionList(item, theme);
+    const on = opts.find(function (v) {
+      return v != null && v !== "关闭";
+    });
+    if (on) return clone(on);
+    if (id === "sidebar") return "左方";
+    if (id === "topDownloadBar") return "开启";
+    return themeDefaultFor(id, theme);
+  }
 
   function themeDefaultFor(id, theme) {
     if (id === "downloadFAB") return "跟随顶部下载栏";
@@ -2011,6 +2141,37 @@
       };
     }
     return clone(THEME_DEFAULTS[theme][id]);
+  }
+
+  function themeOptionList(item, theme, authKey) {
+    const raw = item && item.themeOptions && item.themeOptions[theme];
+    if (Array.isArray(raw)) return raw.slice();
+    if (raw && typeof raw === "object") {
+      if (authKey && Array.isArray(raw[authKey])) return raw[authKey].slice();
+      const out = [];
+      Object.keys(raw).forEach(function (k) {
+        if (!Array.isArray(raw[k])) return;
+        raw[k].forEach(function (v) {
+          if (out.indexOf(v) === -1) out.push(v);
+        });
+      });
+      if (out.length) return out;
+    }
+    return ((item && item.options) || []).slice();
+  }
+
+  function themeOptionAllowed(item, theme, value) {
+    if (item.id === "alternateButton" && value && typeof value === "object")
+      return themeOptionList(item, theme).includes(value.placement);
+    if (item.id === "bottomNav" && value && typeof value === "object")
+      return ["loggedOut", "loggedIn"].every(auth => Array.isArray(value[auth]) && value[auth].every(v => NAV_CHOICES.includes(v)));
+
+    if (value && typeof value === "object" && !Array.isArray(value)) {
+      return Object.keys(value).every(function (k) {
+        return themeOptionList(item, theme, k).indexOf(value[k]) !== -1;
+      });
+    }
+    return themeOptionList(item, theme).indexOf(value) !== -1;
   }
 
   function requestedValue(id) {
@@ -2279,14 +2440,23 @@
         hasSettings ? "设置" : null,
       ].filter(Boolean),
     };
-    map["充值"] = { ok: depositHosts.length > 0, surfaces: depositHosts };
+    map["充值"] = {
+      ok: true,
+      surfaces:
+        depositHosts.length > 0
+          ? depositHosts
+          : ["核心能力：充值必须启用"],
+    };
     map["取款"] = { ok: withdrawHosts.length > 0, surfaces: withdrawHosts };
     map["钱包/纪录"] = {
-      ok: hasWallet || hasAccount,
-      surfaces: [
-        hasWallet ? "底部导航/钱包" : null,
-        hasAccount ? "账户/钱包" : null,
-      ].filter(Boolean),
+      ok: true,
+      surfaces: (hasWallet || hasAccount
+        ? [
+            hasWallet ? "底部导航/钱包" : null,
+            hasAccount ? "账户/钱包" : null,
+          ]
+        : ["核心能力：钱包必须启用"]
+      ).filter(Boolean),
     };
     map["个人中心"] = {
       ok: hasAccount,
@@ -2438,14 +2608,14 @@
         row.mode === "SET" &&
         item.themeOptions &&
         item.themeOptions[state.theme] &&
-        item.themeOptions[state.theme].indexOf(resolved) === -1
+        !themeOptionAllowed(item, state.theme, resolved)
       ) {
         const requestedOption = clone(resolved);
         const sameThemeDefault = themeDefaultFor(item.id, state.theme);
         if (
           sameThemeDefault !== undefined &&
           sameThemeDefault !== null &&
-          item.themeOptions[state.theme].indexOf(sameThemeDefault) !== -1
+          themeOptionAllowed(item, state.theme, sameThemeDefault)
         ) {
           resolved = clone(sameThemeDefault);
           disabled = false;
@@ -2906,7 +3076,6 @@
     const canApply =
       blockCount === 0 &&
       pendingAuto.length === 0 &&
-      pendingReview.length === 0 &&
       !state.ui.invalidApplied;
     return {
       items: items,
@@ -3008,14 +3177,55 @@
   function optionButtons(id, options, current, disabled) {
     return options
       .map(function (opt) {
+        let optDisabled = disabled;
+        let optTooltip = "";
+        if (id === "vipCard" && opt === "隐藏VIP资讯") {
+          const nav = state.draft.bottomNav ? state.draft.bottomNav.value : null;
+          const hasVipNav = nav && ((nav.loggedOut && nav.loggedOut.includes("VIP")) || (nav.loggedIn && nav.loggedIn.includes("VIP")));
+          const altTarget = state.draft.alternateButton && state.draft.alternateButton.value ? state.draft.alternateButton.value.target : "";
+          const hasAltVip = state.draft.alternateButton && state.draft.alternateButton.mode === "SET" && (altTarget === "VIP" || altTarget === "VIP 页入口");
+          if (!hasVipNav && !hasAltVip) {
+            optDisabled = true;
+            optTooltip = "VIP 未在底部导航或替代按钮出现时，不可隐藏 VIP 资讯";
+          }
+        }
+        if (id === "shortcuts" && opt === "侧边栏内") {
+          const sb = state.draft.sidebar;
+          if (sb && (sb.mode === "OFF" || sb.value === "关闭")) {
+            optDisabled = true;
+            optTooltip = "侧边栏关闭时不可设为侧边栏内";
+          }
+        }
+        if (id === "shortcuts" && opt === "状态列按钮") {
+          const tsb = state.draft.topStatusBar ? state.draft.topStatusBar.value : null;
+          if (tsb && (tsb.loggedOut === "简洁" || tsb.loggedIn === "简洁")) {
+            optDisabled = true;
+            optTooltip = "顶部状态列为简洁时不可使用状态列快捷按钮";
+          }
+        }
+        if (id.indexOf("topStatusBar.") === 0 && opt === "简洁") {
+          const sc = state.draft.shortcuts ? state.draft.shortcuts.value : null;
+          if (sc === "状态列按钮" && state.draft.shortcuts.mode !== "OFF") {
+            optDisabled = true;
+            optTooltip = "快捷按钮设为状态列按钮时，顶栏不可设为简洁";
+          }
+        }
+        if (id === "sidebar" && opt === "关闭") {
+          const sc = state.draft.shortcuts ? state.draft.shortcuts.value : null;
+          if (sc === "侧边栏内" && state.draft.shortcuts.mode !== "OFF") {
+            optDisabled = true;
+            optTooltip = "快捷按钮设在侧边栏内时不可关闭侧边栏";
+          }
+        }
         const selected = JSON.stringify(current) === JSON.stringify(opt);
         return (
           '<button type="button" class="btn' +
           (selected ? " is-selected" : "") +
-          (disabled ? " is-disabled" : "") +
+          (optDisabled ? " is-disabled" : "") +
           '" ' +
           (selected ? 'aria-pressed="true"' : 'aria-pressed="false"') +
-          (disabled ? " disabled" : "") +
+          (optDisabled ? " disabled" : "") +
+          (optTooltip ? ' title="' + optTooltip.replace(/"/g, "&quot;") + '"' : "") +
           ' data-action="set-value" data-id="' +
           id +
           '" data-value="' +
@@ -3136,7 +3346,7 @@
             '</span><div class="mode-row">' +
             optionButtons(
               "topStatusBar." + key,
-              item.options,
+              themeOptionList(item, state.theme, key),
               draft.value[key],
               disabledEditor,
             ) +
@@ -3210,7 +3420,7 @@
             );
           })
           .join("") +
-        '<p class="warn-box tiny">登入前 / 登入後分开设置；两边都必须填满主题声明槽数，不提供关闭或空槽。NG 五槽组合有现场观察证据；WG=4 / GAME=3 是已批准的合成测试情境，并非现网事实，正式声明支援前不可储存。Axure钱包我的 仅登入後五槽可预览，固定复核；客服不会被自动注入。</p>';
+        '<p class="warn-box tiny">登入前 / 登入後分开设置；两边都必须填满主题声明槽数，不提供关闭或空槽。NG/PH/IN/SF 均为五槽。Axure钱包我的 仅登入後五槽可预览，固定复核；客服不会被自动注入。</p>';
     } else if (item.id === "alternateButton") {
       const spec =
         draft.value && typeof draft.value === "object"
@@ -3221,7 +3431,8 @@
               authScope: "both",
               navSlot: { loggedOut: "", loggedIn: "" },
             };
-      const effectiveOptions = item.options.slice();
+      const themeOpts = themeOptionList(item, state.theme);
+      const effectiveOptions = themeOpts.slice();
       if (item.supportsOff && effectiveOptions.indexOf("关闭") === -1) {
         effectiveOptions.push("关闭");
       }
@@ -3298,7 +3509,8 @@
           '<p class="tiny">INHERIT 跟随主题声明；OFF 明确不显示替代按钮。SET 才需要选择能力、认证范围与宿主。</p>';
       }
     } else {
-      const effectiveOptions = item.options.slice();
+      const themeOpts = themeOptionList(item, state.theme);
+      const effectiveOptions = themeOpts.slice();
       if (item.supportsOff && effectiveOptions.indexOf("关闭") === -1) {
         effectiveOptions.push("关闭");
       }
@@ -3353,26 +3565,6 @@
       '<div class="panel"><h3>選項</h3>' +
       editor +
       "</div>" +
-      (item.sourceThemeSelectable
-        ? '<div class="panel"><h3>来源主题（混合主题演示） <span class="help-tip" data-tip="同主题优先。跨主题：R0/R1=Warn，R2=Review；无安全回退则阻挡（Block）。">?</span></h3><div class="mode-row">' +
-          THEMES.map(function (theme) {
-            return (
-              '<button type="button" class="btn' +
-              (draft.sourceTheme === theme ? " is-selected" : "") +
-              (draft.mode !== "SET" ? " is-disabled" : "") +
-              '" data-action="set-source" data-id="' +
-              item.id +
-              '" data-theme="' +
-              theme +
-              '"' +
-              (draft.mode !== "SET" ? " disabled" : "") +
-              ">" +
-              theme +
-              "</button>"
-            );
-          }).join("") +
-          "</div></div>"
-        : "") +
       '<div class="panel evidence-risk-panel"><h3>证据 / 风险 / 依赖 / 回退 / 玩家效果</h3><div class="kv">' +
       "<div>ID</div><div><code>" +
       SEMANTIC_IDS[item.id] +
@@ -3382,10 +3574,12 @@
       "</div>" +
       "<div>支持</div><div>NG=" +
       item.support.NG +
-      " · WG=" +
-      item.support.WG +
-      " · GAME=" +
-      item.support.GAME +
+      " · PH=" +
+      item.support.PH +
+      " · IN=" +
+      item.support.IN +
+      " · SF=" +
+      item.support.SF +
       "</div>" +
       "<div>请求值</div><div>" +
       JSON.stringify(row.requested) +
@@ -3418,20 +3612,7 @@
             .join("") +
           "</ul>"
         : "") +
-      (row.outcome === "Auto-resolve"
-        ? '<label><input type="checkbox" data-action="ack-auto" data-id="' +
-          item.id +
-          '"' +
-          (state.acks.auto[item.id] ? " checked" : "") +
-          "> 我确认自动解析（请求值与解析值均已看见，禁止静默）</label>"
-        : "") +
-      (row.outcome === "Review"
-        ? '<label><input type="checkbox" data-action="ack-review" data-id="' +
-          item.id +
-          '"' +
-          (state.acks.review[item.id] ? " checked" : "") +
-          "> 我确认复核风险并允许储存</label>"
-        : "");
+      "";
     target.innerHTML = legacyHtml;
     return legacyHtml;
   }
@@ -3449,12 +3630,7 @@
     window.NGStudio.preview(resolved);
   }
 
-  function acknowledgementControl(row, surface) {
-    const kind = row.outcome === "Auto-resolve" ? "auto" : row.outcome === "Review" ? "review" : null;
-    if (!kind) return "";
-    const label = kind === "auto" ? "我确认自动解析结果" : "我确认复核风险并允许储存";
-    return '<label class="field"><input type="checkbox" data-action="ack-' + kind + '" data-id="' + row.id + '" id="ack-' + surface + '-' + row.id + '"' + (state.acks[kind][row.id] ? ' checked' : '') + '> ' + localizedText(label) + '</label>';
-  }
+  function acknowledgementControl() { return ""; }
 
   function renderValidation(resolved) {
     const applyLabel = resolved.canApply ? "可储存" : "无法储存";
@@ -3663,6 +3839,14 @@
   }
 
   function restoreState(snap) {
+    if (snap.theme === "WG") snap.theme = "NG";
+    if (snap.theme === "GAME") snap.theme = "IN";
+    if (snap.draft) snap.draft = migrateDraft(snap.draft);
+    if (snap.published) {
+      if (snap.published.theme === "WG") snap.published.theme = "NG";
+      if (snap.published.theme === "GAME") snap.published.theme = "IN";
+      if (snap.published.objects) snap.published.objects = migrateDraft(snap.published.objects);
+    }
     state.tenantId = snap.tenantId;
     state.tenantLabel = snap.tenantLabel;
     state.uiLocale = snap.uiLocale || "zh";
@@ -3770,22 +3954,6 @@
       "block-install": function () {
         set("topDownloadBar", "OFF");
       },
-      "warn-cross-r0": function () {
-        set("popupStyle", "SET", "样式二", "WG");
-      },
-      "review-cross-r2": function () {
-        set("vipCard", "SET", "仅显示徽章", "WG");
-      },
-      "auto-safe": function () {
-        switchTheme("GAME");
-        state.ui.unsupportedSim = "popupStyle";
-        set("popupStyle", "SET", "样式二", "GAME");
-      },
-      "block-unsafe": function () {
-        switchTheme("GAME");
-        state.ui.unsupportedSim = "searchPagination";
-        set("searchPagination", "SET", "搜索列", "GAME");
-      },
       "responsive-header": function () {
         set("topStatusBar", "SET", {
           loggedOut: "全部功能",
@@ -3847,13 +4015,6 @@
         set("vipCard", "SET", "仅显示徽章");
         state.published.objects.vipCard = clone(state.draft.vipCard);
       },
-      "block-theme-count": function () {
-        set("bottomNav", "SET", {
-          loggedOut: LIVE_NAV.slice(),
-          loggedIn: LIVE_NAV.slice(),
-        });
-        switchTheme("WG");
-      },
       "block-invalid-draft": function () {
         set("gameLayout", "SET", "");
       },
@@ -3865,506 +4026,6 @@
     (scenes[name] || function () {})();
     state.draft.theme.value = state.theme;
     state.draftVersion += 1;
-  }
-
-  const CHECK_NAMES_ZH = {
-    "1. live NG default": "1. NG 默认（合成示例）",
-    "2. sidebar-host conflict": "2. 侧边栏宿主冲突",
-    "3. compact-header shortcut conflict": "3. 简洁顶栏快捷入口冲突",
-    "4. withdrawal reachability": "4. 取款可达性",
-    "5. VIP reachability": "5. VIP 可达性",
-    "6. installation reachability": "6. 安装入口可达性",
-    "7. cross-theme R0 warning": "7. 跨主题 R0 警告",
-    "8. cross-theme R2 review": "8. 跨主题 R2 复核",
-    "9. unsupported safe auto-resolution": "9. 不支援但有安全自动解析",
-    "10. unsupported unsafe block": "10. 不支援且不安全时阻挡",
-    "11. logged-out balance privacy": "11. 登入前余额隐私",
-    "12. responsive header is a design QA gate": "12. 响应式顶栏设计检查",
-    "13. cancel restores current live": "13. 取消恢复本地示例",
-    "14. stale draft blocks apply": "14. 过期工作值阻挡储存",
-    "15. valid save updates this tenant site Live directly":
-      "15. 保存更新当前租户的本地示例",
-    "16. alternate has no unspecified SET option": "16. 替代按钮没有未指定选项",
-    "17. alternate SET requires complete spec": "17. 替代按钮指定值必须完整",
-    "18. alternate header respects auth compact mode":
-      "18. 替代按钮顶栏位置遵守认证状态",
-    "19. alternate nav replacement keeps count and Reviews":
-      "19. 替代导航置换保持数量并要求复核",
-    "20. alternate target is never implicit support":
-      "20. 替代按钮不会隐式指定客服",
-    "21. acknowledgement is bound to resolver context":
-      "21. 确认绑定解析器内容",
-    "22. unavailable capability rejects new SET": "22. 未启用能力拒绝新指定值",
-    "23. existing Live unavailable override stays inactive Review":
-      "23. 本站既有覆盖在能力未启用时保持不生效并要求复核",
-    "24. theme change does not silently resize SET navigation":
-      "24. 换主题不会静默调整导航槽数",
-    "25. invalid draft blocks and preserves last-known-good":
-      "25. 无效工作值阻挡且保持最后可用设定",
-    "26. synthetic tenants keep isolated lifecycle state":
-      "26. 合成租户站点状态完全隔离",
-    "27. cancel restores current Live": "27. 取消恢复上次保存的本地示例",
-    "28. all semantic object IDs use English dot-separated lowerCamelCase":
-      "28. 所有语意物件识别码使用英文点分小驼峰格式",
-    "29. language switch preserves unsaved configuration":
-      "29. 语言切换保留未储存设定",
-    "30. English interface has no untranslated visible text":
-      "30. 英文介面没有未翻译可见文字",
-    "31. catalog expands to 28 and theme stays out of tree":
-      "31. 目录扩展为 28 且左栏不显示主题",
-    "32. footer is preset layout only": "32. 页尾内容仅为预设版式",
-    "33. brand mark is fixed and tenant-safe": "33. 品牌标志固定且站点隔离",
-    "34. unsupported new option visibly auto-resolves":
-      "34. 新选项不支援时明确自动解析",
-    "35. new visual selectors never offer OFF": "35. 新视觉选择器均不提供 OFF",
-    "36. new preview surfaces are represented": "36. 新增预览表面均有呈现",
-  };
-
-  function runChecks() {
-    const saved = snapshotState();
-    const savedStores = clone(tenantStores);
-    const results = [];
-    function check(name, fn) {
-      restoreState(clone(saved));
-      try {
-        const ok = fn();
-        results.push({
-          name: name,
-          ok: !!ok,
-          detail: ok === true ? "pass" : String(ok),
-        });
-      } catch (err) {
-        results.push({ name: name, ok: false, detail: String(err) });
-      }
-    }
-    check("1. live NG default", function () {
-      loadScene("live-ng");
-      const r = resolveAll();
-      return (
-        r.blockCount === 0 &&
-        r.values.sidebar === "关闭" &&
-        r.values.bottomNav.loggedOut.join("/") === LIVE_NAV.join("/") &&
-        r.values.bottomNav.loggedIn.join("/") === LIVE_NAV.join("/")
-      );
-    });
-    check("2. sidebar-host conflict", function () {
-      loadScene("block-sidebar");
-      const r = resolveAll();
-      return r.items.some(function (row) {
-        return row.id === "shortcuts" && row.outcome === "Block";
-      });
-    });
-    check("3. compact-header shortcut conflict", function () {
-      loadScene("block-compact-shortcut");
-      return resolveAll().items.some(function (row) {
-        return row.outcome === "Block" && row.id === "topStatusBar";
-      });
-    });
-    check("4. withdrawal reachability", function () {
-      loadScene("block-withdrawal");
-      const r = resolveAll();
-      return r.issues.some(function (issue) {
-        return issue.outcome === "Block" && /取款/.test(issue.reason);
-      });
-    });
-    check("5. VIP reachability", function () {
-      loadScene("block-vip");
-      return resolveAll().blockCount > 0;
-    });
-    check("6. installation reachability", function () {
-      loadScene("block-install");
-      return resolveAll().blockCount > 0;
-    });
-    check("7. cross-theme R0 warning", function () {
-      loadScene("warn-cross-r0");
-      const row = resolveAll().items.find(function (item) {
-        return item.id === "popupStyle";
-      });
-      return row.outcome === "Warn";
-    });
-    check("8. cross-theme R2 review", function () {
-      loadScene("review-cross-r2");
-      const row = resolveAll().items.find(function (item) {
-        return item.id === "vipCard";
-      });
-      return row.outcome === "Review";
-    });
-    check("9. unsupported safe auto-resolution", function () {
-      loadScene("auto-safe");
-      const row = resolveAll().items.find(function (item) {
-        return item.id === "popupStyle";
-      });
-      return (
-        row.outcome === "Auto-resolve" &&
-        row.resolved === "样式一" &&
-        JSON.stringify(row.requested) !== JSON.stringify(row.resolved)
-      );
-    });
-    check("10. unsupported unsafe block", function () {
-      loadScene("block-unsafe");
-      const row = resolveAll().items.find(function (item) {
-        return item.id === "searchPagination";
-      });
-      return row.outcome === "Block";
-    });
-    check("11. logged-out balance privacy", function () {
-      loadScene("privacy-logged-out");
-      return NGStudio.testPlayer(function (t) {
-        return (
-          !t.root.querySelector("[data-balance]") &&
-          !/970\.80/.test(t.root.textContent)
-        );
-      });
-    });
-    check("12. responsive header is a design QA gate", function () {
-      loadScene("responsive-header");
-      return NGStudio.testPlayer(function (t) {
-        return [320, 375, 390, 480].every(function (width) {
-          t.root.style.width = width + "px";
-          return [1, 2, 3, 4, 5].every(function (style) {
-            t.config.styles.header = style;
-            t.player.setConfig(t.config);
-            const h = t.root.querySelector(".p-header");
-            return h.scrollWidth <= h.clientWidth + 1;
-          });
-        });
-      });
-    });
-    check("13. cancel restores current live", function () {
-      loadScene("block-sidebar");
-      cancelDraft();
-      return (
-        JSON.stringify(state.draft) ===
-          JSON.stringify(state.published.objects) &&
-        state.theme === state.published.theme
-      );
-    });
-    check("14. stale draft blocks apply", function () {
-      loadScene("live-ng");
-      state.published.version += 1;
-      return resolveAll().canApply === false;
-    });
-    check("15. valid save updates this tenant site Live directly", function () {
-      loadScene("live-ng");
-      state.draft.gameLayout.mode = "SET";
-      state.draft.gameLayout.value = "样式二";
-      const beforeVersion = state.published.version;
-      return (
-        applyDraft(true) &&
-        state.published.version === beforeVersion + 1 &&
-        state.published.objects.gameLayout.value === "样式二" &&
-        !document.getElementById("history-drawer") &&
-        typeof rollbackTo === "undefined"
-      );
-    });
-    check("16. alternate has no unspecified SET option", function () {
-      return (
-        byId.alternateButton.options.indexOf("未指定") === -1 &&
-        themeDefaultFor("alternateButton", "NG") === null
-      );
-    });
-    check("17. alternate SET requires complete spec", function () {
-      loadScene("block-alt-missing");
-      return resolveAll().items.some(function (row) {
-        return (
-          row.id === "alternateButton" &&
-          row.outcome === "Block" &&
-          /明确选择/.test(row.reasons.join(" "))
-        );
-      });
-    });
-    check("18. alternate header respects auth compact mode", function () {
-      loadScene("block-alt-header");
-      return resolveAll().items.some(function (row) {
-        return (
-          row.id === "alternateButton" &&
-          row.outcome === "Block" &&
-          /登入前顶部状态列为 简洁/.test(row.reasons.join(" "))
-        );
-      });
-    });
-    check("19. alternate nav replacement keeps count and Reviews", function () {
-      loadScene("review-alt-nav");
-      const r = resolveAll();
-      const row = r.items.find(function (item) {
-        return item.id === "alternateButton";
-      });
-      return (
-        row.outcome === "Review" &&
-        navFor(r.values, "loggedIn").length ===
-          effectiveNav(r.values, "loggedIn").length &&
-        effectiveNav(r.values, "loggedIn")[2] === "客服"
-      );
-    });
-    check("20. alternate target is never implicit support", function () {
-      loadScene("alt-no-implicit-cs");
-      const r = resolveAll();
-      return csHosts(r.values, "loggedIn").every(function (host) {
-        return host.indexOf("替代按钮") !== 0;
-      });
-    });
-    check("21. acknowledgement is bound to resolver context", function () {
-      loadScene("review-cross-r2");
-      state.acks.review.vipCard = true;
-      const before = acknowledgementContext();
-      state.draft.gameLayout.mode = "SET";
-      state.draft.gameLayout.value = "样式二";
-      invalidateAcknowledgementsIfChanged(before);
-      return (
-        !state.acks.review.vipCard && Object.keys(state.acks.auto).length === 0
-      );
-    });
-    check("22. unavailable capability rejects new SET", function () {
-      loadScene("block-unavailable-new");
-      const row = resolveAll().items.find(function (item) {
-        return item.id === "vipCard";
-      });
-      return (
-        row.outcome === "Block" &&
-        row.inactive &&
-        /不可为上游未启用能力建立新的 SET/.test(row.reasons.join(" "))
-      );
-    });
-    check(
-      "23. existing Live unavailable override stays inactive Review",
-      function () {
-        const previousPublished = clone(state.published.objects.vipCard);
-        loadScene("review-unavailable-live");
-        const row = resolveAll().items.find(function (item) {
-          return item.id === "vipCard";
-        });
-        const ok =
-          row.outcome === "Review" &&
-          row.inactive &&
-          /不会自动恢复/.test(row.reasons.join(" "));
-        state.published.objects.vipCard = previousPublished;
-        return ok;
-      },
-    );
-    check(
-      "24. theme change does not silently resize SET navigation",
-      function () {
-        loadScene("block-theme-count");
-        const row = resolveAll().items.find(function (item) {
-          return item.id === "bottomNav";
-        });
-        return (
-          row.outcome === "Block" &&
-          row.reasons.some(function (reason) {
-            return /4 个槽位/.test(reason);
-          })
-        );
-      },
-    );
-    check(
-      "25. invalid draft blocks and preserves last-known-good",
-      function () {
-        loadScene("block-invalid-draft");
-        const before = JSON.stringify(state.ui.lastKnownGood);
-        const r = resolveAll();
-        return (
-          !r.canApply &&
-          r.items.some(function (row) {
-            return row.id === "gameLayout" && row.outcome === "Block";
-          }) &&
-          JSON.stringify(state.ui.lastKnownGood) === before
-        );
-      },
-    );
-    check("26. synthetic tenants keep isolated lifecycle state", function () {
-      const first = state.tenantId;
-      const other = first === "tenant-a" ? "tenant-b" : "tenant-a";
-      state.draft.gameLayout.mode = "SET";
-      state.draft.gameLayout.value = "样式二";
-      tenantStores[first] = snapshotState();
-      switchTenant(other);
-      const otherIsolated =
-        state.draft.gameLayout.mode !== "SET" ||
-        state.draft.gameLayout.value !== "样式二";
-      switchTenant(first);
-      return (
-        otherIsolated &&
-        state.draft.gameLayout.mode === "SET" &&
-        state.draft.gameLayout.value === "样式二"
-      );
-    });
-    check("27. cancel restores current Live", function () {
-      state.draft.gameLayout.mode = "SET";
-      state.draft.gameLayout.value = "样式二";
-      cancelDraft();
-      return (
-        JSON.stringify(state.draft) === JSON.stringify(state.published.objects)
-      );
-    });
-    check(
-      "28. all semantic object IDs use English dot-separated lowerCamelCase",
-      function () {
-        return CATALOG.every(function (item) {
-          return (
-            /^[a-z][A-Za-z0-9]*$/.test(item.id) &&
-            /^[a-z][A-Za-z0-9]*(\.[a-z][A-Za-z0-9]*)+$/.test(
-              SEMANTIC_IDS[item.id],
-            )
-          );
-        });
-      },
-    );
-    check("29. language switch preserves unsaved configuration", function () {
-      state.draft.gameLayout.mode = "SET";
-      state.draft.gameLayout.value = "样式二";
-      const before = JSON.stringify(state.draft);
-      state.uiLocale = "en";
-      renderAll();
-      return JSON.stringify(state.draft) === before && state.uiLocale === "en";
-    });
-    check(
-      "30. English interface has no untranslated visible text",
-      function () {
-        state.uiLocale = "en";
-        state.selectedId = "themeColor";
-        renderAll();
-        const walker = document.createTreeWalker(
-            document.body,
-            NodeFilter.SHOW_TEXT,
-          ),
-          bad = [];
-        while (walker.nextNode()) {
-          const node = walker.currentNode,
-            p = node.parentElement;
-          if (
-            !p ||
-            /^(SCRIPT|STYLE)$/.test(p.tagName) ||
-            !p.checkVisibility() ||
-            p.closest("#checks-drawer,#diff-drawer,#confirm-modal")
-          )
-            continue;
-          if (/[\u3400-\u9fff]/.test(node.nodeValue))
-            bad.push(node.nodeValue.trim());
-        }
-        if (bad.length)
-          throw new Error("Untranslated: " + [...new Set(bad)].join(" | "));
-        return true;
-      },
-    );
-    check("31. catalog expands to 28 and theme stays out of tree", function () {
-      const visible = filteredCatalog(resolveAll());
-      return (
-        CATALOG.length === 28 &&
-        visible.every(function (item) {
-          return item.id !== "theme";
-        }) &&
-        Object.keys(SEMANTIC_IDS).length === 28
-      );
-    });
-    check("32. footer is preset layout only", function () {
-      const item = byId.footerStyle;
-      state.selectedId = "footerStyle";
-      renderDetail(resolveAll());
-      return (
-        item.type === "single-select" &&
-        item.options.join("/") === "样式一/样式二/样式三/样式四" &&
-        !item.supportsOff &&
-        !els.detail.querySelector("textarea") &&
-        !els.detail.querySelector('input[type="url"]') &&
-        SEMANTIC_IDS.footerStyle === "global.footerStyle"
-      );
-    });
-    check("33. brand mark is fixed and tenant-safe", function () {
-      const item = byId.brandMark;
-      state.selectedId = "brandMark";
-      renderDetail(resolveAll());
-      return (
-        state.draft.brandMark.mode === "FIXED" &&
-        item.type === "fixed-readonly" &&
-        !els.detail.querySelector('input[type="file"]') &&
-        !els.detail.querySelector('[data-mode="SET"]') &&
-        !els.detail.querySelector('[data-mode="OFF"]')
-      );
-    });
-    check("34. unsupported new option visibly auto-resolves", function () {
-      switchTheme("WG");
-      state.draft.carouselStyle.mode = "SET";
-      state.draft.carouselStyle.value = "轮播Banner";
-      const row = resolveAll().items.find(function (item) {
-        return item.id === "carouselStyle";
-      });
-      return (
-        row.outcome === "Auto-resolve" &&
-        row.requested === "轮播Banner" &&
-        row.resolved === "通用Banner" &&
-        !state.acks.auto.carouselStyle
-      );
-    });
-    check("35. new visual selectors never offer OFF", function () {
-      return [
-        "carouselStyle",
-        "footerStyle",
-        "profileLayout",
-        "authVisual",
-        "buttonStyle",
-        "gameIconStyle",
-      ].every(function (id) {
-        return byId[id].supportsOff === false;
-      });
-    });
-    check("36. new preview surfaces are represented", function () {
-      loadScene("live-ng");
-      return NGStudio.testPlayer(function (t) {
-        const home =
-          !!t.root.querySelector(".p-carousel") &&
-          !!t.root.querySelector(".p-footer") &&
-          !!t.root.querySelector('[data-p="flag"]');
-        t.config.page = "登入注册";
-        t.player.setConfig(t.config);
-        return (
-          home && !!t.root.querySelector('.p-auth-form input[type="password"]')
-        );
-      });
-    });
-    window.NGChecks(check, {
-      state,
-      loadScene,
-      switchTheme,
-      inheritDraft,
-      resolveAll,
-      applyDraft,
-      cancelDraft,
-      snapshotState,
-      switchTenant,
-      tenantStores,
-      clone,
-    });
-    restoreState(saved);
-    Object.keys(tenantStores).forEach(function (key) {
-      delete tenantStores[key];
-    });
-    Object.keys(savedStores).forEach(function (key) {
-      tenantStores[key] = savedStores[key];
-    });
-    state.ui.checks = results;
-    els.checks.className = "drawer open";
-    els.checks.innerHTML =
-      '<div class="drawer-panel"><h2 id="checks-title">运行检查</h2><table><thead><tr><th>#</th><th>场景</th><th>结果</th><th>详情</th></tr></thead><tbody>' +
-      results
-        .map(function (row, index) {
-          return (
-            "<tr><td>" +
-            (index + 1) +
-            "</td><td>" +
-            (state.uiLocale === "zh"
-              ? CHECK_NAMES_ZH[row.name] || row.name
-              : row.name) +
-            "</td><td><span class='badge " +
-            (row.ok ? "badge-allow" : "badge-block") +
-            "'>" +
-            (row.ok ? "pass" : "fail") +
-            "</span></td><td>" +
-            row.detail +
-            "</td></tr>"
-          );
-        })
-        .join("") +
-      '</tbody></table><button type="button" class="btn" data-action="close-drawers">关闭</button></div>';
   }
 
   function applyDraft(silent) {
@@ -4429,6 +4090,7 @@
   let lastLocalizedLocale;
   function renderAll(opts) {
     opts = opts || {};
+    window.NGSelectionGuard?.beforeRender();
     const positions = [...document.querySelectorAll(".studio-editor-scroll,.studio-nav-scroll,#tree,#object-detail,#preview-pane,main,body")].filter(el=>el.scrollTop || el.scrollLeft).map(el=>[el,el.scrollTop,el.scrollLeft]);
     const resolved = resolveAll();
     window.NGStudio.tree(resolved);
@@ -4450,8 +4112,9 @@
       lastLocalizedLocale = state.uiLocale;
     }
     window.NGStudio.finish(resolved);
+    window.NGSelectionGuard?.decorate(els.detail);
     els.detail.querySelectorAll(".ux-help").forEach(function (el) { el.remove(); });
-    const selectedIssue = resolved.items.find(row => row.id === state.selectedId && row.outcome !== "Allow");
+    const selectedIssue = resolved.items.find(row => row.id === state.selectedId && ["Block","Auto-resolve"].includes(row.outcome));
     if (selectedIssue) {
       const help=document.createElement("div"); help.className="ux-help";
       const heading=document.createElement("strong"); heading.textContent=state.uiLocale === "en" ? "How to continue" : "如何完成設定";
@@ -4464,7 +4127,6 @@
 
   function closeDrawers() {
     els.diff.className = "drawer";
-    els.checks.className = "drawer";
     els.confirm.className = "modal";
   }
 
@@ -4494,10 +4156,6 @@
       ["block-withdrawal", "Block · 取款不可达"],
       ["block-vip", "Block · VIP 不可达"],
       ["block-install", "Block · 安装入口"],
-      ["warn-cross-r0", "Warn · 跨主题 R0"],
-      ["review-cross-r2", "Review · 跨主题 R2"],
-      ["auto-safe", "Auto-resolve · GAME 弹窗回退"],
-      ["block-unsafe", "Block · GAME 搜索无回退"],
       ["responsive-header", "Design QA · 320–480 响应式顶栏"],
       ["axure-nav", "Review · Axure钱包我的"],
       ["block-alt-missing", "Block · 替代按钮缺少能力"],
@@ -4506,7 +4164,6 @@
       ["alt-no-implicit-cs", "Allow · 不隐式当作客服"],
       ["block-unavailable-new", "Block · 未启用能力新 SET"],
       ["review-unavailable-live", "Review · 本站 Live 覆盖未生效"],
-      ["block-theme-count", "Block · 换主题槽数不符"],
       ["block-invalid-draft", "Block · 无效草稿"],
       ["privacy-logged-out", "Allow · 登入前无余额"],
     ]
@@ -4563,16 +4220,35 @@
     if (target.id === "content-select") state.preview.content = target.value;
     if (target.id === "install-select")
       state.preview.installEnabled = target.value === "on";
-    if (target.id === "capability-select")
-      state.preview.unavailableCapability = target.value;
+    if (target.id === "capability-select") {
+      const next = target.value;
+      state.preview.unavailableCapability =
+        next === "充值" || next === "钱包/纪录" ? "" : next;
+      if (target.value !== state.preview.unavailableCapability)
+        target.value = state.preview.unavailableCapability;
+    }
     if (target.name && state.filters.hasOwnProperty(target.name))
       state.filters[target.name] = target.checked;
     if (target.getAttribute("data-action") === "nav-slot") {
       const authKey = target.getAttribute("data-auth");
       const index = Number(target.getAttribute("data-index"));
+      const oldVal = state.draft.bottomNav.value[authKey][index];
+      const newVal = target.value;
       state.draft.bottomNav.mode = "SET";
-      state.draft.bottomNav.value[authKey][index] = target.value;
-      state.draft.bottomNav.extra.preset[authKey] = "custom";
+      state.draft.bottomNav.value[authKey][index] = newVal;
+      const testResolve = resolveAll();
+      const hasReachabilityBlock = testResolve.items.some(function (it) {
+        return it.outcome === "Block" && (it.reasons || []).some(function (r) {
+          return r.includes("不可达") || r.includes("唯一表面") || r.includes("入口不可达");
+        });
+      });
+      if (hasReachabilityBlock) {
+        state.draft.bottomNav.value[authKey][index] = oldVal;
+        target.value = oldVal;
+        state.ui.fallbackMessage = "不可替换此槽位：这是该核心受保护能力的唯一可见表面。";
+      } else {
+        state.draft.bottomNav.extra.preset[authKey] = "custom";
+      }
     }
     if (target.getAttribute("data-action") === "alt-slot") {
       state.draft.alternateButton.mode = "SET";
@@ -4581,11 +4257,14 @@
     }
     if (target.getAttribute("data-action") === "alt-capability") {
       state.draft.alternateButton.mode = "SET";
-      ensureAlternateSpec().target = target.value;
+      const val = target.value || ALTERNATE_TARGETS[0] || "客服";
+      ensureAlternateSpec().target = val;
+      target.value = val;
     }
     if (target.getAttribute("data-action") === "alt-auth") {
       state.draft.alternateButton.mode = "SET";
       ensureAlternateSpec().authScope = target.value;
+      if(ensureAlternateSpec().placement === "底部导航自选槽位") window.NGSelectionGuard.completeAlternate(ensureAlternateSpec());
     }
     if (target.getAttribute("data-action") === "ack-auto")
       state.acks.auto[target.getAttribute("data-id")] = target.checked;
@@ -4649,6 +4328,13 @@
         switchTheme(raw);
       } else if (id.indexOf("topStatusBar.") === 0) {
         const key = id.split(".")[1];
+        if (raw === "简洁") {
+          const sc = state.draft.shortcuts ? state.draft.shortcuts.value : null;
+          if (sc === "状态列按钮" && state.draft.shortcuts.mode !== "OFF") {
+            state.ui.fallbackMessage = "快捷按钮设为状态列按钮时，顶栏不可设为简洁。";
+            return;
+          }
+        }
         state.draft.topStatusBar.mode = "SET";
         state.draft.topStatusBar.value[key] = raw;
       } else if (id === "alternateButton.placement") {
@@ -4657,21 +4343,54 @@
           state.draft.alternateButton.value = null;
         } else {
           state.draft.alternateButton.mode = "SET";
-          ensureAlternateSpec().placement = raw;
+          const spec = ensureAlternateSpec();
+          spec.placement = raw;
+          if (raw === "底部导航自选槽位") window.NGSelectionGuard.completeAlternate(spec);
+          if (!spec.target) {
+            spec.target = ALTERNATE_TARGETS[0] || "客服";
+          }
         }
       } else {
+        if (id === "vipCard" && raw === "隐藏VIP资讯") {
+          const nav = state.draft.bottomNav ? state.draft.bottomNav.value : null;
+          const hasVipNav = nav && ((nav.loggedOut && nav.loggedOut.includes("VIP")) || (nav.loggedIn && nav.loggedIn.includes("VIP")));
+          const altTarget = state.draft.alternateButton && state.draft.alternateButton.value ? state.draft.alternateButton.value.target : "";
+          const hasAltVip = state.draft.alternateButton && state.draft.alternateButton.mode === "SET" && (altTarget === "VIP" || altTarget === "VIP 页入口");
+          if (!hasVipNav && !hasAltVip) {
+            state.ui.fallbackMessage = "VIP 未在底部导航或替代按钮出现时，不可隐藏 VIP 资讯。";
+            return;
+          }
+        }
+        if (id === "shortcuts" && raw === "侧边栏内") {
+          const sb = state.draft.sidebar;
+          if (sb && (sb.mode === "OFF" || sb.value === "关闭")) {
+            state.ui.fallbackMessage = "侧边栏关闭时不可设为侧边栏内。";
+            return;
+          }
+        }
+        if (id === "shortcuts" && raw === "状态列按钮") {
+          const tsb = state.draft.topStatusBar ? state.draft.topStatusBar.value : null;
+          if (tsb && (tsb.loggedOut === "简洁" || tsb.loggedIn === "简洁")) {
+            state.ui.fallbackMessage = "顶部状态列为简洁时不可使用状态列快捷按钮。";
+            return;
+          }
+        }
+        if (id === "sidebar" && raw === "关闭") {
+          const sc = state.draft.shortcuts ? state.draft.shortcuts.value : null;
+          if (sc === "侧边栏内" && state.draft.shortcuts.mode !== "OFF") {
+            state.ui.fallbackMessage = "快捷按钮设在侧边栏内时不可关闭侧边栏。";
+            return;
+          }
+        }
         if (raw === "关闭" && byId[id].supportsOff) {
           state.draft[id].mode = "OFF";
           state.draft[id].value = null;
+          if (id === "topDownloadBar") state.preview.installEnabled = false;
         } else {
           state.draft[id].mode = "SET";
           state.draft[id].value = raw;
         }
       }
-    }
-    if (action === "set-source") {
-      state.draft[id].mode = "SET";
-      state.draft[id].sourceTheme = btn.getAttribute("data-theme");
     }
     if (action === "nav-up" || action === "nav-down") {
       const authKey = btn.getAttribute("data-auth");
@@ -4757,7 +4476,6 @@
         return;
       }
     }
-    if (action === "open-checks") runChecks();
     if (action === "close-drawers") closeDrawers();
     if (action === "simulate-stale") state.published.version += 1;
     if (action === "simulate-stale-preview") state.preview.stale = true;
@@ -4824,6 +4542,7 @@
     dirty,
     clone,
     themeDefaultFor,
+    enableValueFor,
     effectiveNav,
     snapshotState,
     restoreState,

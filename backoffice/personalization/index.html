@@ -150,8 +150,7 @@
             <option value="en">English</option>
           </select></label
         >
-        <button class="btn" data-action="open-checks">运行检查</button
-        ><button class="btn" data-studio="export">导出配置 JSON</button
+        <button class="btn" data-studio="export">导出配置 JSON</button
         ><a href="design-source-map.json" target="_blank"
           >查看 Figma 对照表 ↗</a
         >
@@ -198,8 +197,6 @@
               <option value="">全部可用</option>
               <option value="App download">App download 未启用</option>
               <option value="VIP 页入口">VIP 页入口 未启用</option>
-              <option value="充值">充值 未启用</option>
-              <option value="钱包/纪录">钱包/纪录 未启用</option>
               <option value="站内信">站内信 未启用</option>
               <option value="用户验证">用户验证 未启用</option>
             </select>
@@ -272,14 +269,6 @@
       data-name="查看修改"
     ></div>
     <div
-      class="drawer"
-      id="checks-drawer"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="checks-title"
-      data-name="运行检查"
-    ></div>
-    <div
       class="modal"
       id="confirm-modal"
       role="dialog"
@@ -296,7 +285,7 @@
     <script src="player-pages.js?v=controls-20260909-13"></script>
     <script src="current-player.js?v=controls-20260909-13"></script>
     <script src="customize-studio.js?v=controls-20260909-13"></script>
-    <script src="customize-checks.js?v=controls-20260909-13"></script>
+    <script src="selection-guard.js"></script>
     <script src="customize-core.js?v=controls-20260909-13"></script>
   </body>
 </html>

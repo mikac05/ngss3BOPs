@@ -1,0 +1,29 @@
+{
+  "classification": "Prototype-only",
+  "sources": [
+    {
+      "file": "IN index.svg",
+      "sha256": "3008c764af317630139edb4964e0e497b34b69795231e993ff3a9ef844a8718a"
+    },
+    {
+      "file": "IN index_ex.svg",
+      "sha256": "10c059f3870487b334fe738c2dd0b10b156417d5396b2768d3489d85cd73f6ee"
+    },
+    {
+      "file": "星空版-首页(登录后).svg",
+      "sha256": "e1fbf7422de7a929070c77cb6cd3ca5739bfa15cfdb16e77293c48e63bc11c0e"
+    },
+    {
+      "file": "星空版-首页.svg",
+      "sha256": "fadef219d36b7d9fce83d75af84c680621ed612257e12b3d2f6ce68c72107270"
+    },
+    {
+      "file": "星空版-首页-1.svg",
+      "sha256": "629e81a2c31b6579261c53792e3d4ee72870787a1bd17390bb36f40f9aca5eed"
+    }
+  ],
+  "variants": {
+    "IN": "IN index_ex.svg; compact viewport from IN index.svg",
+    "SF": "Shared homepage; logged-in sticky header and expanded activity dock are states, not selectable component styles."
+  }
+}
