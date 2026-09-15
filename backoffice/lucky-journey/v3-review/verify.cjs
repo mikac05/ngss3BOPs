@@ -32,8 +32,8 @@ test('conditional probability cutoffs match recommended allocation',()=>{const c
 test('bounded forecast matches exhaustive daily/task/friend convolution',()=>{for(let sample=0;sample<20;sample++){const c=cfg();c.personalDays=c.sources.free.days=3;c.tasks=c.tasks.slice(0,3);c.sources.task.taskCount=3;c.sources.free.cap=sample%5;c.sources.task.cap=sample%4;c.sources.assist.cap=sample%8;c.targetSpins=4+sample%8;const events=(n,p,t,cap)=>{const arr=[];for(let bits=0;bits<(1<<n);bits++){let count=0;for(let j=0;j<n;j++)count+=(bits>>j)&1;arr.push([Math.min(count*t,cap),p**count*(1-p)**(n-count)]);}return arr;};const f=events(3,c.assumptions.dailyVisitProb,c.sources.free.ticketsPerDay,c.sources.free.cap),t=events(3,c.assumptions.taskCompletionProb,c.sources.task.ticketsPerTask,c.sources.task.cap);let expected=0,prob=Math.exp(-c.assumptions.assistLambda);for(let friends=0;friends<100;friends++){if(friends)prob*=c.assumptions.assistLambda/friends;for(const [fv,fp]of f)for(const[tv,tp]of t)if(fv+tv+Math.min(friends*c.sources.assist.ticketsPerFriend,c.sources.assist.cap)>=c.targetSpins)expected+=fp*tp*prob;}assert(Math.abs(expected-E.completionProbability(c))<1e-10);}});
 test('popup copy separates progress items from final wallet reward',()=>{const copy=require('./simulation.js').resultCopy;const item=copy({prize:{type:'star',amount:5000,gainUnits:5000},progress:90.5,completed:false});assert(item.title.includes('丰收'));assert(item.progress.includes('0.5000%'));const final=copy({prize:{type:'coin',amount:1},completed:true,finish:5,payoutStatus:'pending'});assert(final.message.includes('正在发放'));assert(!final.message.includes('已发放'));});
 const admin=mount('index.html');
-test('admin initializes with four panels and three equal card containers',()=>{assert.deepEqual(admin.errors,[]);assert.equal(admin.d.querySelectorAll('#sections>.panel').length,4);assert.equal(admin.d.querySelectorAll('.sidebar>.side-card').length,3);assert(!admin.d.body.textContent.includes('分层完成'));assert(!admin.d.body.textContent.includes('仿真与发布'));assert(!admin.d.body.textContent.includes('VIP'));});
-test('preview defaults open and compact phase summaries are inline',()=>{assert(admin.d.querySelector('details[open] #curve'));assert.equal(admin.d.querySelectorAll('.phase-inline').length,6);assert(!admin.d.querySelector('[data-path="sources.free.grantMode"]'));fill(admin,'firstSpinPct',80);assert(admin.d.getElementById('curveSummary').textContent.includes('80%'));});
+test('admin initializes with three panels and three equal card containers',()=>{assert.deepEqual(admin.errors,[]);assert.equal(admin.d.querySelectorAll('#sections>.panel').length,3);assert.equal(admin.d.querySelectorAll('.sidebar>.side-card').length,3);assert(!admin.d.body.textContent.includes('分层完成'));assert(!admin.d.body.textContent.includes('仿真与发布'));assert(!admin.d.body.textContent.includes('VIP'));});
+test('preview defaults open and compact phase summaries are inline',()=>{assert(admin.d.querySelector('details[open] #curve'));assert(!admin.d.querySelector('[data-path="sources.free.grantMode"]'));fill(admin,'firstSpinMin',80);fill(admin,'firstSpinMax',85);assert(admin.d.getElementById('curveSummary').textContent.includes('80%'));});
 test('item probabilities rebalance and insufficient supply is shown in ticket card',()=>{const handle=admin.d.querySelector('.item-slider[data-phase=fast] [data-boundary="0"]');handle.dispatchEvent(new admin.w.KeyboardEvent('keydown',{key:'ArrowLeft',bubbles:true}));assert.equal(handle.getAttribute('aria-valuenow'),'69');assert(admin.d.querySelector('.item-slider[data-phase=fast] .allocation-legend').textContent.includes('5%'));assert(!admin.d.querySelector('[data-path^="prize.fast.weights"]'));fill(admin,'targetSpins',30);assert(!admin.d.getElementById('ticketShortfall').hidden);assert.equal(admin.d.getElementById('sideTarget').closest('.side-card').querySelector('h2').textContent,'抽奖次数');});
 test('compact-only layout migrates old full layout',()=>{assert.equal(C.normalize({presentation:{layout:'full'}}).presentation.layout,'compact');assert(!admin.d.querySelector('[data-path="presentation.layout"]'));});
 test('stage slider updates adjacent shares and preserves third segment',()=>{const a=admin.d.querySelector('#phaseAllocation [data-boundary="0"]');const fine=Number(admin.d.querySelector('[data-path="phaseShares.fine"]').value);a.dispatchEvent(new admin.w.KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true}));assert.equal(Number(admin.d.querySelector('[data-path="phaseShares.fast"]').value),41);assert.equal(Number(admin.d.querySelector('[data-path="phaseShares.fine"]').value),fine);assert.equal(['fast','mid','fine'].reduce((n,k)=>n+Number(admin.d.querySelector('[data-path="phaseShares.'+k+'"]').value),0),100);});
@@ -43,7 +43,7 @@ test('allocation handles clamp at neighbor without changing other segments',()=>
 test('numeric shares only change the adjacent stage',()=>{const fine=admin.d.querySelector('[data-path="phaseShares.fine"]').value;fill(admin,'phaseShares.fast',50);assert.equal(admin.d.querySelector('[data-path="phaseShares.fine"]').value,fine);});
 test('changing global T updates every admin summary',()=>{fill(admin,'targetSpins',10);assert.equal(admin.d.getElementById('sideTarget').textContent,'10 次');assert(admin.d.getElementById('curveSummary').textContent.includes('第 10 次'));});
 test('phase numeric edits preserve exact total',()=>{fill(admin,'phaseShares.fast',55);const sum=['fast','mid','fine'].reduce((n,k)=>n+Number(admin.d.querySelector('[data-path="phaseShares.'+k+'"]').value),0);assert.equal(sum,100);});
-test('task toggle drops supply and disables threshold field',()=>{fill(admin,'tasks.0.enabled',false);assert.equal(admin.d.getElementById('sideTask').textContent,'4 次');assert(admin.d.querySelector('[data-path="tasks.0.threshold"]').disabled);});
+test('task toggle drops supply and disables threshold field',()=>{fill(admin,'tasks.0.enabled',false);assert.equal(admin.d.getElementById('sideTask').textContent,'1 次');assert(admin.d.querySelector('[data-path="tasks.0.threshold"]').disabled);});
 test('cash wallet enables wagering field',()=>{fill(admin,'basic.wallet','cash');assert(!admin.d.getElementById('wagerField').hidden);fill(admin,'basic.wallet','bonus');assert(admin.d.getElementById('wagerField').hidden);});
 test('collapse can reopen without losing edits',()=>{const panel=admin.d.getElementById('prizes');panel.querySelector('.collapse').click();assert(panel.querySelector('.panel-body').hidden);panel.querySelector('.collapse').click();assert.equal(admin.d.querySelector('[data-path="targetSpins"]').value,'10');});
 test('draft round trip includes name mode and no tiers',()=>{fill(admin,'basic.nameMode','custom');fill(admin,'basic.name','测试活动');admin.d.getElementById('saveBtn').click();const record=JSON.parse(admin.w.localStorage.getItem(C.key));assert(!record.config.cohorts);fill(admin,'basic.name','临时');admin.d.getElementById('restoreBtn').click();assert.equal(admin.d.getElementById('nameMode').value,'custom');assert.equal(admin.d.querySelector('[data-path="basic.name"]').value,'测试活动');});
@@ -62,10 +62,126 @@ test('raw fractional item probabilities fail validation',()=>{const c=cfg();c.pr
 test('all supported T and first-spin settings have positive increments at extreme shares',()=>{for(let T=4;T<=30;T++)for(let F=6;F<=94;F++)for(const shares of [{fast:0,mid:0,fine:100},{fast:100,mid:0,fine:0},{fast:0,mid:100,fine:0},{fast:40,mid:35,fine:25}]){const c=cfg();Object.assign(c,{targetSpins:T,firstSpinPct:F,phaseShares:shares});const plan=E.progressPlan(c);assert.equal(plan.at(-1).target,1000000);assert(plan.every((row,i)=>Number.isInteger(row.target)&&(!i||row.target>plan[i-1].target)));}});
 test('phone contains real player controls and popup, simulation completion stays outside',()=>{const m=mount('player.html');const phone=m.d.querySelector('.phone');assert(phone.contains(m.d.getElementById('prizePopup')));assert(!phone.contains(m.d.getElementById('externalTasks')));assert.equal(m.d.getElementById('freeBtn').tagName,'SPAN');assert(m.d.getElementById('remainingSpins').textContent.includes('12'));m.dom.window.close();});
 test('friend deposit threshold checks below and equal amounts',()=>{const c=cfg();c.sources.assist.depositRequired=true;c.sources.assist.minDeposit=50;const sim=new Simulation(c);assert(sim.join().ok);assert(!sim.grant('assist','new-friend',{eligible:true,depositAmount:49.99}).ok);assert(sim.grant('assist','new-friend',{eligible:true,depositAmount:50}).ok);});
-test('threshold settings persist and validate',()=>{const c=cfg();c.sources.assist.depositRequired=true;c.sources.assist.minDeposit=123.45;c.tasks[0].minBet=2.5;const n=C.normalize(c);assert.equal(n.sources.assist.minDeposit,123.45);assert.equal(n.tasks[0].minBet,2.5);assert(!E.evaluatePublishStatus(n).red.length);n.tasks[0].minBet=0;assert(E.evaluatePublishStatus(n).red.some(x=>x.includes('每注最低金额')));});
+test('threshold settings persist and validate',()=>{const c=cfg();c.sources.assist.depositRequired=true;c.sources.assist.minDeposit=123.45;c.tasks[0].threshold=200;const n=C.normalize(c);assert.equal(n.sources.assist.minDeposit,123.45);assert.equal(n.tasks[0].threshold,200);assert(!E.evaluatePublishStatus(n).red.length);n.tasks[0].threshold=0;assert(E.evaluatePublishStatus(n).red.some(x=>x.includes('任务门槛')));});
 test('no-ticket CTA scrolls and focuses sources without spinning',()=>{const m=mount('player.html');m.d.querySelector('[data-scenario="no-tickets"]').click();const button=m.d.getElementById('mainAction'),target=m.d.getElementById('ticketSources');let scrolled=false;target.scrollIntoView=()=>scrolled=true;assert(!button.disabled);assert.equal(button.textContent,'获取抽奖次数');button.click();assert(scrolled);assert.equal(m.d.activeElement,target);assert.equal(m.d.getElementById('phoneTicketCount').textContent,'0');assert.deepEqual(m.errors,[]);m.dom.window.close();});
 test('first-spin mean bounds and midpoint use saved plan',()=>{for(const F of [6,90,94]){const c=cfg();c.firstSpinPct=F;assert.equal(E.sampleFirstUnits(c,()=>0),(F-5)*10000);assert.equal(E.sampleFirstUnits(c,()=>.5),F*10000);assert.equal(E.sampleFirstUnits(c,()=>1-Number.EPSILON),(F+5)*10000);for(const rng of [()=>0,()=>.5,()=>1-Number.EPSILON]){const sim=new Simulation(c,rng);assert(sim.join().ok);const first=sim.play.firstUnits;const result=sim.spin('first');assert.equal(result.record.progressUnits,first);assert.equal(sim.play.plan[0].target,first);assert(sim.spin('first').replayed);assert.equal(sim.play.firstUnits,first);supply(sim);sim.outcome='thanks';for(let k=2;k<=c.targetSpins;k++)assert(sim.spin('s'+k).ok);assert.equal(sim.play.progressUnits,1000000);assert.equal(sim.spent,c.prize.finishPrize);}}});
 test('first-spin extremes leave strictly positive increments at every T',()=>{for(let T=4;T<=30;T++)for(const F of [6,94])for(const actual of [F-5,F+5])for(const shares of [{fast:0,mid:0,fine:100},{fast:40,mid:35,fine:25}]){const c=cfg();Object.assign(c,{targetSpins:T,firstSpinPct:F,phaseShares:shares});const rows=E.progressPlan(c,actual*10000);assert.equal(rows[0].target,actual*10000);assert.equal(rows.at(-1).target,1000000);assert(rows.every((r,i)=>!i||r.target>rows[i-1].target));}});
 test('phone leads with money and explanatory counts stay outside',()=>{const m=mount('player.html'),phone=m.d.querySelector('.phone');assert(phone.contains(m.d.getElementById('phoneProgressMoney')));assert(!phone.contains(m.d.getElementById('remainingSpins')));assert(!phone.textContent.includes('扇区大小'));assert(!m.d.getElementById('expectedCost'));assert(m.d.body.textContent.includes('完成度计算'));m.dom.window.close();});
-test('invalid first-spin averages block validation',()=>{for(const F of [5,95]){const c=cfg();c.firstSpinPct=F;assert(E.evaluatePublishStatus(c).red.some(x=>x.includes('首转平均进度')));}});
+test('invalid first-spin bounds block validation',()=>{for(const [min,max] of [[0,90],[99,95],[95,80]]){const c=cfg();c.firstSpinMin=min;c.firstSpinMax=max;assert(E.evaluatePublishStatus(c).red.some(x=>x.includes('首转')));}});
+test('budget is relocated to basic settings and old budget section is removed',()=>{
+  const m=mount('index.html');
+  assert(!m.d.getElementById('budget'));
+  assert(m.d.querySelector('#basic [data-path="budget.total"]'));
+  assert(!m.d.querySelector('[data-path="budget.maxParticipants"]'));
+  assert(!m.d.querySelector('[data-path="budget.joinMode"]'));
+  m.dom.window.close();
+});
+
+test('basic claim mode supports auto and manual, defaults to auto',()=>{
+  const c=cfg();
+  assert.equal(c.basic.claimMode,'auto');
+  const m=mount('index.html');
+  const select=m.d.querySelector('[data-path="basic.claimMode"]');
+  assert(select);
+  assert.equal(select.value,'auto');
+  fill(m,'basic.claimMode','manual');
+  assert.equal(select.value,'manual');
+  m.dom.window.close();
+});
+
+test('first spin min and max range is editable in admin and respected by engine',()=>{
+  const c=cfg();
+  c.firstSpinMin=85;
+  c.firstSpinMax=92;
+  for(let i=0;i<20;i++){
+    const u=E.sampleFirstUnits(c,()=>i/20);
+    assert(u>=850000&&u<=920000);
+  }
+});
+
+test('decay controls are hidden while progression curve is preserved',()=>{
+  const m=mount('index.html');
+  const slider=m.d.getElementById('phaseSlider');
+  assert(slider.hidden);
+  assert.equal(slider.style.display,'none');
+  assert(m.d.getElementById('curve'));
+  m.dom.window.close();
+});
+
+test('wheel images are configurable, have defaults, and render into player wheel disc',()=>{
+  const c=cfg();
+  for(const k of ['thanks','coin','gem','star']){
+    assert(c.presentation.wheelImages[k]);
+  }
+  const m=mount('player.html');
+  const img0=m.d.getElementById('wheel-img-0');
+  assert(img0);
+  assert(img0.getAttribute('href').startsWith('data:image/svg+xml'));
+  m.dom.window.close();
+});
+
+test('exclusive referral link contains campaign parameters and modal functions',()=>{
+  const m=mount('player.html');
+  m.d.getElementById('mainAction').click();
+  const inviteBtn=m.d.getElementById('friendBtn');
+  const modal=m.d.getElementById('inviteModal');
+  const link=m.d.getElementById('inviteUrl');
+  assert(inviteBtn&&modal&&link);
+  assert(modal.hidden);
+  inviteBtn.click();
+  assert(!modal.hidden);
+  assert(link.value.includes('act=lucky-journey'));
+  assert(link.value.includes('src=lj_wheel'));
+  m.d.getElementById('inviteClose').click();
+  assert(modal.hidden);
+  m.dom.window.close();
+});
+
+test('manual claim mode requires user CTA click to claim prize',()=>{
+  const c=cfg();
+  c.basic.claimMode='manual';
+  const s=ready(c);
+  supply(s);
+  for(let k=1;k<=12;k++)s.spin('s'+k);
+  assert.equal(s.play.progress,100);
+  assert.equal(s.play.claimPending,true);
+  assert.equal(s.spent,0);
+  const claimed=s.claimPrize();
+  assert(claimed.ok);
+  assert.equal(s.play.claimPending,false);
+  assert.equal(s.spent,5);
+});
+
+test('unlock hero has exactly 3 fields on one line: prize, firstSpin range selector, and targetSpins with range 4~30',()=>{
+  const m=mount('index.html');
+  const heroGrid=m.d.querySelector('.unlock-hero>.form-grid');
+  const fields=heroGrid.querySelectorAll(':scope>.field');
+  assert.equal(fields.length, 3);
+  assert(fields[0].querySelector('[data-path="prize.finishPrize"]'));
+  assert(fields[1].querySelector('[data-path="firstSpinMin"]'));
+  assert(fields[1].querySelector('[data-path="firstSpinMax"]'));
+  assert(fields[1].querySelector('.range-slider-wrap'));
+  assert(fields[2].querySelector('[data-path="targetSpins"]'));
+  assert(fields[2].textContent.includes('4~30') || fields[2].textContent.includes('4～30'));
+  m.dom.window.close();
+});
+
+test('range slider drag updates firstSpin inputs and state',()=>{
+  const m=mount('index.html');
+  const tMin=m.d.getElementById('rangeThumbMin');
+  tMin.value=82;
+  tMin.dispatchEvent(new m.w.Event('input',{bubbles:true}));
+  assert.equal(m.d.querySelector('[data-path="firstSpinMin"]').value,'82');
+  assert.equal(m.d.getElementById('firstSpinFill').style.left,'82%');
+  m.dom.window.close();
+});
+
+test('tasks only contain deposit_amount and bet_amount; play_category, deposit_count, and bet_count are removed',()=>{
+  const c=cfg();
+  assert.equal(c.tasks.length, 2);
+  assert.deepEqual(c.tasks.map(t=>t.name), ['充值金额', '下注金额']);
+  assert(!c.tasks.some(t=>['play_category','deposit_count','bet_count'].includes(t.type)));
+  assert(!c.tasks.some(t=>t.name.includes('游玩指定类型')||t.name.includes('充值次数')||t.name.includes('下注次数')));
+});
+
 (async()=>{const m=mount('player.html');m.d.getElementById('mainAction').click();m.d.getElementById('outcome').value='star';m.d.getElementById('outcome').dispatchEvent(new m.w.Event('change'));m.d.getElementById('mainAction').click();await new Promise(r=>setTimeout(r,25));test('winning spin opens popup with exact progress and closes without replay',()=>{assert(!m.d.getElementById('prizePopup').hidden);assert(m.d.getElementById('prizeAmount').textContent.includes('星钻'));const progress=Number(m.d.getElementById('phoneProgressPct').textContent.replace('%',''));assert(progress>=85&&progress<=95);m.d.getElementById('prizeClose').click();assert(m.d.getElementById('prizePopup').hidden);m.d.getElementById('reconnectBtn').click();assert(m.d.getElementById('prizePopup').hidden);assert.deepEqual(m.errors,[]);});m.dom.window.close();console.log('Verified '+count+' test groups.');})().catch(e=>{console.error(e);process.exitCode=1;});

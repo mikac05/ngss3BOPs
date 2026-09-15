@@ -15,3 +15,22 @@
 #ticketSources{scroll-margin-top:12px}#ticketSources:focus{outline:2px solid #79bbff;outline-offset:3px}
 
 .progress-money{display:flex;align-items:baseline;flex-wrap:wrap;gap:7px;margin:6px 0}.phone-progress .progress-money strong{font-size:34px;color:#ffcf72;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.progress-money>span{font-size:14px;color:#b9c5d9}.progress-money b{font-weight:500}#phoneProgressPct{font-size:13px;color:#b9c5d9;font-variant-numeric:tabular-nums}.sim-controls #remainingSpins{font-weight:600;margin-top:0}.phone-progress>small{line-height:1.7}
+
+.invite-modal{position:absolute;inset:0;z-index:210;display:grid;place-items:center;background:#050817c8;padding:16px;backdrop-filter:blur(3px)}
+.invite-modal[hidden]{display:none}
+.invite-dialog{width:100%;max-width:340px;background:#182030;border:1px solid #4a5c82;border-radius:14px;padding:20px 18px;color:#f0f4fc;box-shadow:0 14px 45px #0008}
+.invite-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.invite-header h3{margin:0;font-size:16px;color:#ffe194}
+.invite-close-btn{background:transparent;border:0;color:#9dafc7;font-size:16px;cursor:pointer;padding:4px}
+.invite-close-btn:hover{color:#fff}
+.invite-badge{display:inline-block;font-size:10px;padding:2px 8px;border-radius:12px;background:#ffb74d22;color:#ffca68;border:1px solid #ffb74d55;margin-bottom:10px}
+.invite-desc{font-size:11px;line-height:1.6;color:#c0ccdf;margin:0 0 14px}
+.invite-desc code{background:#0b111e;padding:1px 4px;border-radius:3px;color:#80d4ff}
+.invite-link-box{display:grid;gap:8px;margin-bottom:16px}
+.invite-link-box input{background:#0b111e;border:1px solid #364462;color:#fff;border-radius:6px;padding:8px 10px;font-size:11px;width:100%}
+.invite-link-box button{width:100%;padding:9px;font-size:13px;font-weight:600;border-radius:6px}
+.invite-features{display:grid;gap:8px;border-top:1px solid #29364f;padding-top:12px}
+.invite-feat-item{display:grid;grid-template-columns:22px minmax(0,1fr);align-items:center;column-gap:6px}
+.invite-feat-item span{font-size:14px}
+.invite-feat-item b{font-size:11px;color:#e1e9f5}
+.invite-feat-item small{grid-column:2;font-size:10px;color:#8596b0}

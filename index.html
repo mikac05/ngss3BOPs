@@ -276,11 +276,25 @@
     <section class="section-group">
       <div class="section-title-row">
         <h2 class="section-title">🏢 后台原型 (Back Office)</h2>
-        <span style="font-size:12px;color:var(--text-muted);">共 5 个原型</span>
+        <span style="font-size:12px;color:var(--text-muted);">共 6 个原型</span>
       </div>
 
       <div class="prototypes-grid">
         
+        <!-- Lucky Journey V3 Review -->
+        <a href="./backoffice/lucky-journey/v3-review/index.html" class="proto-card" style="border-color:rgba(0,210,255,0.4);">
+          <div class="proto-header">
+            <h3 class="proto-title">🎡 好运探索季后台设定 (V3 评审优化版)</h3>
+            <p class="proto-desc">好运探索季最新评审优化后台。将预算移至派奖钱包旁、首转进度双滑块区间选择器、奖金/首转/总次数单行紧凑配置、隐藏衰减参数保留曲线、转盘素材自选上传与自动/手动领取设置。</p>
+            <ul class="proto-features">
+              <li>预算简化并移至基础设置、支持「自动派发」与「手动领取」</li>
+              <li>首转进度 0%~99% 双滑块区间联动，总解锁次数 4~30 次单行直觉设定</li>
+              <li>转盘素材（谢谢参与、金币、宝石、星钻）支持默认值与本地预览自选上传</li>
+            </ul>
+          </div>
+          <div class="proto-cta"><span>开启 V3 后台原型</span><span>→</span></div>
+        </a>
+
         <!-- Personalization manager -->
         <a href="./backoffice/personalization/" class="proto-card">
           <div class="proto-header">
@@ -316,7 +330,7 @@
 
         <a href="./backoffice/lucky-journey/index.html" class="proto-card">
           <div class="proto-header">
-            <h3 class="proto-title">🎡 好运探索季后台设定</h3>
+            <h3 class="proto-title">🎡 好运探索季后台设定 (V1 初版)</h3>
             <p class="proto-desc">对齐 NGSS 活动中心新增活动上半表。次数来源比重可把新注册下线调成主力；右侧即时显示现在在调什么、难度曲线与启用检查。</p>
             <ul class="proto-features">
               <li>燃料模板：探索主力 / 均衡 / 下线主力，圆饼自动算比重</li>
@@ -372,11 +386,30 @@
     <section class="section-group">
       <div class="section-title-row">
         <h2 class="section-title">🎮 玩家前端原型 (Client / Player)</h2>
-        <span style="font-size:12px;color:var(--text-muted);">共 1 个原型</span>
+        <span style="font-size:12px;color:var(--text-muted);">共 2 个原型</span>
       </div>
 
       <div class="prototypes-grid">
         
+        <!-- Lucky Journey V3 Player Simulator -->
+        <a href="./backoffice/lucky-journey/v3-review/player.html" class="proto-card" style="border-color:rgba(0,210,255,0.4);">
+          <div class="proto-header">
+            <h3 class="proto-title">🎡 好运探索季玩家端 (H5 转盘与专属邀请)</h3>
+            <p class="proto-desc">
+              好运探索季玩家端交互模拟。包含动态 SVG 转盘扇区图示、三阶段刺激递减演算法、活动专属好友邀请链接 (`act=lucky-journey&src=lj_wheel`)、以及手动领取奖金状态联动。
+            </p>
+            <ul class="proto-features">
+              <li>转盘自适应显示后台配置之素材图示与奖品名称</li>
+              <li>专属好友助力弹窗，带有专属活动参数与复制回馈</li>
+              <li>支持手动领奖模式交互，达标后动态展现「🎉 领取奖金」操作</li>
+            </ul>
+          </div>
+          <div class="proto-cta">
+            <span>开启探索季玩家端</span>
+            <span>→</span>
+          </div>
+        </a>
+
         <!-- Card 3: Multiplier Apex Hunt Player Client -->
         <a href="./client/multiplier-apex-hunt/index.html" class="proto-card">
           <div class="proto-header">
@@ -403,11 +436,30 @@
     <section class="section-group">
       <div class="section-title-row">
         <h2 class="section-title">📑 评审与交底指南 (Meeting & Tech Brief)</h2>
-        <span style="font-size:12px;color:var(--text-muted);">会议速查与算法模拟</span>
+        <span style="font-size:12px;color:var(--text-muted);">会议速查与算法模拟 (共 3 份)</span>
       </div>
 
       <div class="prototypes-grid">
         
+        <!-- Lucky Journey V3 Guide -->
+        <a href="./backoffice/lucky-journey/v3-review/guide.html" class="proto-card" style="border-color:rgba(255,184,0,0.4);">
+          <div class="proto-header">
+            <h3 class="proto-title">📖 好运探索季 V3 设计说明与演算规格</h3>
+            <p class="proto-desc">
+              完整阐述 V3 优化之三阶段刺激递减演算法（前期激进放量、中期收敛悬念、后期精准微调）、首转区间选择机制、专属邀请链接归因与后台 UX 精简演变。
+            </p>
+            <ul class="proto-features">
+              <li>非线性三阶段刺激演算法原理与数学公式详述</li>
+              <li>首转区间选择器、专属邀请链接与领取模式设计规格</li>
+              <li>前后端与 QA 交付验收 Checklist 与边界校验规则</li>
+            </ul>
+          </div>
+          <div class="proto-cta" style="background:var(--gold);color:#000;">
+            <span>开启 V3 说明文件</span>
+            <span>→</span>
+          </div>
+        </a>
+
         <!-- Personalization presentation -->
         <a href="./backoffice/personalization/presentation.html" class="proto-card">
           <div class="proto-header">
