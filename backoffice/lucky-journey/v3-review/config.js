@@ -17,6 +17,17 @@
     star: '星钻'
   };
 
+  const DEFAULT_FLOAT_ICONS = [
+    { id: 'wheel_float_1', label: '预设 1', src: './assets/float-icons/wheel_float_1.png' },
+    { id: 'wheel_float_2', label: '预设 2', src: './assets/float-icons/wheel_float_2.png' },
+    { id: 'wheel_float_3', label: '预设 3', src: './assets/float-icons/wheel_float_3.png' },
+    { id: 'wheel_float_4', label: '预设 4', src: './assets/float-icons/wheel_float_4.png' },
+    { id: 'wheel_float_5', label: '预设 5', src: './assets/float-icons/wheel_float_5.png' },
+    { id: 'wheel_float_6', label: '预设 6', src: './assets/float-icons/wheel_float_6.png' },
+    { id: 'wheel_float_7', label: '预设 7', src: './assets/float-icons/wheel_float_7.png' },
+    { id: 'wheel_float_8', label: '预设 8', src: './assets/float-icons/wheel_float_8.png' }
+  ];
+
   function defaults(){
     return {
       ...clone(E.DEFAULT_CONFIG),
@@ -44,6 +55,7 @@
         layout: 'compact',
         palette: '#178f77',
         icon: '🎁',
+        floatIcon: 'wheel_float_1',
         showText: true,
         description: '获取抽奖次数，转满进度领取大奖。',
         wheelImages: { ...DEFAULT_WHEEL_IMAGES },
@@ -90,6 +102,7 @@
 
     ['fast','mid','fine'].forEach(k=>c.prize[k].weights=integerWeights(c.prize[k].weights));
     c.presentation.layout='compact';
+    c.presentation.floatIcon = source?.presentation?.floatIcon || c.presentation?.floatIcon || 'wheel_float_1';
     c.presentation.wheelImages={...DEFAULT_WHEEL_IMAGES,...(source?.presentation?.wheelImages||c.presentation?.wheelImages||{})};
     const rawNames = source?.presentation?.wheelNames || c.presentation?.wheelNames || {};
     c.presentation.wheelNames = Object.fromEntries(
@@ -133,5 +146,5 @@
   function set(c,path,value){const parts=path.split('.'),last=parts.pop();parts.reduce((v,k)=>v[k],c)[last]=value;}
   const esc=x=>String(x??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 
-  return {key,clone,defaults,normalize,integerWeights,read,save,get,set,esc,DEFAULT_WHEEL_IMAGES,DEFAULT_WHEEL_NAMES};
+  return {key,clone,defaults,normalize,integerWeights,read,save,get,set,esc,DEFAULT_WHEEL_IMAGES,DEFAULT_WHEEL_NAMES,DEFAULT_FLOAT_ICONS};
 });

@@ -222,4 +222,57 @@ test('player wheel disc renders custom prize names and adapts font size for long
   m.dom.window.close();
 });
 
-(async()=>{const m=mount('player.html');m.d.getElementById('mainAction').click();m.d.getElementById('outcome').value='star';m.d.getElementById('outcome').dispatchEvent(new m.w.Event('change'));m.d.getElementById('mainAction').click();await new Promise(r=>setTimeout(r,25));test('winning spin opens popup with exact progress and closes without replay',()=>{assert(!m.d.getElementById('prizePopup').hidden);assert(m.d.getElementById('prizeAmount').textContent.includes('星钻'));const progress=Number(m.d.getElementById('phoneProgressPct').textContent.replace('%',''));assert(progress>=85&&progress<=95);m.d.getElementById('prizeClose').click();assert(m.d.getElementById('prizePopup').hidden);m.d.getElementById('reconnectBtn').click();assert(m.d.getElementById('prizePopup').hidden);assert.deepEqual(m.errors,[]);});m.dom.window.close();console.log('Verified '+count+' test groups.');})().catch(e=>{console.error(e);process.exitCode=1;});
+test('floating window icon has 8 presets and defaults to wheel_float_1',()=>{
+  const c = cfg();
+  assert.equal(c.presentation.floatIcon, 'wheel_float_1');
+  assert.equal(C.DEFAULT_FLOAT_ICONS.length, 8);
+  for(let i=1;i<=8;i++){
+    const item = C.DEFAULT_FLOAT_ICONS[i-1];
+    assert.equal(item.id, 'wheel_float_'+i);
+    assert(fs.existsSync(path.resolve(__dirname, item.src)), item.src);
+  }
+});
+
+test('admin displays float icon tiles, switches on click, and saves in configuration',()=>{
+  const m = mount('index.html');
+  const tiles = m.d.querySelectorAll('.float-icon-tile');
+  assert.equal(tiles.length, 8);
+  assert(tiles[0].classList.contains('active'));
+  assert.equal(tiles[0].getAttribute('aria-checked'), 'true');
+  
+  // Click on tile 3
+  tiles[2].click();
+  assert(!tiles[0].classList.contains('active'));
+  assert(tiles[2].classList.contains('active'));
+  assert.equal(tiles[2].getAttribute('aria-checked'), 'true');
+  assert.equal(m.d.getElementById('saveState').dataset.state, 'dirty');
+  
+  // Save settings
+  m.d.getElementById('saveBtn').click();
+  const saved = JSON.parse(m.w.localStorage.getItem(C.key));
+  assert.equal(saved.config.presentation.floatIcon, 'wheel_float_3');
+  m.dom.window.close();
+});
+
+test('player client displays chosen float icon widget with click interaction',()=>{
+  const initial = JSON.stringify({
+    config: {
+      presentation: {
+        floatIcon: 'wheel_float_5'
+      }
+    }
+  });
+  const m = mount('player.html', initial);
+  const widget = m.d.getElementById('phoneFloatWidget');
+  const img = m.d.getElementById('phoneFloatIconImg');
+  assert(widget && img);
+  assert(img.src.includes('wheel_float_5.png'));
+  
+  let scrolled = false;
+  m.d.querySelector('.wheel').scrollIntoView = () => { scrolled = true; };
+  widget.click();
+  assert(scrolled);
+  m.dom.window.close();
+});
+
+(async()=>{const m=mount('player.html');m.d.getElementById('mainAction').click();m.d.getElementById('outcome').value='star';m.d.getElementById('outcome').dispatchEvent(new m.w.Event('change'));m.d.getElementById('mainAction').click();await new Promise(r=>setTimeout(r,50));test('winning spin opens popup with exact progress and closes without replay',()=>{assert(!m.d.getElementById('prizePopup').hidden);assert(m.d.getElementById('prizeAmount').textContent.includes('星钻'));const progress=Number(m.d.getElementById('phoneProgressPct').textContent.replace('%',''));assert(progress>=85&&progress<=95);m.d.getElementById('prizeClose').click();assert(m.d.getElementById('prizePopup').hidden);m.d.getElementById('reconnectBtn').click();assert(m.d.getElementById('prizePopup').hidden);assert.deepEqual(m.errors,[]);});m.dom.window.close();console.log('Verified '+count+' test groups.');})().catch(e=>{console.error(e);process.exitCode=1;});

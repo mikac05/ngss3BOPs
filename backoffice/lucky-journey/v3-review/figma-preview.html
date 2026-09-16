@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>好运探索季 (Lucky Journey) - Figma 玩家前台原型与视觉全貌</title>
+  <style>
+    :root {
+      --bg: #111216;
+      --canvas-bg: #18152e;
+      --card-bg: #201c3e;
+      --card-border: #41386e;
+      --gold: #ffc125;
+      --gold-bright: #ffdf50;
+      --purple: #9b59b6;
+      --teal: #1abc9c;
+      --white: #ffffff;
+      --dim: #8c87a5;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      padding: 0 0 80px 0;
+      overflow-x: auto;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #191c24;
+      border-bottom: 1px solid #2d3748;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .topbar-left h1 { font-size: 16px; font-weight: 700; color: #fff; }
+    .badge { font-size: 11px; padding: 3px 8px; border-radius: 4px; background: rgba(255,193,37,0.15); color: var(--gold); border: 1px solid var(--gold); }
+    .topbar-actions { display: flex; align-items: center; gap: 10px; }
+    .btn {
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--gold); color: #2a1b00; }
+    .btn-primary:hover { background: var(--gold-bright); }
+    .btn-outline { background: transparent; border-color: #4a5568; color: #cbd5e1; }
+    .btn-outline:hover { background: #2d3748; color: #fff; }
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #10b981;
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      z-index: 1000;
+      display: none;
+    }
+
+    .figma-canvas {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      min-width: 1780px;
+    }
+    .row-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .frames-row {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+    }
+    .figma-frame {
+      width: 390px;
+      height: 844px;
+      background: var(--canvas-bg);
+      border-radius: 24px;
+      border: 1px solid #332d56;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .frame-tag {
+      position: absolute;
+      top: -28px;
+      left: 0;
+      font-size: 13px;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    .status-bar {
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #fff;
+      background: rgba(32,28,62,0.6);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .time-badge {
+      margin: 10px 16px 6px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(45,35,80,0.8);
+      font-size: 11px;
+      color: var(--white);
+    }
+    .hero-card {
+      margin: 0 16px 12px;
+      padding: 14px 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+    }
+    .hero-card-head { display: flex; justify-content: space-between; align-items: baseline; }
+    .hero-label { font-size: 11px; color: var(--dim); }
+    .hero-cash { font-size: 24px; font-weight: 800; color: var(--gold-bright); }
+    .hero-target { font-size: 12px; color: var(--dim); }
+    .progress-bar-wrap {
+      margin: 8px 0;
+      height: 14px;
+      border-radius: 7px;
+      background: #0f0d1e;
+      overflow: hidden;
+      position: relative;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #d35400, #ffc125, #ffdf50);
+      border-radius: 7px;
+      box-shadow: 0 0 10px rgba(255,193,37,0.5);
+    }
+    .hero-foot { display: flex; justify-content: space-between; font-size: 11px; }
+    .hero-msg { color: var(--teal); font-weight: 600; }
+    .hero-pct { color: #fff; font-weight: 700; font-family: monospace; }
+
+    .collect-bar {
+      margin: 0 16px 12px;
+      padding: 10px 14px;
+      background: rgba(25,21,50,0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .collect-item-gold { color: var(--gold); }
+    .collect-item-gem { color: var(--purple); }
+    .collect-item-star { color: var(--teal); }
+
+    .wheel-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .wheel-outer {
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      border: 4px solid var(--gold);
+      background: var(--card-bg);
+      box-shadow: 0 0 25px rgba(255,193,37,0.3);
+      position: relative;
+      display: grid;
+      place-items: center;
+    }
+    .wheel-inner {
+      width: 194px;
+      height: 194px;
+      border-radius: 50%;
+      position: relative;
+    }
+    .wheel-hub {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #b4780f, #693e03);
+      border: 2px solid var(--gold-bright);
+      box-shadow: 0 0 12px rgba(255,223,80,0.6);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      z-index: 10;
+    }
+    .ticket-badge {
+      margin-top: 6px;
+      padding: 4px 16px;
+      border-radius: 12px;
+      background: rgba(35,30,68,0.9);
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .cta-btn {
+      margin: 10px 20px;
+      padding: 13px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 800;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+    .cta-gold { background: linear-gradient(180deg, #ffd875, #e09f2d); color: #312247; }
+    .cta-purple { background: linear-gradient(180deg, #af7ac5, #8e44ad); color: #fff; }
+
+    .tasks-list {
+      margin: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .tasks-title { font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .task-card {
+      padding: 8px 12px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .task-meta b { display: block; font-size: 12px; color: #fff; }
+    .task-meta small { font-size: 10px; color: var(--dim); }
+    .task-btn {
+      padding: 4px 12px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      border: none;
+    }
+    .btn-purple-sm { background: var(--purple); color: #fff; }
+    .btn-gray-sm { background: #33394c; color: #8c96a8; }
+    .btn-gold-sm { background: var(--gold); color: #2d1e00; }
+
+    .modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10,8,22,0.85);
+      backdrop-filter: blur(6px);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      z-index: 50;
+    }
+    .modal-dialog {
+      width: 100%;
+      background: radial-gradient(ellipse at top, #362c5c, #1a1634 80%);
+      border: 2px solid var(--gold);
+      border-radius: 18px;
+      padding: 24px 20px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      position: relative;
+    }
+    .modal-badge-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #4b2d6e;
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 20px rgba(255,193,37,0.4);
+      margin: -48px auto 12px;
+      display: grid;
+      place-items: center;
+      font-size: 32px;
+    }
+    .modal-title { font-size: 20px; font-weight: 800; color: var(--gold-bright); margin-bottom: 4px; }
+    .modal-amount { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+    .modal-desc { font-size: 12px; color: var(--dim); line-height: 1.5; margin-bottom: 14px; }
+    .modal-progress-card {
+      background: rgba(15,12,30,0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 16px;
+      font-size: 11px;
+    }
+    .modal-progress-delta { color: var(--teal); font-weight: 700; margin-bottom: 2px; }
+
+    .invite-channel-tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 4px;
+      background: rgba(155,89,182,0.25);
+      border: 1px solid var(--purple);
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .invite-url-box {
+      background: #0f0d20;
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 10px;
+      color: var(--dim);
+      margin-bottom: 12px;
+      word-break: break-all;
+    }
+    .feature-pill {
+      background: rgba(35,30,65,0.7);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      color: #cbd5e1;
+      text-align: left;
+      margin-bottom: 6px;
+    }
+
+    .figma-spec-frame {
+      width: 820px;
+      height: 844px;
+      background: #0f0d1e;
+      border-radius: 24px;
+      border: 1px solid #3d3568;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      padding: 28px;
+      position: relative;
+      flex-shrink: 0;
+      overflow-y: auto;
+    }
+    .spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .spec-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .spec-card h3 { font-size: 14px; font-weight: 700; color: var(--gold); margin-bottom: 10px; }
+    .spec-card p, .spec-card li { font-size: 12px; color: #cbd5e1; line-height: 1.6; margin-bottom: 4px; }
+    .spec-card ul { padding-left: 18px; }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1>🎡 好运探索季 (Lucky Journey) 玩家前台 Figma 原型全貌</h1>
+      <span class="badge">6 大核心画面 + 设计规范交付</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn btn-primary" onclick="copyFigmaScript()">📋 复制 Figma 一键生成脚本</button>
+      <a class="btn btn-outline" href="https://www.figma.com/design/15tSa9kHMmOouSzZ4mb8oE/Mika-Temp?node-id=174-3622&p=f&t=LNRMqVcZT87Krtmp-0" target="_blank">🎨 打开 Figma 画板</a>
+      <a class="btn btn-outline" href="./player.html" target="_blank">🎮 交互模拟器</a>
+    </div>
+  </header>
+
+  <div id="toast" class="toast">✅ Figma 一键生成脚本已复制！可在 Figma 控制台直接粘贴执行。</div>
+
+  <main class="figma-canvas">
+
+    <!-- Row 1: 4 Core Page States -->
+    <div class="row-title">📱 阶段一：活动主页面 4 大核心流转状态 (390 × 844 px)</div>
+    <div class="frames-row">
+
+      <!-- Frame 1: 未参加 -->
+      <div class="figma-frame">
+        <span class="frame-tag">01 · 未参加态 (Unjoined)</span>
+        <div class="status-bar"><span>9:41</span><span>好运探索季</span><span>规则 ⓘ</span></div>
+        <div class="time-badge">⏱ 含参加日共 7 天有效</div>
+        <div class="hero-card">
+          <div class="hero-card-head"><span class="hero-label">活动定额奖金</span><span class="hero-target">/ 目标 ¥5.00</span></div>
+          <div class="hero-cash">¥ 0.00</div>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:0%"></div></div>
+          <div class="hero-foot"><span class="hero-msg" style="color:#8c87a5">尚未参加活动</span><span class="hero-pct">0.0000%</span></div>
+        </div>
+        <div class="wheel-section">
+          <div class="wheel-outer">
+            <svg class="wheel-inner" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="95" fill="#1a1634" stroke="#41386e" stroke-width="2"/>
+              <path d="M100 100 L167 33 A95 95 0 0 1 195 100 Z" fill="#b4780f" opacity="0.9"/>
+              <path d="M100 100 L195 100 A95 95 0 0 1 167 167 Z" fill="#1b202e" opacity="0.9"/>
+              <path d="M100 100 L167 167 A95 95 0 0 1 100 195 Z" fill="#6c3483" opacity="0.9"/>
+              <path d="M100 100 L100 195 A95 95 0 0 1 33 167 Z" fill="#1b202e" opacity="0.9"/>
+              <path d="M100 100 L33 167 A95 95 0 0 1 5 100 Z" fill="#117864" opacity="0.9"/>
+              <path d="M100 100 L5 100 A95 95 0 0 1 33 33 Z" fill="#b4780f" opacity="0.9"/>
+              <path d="M100 100 L33 33 A95 95 0 0 1 100 5 Z" fill="#6c3483" opacity="0.9"/>
+              <path d="M100 100 L100 5 A95 95 0 0 1 167 33 Z" fill="#1b202e" opacity="0.9"/>
+              <circle cx="100" cy="100" r="22" fill="#b4780f" stroke="#ffdf50" stroke-width="2"/>
+            </svg>
+            <div class="wheel-hub">✦</div>
+          </div>
+          <div class="ticket-badge">抽奖次数 0 次</div>
+        </div>
+        <button class="cta-btn cta-gold">参加活动</button>
+        <div class="tasks-list">
+          <span class="tasks-title">获取抽奖次数</span>
+          <div class="task-card"><div class="task-meta"><b>每日免费</b><small>每天回访免费得 1 次</small></div><button class="task-btn btn-gray-sm">待开启</button></div>
+          <div class="task-card"><div class="task-meta"><b>好友助力</b><small>邀请专属好友达标得 1 次</small></div><button class="task-btn btn-gray-sm">待开启</button></div>
+          <div class="task-card"><div class="task-meta"><b>充值金额 (0/100)</b><small>累计充值达 100 得 1 次</small></div><button class="task-btn btn-gray-sm">待开启</button></div>
+        </div>
+      </div>
+
+      <!-- Frame 2: 首转爆击 -->
+      <div class="figma-frame">
+        <span class="frame-tag">02 · 首转爆击态 (Active - 90.25%)</span>
+        <div class="status-bar"><span>9:41</span><span>好运探索季</span><span>规则 ⓘ</span></div>
+        <div class="time-badge">⏱ 活动进行中 · 剩余 6 天</div>
+        <div class="hero-card">
+          <div class="hero-card-head"><span class="hero-label">活动定额奖金</span><span class="hero-target">/ 目标 ¥5.00</span></div>
+          <div class="hero-cash">¥ 4.51</div>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:90.25%"></div></div>
+          <div class="hero-foot"><span class="hero-msg">首转爆击大推进！</span><span class="hero-pct">90.2500%</span></div>
+        </div>
+        <div class="collect-bar">
+          <span class="collect-item-gold">💰 金币 902,500</span>
+          <span class="collect-item-gem">💎 宝石 0</span>
+          <span class="collect-item-star">⭐ 星钻 0</span>
+        </div>
+        <div class="wheel-section">
+          <div class="wheel-outer">
+            <svg class="wheel-inner" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="95" fill="#1a1634" stroke="#41386e" stroke-width="2"/>
+              <path d="M100 100 L167 33 A95 95 0 0 1 195 100 Z" fill="#b4780f" opacity="0.9"/>
+              <path d="M100 100 L195 100 A95 95 0 0 1 167 167 Z" fill="#1b202e" opacity="0.9"/>
+              <path d="M100 100 L167 167 A95 95 0 0 1 100 195 Z" fill="#6c3483" opacity="0.9"/>
+              <path d="M100 100 L100 195 A95 95 0 0 1 33 167 Z" fill="#1b202e" opacity="0.9"/>
+              <path d="M100 100 L33 167 A95 95 0 0 1 5 100 Z" fill="#117864" opacity="0.9"/>
+              <path d="M100 100 L5 100 A95 95 0 0 1 33 33 Z" fill="#b4780f" opacity="0.9"/>
+              <path d="M100 100 L33 33 A95 95 0 0 1 100 5 Z" fill="#6c3483" opacity="0.9"/>
+              <path d="M100 100 L100 5 A95 95 0 0 1 167 33 Z" fill="#1b202e" opacity="0.9"/>
+              <circle cx="100" cy="100" r="22" fill="#b4780f" stroke="#ffdf50" stroke-width="2"/>
+            </svg>
+            <div class="wheel-hub">✦</div>
+          </div>
+          <div class="ticket-badge" style="color:var(--gold)">抽奖次数 1 次</div>
+        </div>
+        <button class="cta-btn cta-gold">立即抽奖 (消耗 1 次)</button>
+        <div class="tasks-list">
+          <span class="tasks-title">获取抽奖次数</span>
+          <div class="task-card"><div class="task-meta"><b>每日免费</b><small>今天可免费领 1 次</small></div><button class="task-btn btn-purple-sm">领取</button></div>
+          <div class="task-card"><div class="task-meta"><b>好友助力</b><small>邀请专属好友达标得 1 次</small></div><button class="task-btn btn-purple-sm">邀请</button></div>
+          <div class="task-card"><div class="task-meta"><b>充值金额 (20/100)</b><small>累计充值达 100 得 1 次</small></div><button class="task-btn btn-purple-sm">去充值</button></div>
+        </div>
+      </div>
+
+      <!-- Frame 3: 临近完成 -->
+      <div class="figma-frame">
+        <span class="frame-tag">03 · 临近完成态 (Near Finish - 99.85%)</span>
+        <div class="status-bar"><span>9:41</span><span>好运探索季</span><span>规则 ⓘ</span></div>
+        <div class="time-badge">⏱ 活动进行中 · 剩余 3 天</div>
+        <div class="hero-card">
+          <div class="hero-card-head"><span class="hero-label">活动定额奖金</span><span class="hero-target">/ 目标 ¥5.00</span></div>
+          <div class="hero-cash">¥ 4.99</div>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:99.85%"></div></div>
+          <div class="hero-foot"><span class="hero-msg" style="color:#ff7675">🔥 仅差 0.1500% 即可全额提现！</span><span class="hero-pct">99.8500%</span></div>
+        </div>
+        <div class="collect-bar">
+          <span class="collect-item-gold">💰 金币 985,000</span>
+          <span class="collect-item-gem">💎 宝石 12,000</span>
+          <span class="collect-item-star">⭐ 星钻 1,500</span>
+        </div>
+        <div class="wheel-section">
+          <div class="wheel-outer">
+            <svg class="wheel-inner" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="95" fill="#1a1634" stroke="#41386e" stroke-width="2"/>
+              <path d="M100 100 L167 33 A95 95 0 0 1 195 100 Z" fill="#b4780f" opacity="0.9"/>
+              <path d="M100 100 L195 100 A95 95 0 0 1 167 167 Z" fill="#1b202e" opacity="0.9"/>
+              <path d="M100 100 L167 167 A95 95 0 0 1 100 195 Z" fill="#6c3483" opacity="0.9"/>
+              <path d="M100 100 L100 195 A95 95 0 0 1 33 167 Z" fill="#1b202e" opacity="0.9"/>
+              <path d="M100 100 L33 167 A95 95 0 0 1 5 100 Z" fill="#117864" opacity="0.9"/>
+              <path d="M100 100 L5 100 A95 95 0 0 1 33 33 Z" fill="#b4780f" opacity="0.9"/>
+              <path d="M100 100 L33 33 A95 95 0 0 1 100 5 Z" fill="#6c3483" opacity="0.9"/>
+              <path d="M100 100 L100 5 A95 95 0 0 1 167 33 Z" fill="#1b202e" opacity="0.9"/>
+              <circle cx="100" cy="100" r="22" fill="#b4780f" stroke="#ffdf50" stroke-width="2"/>
+            </svg>
+            <div class="wheel-hub">✦</div>
+          </div>
+          <div class="ticket-badge" style="color:#ff7675">抽奖次数 0 次</div>
+        </div>
+        <button class="cta-btn cta-purple">获取抽奖次数 ⚡</button>
+        <div class="tasks-list">
+          <span class="tasks-title">急需次数加速提现</span>
+          <div class="task-card"><div class="task-meta"><b>每日免费</b><small>今日已领，明日再来</small></div><button class="task-btn btn-gray-sm">已领</button></div>
+          <div class="task-card"><div class="task-meta"><b>好友助力</b><small>专属链接邀请好友达标秒加次</small></div><button class="task-btn btn-gold-sm">急需助力</button></div>
+          <div class="task-card"><div class="task-meta"><b>充值金额 (80/100)</b><small>还差 20 即可自动加 1 次</small></div><button class="task-btn btn-purple-sm">去充值</button></div>
+        </div>
+      </div>
+
+      <!-- Frame 4: 转满待领 -->
+      <div class="figma-frame">
+        <span class="frame-tag">04 · 转满待领态 (Completed - 100%)</span>
+        <div class="status-bar"><span>9:41</span><span>好运探索季</span><span>规则 ⓘ</span></div>
+        <div class="time-badge" style="color:var(--gold)">🎉 恭喜达成 100% 提现！</div>
+        <div class="hero-card" style="border-color:var(--gold)">
+          <div class="hero-card-head"><span class="hero-label">活动定额奖金</span><span class="hero-target">/ 目标 ¥5.00</span></div>
+          <div class="hero-cash">¥ 5.00</div>
+          <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:100%"></div></div>
+          <div class="hero-foot"><span class="hero-msg" style="color:var(--gold-bright)">✨ 已达成提现门槛！</span><span class="hero-pct">100.0000%</span></div>
+        </div>
+        <div class="collect-bar">
+          <span class="collect-item-gold">💰 金币 985,000</span>
+          <span class="collect-item-gem">💎 宝石 13,000</span>
+          <span class="collect-item-star">⭐ 星钻 2,000</span>
+        </div>
+        <div class="wheel-section">
+          <div class="wheel-outer" style="box-shadow:0 0 35px rgba(255,193,37,0.7)">
+            <svg class="wheel-inner" viewBox="0 0 200 200">
+              <circle cx="100" cy="100" r="95" fill="#1a1634" stroke="#ffc125" stroke-width="2"/>
+              <path d="M100 100 L167 33 A95 95 0 0 1 195 100 Z" fill="#b4780f" opacity="0.9"/>
+              <path d="M100 100 L195 100 A95 95 0 0 1 167 167 Z" fill="#1b202e" opacity="0.9"/>
+              <path d="M100 100 L167 167 A95 95 0 0 1 100 195 Z" fill="#6c3483" opacity="0.9"/>
+              <path d="M100 100 L100 195 A95 95 0 0 1 33 167 Z" fill="#1b202e" opacity="0.9"/>
+              <path d="M100 100 L33 167 A95 95 0 0 1 5 100 Z" fill="#117864" opacity="0.9"/>
+              <path d="M100 100 L5 100 A95 95 0 0 1 33 33 Z" fill="#b4780f" opacity="0.9"/>
+              <path d="M100 100 L33 33 A95 95 0 0 1 100 5 Z" fill="#6c3483" opacity="0.9"/>
+              <path d="M100 100 L100 5 A95 95 0 0 1 167 33 Z" fill="#1b202e" opacity="0.9"/>
+              <circle cx="100" cy="100" r="22" fill="#b4780f" stroke="#ffdf50" stroke-width="2"/>
+            </svg>
+            <div class="wheel-hub">✦</div>
+          </div>
+          <div class="ticket-badge" style="color:var(--teal)">转盘已圆满完成</div>
+        </div>
+        <button class="cta-btn cta-gold" style="font-size:16px">🎉 立即领取 5.00 现金</button>
+        <div class="tasks-list">
+          <span class="tasks-title">活动已圆满结束</span>
+          <div class="task-card"><div class="task-meta"><b>每日免费</b><small>本局游戏已完成</small></div><button class="task-btn btn-gray-sm">已达成</button></div>
+          <div class="task-card"><div class="task-meta"><b>好友助力</b><small>助力指标已达成</small></div><button class="task-btn btn-gray-sm">已达成</button></div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Row 2: 2 Modals + 1 Spec Board -->
+    <div class="row-title">🎁 阶段二：关键业务弹窗与 UI 设计规范交付 (Modals & Specs)</div>
+    <div class="frames-row">
+
+      <!-- Modal 5: 中奖结果弹窗 -->
+      <div class="figma-frame">
+        <span class="frame-tag">05 · 中奖大弹窗 (Prize Popup)</span>
+        <div class="modal-overlay">
+          <div class="modal-dialog">
+            <div class="modal-badge-icon">⭐</div>
+            <h2 class="modal-title">星钻丰收！</h2>
+            <div class="modal-amount">+ 5,000 星钻</div>
+            <p class="modal-desc">好运探索推进中，距离解锁大奖更近一步！</p>
+            <div class="modal-progress-card">
+              <div class="modal-progress-delta">本次解锁提升 +0.5000%</div>
+              <div style="color:#94a3b8">当前总解锁进度: 90.7500%</div>
+            </div>
+            <button class="cta-btn cta-gold" style="margin:0; width:100%">收下惊喜</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal 6: 专属好友邀请弹窗 -->
+      <div class="figma-frame">
+        <span class="frame-tag">06 · 专属好友邀请 (Exclusive Referral)</span>
+        <div class="modal-overlay">
+          <div class="modal-dialog" style="text-align:left">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+              <h2 style="font-size:18px; color:#fff">专属好友邀请</h2>
+              <span style="color:#94a3b8; font-size:18px; cursor:pointer">✕</span>
+            </div>
+            <div class="invite-channel-tag">活动专属识别渠道 · 精准溯源</div>
+            <p class="modal-desc">此分享链接内嵌活动专属识别参数 <code>act=lucky-journey</code> 与来源标 <code>src=lj_wheel</code>。好友注册达标，系统秒级自动加次至本活动中，与常规推广互不冲突。</p>
+            <div class="invite-url-box">https://ngss.game/reg?act=lucky-journey&ref=UID88392&src=lj_wheel</div>
+            <button class="cta-btn cta-gold" style="margin:0 0 16px 0; width:100%">复制专属链接</button>
+            <div class="feature-pill">🎯 <b>专属独立来源</b> · 内嵌 src=lj_wheel 标记</div>
+            <div class="feature-pill">⚡ <b>达标即时派发</b> · 好友注册/充值达标秒级加次</div>
+            <div class="feature-pill">🛡️ <b>防重复与冲突</b> · 与常态推广返佣独立结算</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spec Board 7: UI 规范与交接卡片 -->
+      <div class="figma-spec-frame">
+        <span class="frame-tag">07 · UI 设计规范与开发交接总览 (Specs & Guidelines)</span>
+        <h2 style="font-size:22px; color:#fff; font-weight:800; margin-bottom:4px">好运探索季 (Lucky Journey) 玩家端 UI 设计交接说明</h2>
+        <p style="font-size:13px; color:#94a3b8; margin-bottom:16px">本板归纳了 6 大画面的视觉 Tokens、8 等分扇区物理字长极限约束、刺激心流算法与切图交付标准。</p>
+
+        <div class="spec-grid">
+          <div class="spec-card">
+            <h3>🎨 1. 色彩与视觉调性 (Tokens)</h3>
+            <ul>
+              <li><b>背景基底</b>: <code>#120F24</code> (深邃暗夜蓝)</li>
+              <li><b>卡片背景</b>: <code>#1E1A3A</code> / 边框 <code>#41386E</code></li>
+              <li><b>核心金光</b>: <code>#FFC125</code> (流光推进金)</li>
+              <li><b>神秘紫</b>: <code>#9B59B6</code> (任务与宝石)</li>
+              <li><b>星芒青</b>: <code>#1ABC9C</code> (星钻与成功提示)</li>
+              <li><b>质感建议</b>: 继承星空转盘金属镶边与微光粒子</li>
+            </ul>
+          </div>
+
+          <div class="spec-card">
+            <h3 style="color:#ff7675">🎡 2. 转盘几何与 6 字物理极限 (严苛)</h3>
+            <ul>
+              <li><b>扇区排布</b>: 8 等分 45° 顺时针依次排列：<br><span style="color:#94a3b8">[金币, 谢谢, 宝石, 谢谢, 星钻, 金币, 宝石, 谢谢]</span></li>
+              <li><b>字长约束</b>: 扇区有效弧长仅 50~61px，名称<b>严格限制 ≤ 6 个汉字</b>！超过必与边线重合。</li>
+              <li><b>自适应排版</b>: 1~4 字常规 10px 粗体；5~6 字微缩至 8.5px 且字距收紧 -0.5px。</li>
+            </ul>
+          </div>
+
+          <div class="spec-card">
+            <h3>📈 3. 最刺激自适应心流算法</h3>
+            <ul>
+              <li><b>首转爆击</b>: 直接冲刺至 88%~94% (首发高潮)</li>
+              <li><b>中段逼近</b>: 自适应微调逼近 99.8% 临界悬念区</li>
+              <li><b>细砍冲刺</b>: 微步推进，谢谢参与不减进度</li>
+              <li><b>末转保底</b>: 第 N 次必定抽中道具补满 100%</li>
+              <li><b>派奖钱包</b>: 锁定为现金钱包 (Cash)，无视分层</li>
+            </ul>
+          </div>
+
+          <div class="spec-card">
+            <h3>📦 4. 切图交付清单 (@2x / @3x)</h3>
+            <ul>
+              <li><b>转盘底盘</b>: <code>wheel_disc_bg.png</code> (508×508)</li>
+              <li><b>中心指针</b>: <code>wheel_pointer.png</code> (120×120)</li>
+              <li><b>4类奖项图标</b>: (64×64) 谢谢、金币、宝石、星钻</li>
+              <li><b>中奖高清图标</b>: <code>popup_icon_star.png</code> (128×128)</li>
+              <li><b>任务渠道图标</b>: (40×40) 签到日历、握手、靶心</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="spec-card" style="margin-top:16px">
+          <h3 style="color:var(--teal)">🔗 5. 原型与协同链接</h3>
+          <p>• 玩家端交互式模拟器: <a href="./player.html" style="color:var(--gold)">player.html (支持完整状态切换)</a></p>
+          <p>• 后台管理端原型: <a href="./index.html" style="color:var(--gold)">index.html (配置与参数调整)</a></p>
+          <p>• 规则与演算规格: <a href="./guide.html" style="color:var(--gold)">guide.html (风控与算法全貌)</a></p>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    function copyFigmaScript() {
+      fetch('../../figma-plugin-lucky-journey/code.js')
+        .then(r => r.text())
+        .then(fullCode => {
+          navigator.clipboard.writeText(fullCode).then(() => {
+            const t = document.getElementById('toast');
+            t.style.display = 'block';
+            setTimeout(() => t.style.display = 'none', 4000);
+          });
+        })
+        .catch(() => {
+          alert('请在仓库目录中打开 figma-plugin-lucky-journey/code.js 进行复制');
+        });
+    }
+  </script>
+</body>
+</html>
