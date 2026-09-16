@@ -66,6 +66,18 @@
   }
   const updateWheelImages=updateWheelContent;
 
+  function updateFloatWidget(){
+    const fIcon = config.presentation?.floatIcon || 'wheel_float_1';
+    const imgEl = $('#phoneFloatIconImg');
+    if(imgEl){
+      if(fIcon.startsWith('wheel_float_')){
+        imgEl.src = './assets/float-icons/' + fIcon + '.png';
+      }else{
+        imgEl.src = fIcon;
+      }
+    }
+  }
+
   function render(){
     const p=phoneFrozen||sim.play,c=p.cfg||config,supply=E.guaranteedTicketSupply(config),cost=E.playCostStats(config);
     $('#activityName').textContent=c.basic.name;$('#personalTime').textContent=p.status==='unjoined'?'含参加日共 '+c.personalDays+' 天有效':'有效期剩余 '+Math.max(0,(p.endsDay??sim.day)-sim.day)+' 天';
@@ -97,6 +109,7 @@
     $('#reconnectBtn').disabled=!request||busy;$('#payoutRetryBtn').disabled=!sim.pending.length||busy;$('#nextDayBtn').disabled=busy;$('#campaignEndBtn').disabled=!sim.campaignOpen||busy;
     $('#sourceLabel').textContent='已载入后台设置 · 转满 '+config.targetSpins+' 次';
     updateWheelContent();
+    updateFloatWidget();
     renderChecks();
   }
   function taskDescription(t){const category={slot:'电子',live:'真人',sport:'体育',chess:'棋牌',fish:'捕鱼'};if(t.type==='play_category')return category[t.gameCategory]+'有效注单 '+t.threshold+' 局 · 每注至少 '+money(t.minBet);if(t.type==='deposit_count')return '成功充值 '+t.threshold+' 次';if(t.type==='deposit_amount')return '成功充值累计 '+t.threshold;if(t.type==='bet_count')return '有效注单 '+t.threshold+' 次';return '有效投注累计 '+t.threshold;}
@@ -139,6 +152,13 @@
   if(invClose)invClose.onclick=()=>{const m=$('#inviteModal');if(m)m.hidden=true;};
   if(cpyBtn)cpyBtn.onclick=()=>{try{navigator.clipboard?.writeText($('#inviteUrl').value);}catch(e){}msg('专属邀请链接已复制！好友注册达标即可助力。');};
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('#inviteModal')?.hidden)$('#inviteModal').hidden=true;});
+
+  const phoneFloatWidget=$('#phoneFloatWidget');
+  if(phoneFloatWidget)phoneFloatWidget.onclick=()=>{
+    const target=$('.wheel');
+    if(target)target.scrollIntoView({behavior:$('#reduceMotion').checked?'auto':'smooth',block:'center'});
+    msg('点击活动浮窗，定位至转盘。');
+  };
 
   $('#externalTasks').onclick=e=>{if(e.target.dataset.completeTask!==undefined){const r=sim.grant('task',Number(e.target.dataset.completeTask));$('#simulationFeedback').textContent=r.message;handle(r);}};
   $('#completeFriendBtn').onclick=()=>{const r=sim.grant('assist','friend-'+(++sim.sequence),true);$('#simulationFeedback').textContent=r.message;handle(r);};

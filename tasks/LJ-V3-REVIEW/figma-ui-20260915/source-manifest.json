@@ -1,0 +1,17 @@
+{
+  "head": "3eca8517af86fd05cbf2cc09bb0b1c22ab212a5b",
+  "source": "backoffice/lucky-journey/v3-review",
+  "hashes": {
+    "player.html": "8941b487bb462da10cc71c88b5a276144f196ce997fd516bdf5dc8758586a24c",
+    "player.js": "96b3fbdd7a7a40cb41b0756f20a7647f6453bfe3650866662c2198dc116b1a88",
+    "simulator.css": "2e0c77495213f4e9474c45a4987fc315ac4ffd830221fabdade4e4edcee75f52",
+    "config.js": "61011b8ce97d72db1d0d1a0b0118d90af259128a2c1ae8df8c6884bfa5b7b24d",
+    "simulation.js": "0ec90efa600ae94444ef2886b13850301db32ea53dffe35416732c83433b2a30",
+    "engine.js": "b6f886d2cc3fd9bd73d6a949745302f16d0ab306bfa9543307f7182da530dbc8",
+    "admin.js": "64414c543571eb1fd8b6053625a61122b6640c349401fa0f5590a1dab3607f94"
+  },
+  "figmaFile": "15tSa9kHMmOouSzZ4mb8oE",
+  "page": "174:3622",
+  "agy": "read-only probe timed out after 2m; no writes",
+  "productTests": "not run per user request"
+}

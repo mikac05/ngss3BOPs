@@ -60,3 +60,16 @@ html.light{color-scheme:light;--bg:#f2f4f7;--panel:#fff;--soft:#f6f8fa;--input:#
 .range-slider-thumb::-webkit-slider-thumb:hover{transform:scale(1.2)}
 .range-slider-thumb::-moz-range-thumb{pointer-events:auto;width:16px;height:16px;border-radius:50%;background:#fff;border:2px solid var(--blue);cursor:ew-resize;box-shadow:0 1px 4px rgba(0,0,0,0.5)}
 .range-note{color:var(--blue);font-size:11px;font-weight:500;margin-top:4px;display:block}
+
+/* Float Icon Selector */
+.float-icon-field{margin-top:6px}
+.float-icon-box{background:var(--soft);border:1px solid var(--border);border-radius:6px;padding:12px}
+.float-icon-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.float-icon-tile{position:relative;background:#fff;border:2px solid transparent;border-radius:6px;padding:4px;display:grid;place-items:center;cursor:pointer;aspect-ratio:1/1;min-height:58px;transition:border-color .15s,transform .15s,box-shadow .15s;outline:none}
+.float-icon-tile:hover{transform:translateY(-1px);box-shadow:0 3px 8px rgba(0,0,0,.25)}
+.float-icon-tile:focus-visible{border-color:var(--blue);box-shadow:0 0 0 2px rgba(64,158,255,.3)}
+.float-icon-tile.active{border-color:#ffbd4a;box-shadow:0 0 0 2px rgba(255,189,74,.35)}
+.float-icon-tile img{width:100%;height:100%;object-fit:contain;display:block}
+.float-icon-tile .tile-check{display:none;position:absolute;right:-3px;bottom:-3px;width:16px;height:16px;border-radius:50%;background:#ffbd4a;color:#1a1e28;font-size:10px;font-weight:900;line-height:16px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.float-icon-tile.active .tile-check{display:block}
+.float-icon-actions{display:flex;gap:8px;align-items:center;margin-top:10px;padding-top:8px;border-top:1px solid var(--border)}
