@@ -5,3 +5,7 @@
 node_modules/
 __pycache__/
 *.py[cod]
+# Host-local model settings and agent runtime must not be published.
+/.codex/
+# Agent hygiene runtime (task-local, never source of truth)
+.agent/

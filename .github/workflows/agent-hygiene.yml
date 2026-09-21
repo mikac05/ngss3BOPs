@@ -1,0 +1,17 @@
+name: Agent hygiene checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Test resource ownership and cleanup boundaries
+        run: python3 -X utf8 -m unittest discover -s tools -p test_agent_hygiene.py
