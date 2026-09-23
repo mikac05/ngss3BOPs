@@ -14,8 +14,8 @@
   const imgLabels = {thanks:'谢谢参与',coin:'金币',gem:'宝石',star:'星钻'};
 
   function build(){
-    const floatIconsHtml = `<div class="field float-icon-field"><label>浮窗图标${tip('移动端或前台活动浮窗入口图标，可选择系统内置或自定义上传')}</label><div class="float-icon-box"><div class="float-icon-list" role="radiogroup" aria-label="浮窗图标选择">${C.DEFAULT_FLOAT_ICONS.map(item=>`<button type="button" class="float-icon-tile ${cfg.presentation.floatIcon===item.id?'active':''}" data-float-icon="${item.id}" role="radio" aria-checked="${cfg.presentation.floatIcon===item.id}" title="${item.label}" aria-label="${item.label}"><img src="${item.src}" alt="${item.label}"><span class="tile-check">✓</span></button>`).join('')}${cfg.presentation.floatIcon&&!cfg.presentation.floatIcon.startsWith('wheel_float_')?`<button type="button" class="float-icon-tile custom active" data-float-icon="custom" role="radio" aria-checked="true" title="自定义上传" aria-label="自定义上传图标"><img src="${esc(cfg.presentation.floatIcon)}" alt="自定义图标"><span class="tile-check">✓</span></button>`:''}</div><div class="float-icon-actions"><label class="button button-sm upload-label">上传自定义图片<input type="file" accept="image/*" data-upload-float-icon hidden></label><button type="button" class="button button-sm text-btn" id="resetFloatIconBtn">恢复预设</button></div></div></div>`;
-    let basic=`<div class="basic-grid"><div class="form-grid">${field('活动类型','type',{options:[['lucky','好运探索季']]})}<div class="field"><label for="f-basic-name">活动名称</label><div class="control"><select id="nameMode" data-path="basic.nameMode" aria-label="名称方式"><option value="system">系统自带</option><option value="custom">自定义</option></select><input id="f-basic-name" data-path="basic.name" value="${esc(cfg.basic.name)}" readonly></div></div>${field('开始时间','basic.start',{type:'datetime-local'})}${field('结束时间','basic.end',{type:'datetime-local',hint:'活动时间按租户时区计算。结束后不再接受新参加。'})}${field('可玩天数','personalDays',{min:1,max:30,unit:'天',hint:'每次参加的个人有效期；从参加时间起计算。'})}${field('活动结束后','budget.afterEnd',{options:[['finish','允许做完本次'],['cut','截断']],hint:'允许做完本次：已参加会员仍可获取次数并转动，直到个人有效期结束。'})}${field('同注册IP上限','basic.ipLimit',{hint:'同一注册 IP 可参加的账号数；0 为不限。'})}${field('同注册设备上限','basic.deviceLimit',{hint:'同一注册设备可参加的账号数；0 为不限。'})}${field('派奖钱包','basic.wallet',{options:[['cash','现金钱包 (锁定)']],disabled:true,unit:'锁定',hint:'本活动派奖钱包锁定为现金钱包，达标后奖金派发至现金钱包。'})}${field('活动预算','budget.total',{min:0,max:1e12,step:.01,unit:'现金',hint:'每位会员参加时预留一笔转满解锁奖金；预算不足只停止新参加。'})}${field('领取方式','basic.claimMode',{options:[['auto','自动派发'],['manual','手动领取']],hint:'转满解锁奖金达标后的派发机制：自动派发至钱包，或由玩家在界面手动点击领取。'})}<div id="wagerField">${field('打码倍数','basic.wageringMultiple',{unit:'倍',hint:'仅设置本活动现金奖励的打码要求，出款仍受平台其他条件约束。'})}</div><div class="span-2 inline-options">${toggle('可重复参加','basic.repeat','上一局完成或到期后可再次参加；活动结束后不可开新局。')}</div><div class="field span-2"><label>申领终端</label><div class="inline-options" id="terminals">${[['h5','H5领取'],['android','Android APP领取'],['ios','IOS APP领取'],['pwa','PWA']].map(([v,t])=>`<label class="check"><input type="checkbox" data-terminal="${v}" ${cfg.basic.terminals.includes(v)?'checked':''}>${t}</label>`).join('')}</div></div></div><div class="display-settings"><div class="subhead"><h3>活动展示</h3>${toggle('营销活动','presentation.marketing')}</div><div class="form-grid">${field('图标','presentation.icon',{options:[['🎁','奖品'],['🎰','赌场'],['🎉','节日'],['⚑','活动']]})}</div><div class="field"><label>背景</label><div class="swatches">${[['#178f77','绿色'],['#b14353','红色'],['#ae822f','黄色'],['#7355ad','紫色'],['#3678b9','蓝色']].map(([v,t])=>`<button class="swatch" type="button" data-color="${v}" aria-label="${t}" aria-pressed="${cfg.presentation.palette===v}" style="--swatch:${v}"></button>`).join('')}</div></div><div id="banner" class="banner"><div><b id="bannerTitle"></b><p id="bannerCopy"></p></div><span id="bannerIcon"></span></div><div class="display-footer">${toggle('显示文字','presentation.showText')}</div><div class="field"><label for="promoDesc">宣传简介</label><textarea id="promoDesc" data-path="presentation.description" rows="3">${esc(cfg.presentation.description)}</textarea></div>${floatIconsHtml}</div></div>`;
+    const floatIconsHtml = `<div class="field float-icon-field"><label>浮窗图标${tip('玩家端活动浮窗入口使用的图标。')}</label><div class="float-icon-list" role="radiogroup" aria-label="浮窗图标">${C.DEFAULT_FLOAT_ICONS.map(item=>`<button type="button" class="float-icon-tile" data-float-icon="${item.id}" role="radio" aria-checked="${cfg.presentation.floatIcon===item.id}" aria-label="${item.label}" title="${item.label}"><img src="${item.src}" alt=""><span class="tile-check" aria-hidden="true">✓</span></button>`).join('')}</div></div>`;
+    let basic=`<div class="basic-grid"><div class="form-grid">${field('活动类型','type',{options:[['lucky','好运探索季']]})}<div class="field"><label for="f-basic-name">活动名称</label><div class="control"><select id="nameMode" data-path="basic.nameMode" aria-label="名称方式"><option value="system">系统自带</option><option value="custom">自定义</option></select><input id="f-basic-name" data-path="basic.name" value="${esc(cfg.basic.name)}" readonly></div></div>${field('开始时间','basic.start',{type:'datetime-local'})}${field('结束时间','basic.end',{type:'datetime-local',hint:'活动时间按租户时区计算。结束后不再接受新参加。'})}${field('可玩天数','personalDays',{min:1,max:30,unit:'天',hint:'每次参加的个人有效期；从参加时间起计算。'})}${field('活动结束后','budget.afterEnd',{options:[['finish','允许做完本次'],['cut','截断']],hint:'允许做完本次：已参加会员仍可获取次数并转动，直到个人有效期结束。'})}${field('同注册IP上限','basic.ipLimit',{hint:'同一注册 IP 可参加的账号数；0 为不限。'})}${field('同注册设备上限','basic.deviceLimit',{hint:'同一注册设备可参加的账号数；0 为不限。'})}${field('派奖钱包','basic.wallet',{options:[['cash','现金钱包 (锁定)']],disabled:true,unit:'锁定',hint:'本活动派奖钱包锁定为现金钱包，达标后奖金派发至现金钱包。'})}${field('活动预算','budget.total',{min:0,max:1e12,step:.01,unit:'现金',hint:'每位会员参加时预留一笔转满解锁奖金；预算不足只停止新参加。'})}${field('领取方式','basic.claimMode',{options:[['auto','自动派发'],['manual','手动领取']],hint:'转满解锁奖金达标后的派发机制：自动派发至钱包，或由玩家在界面手动点击领取。'})}<div id="wagerField">${field('打码倍数','basic.wageringMultiple',{unit:'倍',hint:'仅设置本活动现金奖励的打码要求，出款仍受平台其他条件约束。'})}</div><div class="span-2 inline-options">${toggle('可重复参加','basic.repeat','上一局完成或到期后可再次参加；活动结束后不可开新局。')}</div><div class="field span-2"><label>申领终端</label><div class="inline-options" id="terminals">${[['h5','H5领取'],['android','Android APP领取'],['ios','IOS APP领取'],['pwa','PWA']].map(([v,t])=>`<label class="check"><input type="checkbox" data-terminal="${v}" ${cfg.basic.terminals.includes(v)?'checked':''}>${t}</label>`).join('')}</div></div></div><div class="display-settings"><div class="subhead"><h3>活动展示</h3>${toggle('营销活动','presentation.marketing')}</div><div class="form-grid">${field('图标','presentation.icon',{options:[['🎁','奖品'],['🎰','赌场'],['🎉','节日'],['⚑','活动']]})}</div><div class="field"><label>背景</label><div class="swatches">${[['#178f77','绿色'],['#b14353','红色'],['#ae822f','黄色'],['#7355ad','紫色'],['#3678b9','蓝色']].map(([v,t])=>`<button class="swatch" type="button" data-color="${v}" aria-label="${t}" aria-pressed="${cfg.presentation.palette===v}" style="--swatch:${v}"></button>`).join('')}</div></div><div id="banner" class="banner"><div><b id="bannerTitle"></b><p id="bannerCopy"></p></div><span id="bannerIcon"></span></div><div class="display-footer">${toggle('显示文字','presentation.showText')}</div><div class="field"><label for="promoDesc">宣传简介</label><textarea id="promoDesc" data-path="presentation.description" rows="3">${esc(cfg.presentation.description)}</textarea></div></div></div>`;
 
     const sourceFields={free:field('每日发放','sources.free.ticketsPerDay',{max:100,unit:'次'})+field('本局上限','sources.free.cap',{max:1000,unit:'次'}),task:field('每项任务','sources.task.ticketsPerTask',{max:100,unit:'次'})+field('本局上限','sources.task.cap',{max:1000,unit:'次'}),assist:field('每名好友','sources.assist.ticketsPerFriend',{max:100,unit:'次'})+field('本局上限','sources.assist.cap',{max:1000,unit:'次'})};
     let sources=['free','assist','task'].map((k,i)=>`<div class="source" id="source-${k}"><div class="subhead">${toggle(['每日免费','好友助力','做任务'][i],`sources.${k}.enabled`,['同一会员、同一活动按租户日领取；同日开新局不重领。','合格好友人数不限，每名好友在同一活动只贡献一次，累计次数受每局上限控制。','每项任务每局只发一次；只统计参加后的新增有效行为。'][i])}<output id="supply-${k}"></output></div><div class="source-body"><div class="form-grid three">${sourceFields[k]}</div>${k==='task'?`<div class="task-list">${cfg.tasks.map((t,j)=>`<div class="task-row">${toggle(t.name,`tasks.${j}.enabled`)}<span class="task-type">${t.type==='deposit_amount'?'累计充值':'累计有效投注'}</span>${field('达标条件',`tasks.${j}.threshold`,{min:.01,max:1e9,step:.01,unit:'金额',hint:t.type.includes('deposit')?'仅计算成功充值金额。':'仅计算已结算且非 VOID 的有效投注金额。'})}</div>`).join('')}</div>`:''}${k==='assist'?`<div class="inline-options divided">${toggle('需要充值','sources.assist.depositRequired','合格好友须完成成功充值，仅注册不发次数。')}${field('最低充值金额','sources.assist.minDeposit',{min:.01,max:1e9,step:.01,unit:'金额',hint:'好友注册后成功充值累计达到该金额，才符合充值助力条件。'})}</div>`:''}</div></div>`).join('');
@@ -27,6 +27,7 @@
     let prizes=`<div class="unlock-hero"><div class="unlock-title"><span class="unlock-icon">♜</span><div><h3>转满解锁</h3><span class="muted">进度满 100% 发放一次</span></div></div><div class="form-grid">${field('奖金金额','prize.finishPrize',{min:.01,max:1e9,step:.01,unit:'现金',hint:'本局唯一奖金。未完成不发奖；金币、宝石和星钻只用于增加进度。'})}${firstSpinRangeHtml}${field('解锁总次数','targetSpins',{min:4,max:30,unit:'次',hint:'设定范围：4~30 次。谢谢参与消耗一次、不加进度。第 N 次必定抽中道具补满剩余进度，不再抽谢谢参与。',subHint:'设定范围：4～30 次'})}</div></div>${wheelImgsHtml}<div class="phase-grid" hidden style="display:none">${['fast','mid','fine'].map((k,i)=>`<article class="phase phase-${k}"><div class="subhead"><h3>${['快砍','中段','细砍'][i]}</h3></div><div class="unit-rate">${tip('金币 / 100、宝石 / 10,000、星钻 / 1,000,000 换算进度。三阶段均可抽到三种道具。')} 三种道具均可抽中</div>${field('次数占比',`phaseShares.${k}`,{max:100,step:.01,unit:'%',hint:'扣除第一转后分配阶段，每阶段至少一次；调整相邻阶段，合计 100%。'})}<output class="phase-allocation" id="phase-${k}"></output>${field('谢谢参与',`prize.${k}.thanksPct`,{max:100,step:.1,unit:'%',hint:'仅扣除抽奖次数，不增加进度；第一转与最后一转不适用。'})}<div class="read-row"><span>中奖比例</span><output id="native-${k}"></output></div><div class="item-odds"><label>道具分配${tip("中奖后的条件概率，每项最低 1%、按 1% 调整，合计 100%；不改变进度增量。")}</label><div class="item-slider" data-phase="${k}"></div></div></article>`).join('')}</div><details class="advanced" open><summary>进度预览${tip('系统采用自适应心流算法生成全中奖路径。首转高落点锚定，中段悬念微步逼近，末转保底补满 100%。')}</summary><div class="chart-box"><div class="subhead"><span>全中奖路径与刺激衰减曲线</span><output id="curveSummary"></output></div><svg id="curve" viewBox="0 0 720 150" role="img" aria-label="进度曲线"></svg></div></details>`;
 
     $('#sections').innerHTML=section('basic',null,'基本资料',basic)+section('prizes',1,'转盘开奖与进度设置',prizes)+section('tickets',2,'抽奖次数',sources);
+    $('#basic .panel-body').insertAdjacentHTML('beforeend',floatIconsHtml);
     document.querySelectorAll('.phase').forEach(box=>{const fields=box.querySelectorAll('.field');const share=document.createElement('div');share.className='phase-inline';fields[0].before(share);share.append(fields[0],box.querySelector('.phase-allocation'));const odds=document.createElement('div');odds.className='phase-inline';fields[1].before(odds);odds.append(fields[1],box.querySelector('.read-row'));});
     $('[data-path="type"]').disabled=true;
     document.querySelectorAll('.collapse').forEach(b=>b.onclick=()=>{const body=b.closest('.panel').querySelector('.panel-body');body.hidden=!body.hidden;b.setAttribute('aria-expanded',String(!body.hidden));b.textContent=body.hidden?'⌄':'⌃';});
@@ -74,10 +75,10 @@
       const el=$('#wheel-thumb-'+k);if(el&&cfg.presentation?.wheelImages?.[k])el.src=cfg.presentation.wheelImages[k];
       const nameInput=$('#wheel-name-'+k);if(nameInput&&cfg.presentation?.wheelNames?.[k])nameInput.value=cfg.presentation.wheelNames[k];
     });
-    document.querySelectorAll('.float-icon-tile').forEach(el=>{
-      const isAct=el.dataset.floatIcon===cfg.presentation.floatIcon||(el.dataset.floatIcon==='custom'&&!cfg.presentation.floatIcon.startsWith('wheel_float_'));
-      el.classList.toggle('active',isAct);
-      el.setAttribute('aria-checked',String(isAct));
+    document.querySelectorAll('[data-float-icon]').forEach(el=>{
+      const selected=el.dataset.floatIcon===cfg.presentation.floatIcon;
+      el.classList.toggle('active',selected);
+      el.setAttribute('aria-checked',String(selected));
     });
     const minV=Number(cfg.firstSpinMin||88),maxV=Number(cfg.firstSpinMax||94);
     const fill=$('#firstSpinFill'),thMin=$('#rangeThumbMin'),thMax=$('#rangeThumbMax');
@@ -121,45 +122,28 @@
         reader.readAsDataURL(file);
       }
     }
-    if(e.target.dataset.uploadFloatIcon!==undefined){
-      const file=e.target.files?.[0];
-      if(file){
-        const reader=new FileReader();
-        reader.onload=ev=>{
-          cfg.presentation.floatIcon=ev.target.result;
-          dirty=true;build();toast('已更新自定义浮窗图标。');
-        };
-        reader.readAsDataURL(file);
-      }
-    }
   });
   $('#sections').addEventListener('click',e=>{
     const b=e.target.closest('[data-color]');if(b){cfg.presentation.palette=b.dataset.color;document.querySelectorAll('[data-color]').forEach(el=>el.setAttribute('aria-pressed',String(el===b)));dirty=true;render();}
+    const icon=e.target.closest('[data-float-icon]');if(icon&&C.DEFAULT_FLOAT_ICONS.some(item=>item.id===icon.dataset.floatIcon)){cfg.presentation.floatIcon=icon.dataset.floatIcon;dirty=true;render();}
     if(e.target.dataset.resetWheel){
       const k=e.target.dataset.resetWheel;
       cfg.presentation.wheelImages[k]=C.DEFAULT_WHEEL_IMAGES[k];
       const thumb=$('#wheel-thumb-'+k);if(thumb)thumb.src=C.DEFAULT_WHEEL_IMAGES[k];
       dirty=true;render();toast('已恢复【'+imgLabels[k]+'】默认图片。');
     }
-    const floatTile=e.target.closest('[data-float-icon]');
-    if(floatTile){
-      const iconId=floatTile.dataset.floatIcon;
-      if(iconId!=='custom'){
-        cfg.presentation.floatIcon=iconId;
-        dirty=true;render();
-      }
-    }
-    if(e.target.id==='resetFloatIconBtn'){
-      cfg.presentation.floatIcon='wheel_float_1';
-      dirty=true;build();toast('已恢复默认浮窗图标。');
-    }
+  });
+  $('#sections').addEventListener('keydown',e=>{
+    if(!['ArrowLeft','ArrowRight'].includes(e.key)||!e.target.matches('[data-float-icon]'))return;
+    const tiles=[...document.querySelectorAll('[data-float-icon]')],index=tiles.indexOf(e.target);
+    const next=tiles[(index+(e.key==='ArrowRight'?1:-1)+tiles.length)%tiles.length];
+    e.preventDefault();next.focus();next.click();
   });
   $('#saveBtn').onclick=save;
   $('#playerLink').onclick=e=>{if(!save())e.preventDefault();};
   $('#restoreBtn').onclick=()=>{if(dirty&&!confirm('读取已保存设置并替换当前修改？'))return;const record=C.read(localStorage);cfg=record.config;dirty=false;build();toast(record.error||'已读取设置。');};
   $('#resetBtn').onclick=()=>{if(!confirm('还原默认设置？'))return;cfg=C.defaults();dirty=true;build();};
   $('#exportBtn').onclick=()=>{const blob=new Blob([JSON.stringify({version:7,config:C.normalize(cfg)},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='lucky-journey-config.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
-  $('#themeBtn').onclick=()=>document.documentElement.classList.toggle('light');
   document.querySelectorAll('.section-nav a').forEach(a=>a.onclick=()=>{const section=$(a.hash);if(section){section.querySelector('.panel-body').hidden=false;const b=section.querySelector('.collapse');b.setAttribute('aria-expanded','true');b.textContent='⌃';}});
   document.addEventListener('lj-refresh',render);
   document.addEventListener('lj-weights',e=>{const {phase,bounds}=e.detail;cfg.prize[phase].weights=C.integerWeights({coin:bounds[0],gem:bounds[1]-bounds[0],star:100-bounds[1]});dirty=true;render();});

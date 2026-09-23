@@ -18,14 +18,12 @@
   };
 
   const DEFAULT_FLOAT_ICONS = [
-    { id: 'wheel_float_1', label: '预设 1', src: './assets/float-icons/wheel_float_1.png' },
-    { id: 'wheel_float_2', label: '预设 2', src: './assets/float-icons/wheel_float_2.png' },
-    { id: 'wheel_float_3', label: '预设 3', src: './assets/float-icons/wheel_float_3.png' },
-    { id: 'wheel_float_4', label: '预设 4', src: './assets/float-icons/wheel_float_4.png' },
-    { id: 'wheel_float_5', label: '预设 5', src: './assets/float-icons/wheel_float_5.png' },
-    { id: 'wheel_float_6', label: '预设 6', src: './assets/float-icons/wheel_float_6.png' },
-    { id: 'wheel_float_7', label: '预设 7', src: './assets/float-icons/wheel_float_7.png' },
-    { id: 'wheel_float_8', label: '预设 8', src: './assets/float-icons/wheel_float_8.png' }
+    { id: 'lucky_ticket', label: '奖券', src: './assets/float-icons/lucky_ticket.png' },
+    { id: 'lucky_chest', label: '宝箱', src: './assets/float-icons/lucky_chest.png' },
+    { id: 'lucky_bag', label: '礼包', src: './assets/float-icons/lucky_bag.png' },
+    { id: 'lucky_chip', label: '筹码', src: './assets/float-icons/lucky_chip.png' },
+    { id: 'lucky_map', label: '藏宝图', src: './assets/float-icons/lucky_map.png' },
+    { id: 'lucky_wheel', label: '转盘', src: './assets/float-icons/lucky_wheel.png' }
   ];
 
   function defaults(){
@@ -55,7 +53,7 @@
         layout: 'compact',
         palette: '#178f77',
         icon: '🎁',
-        floatIcon: 'wheel_float_1',
+        floatIcon: 'lucky_wheel',
         showText: true,
         description: '获取抽奖次数，转满进度领取大奖。',
         wheelImages: { ...DEFAULT_WHEEL_IMAGES },
@@ -102,7 +100,7 @@
 
     ['fast','mid','fine'].forEach(k=>c.prize[k].weights=integerWeights(c.prize[k].weights));
     c.presentation.layout='compact';
-    c.presentation.floatIcon = source?.presentation?.floatIcon || c.presentation?.floatIcon || 'wheel_float_1';
+    if(!DEFAULT_FLOAT_ICONS.some(item=>item.id===c.presentation.floatIcon))c.presentation.floatIcon='lucky_wheel';
     c.presentation.wheelImages={...DEFAULT_WHEEL_IMAGES,...(source?.presentation?.wheelImages||c.presentation?.wheelImages||{})};
     const rawNames = source?.presentation?.wheelNames || c.presentation?.wheelNames || {};
     c.presentation.wheelNames = Object.fromEntries(

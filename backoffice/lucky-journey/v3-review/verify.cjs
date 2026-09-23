@@ -222,43 +222,27 @@ test('player wheel disc renders custom prize names and adapts font size for long
   m.dom.window.close();
 });
 
-test('floating window icon has 8 presets and defaults to wheel_float_1',()=>{
-  const c = cfg();
-  assert.equal(c.presentation.floatIcon, 'wheel_float_1');
-  assert.equal(C.DEFAULT_FLOAT_ICONS.length, 8);
-  for(let i=1;i<=8;i++){
-    const item = C.DEFAULT_FLOAT_ICONS[i-1];
-    assert.equal(item.id, 'wheel_float_'+i);
-    assert(fs.existsSync(path.resolve(__dirname, item.src)), item.src);
-  }
-});
-
-test('admin displays float icon tiles, switches on click, and saves in configuration',()=>{
+test('six packaged floating window icons are available without upload',()=>{
+  assert.equal(C.DEFAULT_FLOAT_ICONS.length,6);
+  for(const item of C.DEFAULT_FLOAT_ICONS)assert(fs.existsSync(path.resolve(__dirname,item.src)),item.src);
+  assert.equal(C.normalize({presentation:{floatIcon:'wheel_float_5'}}).presentation.floatIcon,'lucky_wheel');
   const m = mount('index.html');
-  const tiles = m.d.querySelectorAll('.float-icon-tile');
-  assert.equal(tiles.length, 8);
-  assert(tiles[0].classList.contains('active'));
-  assert.equal(tiles[0].getAttribute('aria-checked'), 'true');
-  
-  // Click on tile 3
-  tiles[2].click();
-  assert(!tiles[0].classList.contains('active'));
-  assert(tiles[2].classList.contains('active'));
-  assert.equal(tiles[2].getAttribute('aria-checked'), 'true');
-  assert.equal(m.d.getElementById('saveState').dataset.state, 'dirty');
-  
-  // Save settings
+  const tiles=m.d.querySelectorAll('.float-icon-tile');
+  assert.equal(tiles.length,6);
+  assert.equal(m.d.querySelector('[data-upload-float-icon]'),null);
+  const choice=m.d.querySelector('[data-float-icon="lucky_chest"]');
+  choice.click();
+  assert.equal(choice.getAttribute('aria-checked'),'true');
   m.d.getElementById('saveBtn').click();
-  const saved = JSON.parse(m.w.localStorage.getItem(C.key));
-  assert.equal(saved.config.presentation.floatIcon, 'wheel_float_3');
+  assert.equal(JSON.parse(m.w.localStorage.getItem(C.key)).config.presentation.floatIcon,'lucky_chest');
   m.dom.window.close();
 });
 
-test('player client displays chosen float icon widget with click interaction',()=>{
+test('player client uses selected float icon with click interaction',()=>{
   const initial = JSON.stringify({
     config: {
       presentation: {
-        floatIcon: 'wheel_float_5'
+        floatIcon: 'lucky_chest'
       }
     }
   });
@@ -266,7 +250,7 @@ test('player client displays chosen float icon widget with click interaction',()
   const widget = m.d.getElementById('phoneFloatWidget');
   const img = m.d.getElementById('phoneFloatIconImg');
   assert(widget && img);
-  assert(img.src.includes('wheel_float_5.png'));
+  assert(img.src.includes('lucky_chest.png'));
   
   let scrolled = false;
   m.d.querySelector('.wheel').scrollIntoView = () => { scrolled = true; };

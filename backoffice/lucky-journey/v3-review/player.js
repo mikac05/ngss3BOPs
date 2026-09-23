@@ -67,15 +67,9 @@
   const updateWheelImages=updateWheelContent;
 
   function updateFloatWidget(){
-    const fIcon = config.presentation?.floatIcon || 'wheel_float_1';
+    const icon=C.DEFAULT_FLOAT_ICONS.find(item=>item.id===config.presentation?.floatIcon)||C.DEFAULT_FLOAT_ICONS.at(-1);
     const imgEl = $('#phoneFloatIconImg');
-    if(imgEl){
-      if(fIcon.startsWith('wheel_float_')){
-        imgEl.src = './assets/float-icons/' + fIcon + '.png';
-      }else{
-        imgEl.src = fIcon;
-      }
-    }
+    if(imgEl)imgEl.src=icon.src;
   }
 
   function render(){
