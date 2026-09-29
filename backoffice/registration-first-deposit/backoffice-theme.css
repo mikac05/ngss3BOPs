@@ -1,0 +1,27 @@
+/* Project backoffice baseline, recorded 2026-09-23.
+ * Copy into the activity output; apply the class to the admin root.
+ * Tokens only: reuse compatible local components for structure/behavior.
+ */
+.ngss3-activity-admin {
+  color-scheme: dark;
+  --el-color-primary: #009688;
+  --el-bg-color: #141414;
+  --el-bg-color-page: #0a0a0a;
+  --el-text-color-primary: #e5eaf3;
+  --el-border-color: #4c4d4f;
+  --el-border-radius-base: 4px;
+  --el-font-size-base: 14px;
+  --left-menu-max-width: 250px;
+  --left-menu-min-width: 64px;
+  --left-menu-bg-color: #001529;
+  --left-menu-bg-active-color: #009688;
+  --tags-view-height: 35px;
+  --activity-form-font-size: 16px;
+  --activity-label-width: 160px;
+  --activity-control-height: 32px;
+  --activity-input-width: 240px;
+  --activity-dialog-max-width: 1600px;
+  --activity-dialog-padding: 16px;
+  background: var(--el-bg-color-page);
+  color: var(--el-text-color-primary);
+}
