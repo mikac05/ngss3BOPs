@@ -4,7 +4,7 @@
   const defaults={schemaVersion:1,revision:1,currency:'INR',wallet:'cash',multiple:1,cap:'100',budget:'100000',ageEnabled:true,
     ages:[{value:0,unit:'d'},{value:7,unit:'d'},{value:1,unit:'m'},{value:3,unit:'m'},{value:6,unit:'m'},{value:12,unit:'m'}],
     bands:['100','500','1000'],cells:[0.5,1,1.5,2,2.5,3].map(base=>[0,0.5,1].map(extra=>({type:'percent',value:String(base+extra)}))),
-    texts:{'zh-CN':{name:'首充成长阶梯',intro:'首次充值达标享奖励，充值前查看你的专属档位与可得金额。'},'zh-TW':{name:'首充成長階梯',intro:'首次充值達標享獎勵，充值前查看你的專屬檔位與可得金額。'},bn:{name:'প্রথম ডিপোজিট বোনাস',intro:'প্রথম ডিপোজিটের আগে আপনার ধাপ ও সম্ভাব্য বোনাস দেখুন।'},en:{name:'First deposit milestones',intro:'See your tier and estimated reward before your first deposit.'}}};
+    texts:{'zh-CN':{name:'首充阶梯',intro:'首次充值达标享奖励，充值前查看你的专属档位与可得金额。'},'zh-TW':{name:'首充階梯',intro:'首次充值達標享獎勵，充值前查看你的專屬檔位與可得金額。'},bn:{name:'প্রথম ডিপোজিট বোনাস',intro:'প্রথম ডিপোজিটের আগে আপনার ধাপ ও সম্ভাব্য বোনাস দেখুন।'},en:{name:'First deposit milestones',intro:'See your tier and estimated reward before your first deposit.'}}};
   const clone=v=>JSON.parse(JSON.stringify(v));
   function minor(s){if(!/^\d+(\.\d{1,2})?$/.test(String(s)))throw Error('金额须为非负数，最多两位小数');const [a,b='']=String(s).split('.');const n=Number(a)*100+Number(b.padEnd(2,'0'));if(!Number.isSafeInteger(n)||n>100000000000)throw Error('金额超出允许范围');return n;}
   const money=n=>(n/100).toFixed(2);
@@ -38,6 +38,7 @@
   }
   function settle(s,key,result,event){s=clone(s);if(s.records[key])return s;if(result.state!=='eligible')return s;if(s.available<result.reward)return {...s,last:'budget'};s.available-=result.reward;s.reserved+=result.reward;s.records[key]={reward:result.reward,status:'pending',event};s.last='pending';return s;}
   function callback(s,key,status){s=clone(s);const r=s.records[key];if(!r||r.status==='posted')return s;if(status==='posted'){s.reserved-=r.reward;s.spent+=r.reward;}r.status=status;return s;}
-  function load(){try{const c=JSON.parse(localStorage.getItem(KEY));if(c?.texts&&!c.texts.bn)c.texts.bn=clone(defaults.texts.bn);if(c&&!validate(c).length)return c;}catch(_){}return clone(defaults);}
-  const api={KEY,defaults,clone,minor,money,threshold,validate,calculate,settle,callback,load};root.Reward=api;if(typeof module!=='undefined')module.exports=api;
+  function renameLegacyNames(value){return JSON.parse(JSON.stringify(value).replace(/\u9996\u5145\u6210\u957f\u9636\u68af/g,'首充阶梯').replace(/\u9996\u5145\u6210\u9577\u968e\u68af/g,'首充階梯'));}
+  function load(){try{const c=renameLegacyNames(JSON.parse(localStorage.getItem(KEY)));if(c?.texts&&!c.texts.bn)c.texts.bn=clone(defaults.texts.bn);if(c&&!validate(c).length)return c;}catch(_){}return clone(defaults);}
+  const api={KEY,defaults,clone,minor,money,threshold,validate,calculate,settle,callback,load,renameLegacyNames};root.Reward=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);
