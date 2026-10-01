@@ -6,7 +6,7 @@ function page(name,search='',seed={}){
  dom.window.HTMLElement.prototype.scrollIntoView=function(){};
  dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};dom.window.HTMLDialogElement.prototype.close=function(){this.open=false;};
  for(const [k,v] of Object.entries(seed))dom.window.localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v));
- for(const script of dom.window.document.querySelectorAll('script[src]'))vm.runInContext(fs.readFileSync(path.join(root,script.getAttribute('src')),'utf8'),dom.getInternalVMContext(),{filename:script.getAttribute('src')});
+ for(const script of dom.window.document.querySelectorAll('script[src]'))vm.runInContext(fs.readFileSync(path.join(root,script.getAttribute('src').split('?')[0]),'utf8'),dom.getInternalVMContext(),{filename:script.getAttribute('src')});
  return dom;
 }
 function check(name,fn){fn();n++;console.log('PASS',name);}
