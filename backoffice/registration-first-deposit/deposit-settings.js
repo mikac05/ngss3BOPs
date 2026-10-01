@@ -1,31 +1,14 @@
-'use strict';
-const bundle=RewardHub.load();
-const channels=[
-  {id:'third-a',method:'在线充值',name:'三方通道 A',limit:'100–50,000 INR',kind:'third'},
-  {id:'third-b',method:'在线充值',name:'三方通道 B',limit:'500–20,000 INR',kind:'third'},
-  {id:'bank',method:'银行卡充值',name:'银行卡通道',limit:'100–30,000 INR',kind:'other'},
-  {id:'virtual',method:'虚拟币充值',name:'虚拟币通道',limit:'100–50,000 INR',kind:'other'}
-];
-const get=id=>bundle.items.find(x=>x.id===id);
-const active=x=>bundle.selected.includes(x.id);
-const edit=x=>x.type==='first'?'index.html':(['cumulative','single'].includes(x.type)?'task-center.html':'channel-rewards.html')+'?edit='+encodeURIComponent(x.id);
-function relevant(x,ch){return !['channel','recommended'].includes(x.type)||ch.kind==='third';}
-function summary(x){
-  if(x.type==='first')return '注册时长 × 首充金额档位；首次成功充值只奖励一次';
-  if(x.type==='cumulative')return `每日累计充值满 ${RewardHub.escape(x.threshold)} INR，奖励 ${x.demoReward} INR`;
-  if(x.type==='single')return `单笔充值满 ${RewardHub.escape(x.threshold)} INR，奖励 ${x.demoReward} INR`;
-  if(x.type==='channel')return `本三方通道充值 ${RewardHub.escape(x.threshold)}–${x.maxAmount||'以上'} INR，赠送 ${x.rewardMode==='percent'?x.rate+'%':x.demoReward+' INR'}；每日上限 ${x.dailyCap} INR／${x.dailyCount} 次`;
-  return `本通道推荐金额 ${RewardHub.escape(x.threshold)} INR，加赠 ${x.rewardMode==='percent'?x.rate+'%':x.demoReward+' INR'}；每日上限 ${x.dailyCap} INR／${x.dailyCount} 次`;
-}
-function detail(ch){
-  document.getElementById('detailTitle').textContent=ch.name+' · 充值优惠详情';
-  document.getElementById('channelNote').textContent=`${ch.method} · 单笔限额 ${ch.limit}。适用优惠来自活动中心与任务中心；未启用项目仍列出供核对。`;
-  document.getElementById('promotionRows').innerHTML=bundle.items.filter(x=>relevant(x,ch)).map(x=>`<tr><td>${RewardHub.escape(x.name['zh-CN'])}</td><td>${RewardHub.escape(summary(x))}</td><td>${x.source}</td><td>${active(x)?'已选用':'未选用'}</td><td><a href="${edit(x)}">前往配置</a></td></tr>`).join('');
-}
-document.getElementById('channelRows').innerHTML=channels.map(ch=>{
-  const gifts=bundle.items.filter(x=>relevant(x,ch)&&active(x));
-  const third=ch.kind==='third';
-  return `<tr><td>${ch.method}</td><td>${ch.name}</td><td>${ch.limit}</td><td>${third?(active(get('third-party-gift'))?'活动中心已配置':'未选用'):'不适用'}</td><td>${third?(active(get('recommended-amount'))?get('recommended-amount').threshold+' INR':'未选用'):'不适用'}</td><td>${gifts.length} 项</td><td><button type="button" data-channel="${ch.id}">查看优惠</button></td></tr>`;
-}).join('');
-document.addEventListener('click',e=>{const ch=channels.find(x=>x.id===e.target.dataset.channel);if(ch){detail(ch);document.getElementById('detailTitle').scrollIntoView({block:'start',behavior:'smooth'});}});
-detail(channels[0]);
+(function(){
+ 'use strict';const D=DepositCatalogue,H=RewardHub,R=Reward,E=H.escape,$=id=>document.getElementById(id);let bundle=D.load(),method='third',selected='third-a';const PAY_KEY='ngss3.deposit-payment-settings';
+ const payDefault={depositWager:'1',depositBadge:'show',orderMinutes:'30',requestFrequency:'1',clearTurnover:'off',releaseAmount:'0'};let payment=payDefault;try{payment={...payDefault,...JSON.parse(localStorage.getItem(PAY_KEY)||'{}')};}catch(_){}
+ function enabled(ch){return bundle.items.filter(x=>bundle.selected.includes(x.id)&&(!ch||D.applicable(x,ch)));}
+ function detail(ch){selected=ch.id;$('detailTitle').textContent=ch.name+' · 充值优惠';$('channelNote').textContent='显示适用于此通道的已启用活动；未开始或已结束的活动按状态标识。奖励设置统一在活动中心维护。';$('promotionRows').innerHTML=enabled(ch).map(x=>`<tr><td>${E(x.name['zh-CN'])}</td><td>${E(D.summary(x))}</td><td>${E(D.wallet(x))}</td><td><span class="state-pill">${D.status(x,bundle)}</span></td><td><a href="${'index.html?tab=deposit&edit='+encodeURIComponent(x.id)}">前往活动中心</a></td></tr>`).join('')||'<tr><td colspan="5" class="empty">此通道暂无已启用的充值活动</td></tr>';}
+ function render(){bundle=D.load();const chs=D.channels.filter(ch=>ch.method===method&&($('categoryFilter').value==='all'||$('categoryFilter').value===ch.id));$('channelRows').innerHTML=chs.map(ch=>{const gifts=enabled(ch),recommended=gifts.filter(x=>x.type==='recommended').map(x=>x.threshold).join('／')||'—';return `<tr><td>${ch.category}</td><td>${ch.name}</td><td>${ch.method==='third'?'在线支付':'—'}</td><td>${E(ch.id)}</td><td>${ch.limit} INR</td><td>${E(recommended)}</td><td><span class="state-pill">启用</span></td><td>2026-09-01 00:00:00</td><td>${D.channels.indexOf(ch)+1}</td><td><button data-channel="${ch.id}">查看活动</button></td></tr>`;}).join('');$('channelCount').textContent=`共 ${chs.length} 个通道`;const current=chs.find(x=>x.id===selected)||chs[0];if(current)detail(current);drawPopup();}
+ function drawPopup(){const activities=enabled();$('enabledCount').textContent='（'+activities.length+'项）';$('emptyActivities').hidden=activities.length>0;$('sharedPolicy').textContent=`单用户赠送上限：${bundle.memberGiftCap} INR　组合总预算：${bundle.sharedBudget} INR　单笔预留上限：${bundle.perOrderLimit} INR`; $('enabledActivities').innerHTML=activities.map(x=>`<tr><td>${E(x.name['zh-CN'])}<br><small>${D.subtypes[D.subtype(x)]}</small><br><span class="muted">${E(x.channels.length?x.channels.map(id=>D.channels.find(ch=>ch.id===id)?.name).join('、'):x.method==='all'?'全部充值方式':x.method==='third'?'在线充值':x.method==='virtual'?'虚拟币充值':x.method==='bank'?'银行充值':'银行／虚拟币充值')}</span></td><td>${E(D.summary(x))}<br><small>${E(D.period(x))}</small></td><td>${E(D.wallet(x))}<br>${(x.type==='recommended'||x.conditions?.mode==='exact')?'提款所需打码量 '+E(x.recommendedTurnover)+' INR':'赠送金额 × '+E(x.wager)+'倍'}</td><td>${x.type==='first'?'每位会员一次':(x.countPeriod==='total'?'累计':'每日')+' '+E(x.claimLimit)+' 次'}<br>${x.cap?'单人上限 '+E(x.cap)+' INR':'单人不封顶'}</td><td><span class="state-pill">${D.status(x,bundle)}</span><br><a href="index.html?tab=deposit&edit=${encodeURIComponent(x.id)}">查看活动</a></td></tr>`).join('');}
+ function open(){bundle=D.load();for(const key of Object.keys(payDefault))$(key).value=payment[key];document.querySelectorAll('[name=clearTurnoverChoice]').forEach(e=>e.checked=e.value===payment.clearTurnover);$('financeStatus').textContent='';drawPopup();$('financeSettings').showModal();}
+ function categories(){$('categoryFilter').innerHTML='<option value="all">全部充值大类</option>'+D.channels.filter(x=>x.method===method).map(ch=>`<option value="${ch.id}">${ch.name}</option>`).join('');}
+ document.addEventListener('click',e=>{const t=e.target.closest('button');if(!t)return;if(t.dataset.frequencyStep)$('requestFrequency').value=Math.max(0,Number($('requestFrequency').value||0)+Number(t.dataset.frequencyStep));if(t.dataset.channel){detail(D.channels.find(x=>x.id===t.dataset.channel));$('channelActivityDetail').hidden=false;}if(t.hasAttribute('data-close-finance'))$('financeSettings').close();if(t.dataset.method){method=t.dataset.method;document.querySelectorAll('[data-method]').forEach(x=>x.classList.toggle('selected',x===t));categories();render();}});
+ const entry=(title,copy)=>{$('paymentEntryTitle').textContent=title;$('paymentEntryText').textContent=copy;$('paymentEntry').showModal();};$('channelManagement').onclick=()=>entry('新增充值通道','通道资料、支付限额与路由继续由充值管理维护。建立通道后，可在充值活动选择其适用优惠；不在通道中设置奖励。');$('commissionSettings').onclick=()=>entry('充值返佣设置','充值返佣保留原有管理入口。本次充值活动统一管理发给会员的充值奖励，返佣规则仍按原有配置执行。');$('closePaymentEntry').onclick=$('returnPaymentEntry').onclick=()=>$('paymentEntry').close();$('openSettings').onclick=open;$('searchChannels').onclick=render;$('resetChannels').onclick=()=>{categories();$('channelState').value='enabled';render();};$('saveFinance').onclick=()=>{try{const next={};for(const key of Object.keys(payDefault))next[key]=$(key).value;if(next.orderMinutes!==''&&(!/^\d+$/.test(next.orderMinutes)||Number(next.orderMinutes)<0)||!/^\d+$/.test(next.requestFrequency))throw Error('订单有效时间和申请次数须为非负整数');if(!/^\d+(\.\d)?$/.test(next.depositWager))throw Error('打码倍数须为非负数，最多一位小数');R.minor(next.releaseAmount);localStorage.setItem(PAY_KEY,JSON.stringify(next));payment=next;$('financeStatus').textContent='充值设置已保存，活动奖励配置未改变。';}catch(e){$('financeStatus').textContent=e.message;}};
+ document.querySelectorAll('[name=clearTurnoverChoice]').forEach(e=>e.onchange=()=>{$('clearTurnover').value=e.value;});
+ window.addEventListener('storage',e=>{if(e.key===H.KEY)render();});categories();render();if(new URLSearchParams(location.search).get('settings')==='open')open();
+})();

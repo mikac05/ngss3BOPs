@@ -1,7 +1,7 @@
 (function(root){
  'use strict';
  const R=root.Reward||(typeof require==='function'?require('./engine.js'):null),DAY=86400000;
- function period(c,now){const start=new Date(now);start.setHours(0,0,0,0);const end=new Date(start);end.setFullYear(end.getFullYear()+1);return {start:c.basic?.startAt?+new Date(c.basic.startAt):+start,end:c.basic?.endAt?+new Date(c.basic.endAt):+end};}
+ function period(c,now){if(c.basic?.periodMode==='always')return {start:-Infinity,end:Infinity};const start=new Date(now);start.setHours(0,0,0,0);const end=new Date(start);end.setFullYear(end.getFullYear()+1);return {start:c.basic?.startAt?+new Date(c.basic.startAt):+start,end:c.basic?.endAt?+new Date(c.basic.endAt):+end};}
  function evaluate(c,e,now,days){
   const window=period(c,now),at=+new Date(now)+Number(days)*DAY;
   if(!Number.isInteger(Number(days))||Number(days)<0||!Number.isFinite(at))return {state:'invalid'};

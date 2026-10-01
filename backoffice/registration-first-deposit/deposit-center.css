@@ -1,0 +1,88 @@
+dialog{color:#e5eaf3;background:#141414;border:1px solid #4c4d4f;border-radius:4px;padding:16px;max-height:90vh}dialog::backdrop{background:#0009}dialog:not([open]){display:none}.activity-editor{width:min(1600px,calc(100vw - 48px));max-width:none;padding:0}.dialog-heading{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid #333}.dialog-heading h2{margin:0;border:0;padding:0;font-size:20px}.dialog-heading button{border:0;background:transparent;font-size:24px}.dialog-body{overflow:auto;max-height:calc(90vh - 160px);padding:0 16px}.dialog-footer{display:flex;align-items:center;justify-content:flex-end;gap:12px;border-top:1px solid #333;padding:12px 24px;flex-wrap:wrap}.dialog-footer p{flex:1;min-width:200px;margin:0;white-space:pre-line}.dialog-footer label input{width:auto}.category-tabs{display:flex;gap:24px;border-bottom:1px solid #333;padding:12px 4px;margin-bottom:16px}.category-tabs strong{color:#009688;border-bottom:2px solid #009688;padding-bottom:12px;margin-bottom:-13px}.filters{display:flex;align-items:center;flex-wrap:wrap;gap:16px;padding:16px;border:1px solid #333;background:#141414}.filters label{display:flex;gap:10px;align-items:center;font-size:14px}.filters input{width:200px}.toolbar{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-bottom:16px}.toolbar .muted{margin-left:auto}.template-dialog{width:850px;max-width:calc(100vw - 36px)}.template-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:12px 0}.template-cards button{padding:18px;text-align:left;min-height:100px}.template-cards strong,.template-cards small{display:block}.template-cards strong{color:#75d9c7;font-size:17px}.template-cards small{color:#adb7ba;margin-top:8px}.state-pill{display:inline-block;white-space:nowrap;padding:2px 8px;border-radius:3px;background:#263c37;color:#75d9c7;font-size:12px}.state-pill.off{color:#adb7ba;background:#282828}.actions-cell{white-space:nowrap}.actions-cell button{border:0;background:transparent;color:#009688;padding:2px 8px}.range-table input{width:125px}.range-table select{width:95px}.ngss3-activity-admin #activityChannels{display:flex;flex-wrap:wrap;gap:14px}.ngss3-activity-admin #activityChannels input{width:auto}.activity-editor #splitRow input{width:120px}.activity-editor #claimLimit{width:90px}.finance-settings{width:1050px;max-width:calc(100vw - 48px);padding:0}.finance-settings .dialog-body{padding:16px 24px}.settings-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px}.settings-grid .field{display:grid;grid-template-columns:180px minmax(0,1fr);align-items:center;gap:8px}.settings-grid .field>span:first-child{width:180px;text-align:right;line-height:1.5}.settings-grid .field input,.settings-grid .field select{width:100%!important;min-width:0}.unit-control{display:flex;align-items:center;gap:8px}.unit-control input{width:100%;min-width:0}.finance-settings h3{font-size:16px;border-left:3px solid #009688;padding-left:10px}.rewards-readonly{border-top:1px solid #333;margin-top:20px;padding-top:12px}.read-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}.readonly-note{font-size:13px;color:#adb7ba;margin:8px 0 18px}.deposit-tabs{display:flex;gap:28px;border-bottom:1px solid #333;padding:12px 4px;margin-bottom:14px}.deposit-tabs button{border:0;border-radius:0;padding:4px 0 10px;background:transparent;color:#adb7ba;margin-bottom:-13px}.deposit-tabs button.selected{color:#009688;border-bottom:2px solid #009688}.finance-table{min-width:1050px}.finance-table th{white-space:nowrap}.quiet-cell{color:#8e99a4}.finance-settings td{font-size:13px;padding:10px}.finance-settings .empty{text-align:center;color:#adb7ba;padding:24px}.intro-callout{padding:12px 16px;border-left:3px solid #009688;background:#182423}.plan-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}.plan-flow article{border:1px solid #4c4d4f;border-top:3px solid #009688;padding:20px;background:#182423}.plan-flow h3{font-size:23px;margin:0 0 12px}.plan-flow p{font-size:20px}.ownership{color:#75d9c7}.slide .scroll{max-height:none}.slide th,.slide td{font-size:18px;line-height:1.65}.slide .callout{padding:16px;border-left:3px solid #009688;background:#182423}.plan-steps{counter-reset:step;display:grid;gap:10px}.plan-steps div{padding:12px 18px;border:1px solid #4c4d4f;font-size:21px}.plan-steps div:before{counter-increment:step;content:counter(step);display:inline-block;width:30px;color:#75d9c7;margin-right:10px}.muted-block{font-size:14px;color:#adb7ba}.finance-summary{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:10px 0}.finance-summary strong{color:#75d9c7}.help-line{color:#adb7ba;font-size:13px}.readonly-policy{border:1px solid #3a3a3a;padding:10px 14px;font-size:13px;margin:12px 0;display:flex;gap:20px;flex-wrap:wrap}@media(max-width:900px){.settings-grid,.plan-flow{grid-template-columns:1fr}.activity-editor,.finance-settings{width:calc(100vw - 24px)}.settings-grid .field{grid-template-columns:160px minmax(0,1fr)}.settings-grid .field>span:first-child{width:160px}.template-cards{grid-template-columns:1fr}}@media print{dialog,.page-navigation{display:none!important}.plan-flow article{background:white;color:black}.slide .scroll{overflow:visible}}
+
+.category-tabs [role="tab"]{border:0;background:transparent;border-radius:0;color:#adb7ba;padding:0 0 12px;margin:0 0 -13px;font-size:16px}.category-tabs [aria-selected="true"]{border-bottom:2px solid #009688;color:#009688}.activity-list{min-width:1350px}.activity-list th{white-space:nowrap}.activity-list td{font-size:14px;padding:12px 10px}.activity-list .actions-cell{max-width:205px;white-space:normal;min-width:165px}.activity-list .actions-cell button{font-size:14px}.activity-subtitle{display:block;color:#adb7ba;margin-top:5px}.filters input[type="date"]{width:148px}.ngss3-activity-admin #firstRewardSection input{width:110px}.ngss3-activity-admin #firstRewardSection select{width:115px}.integration-preview{border:1px solid #4c4d4f;border-radius:4px;background:#141414;padding:18px;margin:18px 0}.integration-preview header{padding:10px;background:#182423;font-size:17px}.integration-preview .preview-tabs{display:flex;gap:25px;border-bottom:1px solid #4c4d4f;padding:12px 0}.integration-preview .preview-tabs strong{color:#75d9c7}.integration-controls{display:flex;flex-wrap:wrap;gap:20px;margin:18px 0}.integration-controls label{display:flex;align-items:center;gap:8px}.integration-controls input{width:140px}.integration-preview td{font-size:15px}.channel-offer-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}.channel-offer-tags span{font-size:12px;padding:3px 6px;background:#203631;color:#b0e0d3}.rule-lines{display:grid;gap:3px}.rule-lines small{color:#adb7ba}.finance-settings .finance-table{min-width:850px}
+
+.activity-editor.awaiting-type #basic .form-columns>div:first-child>:not(:first-child),.activity-editor.awaiting-type #basic .display-card,.activity-editor.awaiting-type .dialog-body>section:not(#basic){display:none}
+
+/* Existing Element form geometry; recharge conditions use the same controls. */
+.activity-editor,.finance-settings{padding:16px;background:#141414}
+.activity-editor{width:1600px;max-width:calc(100vw - 6px);max-height:calc(100vh - 48px)}
+.activity-editor .dialog-heading,.finance-settings .dialog-heading{height:54px;padding:0 15px}
+.activity-editor .dialog-heading h2,.finance-settings .dialog-heading h2{font-size:20px;font-weight:500}
+.activity-editor .dialog-body{padding:15px;max-height:calc(100vh - 210px)}
+.activity-editor .panel{padding:0;border:0;margin:0 0 18px;background:transparent}
+.activity-editor #basic>h2{display:none}
+.activity-editor .form-columns{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}
+.activity-editor .form-columns>.display-card{padding:0;background:transparent;border:0}
+.activity-editor .field{margin:0 0 18px;gap:0 10px;min-height:32px;align-items:flex-start}
+.activity-editor .field>span:first-child{width:160px;text-align:right;padding-right:2px;line-height:32px;flex-shrink:0}
+.activity-editor input,.activity-editor select{height:32px;min-height:32px;padding:0 11px}
+.activity-editor input[type=radio],.activity-editor input[type=checkbox]{height:14px;min-height:14px;accent-color:#009688;margin:0 6px 0 0;vertical-align:middle;width:14px}
+.activity-editor .field label{line-height:32px}
+.activity-editor #walletChoices{display:flex;gap:20px;flex-wrap:wrap;flex:1}
+.activity-editor input.wide{margin-left:170px;width:240px}
+.activity-editor #intro,.activity-editor #customRules,.activity-editor #previewRules,.activity-editor #basic .editor-tools{margin-left:170px;width:calc(100% - 170px);margin-top:0}
+.activity-editor #previewRules{padding:12px;border:1px solid #333;min-height:160px;font-size:16px}
+.editor-tools{border:1px solid #333;padding:8px;color:#a8abb2;background:#181818;line-height:28px;font-size:14px}
+.activity-editor .display-card .editor-tools{margin:0!important;width:100%!important}
+.activity-editor .dialog-footer,.finance-settings .dialog-footer{padding:16px 0 0;border-top:0;min-height:50px}
+.activity-editor .dialog-footer p{font-size:14px}
+.activity-editor .promotion-only input{width:120px}
+.activity-editor .promotion-only input[type=radio]{width:14px}
+.activity-editor .promotion-only .scroll{flex:1}
+.finance-settings{width:800px;max-width:calc(100vw - 32px);max-height:90vh}
+.finance-settings .dialog-body{padding:15px;max-height:calc(90vh - 140px)}
+.finance-settings .settings-grid{display:block}
+.finance-settings .settings-grid .field{display:flex;flex-wrap:nowrap;gap:0;margin:0 0 18px;min-height:32px}
+.finance-settings .settings-grid .field>span:first-child{width:240px;flex:0 0 240px;padding-right:12px;text-align:right;line-height:32px;font-size:16px}
+.finance-settings .settings-grid .field>input,.finance-settings .settings-grid .field>select,.finance-settings .settings-grid .field>.unit-control{width:360px!important}
+.finance-settings .settings-grid input,.finance-settings .settings-grid select{height:32px;min-height:32px;padding:0 11px}
+.finance-settings .settings-grid input[type=radio]{width:14px!important;height:14px;min-height:14px;accent-color:#009688;margin:0 6px 0 0}
+.finance-settings .settings-grid label{line-height:32px;margin-right:24px}
+.finance-settings .unit-control{gap:0;height:32px;border:1px solid #4c4d4f;border-radius:4px;overflow:hidden}
+.finance-settings .unit-control input{border:0;border-radius:0;text-align:center;flex:1;width:0!important}
+.finance-settings .unit-control span{font-size:14px;background:#1d1e1f;color:#a8abb2;padding:0 12px;line-height:30px;white-space:nowrap}
+.finance-settings .frequency-control{display:flex;gap:10px;width:360px}
+.finance-settings .frequency-control>.unit-control:first-child{width:150px}
+.finance-settings .frequency-control>.unit-control:last-child{width:200px}
+.required:before{content:'* ';color:#f56c6c}
+.finance-settings .rewards-readonly h3{font-size:16px;border:0;padding:0}
+.finance-settings .rewards-readonly table{min-width:680px}
+.finance-settings .dialog-footer button{min-width:64px;font-size:14px}
+.activity-editor .gallery{margin:0 0 18px 170px;border:1px solid #4c4d4f;padding:10px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;max-height:214px;overflow:auto}
+.gallery button{padding:0;border:2px solid transparent;background:#fff;min-width:0;overflow:hidden}
+.gallery button.selected{border-color:#409eff}
+.gallery img{width:100%;height:46px;object-fit:contain;display:block}
+.gallery.backgrounds img{object-fit:cover;height:36px}
+.activity-editor .banner-preview{margin:0 0 18px 170px;border-radius:0;background-size:cover!important;min-height:200px}
+.activity-editor .banner-preview p{white-space:pre-line}
+.activity-editor .layout-options{display:flex;gap:8px}
+.activity-editor .layout-options button{min-width:60px;padding:0 8px}
+@media(max-width:900px){.activity-editor .form-columns{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.finance-settings .settings-grid .field>span:first-child{width:240px;flex-basis:240px}.activity-editor .field>span:first-child{width:160px}.activity-editor .field input[type=datetime-local]{width:180px}.activity-editor .field{flex-wrap:wrap}}
+
+.ngss3-activity-admin .shell>div>main{max-width:none;padding:10px}
+.ngss3-activity-admin .shell>.sidebar{padding:0}
+.ngss3-activity-admin .sidebar strong{height:60px;line-height:60px;font-size:16px;padding:0 16px;margin:0}
+.ngss3-activity-admin .sidebar div{height:56px;padding:15px 24px;font-size:16px;border-radius:0}
+.ngss3-activity-admin .sidebar .child{height:50px;padding:12px 24px 12px 46px!important;background:#102437}
+.ngss3-activity-admin .sidebar .child.active{background:#009688}
+.ngss3-activity-admin .finance-table th,.ngss3-activity-admin .activity-list th{text-align:center;font-weight:600;background:#202020}
+.finance-settings{margin:15vh auto 30px;max-height:80vh}
+.finance-settings .dialog-body{max-height:calc(80vh - 155px)}
+.finance-settings .dialog-footer{border-top:1px solid #333}
+.finance-settings .settings-grid input:disabled{background:#262727;color:#73767a}
+
+.finance-settings .frequency-control button{height:30px;min-height:30px;padding:0;width:32px;flex:none;border:0;border-radius:0;background:#242525}.finance-settings .frequency-control>.unit-control:last-child span{padding:0 4px}.activity-editor #ipLimit,.activity-editor #deviceLimit{width:170px}
+
+.activity-editor input[readonly],.activity-editor textarea[readonly]{background:#262727;color:#73767a}.finance-table .actions-cell{color:#009688}
+
+/* Compact qualification row and spaced reward controls. */
+.activity-editor .field{column-gap:12px;row-gap:10px}
+.activity-editor .reward-cell{display:flex;align-items:center;gap:12px;white-space:nowrap}
+.activity-editor .reward-cell select,.activity-editor .reward-cell input{flex:none}
+.activity-editor .age-switch-label{display:inline-flex;align-items:center;gap:14px;margin-bottom:10px}
+.ngss3-activity-admin .activity-editor #firstRewardSection #ageEnabled{appearance:none;display:inline-block;position:relative;width:40px;height:22px;min-height:22px;padding:0;margin:0;border:0;border-radius:12px;background:#4c4d4f;cursor:pointer;transition:background .15s;flex:none}
+.activity-editor #ageEnabled:before{content:'';position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .15s}
+.ngss3-activity-admin .activity-editor #firstRewardSection #ageEnabled:checked{background:#009688}
+.activity-editor #ageEnabled:checked:before{transform:translateX(18px)}
+.activity-editor #ageEnabled:focus-visible{outline:2px solid #75d9c7;outline-offset:3px}
