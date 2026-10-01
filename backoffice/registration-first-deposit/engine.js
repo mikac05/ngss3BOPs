@@ -4,7 +4,7 @@
   const defaults={schemaVersion:1,revision:1,currency:'INR',wallet:'cash',multiple:1,cap:'100',budget:'100000',ageEnabled:true,
     ages:[{value:0,unit:'d'},{value:7,unit:'d'},{value:1,unit:'m'},{value:3,unit:'m'},{value:6,unit:'m'},{value:12,unit:'m'}],
     bands:['100','500','1000'],cells:[0.5,1,1.5,2,2.5,3].map(base=>[0,0.5,1].map(extra=>({type:'percent',value:String(base+extra)}))),
-    texts:{'zh-CN':{name:'首充成长阶梯',intro:'首次充值达标享奖励，充值前查看你的专属档位与可得金额。'},'zh-TW':{name:'首充成長階梯',intro:'首次充值達標享獎勵，充值前查看你的專屬檔位與可得金額。'},en:{name:'First deposit milestones',intro:'See your tier and estimated reward before your first deposit.'}}};
+    texts:{'zh-CN':{name:'首充成长阶梯',intro:'首次充值达标享奖励，充值前查看你的专属档位与可得金额。'},'zh-TW':{name:'首充成長階梯',intro:'首次充值達標享獎勵，充值前查看你的專屬檔位與可得金額。'},bn:{name:'প্রথম ডিপোজিট বোনাস',intro:'প্রথম ডিপোজিটের আগে আপনার ধাপ ও সম্ভাব্য বোনাস দেখুন।'},en:{name:'First deposit milestones',intro:'See your tier and estimated reward before your first deposit.'}}};
   const clone=v=>JSON.parse(JSON.stringify(v));
   function minor(s){if(!/^\d+(\.\d{1,2})?$/.test(String(s)))throw Error('金额须为非负数，最多两位小数');const [a,b='']=String(s).split('.');const n=Number(a)*100+Number(b.padEnd(2,'0'));if(!Number.isSafeInteger(n)||n>100000000000)throw Error('金额超出允许范围');return n;}
   const money=n=>(n/100).toFixed(2);
@@ -21,12 +21,12 @@
     if(c.cells.length!==c.ages.length)errors.push('奖励行数不一致');
     c.cells.forEach(r=>{if(r.length!==c.bands.length)errors.push('奖励列数不一致');r.forEach(v=>{if(!['fixed','percent'].includes(v.type)||minor(v.value)<=0||(v.type==='percent'&&minor(v.value)>10000))errors.push('奖励须大于0；比例不得超过100%');});});
     if(c.cap!==''&&minor(c.cap)<=0)errors.push('奖励上限须大于0或留空');if(minor(c.budget)<=0)errors.push('预算须大于0');
-    ['zh-CN','zh-TW','en'].forEach(l=>{if(!c.texts[l]?.name?.trim()||!c.texts[l]?.intro?.trim())errors.push(l+' 活动名称与宣传简介必填');});
+    ['zh-CN','zh-TW','en','bn'].forEach(l=>{if(!c.texts[l]?.name?.trim()||!c.texts[l]?.intro?.trim())errors.push(l+' 活动名称与宣传简介必填');});
   }catch(e){errors.push(e.message);}return [...new Set(errors)];}
   function calculate(c,e){const errors=validate(c);if(errors.length)return {state:'invalid',errors};
     if(!e.first)return {state:'notFirst'};
     const reg=+new Date(e.registered),at=+new Date(e.paidAt);if(!Number.isFinite(reg)||!Number.isFinite(at)||at<reg)return {state:'invalid',errors:['注册与首充时间无效']};
-    if((c.basic?.startAt&&at<+new Date(c.basic.startAt))||(c.basic?.endAt&&at>=+new Date(c.basic.endAt)))return {state:'inactive'};
+    if(c.basic?.periodMode!=='always'&&((c.basic?.startAt&&at<+new Date(c.basic.startAt))||(c.basic?.endAt&&at>=+new Date(c.basic.endAt))))return {state:'inactive'};
     let amount;try{amount=minor(e.amount);}catch(x){return {state:'invalid',errors:[x.message]};}
     let row=c.ageEnabled?-1:0; if(c.ageEnabled)c.ages.forEach((a,i)=>{if(at>=threshold(e.registered,a))row=i;});
     let col=-1;c.bands.forEach((v,i)=>{if(amount>=minor(v))col=i;});
@@ -38,6 +38,6 @@
   }
   function settle(s,key,result,event){s=clone(s);if(s.records[key])return s;if(result.state!=='eligible')return s;if(s.available<result.reward)return {...s,last:'budget'};s.available-=result.reward;s.reserved+=result.reward;s.records[key]={reward:result.reward,status:'pending',event};s.last='pending';return s;}
   function callback(s,key,status){s=clone(s);const r=s.records[key];if(!r||r.status==='posted')return s;if(status==='posted'){s.reserved-=r.reward;s.spent+=r.reward;}r.status=status;return s;}
-  function load(){try{const c=JSON.parse(localStorage.getItem(KEY));if(c&&!validate(c).length)return c;}catch(_){}return clone(defaults);}
+  function load(){try{const c=JSON.parse(localStorage.getItem(KEY));if(c?.texts&&!c.texts.bn)c.texts.bn=clone(defaults.texts.bn);if(c&&!validate(c).length)return c;}catch(_){}return clone(defaults);}
   const api={KEY,defaults,clone,minor,money,threshold,validate,calculate,settle,callback,load};root.Reward=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window==='undefined'?globalThis:window);
