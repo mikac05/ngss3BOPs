@@ -14,6 +14,9 @@ let amount=query.get('amount')||(scenario==='unmet'?'50':null)||(['returning','u
 let channel='third',order=['unknown','credited','pending','rewardpending','rewardfailed'].includes(scenario)?scenario:'draft',snapshot=null;
 const first=!['used','credited','rewardpending','rewardfailed'].includes(scenario);let participation='available';
 let futureDays=7;
+const budgetRaw=query.get('budget')||cfg.budget;
+const availableBudget=/^\d+(\.\d{1,2})?$/.test(budgetRaw)?Math.min(R.minor(budgetRaw),R.minor(cfg.budget)):null;
+function lacksBudget(r){return r.state==='eligible'&&(availableBudget===null||r.reward>availableBudget);}
 const T={bn:PlayerBN.ui,
 'zh-CN':{center:'活动中心',deposit:'充值',back:'返回活动',headline:'你的首充奖励',age:'当前注册档位',new:'已注册',top:'本活动最高奖励',tiers:'选择金额，查看可得奖励',current:'当前金额',next:'下一金额档',difference:'金额差额',extra:'奖励增加',estimate:'预计可得',amount:'充值金额',channel:'充值方式',third:'三方支付',other:'其他方式',linked:'本次充值优惠',none:'此金额暂无适用优惠',not:'未达条件',checking:'正在核验',used:'首充资格已使用',usedHint:'首充奖励每位会员限一次。你仍可查看其他充值优惠。',once:'仅限首次成功充值，匹配一档奖励；未达标的首充不补发。',go:'前往充值',submit:'确认充值',rules:'规则说明',wallet:'派奖钱包',cash:'现金钱包',bonus:'彩金钱包',turnover:'所需打码',limit:'单人上限',status:'充值结果',pending:'等待支付结果',pendingText:'请完成支付。支付成功后，各项优惠分别核验。',unknown:'正在确认奖励',unknownText:'充值结果正在核对，请勿为领取奖励重复充值。',credited:'奖励已入账',creditedText:'首充奖励已完成，请到钱包查看。',cancel:'取消订单',otherOffers:'查看充值优惠',budget:'当前优惠暂不可用，请稍后查看。',invalid:'请输入有效充值金额。',record:'查看奖励详情',notYet:'尚未达到活动门槛',ageHint:'以首次充值成功时的注册时长为准。',max:'已达到当前可得奖励上限',after:'核验通过后自动派发',total:'预计奖励合计',balance:'剩余每日赠送额度以核验结果为准。',noActivity:'当前暂无首充活动',closed:'此活动当前未开放，请查看其他充值优惠。'},
 'zh-TW':{center:'活動中心',deposit:'充值',back:'返回活動',headline:'你的首充獎勵',age:'目前註冊檔位',new:'已註冊',top:'本活動最高獎勵',tiers:'選擇金額，查看可得獎勵',current:'目前金額',next:'下一金額檔',difference:'金額差額',extra:'獎勵增加',estimate:'預計可得',amount:'充值金額',channel:'充值方式',third:'三方支付',other:'其他方式',linked:'本次充值優惠',none:'此金額暫無適用優惠',not:'未達條件',checking:'正在核驗',used:'首充資格已使用',usedHint:'首充獎勵每位會員限一次。你仍可查看其他充值優惠。',once:'僅限首次成功充值，匹配一檔獎勵；未達標的首充不補發。',go:'前往充值',submit:'確認充值',rules:'規則說明',wallet:'派獎錢包',cash:'現金錢包',bonus:'彩金錢包',turnover:'所需打碼',limit:'單人上限',status:'充值結果',pending:'等待支付結果',pendingText:'請完成支付。支付成功後，各項優惠分別核驗。',unknown:'正在確認獎勵',unknownText:'充值結果正在核對，請勿為領取獎勵重複充值。',credited:'獎勵已入帳',creditedText:'首充獎勵已完成，請到錢包查看。',cancel:'取消訂單',otherOffers:'查看充值優惠',budget:'目前優惠暫不可用，請稍後查看。',invalid:'請輸入有效充值金額。',record:'查看獎勵詳情',notYet:'尚未達到活動門檻',ageHint:'以首次充值成功時的註冊時長為準。',max:'已達到目前可得獎勵上限',after:'核驗通過後自動派發',total:'預計獎勵合計',balance:'剩餘每日贈送額度以核驗結果為準。',noActivity:'目前暫無首充活動',closed:'此活動目前未開放，請查看其他充值優惠。'},
@@ -49,7 +52,7 @@ function ev(a=amount){return {first:['credited','rewardpending','rewardfailed'].
 function offerName(x){return x.id==='registration-first-deposit'?cfg.texts[lang].name:x.name[lang]||(lang==='bn'?PlayerBN.names[bundle.items.find(i=>i.id===x.id)?.type]||PlayerBN.names.deposit:x.name.en);}
 function money(v){return R.money(v)+' '+cfg.currency;}
 function ageName(a){return a.value===0?T[lang].new:C.age(a,lang);}
-function link(page){return page+'?'+new URLSearchParams({scenario,amount,lang});}
+function link(page){return page+'?'+new URLSearchParams({scenario,amount,lang,...(query.has('budget')?{budget:query.get('budget')}:{})});}
 function draw(){
   const w=T[lang],event=snapshot||ev(),active=bundle.selected.includes('registration-first-deposit');
   const navLabels={bn:PlayerBN.nav,'zh-CN':['活动中心','充值管理','集中管理简报','设置说明','首充活动','玩家页面','充值页面','首充规则','首充简报'],'zh-TW':['活動中心','充值管理','集中管理簡報','設定說明','首充活動','玩家頁面','充值頁面','首充規則','首充簡報'],en:['Activity center','Deposit management','Management plan','Setup guide','First deposit settings','Player page','Deposit page','First deposit rules','First deposit presentation']};document.querySelectorAll('.page-navigation a').forEach((a,i)=>{a.textContent=navLabels[lang][i];const page=new URL(a.href).pathname.split('/').pop();if(['player.html','deposit.html'].includes(page))a.href=link(page);});
@@ -94,6 +97,7 @@ function draw(){
     if(p.overOrderLimit||p.overSharedBudget||(active&&r.state==='eligible'&&r.reward>R.minor(cfg.budget))){$('warning').textContent=w.budget;$('primary').disabled=true;$('estimate').textContent=w.budget;$('nextGoal').textContent='';}
     if(R.minor(amount)<=0)$('primary').disabled=true;
     applyParticipation(r,p,active);
+    drawBudget(r,p,active,event);
   }catch(_){$('warning').textContent=w.invalid;$('primary').disabled=true;$('estimate').textContent='—';$('forecastResult').textContent=w.invalid;$('forecastCompare').textContent='';$('nextGoal').textContent='';$('rewardList').textContent='';$('total').textContent='';}
 }
 const stateActions={bn:PlayerBN.actions,
@@ -121,5 +125,31 @@ function applyParticipation(r,p,active){
 }
 $('futureDays').oninput=e=>{futureDays=e.target.value===''?NaN:Number(e.target.value);draw();};
 $('locale').onchange=e=>{lang=e.target.value;const q=new URLSearchParams(location.search);q.set('lang',lang);history.replaceState(null,'','?'+q);draw();};$('amountInput').oninput=e=>{amount=e.target.value;draw();};$('channel').onchange=e=>{channel=e.target.value;draw();};
-$('primary').onclick=()=>{if(view!=='deposit'){location.href=link('deposit.html');return;}snapshot=ev();order='pending';draw();};
-$('cancel').onclick=()=>{order='draft';snapshot=null;draw();};draw();
+$('primary').onclick=()=>{if($('primary').disabled)return;if(view!=='deposit'){location.href=link('deposit.html');return;}snapshot=ev();order='pending';draw();};
+$('cancel').onclick=()=>{order='draft';snapshot=null;draw();};
+
+const budgetText={
+ 'zh-CN':{title:'活动可用奖励余额',note:'可选择其他档位查看奖励。',low:'此档位暂不发送奖励',ok:'预计可得',unknown:'暂时无法确认此档位奖励',future:'未来奖励仅供参考，以实际参与时的可用状态为准。',required:'本笔按规则奖励',choose:'可修改金额查看其他档位；首充仅限一笔，不累计。'},
+ 'zh-TW':{title:'活動可用獎勵餘額',note:'可選擇其他檔位查看獎勵。',low:'此檔位暫不發送獎勵',ok:'預計可得',unknown:'暫時無法確認此檔位獎勵',future:'未來獎勵僅供參考，以實際參與時的可用狀態為準。',required:'本筆按規則獎勵',choose:'可修改金額查看其他檔位；首充僅限一筆，不累計。'},
+ en:{title:'Available reward budget',note:'Choose another tier to view rewards.',low:'No reward sent for this tier',ok:'Estimated reward',unknown:'Reward availability unknown',future:'Future rewards are estimates. Availability is checked when you participate.',required:'Reward under current rules',choose:'Change the amount to compare tiers. Only one first deposit qualifies; deposits do not add up.'},
+ bn:{title:'পুরস্কারের অবশিষ্ট বাজেট',note:'পুরস্কার দেখতে অন্য ধাপ বেছে নিন।',low:'এই ধাপে পুরস্কার দেওয়া হবে না',ok:'আনুমানিক পুরস্কার',unknown:'পুরস্কার নিশ্চিত করা যাচ্ছে না',future:'ভবিষ্যৎ পুরস্কার আনুমানিক। অংশ নেওয়ার সময় প্রাপ্যতা যাচাই হবে。',required:'নিয়ম অনুযায়ী পুরস্কার',choose:'অন্য ধাপ দেখতে পরিমাণ বদলান। শুধু প্রথম জমা প্রযোজ্য; একাধিক জমা যোগ হয় না।'}
+};
+function drawBudget(r,p,active,event){
+ const text=budgetText[lang];
+ if(!active||!first||order!=='draft'||!['available','unmet','budget'].includes(participation))return;
+ document.querySelectorAll('.tier-choice').forEach((button,i)=>{const v=R.calculate(cfg,{...event,amount:cfg.bands[i]}),low=lacksBudget(v);button.classList.toggle('budget-unavailable',low);button.querySelector('small').textContent=v.state==='eligible'?(low?text.low:text.ok):T[lang].notYet;});
+ $('forecastNote').textContent+=' '+text.future;
+ const next=cfg.bands.find(a=>R.minor(a)>R.minor(amount));if(next&&lacksBudget(R.calculate(cfg,{...event,amount:next})))$('nextGoal').textContent='';
+ if(lacksBudget(r)){
+  $('stage').hidden=false;$('amountPicker').hidden=false;$('primary').hidden=false;$('primary').disabled=true;
+  $('estimateLabel').textContent=text.required;$('estimate').textContent=money(r.reward);
+  $('warning').textContent=(availableBudget===null?text.unknown:text.low)+' · '+text.choose;$('nextGoal').textContent='';$('destination').textContent='';
+  $('resultTitle').textContent=availableBudget===null?text.unknown:text.low;$('resultText').textContent=text.note;
+  if(view==='deposit'){
+   const cards=[...$('rewardList').children];p.items.forEach((x,i)=>{if(x.id==='registration-first-deposit'&&cards[i])cards[i].querySelector('span').textContent=text.low;});
+   $('total').textContent=T[lang].total+' '+money(p.items.filter(x=>x.id!=='registration-first-deposit'&&x.state==='eligible').reduce((sum,x)=>sum+x.reward,0));
+  }
+ }
+}
+
+draw();

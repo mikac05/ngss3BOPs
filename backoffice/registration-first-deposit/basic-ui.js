@@ -9,7 +9,6 @@ function refreshBasic(){
   const b=cfg.basic;
   for(const name of ['nameMode','introMode','rulesMode','memberMode','validMode','showText'])document.querySelector(`input[name="${name}"][value="${b[name]}"]`)?.click();
   basicIds.forEach(id=>{const el=document.getElementById(id);el[el.type==='checkbox'?'checked':'value']=b[id];});
-  document.querySelectorAll('.terminal').forEach(el=>el.checked=b.terminals.includes(el.value));
   document.getElementById('memberLevels').hidden=b.memberMode!=='specified';
   [...document.getElementById('memberLevels').options].forEach(o=>o.selected=b.memberLevels.includes(o.value));
   syncBasicLocale();
@@ -28,10 +27,9 @@ function syncBasicLocale(){
 }
 basicIds.forEach(id=>document.getElementById(id).addEventListener('input',e=>{cfg.basic[id]=e.target.type==='checkbox'?e.target.checked:e.target.value;syncBasicLocale();}));
 for(const name of ['nameMode','introMode','rulesMode','memberMode','validMode','showText'])document.querySelectorAll(`input[name="${name}"]`).forEach(el=>el.addEventListener('change',()=>{cfg.basic[name]=selected(name);if((name==='nameMode'||name==='introMode')&&cfg.basic[name]==='system'){const key=name==='nameMode'?'name':'intro';for(const l of ['zh-CN','zh-TW','en'])cfg.texts[l][key]=Reward.defaults.texts[l][key];document.getElementById(key).value=cfg.texts[document.getElementById('locale').value][key];previews();}document.getElementById('memberLevels').hidden=cfg.basic.memberMode!=='specified';syncBasicLocale();}));
-document.querySelectorAll('.terminal').forEach(el=>el.addEventListener('change',()=>{cfg.basic.terminals=[...document.querySelectorAll('.terminal:checked')].map(x=>x.value);}));
 document.getElementById('memberLevels').addEventListener('change',e=>cfg.basic.memberLevels=[...e.target.selectedOptions].map(x=>x.value));
 document.getElementById('customRules').addEventListener('input',e=>cfg.basic.rulesText[document.getElementById('locale').value]=e.target.value);
 document.getElementById('locale').addEventListener('change',syncBasicLocale);
 const rewardDraw=draw;draw=function(){rewardDraw();cfg.basic={...basicDefaults,...cfg.basic,rulesText:{...basicDefaults.rulesText,...cfg.basic?.rulesText}};refreshBasic();};
-document.getElementById('save').addEventListener('click',e=>{const b=cfg.basic,errors=[];if(!b.startAt||!b.endAt)errors.push('请填写活动开始和结束时间');else if(b.endAt<=b.startAt)errors.push('活动结束时间须晚于开始时间');for(const id of ['ipLimit','deviceLimit','validFirst','validDeposit','validTurnover','validCount'])if(!Number.isFinite(Number(b[id]))||Number(b[id])<0)errors.push(id+' 须为非负数');if(b.memberMode==='specified'&&!b.memberLevels.length)errors.push('请选择参与会员层级');if(!b.terminals.length)errors.push('请选择活动申领终端');if(b.rulesMode==='custom'&&['zh-CN','zh-TW','en'].some(l=>!b.rulesText[l]?.trim()))errors.push('自定义规则说明须提供三个语系');if(errors.length){e.stopImmediatePropagation();document.getElementById('errors').textContent=errors.join('\n');}},true);
+document.getElementById('save').addEventListener('click',e=>{const b=cfg.basic,errors=[];if(!b.startAt||!b.endAt)errors.push('请填写活动开始和结束时间');else if(b.endAt<=b.startAt)errors.push('活动结束时间须晚于开始时间');for(const id of ['ipLimit','deviceLimit','validFirst','validDeposit','validTurnover','validCount'])if(!Number.isFinite(Number(b[id]))||Number(b[id])<0)errors.push(id+' 须为非负数');if(b.memberMode==='specified'&&!b.memberLevels.length)errors.push('请选择参与会员层级');if(b.rulesMode==='custom'&&['zh-CN','zh-TW','en'].some(l=>!b.rulesText[l]?.trim()))errors.push('自定义规则说明须提供三个语系');if(errors.length){e.stopImmediatePropagation();document.getElementById('errors').textContent=errors.join('\n');}},true);
 refreshBasic();
